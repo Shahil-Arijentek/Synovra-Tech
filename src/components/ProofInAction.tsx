@@ -84,6 +84,26 @@ export default function ProofInAction() {
               </AnimatePresence>
             </div>
 
+          <div className="mt-8 text-center">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={currentIndex}
+                custom={direction}
+                variants={textVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+              >
+                <h3 className="text-2xl font-semibold sm:text-3xl">
+                  {currentSlide.headline}
+                </h3>
+                <p className="mt-3 text-sm text-white/70 sm:text-base">
+                  {currentSlide.subhead}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
           <div className="mt-6 flex items-center justify-center gap-4">
             <button
               type="button"
@@ -105,27 +125,6 @@ export default function ProofInAction() {
                 <path d="M9 6l6 6-6 6" />
               </svg>
             </button>
-          </div>
-
-          <div className="mt-8 text-center">
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={currentIndex}
-                custom={direction}
-                variants={textVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.5, ease: 'easeOut' }}
-              >
-                <h3 className="text-2xl font-semibold sm:text-3xl">
-                  {currentSlide.headline}
-                </h3>
-                <p className="mt-3 text-sm text-white/70 sm:text-base">
-                  {currentSlide.subhead}
-                </p>
-              </motion.div>
-            </AnimatePresence>
           </div>
         </div>
       </div>

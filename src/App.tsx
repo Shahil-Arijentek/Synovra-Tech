@@ -4,16 +4,16 @@ import Hero from './components/Hero'
 // import Lifecycle from './components/Lifecycle'
 import ExperienceRevival from './components/ExperienceRevival'
 import ClassofPower from './components/ClassofPower'
-import RevivalEngineered from './components/RevivalEngineered'
 import ProofInAction from './components/ProofInAction'
 import Sectors from './components/Sectors'
 import BuyBatteries from './components/BuyBatteries'
 import Footer from './components/Footer'
-import ProofNotPromises from './components/ProofNotPromises'
 import Challenges from './components/Challenges'
 import { FeaturesSectionWithHoverEffects } from './components/FeaturesSectionWithHoverEffects'
 import ChagingPersective from './components/ChagingPersective'
 import GlowBattery from './components/glowbattery'
+import SystemOutcomes from './components/SystemOutcomes'
+import PulseX from './components/PulseX'
 
 
 function App() {
@@ -22,11 +22,11 @@ function App() {
       <Header />
       <Hero />
       <ExperienceRevival />
-      <ProofNotPromises />
-      <ClassofPower />
+      <SystemOutcomes/>
       <ChagingPersective/>
       <GlowBattery/>
-      <RevivalEngineered />
+      <ClassofPower />
+      <PulseX/>
       <Challenges />
       <ProofInAction />
       <Sectors />
