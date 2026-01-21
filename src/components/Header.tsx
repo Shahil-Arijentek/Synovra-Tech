@@ -1,0 +1,46 @@
+export default function Header() {
+
+  return (
+    <header className="fixed top-0 mt-5 left-0 right-0 z-[100] w-full px-[21px] py-0">
+      <nav 
+        className="backdrop-blur-[10px] backdrop-filter border border-[rgba(255,255,255,0.1)] border-solid rounded-[10px] flex items-center justify-between px-[21px] py-px h-[84px] w-full max-w-[1376px] mx-auto transition-all duration-300 bg-transparent"
+      >
+        <button className="cursor-pointer h-[38px] relative shrink-0 w-[175px] bg-transparent border-none p-0">
+          <div className="flex gap-[18px] items-center justify-center h-full">
+            <div className="relative shrink-0 h-[26px] w-[14.576px]">
+            </div>
+            <div className="h-[13px] relative shrink-0 w-[122px]">
+              <img 
+                src="/synovra.png" 
+                alt="Synovra" 
+                className="absolute inset-0 w-full h-full object-contain object-left"
+              />
+            </div>
+          </div>
+        </button>
+        
+        <div className="relative shrink-0 w-[729px] flex items-center justify-end">
+          <div className="flex gap-[32px] h-[36px] items-center justify-end px-[24px] py-0 relative shrink-0 w-[325px]">
+            <a 
+              href="#lifecycle" 
+              className="h-[20px] relative shrink-0 w-[42.359px] text-[#ff6b1a] text-[14px] leading-[20px] font-['Arial',sans-serif] no-underline transition-colors hover:text-[#ff6b1a]/80 whitespace-nowrap"
+            >
+              Lifecycle
+            </a>
+            <a 
+              href="#why-revive" 
+              className="h-[20px] relative shrink-0 w-[71.031px] text-[#4a5565] text-[14px] leading-[20px] font-['Arial',sans-serif] no-underline transition-colors hover:text-[#4a5565]/80 whitespace-nowrap"
+            >
+              Why Revive
+            </a>
+          </div>
+          <button className="bg-[#ff6b1a] h-[58px] overflow-clip relative rounded-[4px] shrink-0 w-[156px] border-none cursor-pointer transition-all hover:bg-[#ff6b1a]/90 shadow-[0_0_20px_rgba(255,107,26,0.6)] hover:shadow-[0_0_30px_rgba(255,107,26,0.8)]">
+            <span className="absolute font-['Arial',sans-serif] leading-[28px] left-[32px] text-[18px] text-white whitespace-nowrap top-[15px]">
+              Get Started
+            </span>
+          </button>
+        </div>
+      </nav>
+    </header>
+  )
+}
