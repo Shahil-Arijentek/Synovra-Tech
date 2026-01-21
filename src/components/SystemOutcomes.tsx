@@ -49,8 +49,6 @@ const AnimatedGauge = ({ value, label }: { value: number; label: string }) => {
             return () => controls.stop();
         }
     }, [isInView, value]);
-
-    // Calculate glow intensity based on animation progress (0 to 1)
     const glowIntensity = gaugeValue / value;
 
     return (

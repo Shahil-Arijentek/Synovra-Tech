@@ -52,7 +52,7 @@ export const BentoGrid = ({
   return (
     <div
       className={cn(
-        "grid grid-cols-1 md:grid-cols-[1.4fr_1fr_1fr] gap-3 max-w-6xl mx-auto",
+        "grid grid-cols-1 md:grid-cols-3 gap-3 max-w-[1200px] mx-auto",
         className
       )}
     >
@@ -67,12 +67,14 @@ export const BentoGridItem = ({
   subtitle,
   description,
   image,
+  imageClassName,
 }: {
   className?: string;
   title?: string | React.ReactNode;
   subtitle?: string | React.ReactNode;
   description?: string | React.ReactNode;
   image?: string;
+  imageClassName?: string;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -81,8 +83,8 @@ export const BentoGridItem = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={cn(
-        "row-span-1 group/bento relative flex flex-col justify-end overflow-hidden rounded-3xl border border-white/10 bg-black min-h-[320px]",
-        "will-change-transform transform-gpu", 
+        "group/bento relative flex flex-col justify-end overflow-hidden rounded-3xl border border-white/10 bg-black min-h-[200px]",
+        "will-change-transform transform-gpu",
         className
       )}
     >
@@ -93,41 +95,41 @@ export const BentoGridItem = ({
           alt="Bento item"
           animate={{ scale: isHovered ? 1.05 : 1 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="h-full w-full object-cover opacity-70"
+          className={cn("h-full w-full object-cover opacity-70", imageClassName)}
         />
       </div>
 
-       {/* The Transparent Glass Box - Custom Styled Box */}
-       <motion.div 
-         className="absolute bottom-4 left-4 right-4 z-10 p-6 pt-5 overflow-hidden rounded-[12px] border border-[#262626]/60"
-         style={{ 
-           background: "rgba(0, 0, 0, 0.28)",
-           backdropFilter: "blur(5.2px)",
-           WebkitBackdropFilter: "blur(5.2px)"
-         }}
-         animate={{
-           background: isHovered ? "rgba(0, 0, 0, 0.45)" : "rgba(0, 0, 0, 0.28)",
-         }}
-         transition={{ duration: 0.4 }}
-       >
-         {/* Backdrop Blur Container (if needed, but using inline style for precision) */}
+      {/* The Transparent Glass Box - Custom Styled Box */}
+      <motion.div
+        className="absolute bottom-4 left-4 right-4 z-10 p-4 md:p-5 overflow-hidden rounded-[12px] border border-[#262626]/60"
+        style={{
+          background: "rgba(0, 0, 0, 0.28)",
+          backdropFilter: "blur(5.2px)",
+          WebkitBackdropFilter: "blur(5.2px)"
+        }}
+        animate={{
+          background: isHovered ? "rgba(0, 0, 0, 0.45)" : "rgba(0, 0, 0, 0.28)",
+        }}
+        transition={{ duration: 0.4 }}
+      >
+        {/* Backdrop Blur Container (if needed, but using inline style for precision) */}
 
         <motion.span
           className="uppercase mb-2 inline-block font-bold"
           style={{
             color: '#FF6B1A',
-            fontSize: '11px', 
+            fontSize: '11px',
             letterSpacing: '0.05em',
           }}
         >
           {title}
         </motion.span>
-        
+
         <div className="flex flex-col relative">
-          <motion.h4 
+          <motion.h4
             animate={{
               y: isHovered ? -2 : 0,
-              fontSize: isHovered ? "1.15rem" : "1.25rem" 
+              fontSize: isHovered ? "1.15rem" : "1.25rem"
             }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="text-white leading-tight tracking-tight font-medium"
@@ -159,18 +161,18 @@ export const BentoGridItem = ({
 };
 export const PulseX = () => {
   return (
-    <section className="relative overflow-hidden bg-black py-24 px-6 md:px-12 lg:py-20">
-      <div className="relative mx-auto max-w-5xl">
-        <div className="mb-20 space-y-6 text-center">
-          
-          <motion.h2 
+    <section className="relative overflow-hidden bg-black py-12 px-6 md:px-12 lg:py-16">
+      <div className="relative mx-auto max-w-[1200px]">
+        <div className="mb-10 space-y-4 text-center">
+
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="text-white"
-            style={{ 
-              fontSize: '48px', 
+            style={{
+              fontSize: '48px',
               fontFamily: 'Arial, sans-serif',
               fontWeight: 900,
               lineHeight: '120%',
@@ -189,7 +191,7 @@ export const PulseX = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="mx-auto max-w-2xl text-[#FFF]"
+            className="mx-auto max-w-3xl text-[#FFF]"
             style={{
               fontFamily: 'Arial, sans-serif',
               fontSize: '18px',
@@ -207,44 +209,44 @@ export const PulseX = () => {
           </motion.p>
         </div>
 
-        <BentoGrid className="md:grid-rows-2 h-full min-h-[700px] md:min-h-[550px]">
+        <BentoGrid className="md:grid-rows-12 h-full min-h-[650px] md:min-h-[550px]">
           {/* Item 0: Tall vertical card (Left) */}
-          <BentoGridItem 
+          <BentoGridItem
             title={pulseXItems[0].title}
             subtitle={pulseXItems[0].subtitle}
             description={pulseXItems[0].description}
             image={pulseXItems[0].image}
-            className="md:row-span-2 h-full" 
+            className="md:row-span-12 h-full"
           />
-          
+
           {/* Remaining 4 items in a 2x2 grid */}
-          <BentoGridItem 
+          <BentoGridItem
             title={pulseXItems[1].title}
             subtitle={pulseXItems[1].subtitle}
             description={pulseXItems[1].description}
             image={pulseXItems[1].image}
-            className="md:col-span-1" 
+            className="md:row-span-6"
           />
-          <BentoGridItem 
+          <BentoGridItem
             title={pulseXItems[3].title}
             subtitle={pulseXItems[3].subtitle}
             description={pulseXItems[3].description}
             image={pulseXItems[3].image}
-            className="md:col-span-1" 
+            className="md:row-span-7"
           />
-          <BentoGridItem 
+          <BentoGridItem
             title={pulseXItems[2].title}
             subtitle={pulseXItems[2].subtitle}
             description={pulseXItems[2].description}
             image={pulseXItems[2].image}
-            className="md:col-span-1" 
+            className="md:row-span-6"
           />
-          <BentoGridItem 
+          <BentoGridItem
             title={pulseXItems[4].title}
             subtitle={pulseXItems[4].subtitle}
             description={pulseXItems[4].description}
             image={pulseXItems[4].image}
-            className="md:col-span-1" 
+            className="md:row-span-5"
           />
         </BentoGrid>
       </div>
