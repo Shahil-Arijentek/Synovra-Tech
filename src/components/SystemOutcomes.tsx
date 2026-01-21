@@ -42,7 +42,7 @@ const AnimatedGauge = ({ value, label }: { value: number; label: string }) => {
         if (isInView) {
             const controls = animate(0, value, {
                 duration: 2.0,
-                ease: "linear", 
+                ease: "linear",
                 // ease: [0.42, 0.42, 0.42, 0.42],
                 onUpdate: (latest) => setGaugeValue(latest),
             });
@@ -85,7 +85,7 @@ const AnimatedGauge = ({ value, label }: { value: number; label: string }) => {
                     }}
                 />
                 <div className="absolute inset-0 flex flex-col items-center justify-center pt-8 pointer-events-none">
-                    <span 
+                    <span
                         style={{
                             color: '#FFF',
                             textAlign: 'center',
@@ -100,7 +100,7 @@ const AnimatedGauge = ({ value, label }: { value: number; label: string }) => {
                         90-100%
                     </span>
                     <div className="mt-1">
-                        <span 
+                        <span
                             style={{
                                 color: '#EAEAEA',
                                 textAlign: 'center',
@@ -262,42 +262,42 @@ export default function SystemOutcomes() {
                     </div>
                 </div>
             </ContainerScroll>
-            <div className="bg-black py-8 px-8 overflow-hidden font-sans text-white border-y border-white/5 -mt-24 md:-mt-64 relative z-30">
-      <div className="max-w-[1200px] mx-auto">
-        <div className="relative h-12 mb-6 overflow-hidden bg-white/5 flex items-center rounded-lg">
-          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent z-10" />
-          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black to-transparent z-10" />
-          
-          <div className="flex animate-scroll whitespace-nowrap items-center">
-            {[...tickerData, ...tickerData, ...tickerData].map((item, i) => (
-              <div key={i} className="flex items-center px-6">
-                <span className="text-white/70 font-medium mr-4">
-                    {item.prefix}<span className="text-[#ff6b1a]">{item.highlight}</span>
-                </span>
-                <div className="w-2 h-2 bg-[#ff6b1a] rounded-full" />
-              </div>
-            ))}
-          </div>
-        </div>
+            <div className="bg-black py-8 px-8 overflow-hidden font-sans text-white -mt-24 md:-mt-64 relative z-30">
+                <div className="max-w-[1200px] mx-auto">
+                    <div className="relative h-12 mb-6 overflow-hidden flex items-center rounded-lg">
+                        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent z-10" />
+                        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black to-transparent z-10" />
 
-        {/* Call to Action */}
-        <div className="flex flex-col items-center justify-center gap-4 px-4">
-          <p 
-            className="text-[18px] text-[#4A5565] text-center font-normal leading-[28px]"
-            style={{ fontFamily: 'Arial' }}
-          >
-             Measured outcomes. Verified performance. Extended life.
-          </p>
-          <button 
-            className="bg-[#ff6b1a] h-[58px] rounded-[4px] px-10 text-[#FFF] font-normal text-[18px] leading-[28px] text-center border-none cursor-pointer transition-all hover:bg-[#ff6b1a]/90 shadow-[0_0_20px_rgba(255,107,26,0.6)] hover:shadow-[0_0_30px_rgba(255,107,26,0.8)] whitespace-nowrap"
-            style={{ fontFamily: 'Arial' }}
-          >
-            Request Custom Report
-          </button>
-        </div>
-      </div>
+                        <div className="flex animate-scroll whitespace-nowrap items-center">
+                            {[...tickerData, ...tickerData, ...tickerData].map((item, i) => (
+                                <div key={i} className="flex items-center px-6">
+                                    <div className="w-2 h-2 bg-[#ff6b1a] rounded-full mr-4" />
+                                    <span className="text-white/70 font-medium">
+                                        {item.prefix}<span className="text-[#ff6b1a]">{item.highlight}</span>
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
 
-      <style>{`
+                    {/* Call to Action */}
+                    <div className="flex flex-col items-center justify-center gap-4 px-4">
+                        <p
+                            className="text-[18px] text-[#4A5565] text-center font-normal leading-[28px]"
+                            style={{ fontFamily: 'Arial' }}
+                        >
+                            Measured outcomes. Verified performance. Extended life.
+                        </p>
+                        <button
+                            className="bg-[#ff6b1a] h-[58px] rounded-[4px] px-10 text-[#FFF] font-normal text-[18px] leading-[28px] text-center border-none cursor-pointer transition-all hover:bg-[#ff6b1a]/90 shadow-[0_0_20px_rgba(255,107,26,0.6)] hover:shadow-[0_0_30px_rgba(255,107,26,0.8)] whitespace-nowrap"
+                            style={{ fontFamily: 'Arial' }}
+                        >
+                            Request Custom Report
+                        </button>
+                    </div>
+                </div>
+
+                <style>{`
         @keyframes scroll {
           from { transform: translateX(0); }
           to { transform: translateX(-33.33%); }
@@ -306,8 +306,8 @@ export default function SystemOutcomes() {
           animation: scroll 20s linear infinite;
         }
       `}</style>
-    </div>
+            </div>
         </div>
-        
+
     );
 }
