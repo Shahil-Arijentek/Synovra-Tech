@@ -44,9 +44,9 @@ export default function Challenges() {
 
   return (
     <ChallengesHero title="Your Challenges, Solved" className="w-full">
-      <section className="relative z-20 w-full bg-black -mt-[200px] sm:-mt-[250px] md:-mt-[500px] pb-16 md:pb-32">
+      <section className="relative z-20 w-full bg-black -mt-[300px] sm:-mt-[350px] md:-mt-[500px] pb-16 md:pb-32">
         <div className="relative flex flex-col items-center px-4 sm:px-6 md:px-8 mt-0">
-          <div className="w-full max-w-[1040px] z-20 min-h-[580px] sm:min-h-[520px] md:min-h-[400px]"> 
+          <div className="w-full max-w-[1040px] z-20">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentIndex}
@@ -54,10 +54,10 @@ export default function Challenges() {
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -120, opacity: 0 }}
                 transition={{ duration: 0.4, ease: 'easeOut' }}
-                className="flex flex-col md:flex-row w-full overflow-hidden rounded-[20px] border border-white/10 bg-black shadow-[0_-5px_30px_rgba(0,0,0,0.4)] h-full min-h-[580px] sm:min-h-[520px] md:min-h-[400px]"
+                className="flex flex-col md:flex-row w-full overflow-hidden rounded-[20px] border border-white/10 bg-black shadow-[0_-5px_30px_rgba(0,0,0,0.4)] min-h-[480px] sm:min-h-[440px] md:min-h-[400px] md:h-[400px]"
               >
                 <div
-                  className="h-52 sm:h-64 md:h-full w-full md:w-1/2 bg-black"
+                  className="h-48 sm:h-64 md:h-full w-full md:w-1/2 bg-black"
                   style={{
                     backgroundImage: `url(${currentChallenge.image})`,
                     backgroundSize: 'cover',
@@ -74,7 +74,7 @@ export default function Challenges() {
                     </p>
                     <p className="text-[13px] sm:text-[14px] md:text-[14px] text-gray-200">{currentChallenge.problem}</p>
                   </div>
-                  <div>
+                  <div className="mb-0">
                     <p className="text-[10px] font-bold uppercase text-emerald-500 mb-1">
                       How Synovra Solves It
                     </p>
@@ -108,6 +108,6 @@ export default function Challenges() {
           </div>
         </div>
       </section>
-  </ChallengesHero>
+    </ChallengesHero>
   )
 }
