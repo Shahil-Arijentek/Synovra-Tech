@@ -17,22 +17,24 @@ export default function Hero() {
   return (
     <section className="relative bg-black overflow-hidden min-h-[500px] md:min-h-[900px] text-white">
       <div className="relative z-10 mx-auto max-w-[1200px] pt-[160px] md:pt-[140px] pb-[20px] md:pb-[120px] px-6 text-center">
-        <p className="text-[28px] sm:text-[32px] md:text-[42px] font-black font-['Arial'] tracking-[1px] md:tracking-[2px] uppercase leading-[1.1] mb-2">
+        <p className="hero-top-text mb-2">
           EVERY BATTERY DESERVES
         </p>
         <div className="max-w-[340px] md:max-w-none mx-auto">
-          <p
-            className="afterlife-animation text-[50px] sm:text-[11vw] lg:text-[135px] font-extrabold tracking-[1px] leading-[1] uppercase max-w-[1240px] mx-auto w-full relative z-0"
-            data-text="AN AFTERLIFE"
-          >
-            AN AFTERLIFE
-          </p>
+          <div className="afterlife-scale-wrapper">
+            <p
+              className="afterlife-animation text-[60px] sm:text-[11vw] lg:text-[155px] font-normal tracking-[0.02em] leading-none uppercase max-w-[1240px] mx-auto w-full relative z-0"
+              data-text="AN AFTERLIFE"
+            >
+              AN AFTERLIFE
+            </p>
+          </div>
 
-          <div className="relative -mt-[40px] sm:-mt-[150px] md:-mt-[200px] lg:-mt-[220px] flex justify-center z-10 pointer-events-none">
-            <div className="w-[100%] md:w-[1400px] max-w-full aspect-[4/3] scale-[1.5] md:scale-100 origin-center">
+          <div className="relative -mt-[40px] sm:-mt-[100px] md:-mt-[200px] lg:-mt-[220px] flex justify-center z-10 pointer-events-none">
+            <div className="w-full md:w-[1600px] max-w-full aspect-[4/3] scale-[1.4] sm:scale-[1.6] md:scale-110 origin-center">
               <video
                 ref={videoRef}
-                className="h-full w-full object-contain"
+                className="h-full w-full object-contain mix-blend-screen"
                 muted
                 playsInline
               >
