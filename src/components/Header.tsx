@@ -62,41 +62,32 @@ export default function Header() {
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div 
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 50 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
               className="absolute top-[94px] left-0 right-0 bg-black/90 backdrop-blur-md border border-white/10 rounded-[10px] p-6 flex flex-col gap-6 md:hidden z-[100]"
             >
-              <motion.a 
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.1 }}
+              <a 
                 href="#lifecycle" 
                 className="text-[#ff6b1a] text-[18px] font-['Arial',sans-serif] no-underline"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Lifecycle
-              </motion.a>
-              <motion.a 
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2 }}
+              </a>
+              <a 
                 href="#why-revive" 
                 className="text-white text-[18px] font-['Arial',sans-serif] no-underline"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Why Revive
-              </motion.a>
-              <motion.button 
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 }}
+              </a>
+              <button 
                 className="bg-[#ff6b1a] h-[58px] rounded-[4px] text-white font-['Arial',sans-serif] text-[18px] shadow-[0_0_20px_rgba(255,107,26,0.6)]"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Get Started
-              </motion.button>
+              </button>
             </motion.div>
           )}
         </AnimatePresence>
