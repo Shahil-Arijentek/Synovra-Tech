@@ -1,4 +1,10 @@
+import { useState } from 'react'
+import { Menu, X } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+
 export default function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
   return (
     <header className="fixed top-0 mt-5 left-0 right-0 z-[100] w-full px-[21px] py-0">
       <nav
@@ -37,6 +43,54 @@ export default function Header() {
             </span>
           </button>
         </div>
+
+        {/* Mobile Hamburger Button */}
+        <button
+          className="md:hidden p-2 text-white relative z-[110]"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          <motion.div
+            initial={false}
+            animate={{ rotate: isMenuOpen ? 90 : 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            {isMenuOpen ? <X size={32} /> : <Menu size={32} />}
+          </motion.div>
+        </button>
+
+        {/* Mobile Menu Overlay */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="absolute top-[94px] left-0 right-0 bg-black/90 backdrop-blur-md border border-white/10 rounded-[10px] p-6 flex flex-col gap-6 md:hidden z-[100]"
+            >
+              <a
+                href="#lifecycle"
+                className="text-[#ff6b1a] text-[18px] font-['Arial',sans-serif] no-underline"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Lifecycle
+              </a>
+              <a
+                href="#why-revive"
+                className="text-white text-[18px] font-['Arial',sans-serif] no-underline"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Why Revive
+              </a>
+              <button
+                className="bg-[#ff6b1a] h-[58px] rounded-[4px] text-white font-['Arial',sans-serif] text-[18px] shadow-[0_0_20px_rgba(255,107,26,0.6)]"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Get Started
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
     </header>
   )
