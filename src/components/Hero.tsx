@@ -30,8 +30,8 @@ export default function Hero() {
             </p>
           </div>
 
-          <div className="relative -mt-[40px] sm:-mt-[100px] md:-mt-[200px] lg:-mt-[220px] flex justify-center z-10 pointer-events-none">
-            <div className="w-full md:w-[1600px] max-w-full aspect-[4/3] scale-[1.4] sm:scale-[1.6] md:scale-110 origin-center">
+          <div className="relative -mt-[30px] sm:-mt-[100px] md:-mt-[220px] lg:-mt-[240px] flex justify-center z-10 pointer-events-none">
+            <div className="w-full md:w-[1400px] max-w-full aspect-[4/3] scale-[1.3] sm:scale-[1.5] md:scale-100 origin-center">
               <video
                 ref={videoRef}
                 className="h-full w-full object-contain mix-blend-screen"
