@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react"
 
 export default defineConfig({
   plugins: [react()],
-  base: "/Synovra-Tech/",   // 👈 REQUIRED for GitHub Pages
+  base: "/Synovra-Tech/", 
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
