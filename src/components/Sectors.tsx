@@ -86,7 +86,7 @@ export default function Sectors() {
 
   return (
     <>
-      <section className="bg-black py-24 overflow-hidden relative font-['Poppins'] group">
+      <section className="bg-black py-12 md:py-24 overflow-hidden relative font-['Poppins'] group">
         <div className="flex items-center justify-center">
           <h2 className="relative text-[12vw] md:text-[140px] lg:text-[180px] font-black uppercase tracking-tighter leading-none text-center text-[#1a1a1a] opacity-60">
             <span className="block">SECTORS WE SERVE</span>
@@ -118,17 +118,17 @@ export default function Sectors() {
 
       <section
         ref={sectionRef}
-        className="bg-black py-20 md:py-24 text-white -mt-24 md:-mt-34"
+        className="bg-black py-12 md:py-24 text-white -mt-16 md:-mt-34"
       >
         <div className="mx-auto flex w-full max-w-[1680px] flex-col gap-10 px-6 lg:flex-row lg:items-start lg:gap-16">
           <div className="w-full lg:flex-1 lg:max-w-[360px]">
-            <div className="space-y-6">
+            <div className="space-y-4 md:space-y-6">
               {sectors.map((sector, index) => {
                 const isActive = index === activeIndex;
                 return (
                   <button
                     key={sector.title}
-                    className={`group flex w-full flex-col items-start gap-3 border-b border-[#0d0d0d] pb-6 text-left transition-opacity duration-500 ${
+                    className={`group flex w-full flex-col items-start gap-2 md:gap-3 border-b border-[#0d0d0d] pb-4 md:pb-6 text-left transition-opacity duration-500 ${
                       isActive ? "opacity-100" : "opacity-40"
                     }`}
                     onClick={() => setActiveIndex(index)}
@@ -136,7 +136,7 @@ export default function Sectors() {
                   >
                     <div className="flex items-center">
                       <h3
-                        className={`text-[26px] font-black leading-tight tracking-[-2px] transition-colors duration-500 ${
+                        className={`text-[20px] md:text-[26px] font-black leading-tight tracking-tight md:tracking-[-2px] transition-colors duration-500 ${
                           isActive ? "text-white" : "text-white/60"
                         }`}
                       >
@@ -144,7 +144,7 @@ export default function Sectors() {
                       </h3>
                     </div>
                     <p
-                      className={`text-[15px] tracking-[-0.5px] transition-colors duration-500 ${
+                      className={`text-[13px] md:text-[15px] tracking-tight transition-colors duration-500 ${
                         isActive ? "text-white/80" : "text-white/40"
                       }`}
                     >
@@ -162,7 +162,7 @@ export default function Sectors() {
           </div>
 
           <div className="relative w-full lg:flex-[3.0]">
-            <div className="relative h-[420px] overflow-hidden rounded-2xl shadow-[0_0_0_1px_rgba(255,255,255,0.04)] sm:h-[580px] lg:h-[760px]">
+            <div className="relative h-[300px] overflow-hidden rounded-2xl shadow-[0_0_0_1px_rgba(255,255,255,0.04)] sm:h-[580px] lg:h-[760px]">
               {images.map((src, index) => (
                 <img
                   key={src}

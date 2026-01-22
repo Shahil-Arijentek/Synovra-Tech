@@ -124,37 +124,35 @@ export default function BuyBatteries() {
     <>
       <section
         ref={sectionRef}
-        className="relative overflow-hidden bg-black px-6 py-20 text-center text-white"
+        className="relative overflow-hidden bg-black px-6 py-12 md:py-20 text-center text-white"
       >
       <div
         className="pointer-events-none absolute inset-x-0 top-12 mx-auto h-[620px] max-w-[1119px] bg-[linear-gradient(270deg,rgba(0,0,0,0)_0%,#000_20.192%,#000_76.923%,rgba(0,0,0,0)_100%)]"
         aria-hidden="true"
       />
-      <div className="relative mx-auto flex w-full max-w-[1119px] flex-col items-center gap-6">
+      <div className="relative mx-auto flex w-full max-w-[1119px] flex-col items-center gap-4 md:gap-6">
         <div className="text-center">
-          <h2 className="text-4xl font-bold tracking-[-1.5px] text-white md:text-5xl lg:text-[60px] lg:leading-[60px]">
+          <h2 className="text-[32px] md:text-5xl lg:text-[60px] font-bold tracking-[-1px] md:tracking-[-1.5px] text-white leading-tight">
             We Buy Batteries at Any Stage
           </h2>
-          <p className="mt-3 text-[18px] font-bold leading-[28px] text-white/70">
+          <p className="mt-3 text-[14px] md:text-[18px] font-bold leading-relaxed text-white/70">
             From pristine to scrap — all chemistries, all conditions, all ages.
           </p>
-          <p className="text-[18px] font-bold leading-[28px] text-white/70">
+          <p className="text-[14px] md:text-[18px] font-bold leading-relaxed text-white/70">
             One pickup. One fair payout. No sorting.
           </p>
         </div>
 
-        <div ref={labelsRef} className="relative z-10 mt-2 flex items-center justify-center gap-10 text-center">
+        <div ref={labelsRef} className="relative z-10 mt-2 flex items-center justify-center gap-6 md:gap-10 text-center">
           {(['new', 'used', 'scrap'] as BatteryStage[]).map((stage) => (
             <button
               key={stage}
               data-stage={stage}
-              className={`px-2 py-2 tracking-[-1px] transition-colors ${
+              className={`px-2 py-2 tracking-[-0.5px] md:tracking-[-1px] transition-colors ${
                 activeStage === stage
                   ? 'text-[#ff6b1a]'
-                  : stage === 'new'
-                    ? 'text-[#595959]'
-                    : 'text-[#595959]'
-              } ${stage === 'new' ? 'text-[20px] font-bold' : 'text-[16px] font-bold'}`}
+                  : 'text-[#595959]'
+              } ${stage === 'new' ? 'text-[18px] md:text-[20px] font-bold' : 'text-[14px] md:text-[16px] font-bold'}`}
               type="button"
               onClick={() => handleStageChange(stage)}
             >
@@ -163,8 +161,8 @@ export default function BuyBatteries() {
           ))}
         </div>
 
-        <div className="pointer-events-none relative -mt-16 flex h-[560px] w-full items-center justify-center">
-          <div className="relative h-[600px] w-[1380px] max-w-full">
+        <div className="pointer-events-none relative -mt-8 md:-mt-16 flex h-[300px] md:h-[560px] w-full items-center justify-center">
+          <div className="relative h-full w-full">
             <img
               ref={chassisRef}
               alt="Battery chassis"
@@ -185,29 +183,29 @@ export default function BuyBatteries() {
         </div>
       </div>
 
-        <div className="pointer-events-none absolute bottom-0 left-1/2 h-[200px] w-[1460px] -translate-x-1/2 bg-gradient-to-t from-black from-[65%] to-transparent" />
-        <div className="relative mx-auto mt-10 flex w-full max-w-[649px] flex-col items-center gap-1 rounded-[10px] px-6 py-6 text-center">
-          <p className="text-[20px] font-bold leading-[28px] text-white">Healthy / Near New</p>
-          <p className="text-[14px] leading-[20px] text-white/60">
+        <div className="pointer-events-none absolute bottom-0 left-1/2 h-[200px] w-full md:w-[1460px] -translate-x-1/2 bg-gradient-to-t from-black from-[65%] to-transparent" />
+        <div className="relative mx-auto mt-6 md:mt-10 flex w-full max-w-[649px] flex-col items-center gap-1 rounded-[10px] px-6 py-4 md:py-6 text-center">
+          <p className="text-[18px] md:text-[20px] font-bold leading-tight text-white">Healthy / Near New</p>
+          <p className="text-[13px] md:text-[14px] leading-relaxed text-white/60">
             High-performance batteries — we buy them too. No need to hold for resale.
           </p>
         </div>
       </section>
-      <section className="bg-black px-6 pb-20 text-white">
+      <section className="bg-black px-6 pb-16 md:pb-20 text-white">
         <div className="mx-auto flex w-full max-w-[1320px] justify-center">
-          <div className="flex w-full max-w-[1180px] flex-col items-center gap-8 rounded-[24px] border border-white/10 bg-[rgba(255,255,255,0.01)] px-8 py-12 text-center md:px-12 md:py-[49px]">
-            <p className="text-[20px] font-bold leading-[28px] text-white">
+          <div className="flex w-full max-w-[1180px] flex-col items-center gap-6 md:gap-8 rounded-[24px] border border-white/10 bg-[rgba(255,255,255,0.01)] px-6 py-10 md:px-12 md:py-[49px] text-center">
+            <p className="text-[18px] md:text-[20px] font-bold leading-tight text-white">
               No Sorting. No Guesswork. No Missed Value.
             </p>
-            <p className="max-w-[720px] text-[16px] font-bold leading-[24px] text-white/70">
+            <p className="max-w-[720px] text-[14px] md:text-[16px] font-medium md:font-bold leading-relaxed text-white/70">
               We collect mixed loads — any chemistry, age, or condition — so your team never spends
               time testing, grading, or preparing units.
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <button className="h-[58px] rounded-[4px] bg-[#ff6b1a] px-8 text-[16px] font-bold text-[#0d0d0d] transition-all hover:bg-[#ff6b1a]/90 shadow-[0_0_20px_rgba(255,107,26,0.6)] hover:shadow-[0_0_30px_rgba(255,107,26,0.8)]">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+              <button className="h-[52px] md:h-[58px] w-full sm:w-auto rounded-[4px] bg-[#ff6b1a] px-8 text-[15px] md:text-[16px] font-bold text-[#0d0d0d] transition-all hover:bg-[#ff6b1a]/90 shadow-[0_0_20px_rgba(255,107,26,0.6)] hover:shadow-[0_0_30px_rgba(255,107,26,0.8)]">
                 Partner With Us
               </button>
-              <button className="h-[58px] rounded-[4px] border border-white/20 bg-[#191919] px-8 text-[16px] font-bold text-white transition-colors hover:bg-white hover:text-black">
+              <button className="h-[52px] md:h-[58px] w-full sm:w-auto rounded-[4px] border border-white/20 bg-[#191919] px-8 text-[15px] md:text-[16px] font-bold text-white transition-colors hover:bg-white hover:text-black">
                 Book a Pickup
               </button>
             </div>

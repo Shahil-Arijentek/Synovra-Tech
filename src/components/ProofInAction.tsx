@@ -53,17 +53,17 @@ export default function ProofInAction() {
   }
 
   return (
-    <section className="bg-black px-6 py-20 text-white">
+    <section className="bg-black px-6 py-12 md:py-20 text-white">
       <div className="mx-auto flex max-w-6xl flex-col items-center">
-        <h2 className="text-center text-4xl font-bold sm:text-5xl">
+        <h2 className="text-center text-[32px] md:text-5xl font-bold leading-tight">
           Proven in Live Environments
         </h2>
-        <p className="mt-3 text-center text-sm text-white/70 sm:text-base">
+        <p className="mt-3 text-center text-xs md:text-base text-white/70">
           Operating where failure isn't an option
         </p>
 
-          <div className="mt-12 flex w-full flex-col items-center">
-            <div className="w-full overflow-hidden rounded-[24px] border border-white/5 bg-black shadow-[0_12px_32px_rgba(0,0,0,0.35)]">
+          <div className="mt-8 md:mt-12 flex w-full flex-col items-center">
+            <div className="w-full overflow-hidden rounded-[20px] md:rounded-[24px] border border-white/5 bg-black shadow-[0_12px_32px_rgba(0,0,0,0.35)]">
               <AnimatePresence mode="wait" custom={direction}>
                 <motion.div
                   key={currentIndex}
@@ -73,18 +73,18 @@ export default function ProofInAction() {
                   animate="center"
                   exit="exit"
                   transition={{ duration: 0.55, ease: 'easeOut' }}
-                  className="overflow-hidden rounded-[24px]"
+                  className="overflow-hidden rounded-[20px] md:rounded-[24px]"
                 >
                   <img
                     src={currentSlide.image}
                     alt={currentSlide.alt}
-                    className="block aspect-[16/9] w-full rounded-[24px] object-cover sm:aspect-[16/8] lg:aspect-[16/7]"
+                    className="block aspect-[4/3] md:aspect-[16/8] lg:aspect-[16/7] w-full rounded-[20px] md:rounded-[24px] object-cover"
                   />
                 </motion.div>
               </AnimatePresence>
             </div>
 
-          <div className="mt-8 text-center">
+          <div className="mt-6 md:mt-8 text-center px-2">
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={currentIndex}
@@ -95,10 +95,10 @@ export default function ProofInAction() {
                 exit="exit"
                 transition={{ duration: 0.5, ease: 'easeOut' }}
               >
-                <h3 className="text-2xl font-semibold sm:text-3xl">
+                <h3 className="text-xl md:text-3xl font-semibold leading-tight">
                   {currentSlide.headline}
                 </h3>
-                <p className="mt-3 text-sm text-white/70 sm:text-base">
+                <p className="mt-2 md:mt-3 text-[13px] md:text-base text-white/70">
                   {currentSlide.subhead}
                 </p>
               </motion.div>
