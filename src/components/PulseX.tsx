@@ -173,11 +173,11 @@ export const PulseX = () => {
             transition={{ duration: 0.6 }}
             className="text-white"
             style={{
-              fontSize: 'clamp(32px, 10vw, 48px)',
+              fontSize: 'clamp(28px, 8vw, 42px)',
               fontFamily: 'Arial, sans-serif',
               fontWeight: 900,
               lineHeight: '120%',
-              letterSpacing: '-1px md:-1.8px',
+              letterSpacing: '-0.8px',
               fontStyle: 'normal',
             }}
           >
