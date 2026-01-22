@@ -84,7 +84,7 @@ export default function GlowBattery() {
         {/* Battery Assets & Switching Glow with Stage-based Fade */}
         <div className="absolute inset-0 pointer-events-none">
           <div
-            className="absolute bottom-0 left-0 h-[90%] w-auto max-w-[48vw] transition-opacity duration-150"
+            className="absolute bottom-0 left-0 h-[35vh] md:h-[90%] w-[48vw] md:w-auto transition-opacity duration-150 flex items-end"
           >
             {/* Soft Radial Glow behind the Left Battery */}
             <div
@@ -94,13 +94,13 @@ export default function GlowBattery() {
             <img
               src="/perspective/leftbattery.png"
               alt="Left"
-              className={`relative h-full w-auto object-contain z-10 ${activeCard?.type === 'old' ? 'animate-image-blink' : ''}`}
+              className={`relative h-full w-full object-contain object-bottom z-10 ${activeCard?.type === 'old' ? 'animate-image-blink' : ''}`}
               style={{ opacity: activeCard?.type === 'old' ? 1 : Math.max(0.15, leftBatteryOpacity) }}
             />
           </div>
 
           <div
-            className="absolute bottom-0 right-0 h-[90%] w-auto max-w-[48vw] transition-opacity duration-150"
+            className="absolute bottom-0 right-0 h-[35vh] md:h-[90%] w-[48vw] md:w-auto transition-opacity duration-150 flex items-end justify-end"
           >
             {/* Soft Radial Glow behind the Right Battery */}
             <div
@@ -110,16 +110,16 @@ export default function GlowBattery() {
             <img
               src="/perspective/rightsidebattery.png"
               alt="Right"
-              className={`relative h-full w-auto object-contain z-10 ${activeCard?.type === 'new' ? 'animate-image-blink' : ''}`}
+              className={`relative h-full w-full object-contain object-bottom z-10 ${activeCard?.type === 'new' ? 'animate-image-blink' : ''}`}
               style={{ opacity: activeCard?.type === 'new' ? 1 : Math.max(0.15, rightBatteryOpacity) }}
             />
           </div>
         </div>
 
         {/* Card Animation Area */}
-        <div className="absolute inset-0 z-20 flex items-center justify-center px-6 translate-y-20">
+        <div className="absolute inset-0 z-20 flex items-center justify-center px-4 md:px-6 -translate-y-24 md:translate-y-20">
           {/* Centered container for the stack */}
-          <div className="relative w-full max-w-[620px] h-[240px]">
+          <div className="relative w-full max-w-[320px] md:max-w-[620px] h-[140px] md:h-[240px]">
             {CARDS.map((card, index) => {
               const isEven = (index + 1) % 2 === 0
               const distance = progress - index
@@ -141,43 +141,36 @@ export default function GlowBattery() {
                   }}
                 >
                   {/* Fixed dimensions for uniform look */}
-                  <div className={`flex items-center gap-10 rounded-[28px] border px-12 py-8 shadow-2xl backdrop-blur-xl w-full h-full ${isEven
+                  <div className={`flex flex-row items-center gap-4 md:gap-10 rounded-[20px] md:rounded-[28px] border px-4 md:px-12 py-3 md:py-8 shadow-2xl backdrop-blur-xl w-full h-full ${isEven
                     ? 'border-orange-500/50 bg-gradient-to-r from-[#ff3b00] to-[#ff6a00] text-black'
                     : 'border-white/10 bg-white/10 text-white shadow-white/5'
                     }`}>
                     {/* Number box with updated typography specs */}
                     <div
-                      className={`opacity-30 w-32 flex-shrink-0 text-center ${isEven ? 'text-black' : 'text-white'}`}
+                      className={`opacity-20 md:opacity-30 flex-shrink-0 text-left ${isEven ? 'text-black' : 'text-white'}`}
                       style={{
                         fontFamily: 'Arial',
-                        fontSize: '137.402px',
+                        fontSize: 'clamp(60px, 14vw, 137.402px)',
                         fontWeight: 700,
-                        lineHeight: '120%'
+                        lineHeight: '1'
                       }}
                     >
                       {index + 1}
                     </div>
 
-                    <div className="flex flex-col flex-1">
+                    <div className="flex flex-col flex-1 text-left">
                       <h3
+                        className="text-[18px] md:text-[40px] font-black leading-tight tracking-tight md:tracking-[-2.4px]"
                         style={{
                           fontFamily: 'Arial',
-                          fontSize: '40px',
-                          fontWeight: 900,
-                          lineHeight: '120%',
-                          letterSpacing: '-2.4px'
                         }}
                       >
                         {card.title}
                       </h3>
                       <p
-                        className={`mt-1 font-medium ${isEven ? 'text-black/90' : 'text-white/80'}`}
+                        className={`mt-0.5 font-medium text-[11px] md:text-[22px] leading-tight md:leading-[131%] tracking-tight md:tracking-[-1px] ${isEven ? 'text-black/90' : 'text-white/80'}`}
                         style={{
                           fontFamily: 'Arial',
-                          fontSize: '22px',
-                          fontWeight: 400,
-                          lineHeight: '131%',
-                          letterSpacing: '-1px'
                         }}
                       >
                         {card.description}

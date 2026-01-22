@@ -19,38 +19,30 @@ export default function ClassofPower() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex w-full flex-col items-center justify-start bg-black overflow-hidden"
-      style={{
-        padding: '64px 24px 80px',
-        minHeight: '100vh'
-      }}
+      className="relative flex w-full flex-col items-center justify-start bg-black overflow-hidden pt-12 pb-8 px-6 md:pt-16 md:pb-12 md:px-8"
     >
       <div
-        className="flex w-full max-w-[1200px] flex-col items-center"
-        style={{ gap: '16px' }}
+        className="flex w-full max-w-[1200px] flex-col items-center gap-4 md:gap-6"
       >
         <h2
-          className="text-center"
+          className="text-center text-white font-bold"
           style={{
             fontFamily: 'Arial',
-            fontWeight: 700,
-            fontSize: '48px',
-            lineHeight: '56px',
+            fontSize: 'clamp(28px, 8vw, 48px)',
+            lineHeight: '1.2',
             letterSpacing: '-0.8px',
-            color: '#ffffff',
             margin: 0
           }}
         >
           A New Class of Power
         </h2>
         <p
-          className="text-center"
+          className="text-center text-white/70"
           style={{
             fontFamily: 'Arial',
             fontWeight: 400,
-            fontSize: '14px',
-            lineHeight: '20px',
-            color: 'rgba(255, 255, 255, 0.7)',
+            fontSize: 'clamp(12px, 3.5vw, 14px)',
+            lineHeight: '1.4',
             margin: 0
           }}
         >
@@ -59,8 +51,7 @@ export default function ClassofPower() {
       </div>
 
       <div
-        className="relative w-full flex items-center justify-center"
-        style={{ marginTop: '10px' }}
+        className="relative w-full flex items-center justify-center mt-4 md:mt-10"
       >
         <AnimatePresence mode="wait">
           {!showVideo ? (

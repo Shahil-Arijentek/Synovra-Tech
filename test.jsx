@@ -62,7 +62,7 @@ const AnimatedGauge = ({ value, label }: { value: number; label: string }) => {
                 </defs>
             </svg>
 
-            <div className="w-64 h-48 relative">
+            <div className="w-48 sm:w-64 h-36 sm:h-48 relative">
                 <Gauge
                     value={gaugeValue}
                     startAngle={-110}
@@ -84,13 +84,13 @@ const AnimatedGauge = ({ value, label }: { value: number; label: string }) => {
                         },
                     }}
                 />
-                <div className="absolute inset-0 flex flex-col items-center justify-center pt-8 pointer-events-none">
+                <div className="absolute inset-0 flex flex-col items-center justify-center pt-6 sm:pt-8 pointer-events-none">
                     <span
                         style={{
                             color: '#FFF',
                             textAlign: 'center',
                             fontFamily: '"Gemunu Libre", sans-serif',
-                            fontSize: '34px',
+                            fontSize: 'clamp(24px, 4vw, 34px)',
                             fontStyle: 'normal',
                             fontWeight: 400,
                             lineHeight: '1',
@@ -105,7 +105,7 @@ const AnimatedGauge = ({ value, label }: { value: number; label: string }) => {
                                 color: '#EAEAEA',
                                 textAlign: 'center',
                                 fontFamily: 'Arial',
-                                fontSize: '15px',
+                                fontSize: 'clamp(12px, 2vw, 15px)',
                                 fontStyle: 'normal',
                                 fontWeight: 900,
                                 lineHeight: '1.2',
@@ -124,33 +124,33 @@ const AnimatedGauge = ({ value, label }: { value: number; label: string }) => {
 
 export default function SystemOutcomes() {
     return (
-        <div className="flex flex-col overflow-hidden bg-black">
+        <div className="flex flex-col bg-black">
             <ContainerScroll
                 titleComponent={
                     <>
                         <h1
-                            className="text-white mb-2 whitespace-nowrap"
+                            className="text-white mb-2 px-4"
                             style={{
                                 fontFamily: "Arial",
-                                fontSize: "clamp(2rem, 8vw, 3.875rem)",
+                                fontSize: "clamp(2rem, 6vw, 3.875rem)",
                                 fontStyle: "normal",
                                 fontWeight: 900,
                                 lineHeight: "120%",
-                                letterSpacing: "-2.4px",
+                                letterSpacing: "clamp(-1.5px, -0.15vw, -2.4px)",
                             }}
                         >
                             Measured Impact
                         </h1>
                         <p
-                            className="mb-8"
+                            className="mb-4 sm:mb-8 px-4"
                             style={{
                                 color: "#595959",
                                 textAlign: "center",
                                 fontFamily: "Arial",
-                                fontSize: "18px",
+                                fontSize: "clamp(0.875rem, 2.5vw, 1.5rem)",
                                 fontStyle: "normal",
                                 fontWeight: 400,
-                                lineHeight: "32px",
+                                lineHeight: "1.4",
                             }}
                         >
                             What the system has already delivered
@@ -158,52 +158,52 @@ export default function SystemOutcomes() {
                     </>
                 }
             >
-                <div className="w-full h-full bg-[#0a0a0a] p-4 md:p-6">
+                <div className="w-full bg-[#0a0a0a] p-3 sm:p-4 md:p-6 pb-8">
                     {/* Main Grid Layout */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto h-full">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 max-w-7xl mx-auto">
 
                         {/* Left Column */}
-                        <div className="flex flex-col gap-6 justify-start pt-8">
-                            <h3 className="text-white font-bold text-center mb-2 uppercase tracking-wide text-xs md:text-sm h-5">System Outcomes</h3>
+                        <div className="flex flex-col gap-4 sm:gap-6 justify-start pt-4 sm:pt-8">
+                            <h3 className="text-white font-bold text-center mb-1 sm:mb-2 uppercase tracking-wide text-[10px] sm:text-xs md:text-sm h-4 sm:h-5">System Outcomes</h3>
 
                             {/* Batteries Revived Card */}
-                            <div className="bg-[#111] border border-white/10 rounded-xl p-5 flex flex-col justify-center gap-1 shadow-lg h-36 w-full">
+                            <div className="bg-[#111] border border-white/10 rounded-xl p-4 sm:p-5 flex flex-col justify-center gap-1 shadow-lg min-h-[120px] sm:h-36 w-full">
                                 <div className="flex items-center gap-1">
-                                    <span className="text-3xl font-black text-white">
+                                    <span className="text-2xl sm:text-3xl font-black text-white">
                                         <Counter value={20000} />
                                     </span>
-                                    <span className="text-3xl font-black text-[#ff6b1a]"> +</span>
+                                    <span className="text-2xl sm:text-3xl font-black text-[#ff6b1a]"> +</span>
                                 </div>
-                                <span className="text-[#ff6b1a] font-bold text-sm">Batteries Revived</span>
-                                <p className="text-white/50 text-xs leading-tight">Across critical applications and operating conditions</p>
+                                <span className="text-[#ff6b1a] font-bold text-xs sm:text-sm">Batteries Revived</span>
+                                <p className="text-white/50 text-[10px] sm:text-xs leading-tight">Across critical applications and operating conditions</p>
                             </div>
 
                             {/* Warranty Months Card */}
-                            <div className="bg-[#111] border border-white/10 rounded-xl p-5 flex flex-col justify-center gap-1 shadow-lg h-36 w-full">
+                            <div className="bg-[#111] border border-white/10 rounded-xl p-4 sm:p-5 flex flex-col justify-center gap-1 shadow-lg min-h-[120px] sm:h-36 w-full">
                                 <div className="flex items-center gap-1">
-                                    <span className="text-3xl font-black text-white">
+                                    <span className="text-2xl sm:text-3xl font-black text-white">
                                         <Counter value={300} />
                                     </span>
-                                    <span className="text-3xl font-black text-[#ff6b1a]"> k+</span>
+                                    <span className="text-2xl sm:text-3xl font-black text-[#ff6b1a]"> k+</span>
                                 </div>
-                                <span className="text-[#ff6b1a] font-bold text-sm">Warranty Months</span>
-                                <p className="text-white/50 text-xs leading-tight">12–36 month warranty-backed revival performance</p>
+                                <span className="text-[#ff6b1a] font-bold text-xs sm:text-sm">Warranty Months</span>
+                                <p className="text-white/50 text-[10px] sm:text-xs leading-tight">12–36 month warranty-backed revival performance</p>
                             </div>
 
                             {/* Client Savings Card */}
-                            <div className="bg-[#111] border border-white/10 rounded-xl p-5 flex flex-col justify-center gap-1 shadow-lg h-36 w-full">
+                            <div className="bg-[#111] border border-white/10 rounded-xl p-4 sm:p-5 flex flex-col justify-center gap-1 shadow-lg min-h-[120px] sm:h-36 w-full">
                                 <div className="flex items-center gap-1">
-                                    <span className="text-3xl font-black text-white">$<Counter value={1.5} decimals={1} /></span>
-                                    <span className="text-3xl font-black text-[#ff6b1a]"> M</span>
+                                    <span className="text-2xl sm:text-3xl font-black text-white">$<Counter value={1.5} decimals={1} /></span>
+                                    <span className="text-2xl sm:text-3xl font-black text-[#ff6b1a]"> M</span>
                                 </div>
-                                <span className="text-[#ff6b1a] font-bold text-sm">Client Savings</span>
-                                <p className="text-white/50 text-xs leading-tight">Through predictable lifecycle decisions</p>
+                                <span className="text-[#ff6b1a] font-bold text-xs sm:text-sm">Client Savings</span>
+                                <p className="text-white/50 text-[10px] sm:text-xs leading-tight">Through predictable lifecycle decisions</p>
                             </div>
                         </div>
 
                         {/* Center Column - Gauges */}
-                        <div className="flex flex-col gap-8 items-center justify-start pt-8">
-                            <h3 className="text-white font-bold text-center mb-2 uppercase tracking-wide text-xs md:text-sm h-5">Performance Restoration</h3>
+                        <div className="flex flex-col gap-4 sm:gap-8 items-center justify-start pt-4 sm:pt-8">
+                            <h3 className="text-white font-bold text-center mb-1 sm:mb-2 uppercase tracking-wide text-[10px] sm:text-xs md:text-sm h-4 sm:h-5">Performance Restoration</h3>
 
                             {/* Gauge 1 */}
                             <div className="flex flex-col items-center justify-center flex-1">
@@ -219,50 +219,50 @@ export default function SystemOutcomes() {
                         </div>
 
                         {/* Right Column */}
-                        <div className="flex flex-col gap-6 justify-start pt-8">
-                            <h3 className="text-white font-bold text-center mb-2 uppercase tracking-wide text-xs md:text-sm h-5">Performance Restoration</h3>
+                        <div className="flex flex-col gap-4 sm:gap-6 justify-start pt-4 sm:pt-8">
+                            <h3 className="text-white font-bold text-center mb-1 sm:mb-2 uppercase tracking-wide text-[10px] sm:text-xs md:text-sm h-4 sm:h-5">Performance Restoration</h3>
 
                             {/* CO2 Avoided Card */}
-                            <div className="bg-[#111] border border-white/10 rounded-xl p-5 flex flex-col justify-center gap-1 shadow-lg h-36 w-full">
+                            <div className="bg-[#111] border border-white/10 rounded-xl p-4 sm:p-5 flex flex-col justify-center gap-1 shadow-lg min-h-[120px] sm:h-36 w-full">
                                 <div className="flex items-center gap-1">
-                                    <span className="text-3xl font-black text-white">
+                                    <span className="text-2xl sm:text-3xl font-black text-white">
                                         <Counter value={1.23} decimals={2} />M
                                     </span>
-                                    <span className="text-3xl font-black text-[#ff6b1a]"> kg</span>
+                                    <span className="text-2xl sm:text-3xl font-black text-[#ff6b1a]"> kg</span>
                                 </div>
-                                <span className="text-[#ff6b1a] font-bold text-sm">CO₂ Avoided</span>
-                                <p className="text-white/50 text-xs leading-tight">By extending life before recycling</p>
+                                <span className="text-[#ff6b1a] font-bold text-xs sm:text-sm">CO₂ Avoided</span>
+                                <p className="text-white/50 text-[10px] sm:text-xs leading-tight">By extending life before recycling</p>
                             </div>
 
                             {/* Waste Prevented Card */}
-                            <div className="bg-[#111] border border-white/10 rounded-xl p-5 flex flex-col justify-center gap-1 shadow-lg h-36 w-full">
+                            <div className="bg-[#111] border border-white/10 rounded-xl p-4 sm:p-5 flex flex-col justify-center gap-1 shadow-lg min-h-[120px] sm:h-36 w-full">
                                 <div className="flex items-center gap-1">
-                                    <span className="text-3xl font-black text-white">
+                                    <span className="text-2xl sm:text-3xl font-black text-white">
                                         <Counter value={500} />t
                                     </span>
-                                    <span className="text-3xl font-black text-[#ff6b1a]"> +</span>
+                                    <span className="text-2xl sm:text-3xl font-black text-[#ff6b1a]"> +</span>
                                 </div>
-                                <span className="text-[#ff6b1a] font-bold text-sm">Waste Prevented</span>
-                                <p className="text-white/50 text-xs leading-tight">Batteries retained in active use</p>
+                                <span className="text-[#ff6b1a] font-bold text-xs sm:text-sm">Waste Prevented</span>
+                                <p className="text-white/50 text-[10px] sm:text-xs leading-tight">Batteries retained in active use</p>
                             </div>
 
                             {/* Liquid Discharge Card */}
-                            <div className="bg-[#111] border border-white/10 rounded-xl p-5 flex flex-col justify-center gap-1 shadow-lg h-36 w-full">
+                            <div className="bg-[#111] border border-white/10 rounded-xl p-4 sm:p-5 flex flex-col justify-center gap-1 shadow-lg min-h-[120px] sm:h-36 w-full">
                                 <div className="flex items-center gap-1">
-                                    <span className="text-3xl font-black text-white">
+                                    <span className="text-2xl sm:text-3xl font-black text-white">
                                         <Counter value={0} />
                                     </span>
-                                    <span className="text-3xl font-black text-[#ff6b1a]"> %</span>
+                                    <span className="text-2xl sm:text-3xl font-black text-[#ff6b1a]"> %</span>
                                 </div>
-                                <span className="text-[#ff6b1a] font-bold text-sm">Liquid Discharge</span>
-                                <p className="text-white/50 text-xs leading-tight">All electrolyte filtered and reused</p>
+                                <span className="text-[#ff6b1a] font-bold text-xs sm:text-sm">Liquid Discharge</span>
+                                <p className="text-white/50 text-[10px] sm:text-xs leading-tight">All electrolyte filtered and reused</p>
                             </div>
 
                         </div>
                     </div>
                 </div>
             </ContainerScroll>
-            <div className="bg-black py-4 md:py-8 px-8 overflow-hidden font-sans text-white -mt-48 md:-mt-64 relative z-30">
+            <div className="bg-black py-8 px-8 overflow-hidden font-sans text-white -mt-24 md:-mt-64 relative z-30">
                 <div className="max-w-[1200px] mx-auto">
                     <div className="relative h-12 mb-6 overflow-hidden flex items-center rounded-lg">
                         <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent z-10" />
@@ -283,13 +283,13 @@ export default function SystemOutcomes() {
                     {/* Call to Action */}
                     <div className="flex flex-col items-center justify-center gap-4 px-4">
                         <p
-                            className="text-[14px] md:text-[18px] text-[#4A5565] text-center font-normal leading-normal md:leading-[28px]"
+                            className="text-[18px] text-[#4A5565] text-center font-normal leading-[28px]"
                             style={{ fontFamily: 'Arial' }}
                         >
                             Measured outcomes. Verified performance. Extended life.
                         </p>
                         <button
-                            className="bg-[#ff6b1a] h-[48px] md:h-[58px] rounded-[4px] px-6 md:px-10 text-[#FFF] font-normal text-[15px] md:text-[18px] leading-normal md:leading-[28px] text-center border-none cursor-pointer transition-all hover:bg-[#ff6b1a]/90 shadow-[0_0_20px_rgba(255,107,26,0.6)] hover:shadow-[0_0_30px_rgba(255,107,26,0.8)] whitespace-nowrap"
+                            className="bg-[#ff6b1a] h-[58px] rounded-[4px] px-10 text-[#FFF] font-normal text-[18px] leading-[28px] text-center border-none cursor-pointer transition-all hover:bg-[#ff6b1a]/90 shadow-[0_0_20px_rgba(255,107,26,0.6)] hover:shadow-[0_0_30px_rgba(255,107,26,0.8)] whitespace-nowrap"
                             style={{ fontFamily: 'Arial' }}
                         >
                             Request Custom Report

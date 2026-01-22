@@ -82,9 +82,10 @@ export const BentoGridItem = ({
     <motion.div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => setIsHovered(!isHovered)}
       className={cn(
-        "group/bento relative flex flex-col justify-end overflow-hidden rounded-3xl border border-white/10 bg-black min-h-[200px]",
-        "will-change-transform transform-gpu",
+        "group/bento relative flex flex-col justify-end overflow-hidden rounded-3xl border border-white/10 bg-black min-h-[320px] md:min-h-[200px]",
+        "will-change-transform transform-gpu cursor-pointer md:cursor-default",
         className
       )}
     >
@@ -161,9 +162,9 @@ export const BentoGridItem = ({
 };
 export const PulseX = () => {
   return (
-    <section className="relative overflow-hidden bg-black py-12 px-6 md:px-12 lg:py-16">
+    <section className="relative overflow-hidden bg-black pt-8 pb-12 px-6 md:px-12 lg:pt-12 lg:pb-16">
       <div className="relative mx-auto max-w-[1200px]">
-        <div className="mb-10 space-y-4 text-center">
+        <div className="mb-6 md:mb-10 space-y-4 text-center">
 
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -172,19 +173,15 @@ export const PulseX = () => {
             transition={{ duration: 0.6 }}
             className="text-white"
             style={{
-              fontSize: '48px',
+              fontSize: 'clamp(32px, 10vw, 48px)',
               fontFamily: 'Arial, sans-serif',
               fontWeight: 900,
               lineHeight: '120%',
-              letterSpacing: '-1.8px',
+              letterSpacing: '-1px md:-1.8px',
               fontStyle: 'normal',
-              // @ts-ignore - modern CSS properties
-              leadingTrim: 'both',
-              // @ts-ignore
-              textEdge: 'cap'
             }}
           >
-            Introducing Pulse X
+            Introducing Pulse <span style={{ color: '#FF6B1A' }}>X</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -194,29 +191,25 @@ export const PulseX = () => {
             className="mx-auto max-w-3xl text-[#FFF]"
             style={{
               fontFamily: 'Arial, sans-serif',
-              fontSize: '18px',
+              fontSize: 'clamp(14px, 4vw, 18px)',
               fontStyle: 'normal',
               fontWeight: 400,
               lineHeight: '140%',
               letterSpacing: '-0.5px',
-              // @ts-ignore
-              leadingTrim: 'both',
-              // @ts-ignore
-              textEdge: 'cap'
             }}
           >
             Controlled electrochemical correction — applied with precision, verified at scale.
           </motion.p>
         </div>
 
-        <BentoGrid className="md:grid-rows-12 h-full min-h-[650px] md:min-h-[550px]">
+        <BentoGrid className="md:grid-rows-12 h-auto md:h-[650px] gap-4 md:gap-3">
           {/* Item 0: Tall vertical card (Left) */}
           <BentoGridItem
             title={pulseXItems[0].title}
             subtitle={pulseXItems[0].subtitle}
             description={pulseXItems[0].description}
             image={pulseXItems[0].image}
-            className="md:row-span-12 h-full"
+            className="md:row-span-12 h-auto md:h-full"
           />
 
           {/* Remaining 4 items in a 2x2 grid */}
