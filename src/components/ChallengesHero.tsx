@@ -9,7 +9,7 @@ type ChallengesHeroProps = PropsWithChildren<{
 export default function ChallengesHero({ children, title, className = '' }: ChallengesHeroProps) {
   return (
     <section className={`relative ${className}`}>
-      <div className="relative min-h-[700px] overflow-hidden bg-[#000000]">
+      <div className="relative min-h-[500px] md:min-h-[700px] overflow-hidden bg-[#000000]">
           <RippleGrid
            className="absolute inset-x-0 -top-40 h-[calc(100%+32px)] z-0"
           enableRainbow={false}
@@ -23,12 +23,12 @@ export default function ChallengesHero({ children, title, className = '' }: Chal
         />
 
         {title && (
-          <div className="absolute inset-0 z-10 flex items-start justify-center px-8 pt-64 pointer-events-none">
+          <div className="absolute inset-0 z-10 flex items-start justify-center px-6 md:px-8 pt-32 md:pt-64 pointer-events-none">
             <div className="flex flex-col items-center text-center">
-              <h2 className="text-center text-4xl font-bold text-white drop-shadow-2xl sm:text-5xl">
+              <h2 className="text-center text-3xl sm:text-4xl md:text-5xl font-bold text-white drop-shadow-2xl">
                 {title}
               </h2>
-              <p className="mt-4 h-[32px] w-[781px] font-['Arial'] text-[#9CA3AF] opacity-100">
+              <p className="mt-4 max-w-[781px] w-full font-['Arial'] text-[#9CA3AF] text-sm md:text-base opacity-100 px-4">
                 We eliminate the cost, risk, and unpredictability from your battery afterlife.
               </p>
             </div>
