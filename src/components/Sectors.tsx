@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 
 export default function Sectors() {
   const sectors = [
@@ -39,9 +39,37 @@ export default function Sectors() {
   ];
   const [activeIndex, setActiveIndex] = useState(0);
   const sectionRef = useRef<HTMLElement | null>(null);
-  const itemRefs = useRef<(HTMLElement | null)[]>([]);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const isInViewRef = useRef(false);
   const scrollLockRef = useRef(0);
+
+  // useScroll for the whole container on mobile
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  // Calculate active index based on scroll progress
+  useEffect(() => {
+    return scrollYProgress.on("change", (latest) => {
+      if (window.innerWidth < 1024) {
+        const index = Math.min(
+          Math.floor(latest * sectors.length),
+          sectors.length - 1
+        );
+        setActiveIndex(index);
+      }
+    });
+  }, [scrollYProgress, sectors.length]);
+
+  // Text conveyor belt Y offset
+  // We want the active item to stay at the top of the window
+  // Each item is exactly 120px tall for a consistent 3-item window
+  const textTranslateY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [0, -(sectors.length - 1) * 120]
+  );
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -56,31 +84,10 @@ export default function Sectors() {
     );
     sectionObserver.observe(section);
 
-    // Observer for mobile items - precise center triggering for shorter triggers
-    const itemObservers = sectors.map((_, index) => {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (window.innerWidth < 1024 && entry.isIntersecting) {
-            setActiveIndex(index);
-          }
-        },
-        { 
-          threshold: 0,
-          rootMargin: "-48% 0px -48% 0px" // Very tight center line
-        }
-      );
-      
-      const element = itemRefs.current[index];
-      if (element) {
-        observer.observe(element);
-      }
-      return observer;
-    });
-
     const onWheel = (event: WheelEvent) => {
       if (window.innerWidth < 1024) return;
       if (!isInViewRef.current) return;
-      
+
       const now = Date.now();
       if (now - scrollLockRef.current < 500) {
         event.preventDefault();
@@ -106,10 +113,9 @@ export default function Sectors() {
 
     return () => {
       sectionObserver.disconnect();
-      itemObservers.forEach(o => o?.disconnect());
       section.removeEventListener("wheel", onWheel);
     };
-  }, [activeIndex, sectors.length]); // Added activeIndex back to dependency array to ensure observers are fresh
+  }, [activeIndex, sectors.length]);
 
   return (
     <>
@@ -147,102 +153,119 @@ export default function Sectors() {
         ref={sectionRef}
         className="bg-black py-12 md:py-24 text-white -mt-16 md:-mt-34"
       >
-        <div className="mx-auto flex w-full max-w-[1680px] flex-col lg:flex-row lg:items-start lg:gap-16 px-6">
-          {/* Image - On mobile it becomes sticky at the top */}
-          <div className="sticky top-32 lg:top-32 w-full lg:flex-[3.0] z-40 mb-12 lg:mb-0 order-1 lg:order-2">
-            <div className="relative h-[300px] sm:h-[580px] lg:h-[760px] overflow-hidden rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/5 bg-black">
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={images[activeIndex]}
-                  src={images[activeIndex]}
-                  alt={sectors[activeIndex]?.title ?? "Sector image"}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.6 }}
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-              </AnimatePresence>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-            </div>
-          </div>
+        {/* Container with extra height for mobile scroll interaction */}
+        <div
+          ref={containerRef}
+          className="relative lg:h-auto h-[400vh]"
+        >
+          {/* Sticky wrapper for visible content on mobile */}
+          <div className="sticky top-0 h-screen lg:h-auto lg:relative flex w-full max-w-[1680px] flex-col lg:flex-row lg:items-start lg:gap-16 px-6 mx-auto overflow-hidden lg:overflow-visible">
 
-          {/* Text Content */}
-          <div className="w-full lg:flex-1 lg:max-w-[360px] order-2 lg:order-1">
-            {/* Desktop View: Scrollable List as before */}
-            <div className="hidden lg:flex flex-col space-y-6">
-              {sectors.map((sector, index) => {
-                const isActive = index === activeIndex;
-                return (
-                  <button
-                    key={sector.title}
-                    className={`group flex w-full flex-col items-start gap-3 border-b border-[#0d0d0d] pb-6 text-left transition-opacity duration-500 ${
-                      isActive ? "opacity-100" : "opacity-40"
-                    }`}
-                    onClick={() => setActiveIndex(index)}
-                    type="button"
-                  >
-                    <div className="flex items-center">
-                      <h3
-                        className={`text-[18px] md:text-[22px] font-black leading-tight tracking-tight md:tracking-[-1.5px] transition-colors duration-500 ${
-                          isActive ? "text-white" : "text-white/60"
-                        }`}
-                      >
-                        {sector.title}
-                      </h3>
-                    </div>
-                    <p
-                      className={`text-[12px] md:text-[14px] leading-relaxed tracking-tight transition-colors duration-500 max-w-md ${
-                        isActive ? "text-white/80" : "text-white/40"
-                      }`}
-                    >
-                      {sector.subtitle}
-                    </p>
-                    <span
-                      className={`h-px w-full bg-[linear-gradient(90deg,#ff5e00_0%,rgba(255,94,0,0.6)_55%,rgba(255,94,0,0)_100%)] transition-opacity duration-500 ${
-                        isActive ? "opacity-100" : "opacity-0"
-                      }`}
-                    />
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Mobile View: Sticky Text + Invisible Triggers */}
-            <div className="block lg:hidden">
-              <div className="sticky top-[calc(8rem+300px+1rem)] z-50 bg-black pb-10 pointer-events-none">
+            {/* Image - Perfect sticky at top on mobile */}
+            <div className="w-full lg:flex-[3.0] z-40 mb-2 lg:mb-0 order-1 lg:order-2 mt-28 lg:mt-0">
+              <div className="relative h-[250px] sm:h-[400px] lg:h-[760px] overflow-hidden rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/5 bg-black">
                 <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeIndex}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="flex flex-col items-start gap-3 pointer-events-auto"
-                  >
-                    <h3 className="text-[22px] font-black leading-tight text-white tracking-tight">
-                      {sectors[activeIndex].title}
-                    </h3>
-                    <p className="text-[13px] text-white/80 leading-relaxed">
-                      {sectors[activeIndex].subtitle}
-                    </p>
-                    <div className="h-[2px] w-full bg-[linear-gradient(90deg,#ff5e00_0%,rgba(255,94,0,0.6)_55%,rgba(255,94,0,0)_100%)] mt-1" />
-                  </motion.div>
+                  <motion.img
+                    key={images[activeIndex]}
+                    src={images[activeIndex]}
+                    alt={sectors[activeIndex]?.title ?? "Sector image"}
+                    initial={{ opacity: 0, scale: 1.05 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.6, ease: "easeInOut" }}
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
                 </AnimatePresence>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+              </div>
+            </div>
+
+            {/* Text Content Area */}
+            <div className="w-full lg:flex-1 lg:max-w-[360px] order-2 lg:order-1 flex flex-col">
+
+              {/* Desktop View: Static List */}
+              <div className="hidden lg:flex flex-col space-y-6">
+                {sectors.map((sector, index) => {
+                  const isActive = index === activeIndex;
+                  return (
+                    <button
+                      key={sector.title}
+                      className={`group flex w-full flex-col items-start gap-3 border-b border-[#0d0d0d] pb-6 text-left transition-opacity duration-500 ${isActive ? "opacity-100" : "opacity-40"
+                        }`}
+                      onClick={() => setActiveIndex(index)}
+                      type="button"
+                    >
+                      <div className="flex items-center">
+                        <h3
+                          className={`text-[18px] md:text-[22px] font-black leading-tight tracking-tight md:tracking-[-1.5px] transition-colors duration-500 ${isActive ? "text-white" : "text-white/60"
+                            }`}
+                        >
+                          {sector.title}
+                        </h3>
+                      </div>
+                      <p
+                        className={`text-[12px] md:text-[14px] leading-relaxed tracking-tight transition-colors duration-500 max-w-md ${isActive ? "text-white/80" : "text-white/40"
+                          }`}
+                      >
+                        {sector.subtitle}
+                      </p>
+                      <span
+                        className={`h-px w-full bg-[linear-gradient(90deg,#ff5e00_0%,rgba(255,94,0,0.6)_55%,rgba(255,94,0,0)_100%)] transition-opacity duration-500 ${isActive ? "opacity-100" : "opacity-0"
+                          }`}
+                      />
+                    </button>
+                  );
+                })}
               </div>
 
-              {/* Invisible triggers to drive scrolling on mobile */}
-              <div className="flex flex-col relative z-10 -mt-[150px]">
-                {sectors.map((_, index) => (
-                  <div
-                    key={index}
-                    ref={(el) => {
-                      itemRefs.current[index] = el;
-                    }}
-                    className="h-[40vh] w-full bg-transparent"
-                  />
-                ))}
+              {/* Mobile View: Vertical Conveyor Belt Transition */}
+              <div className="block lg:hidden h-[360px] relative overflow-hidden mt-4">
+                <motion.div
+                  style={{ y: textTranslateY }}
+                  className="flex flex-col gap-0"
+                >
+                  {sectors.map((sector, index) => {
+                    const isActive = index === activeIndex;
+                    // Upcoming items are the next two after active
+                    const isComingUp = index === activeIndex + 1 || index === activeIndex + 2;
+
+                    return (
+                      <div
+                        key={index}
+                        className={`h-[120px] flex flex-col justify-start transition-all duration-700 ease-out py-4 ${isActive
+                          ? "opacity-100 scale-100"
+                          : isComingUp
+                            ? "opacity-30 scale-95 origin-left"
+                            : "opacity-0 scale-90"
+                          }`}
+                      >
+                        <h3 className="text-[20px] font-black leading-tight text-white tracking-tight">
+                          {sector.title}
+                        </h3>
+                        <p className="text-[13px] text-white/70 leading-relaxed mt-2 max-w-[90%]">
+                          {sector.subtitle}
+                        </p>
+                        <div className="relative mt-2">
+                          <div className="absolute h-[1px] w-full bg-white/5" />
+                          {isActive && (
+                            <motion.div
+                              className="absolute h-[2px] w-[120px] bg-[linear-gradient(90deg,#ff5e00_0%,rgba(255,94,0,0.6)_55%,rgba(255,94,0,0)_100%)] z-10"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ duration: 0.3 }}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </motion.div>
+
+                {/* Gradient Fades for the window edges - smoother transitions */}
+                <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-black via-black/40 to-transparent pointer-events-none z-10" />
+                <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none z-10" />
               </div>
+
             </div>
           </div>
         </div>

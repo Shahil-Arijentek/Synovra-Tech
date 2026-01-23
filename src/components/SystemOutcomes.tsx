@@ -56,13 +56,13 @@ const AnimatedGauge = ({ value, label, id, range }: { value: number; label: stri
             <svg style={{ height: 0, width: 0, position: 'absolute' }}>
                 <defs>
                     <linearGradient id={`gauge-gradient-${id}`} x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="#FF4500" />
-                        <stop offset="100%" stopColor="#FF8C00" />
+                        <stop offset="0%" stopColor="#ff6b1a" />
+                        <stop offset="100%" stopColor="#ff8c00" />
                     </linearGradient>
                 </defs>
             </svg>
 
-            <div className="w-48 h-36 md:w-64 md:h-48 relative">
+            <div className="w-56 h-40 md:w-64 md:h-48 relative flex items-center justify-center overflow-visible">
                 <Gauge
                     value={currentPos}
                     startAngle={-110}
@@ -71,32 +71,27 @@ const AnimatedGauge = ({ value, label, id, range }: { value: number; label: stri
                     outerRadius="100%"
                     sx={{
                         [`& .${gaugeClasses.valueText}`]: { display: 'none' },
-                        [`& .${gaugeClasses.valueArc}`]: {
-                            fill: `url(#gauge-gradient-${id})`,
-                            // 1. We create a dash (the orange block) 
-                            // 2. The first number is the width of the block.
-                            // 3. We use a CSS calc or a large second number to hide the rest of the line.
-                            strokeDasharray: '10 1000', 
-                            
-                            // This is the magic: we "pull" the dash to the end of the path
-                            // 'pathLength' in SVG is usually 100 for these components
-                            strokeDashoffset: -1, 
-                            
-                            strokeLinecap: 'butt', 
-                            filter: 'drop-shadow(0 0 12px #FF4500)',
-                            transition: 'none', // Prevent MUI default transition from fighting the animation
-                        },
                         [`& .${gaugeClasses.referenceArc}`]: {
                             fill: 'rgba(255, 255, 255, 0.1)',
                             stroke: 'none',
                         },
-                        '& svg': { overflow: 'visible' }
+                        [`& .${gaugeClasses.valueArc}`]: {
+                            fill: `url(#gauge-gradient-${id})`,
+                            filter: 'drop-shadow(0 0 12px rgba(255, 107, 26, 0.8))',
+                            strokeLinecap: 'butt',
+                            pathLength: 100,
+                            strokeDasharray: '20 100',
+                            strokeDashoffset: -80,
+                        },
+                        '& svg': { 
+                            overflow: 'visible',
+                        }
                     }}
                 />
                 
-                <div className="absolute inset-0 flex flex-col items-center justify-center pt-6 md:pt-8 pointer-events-none">
+                <div className="absolute inset-0 flex flex-col items-center justify-center pt-8 md:pt-10 pointer-events-none">
                     <span className="text-xl md:text-[28px] text-white font-['Gemunu_Libre']">
-                        {range 
+                        {range
                             ? `${Math.round(progress * range.min)}-${Math.round(progress * range.max)}%`
                             : `${Math.round(currentPos)}%`
                         }
@@ -111,6 +106,7 @@ const AnimatedGauge = ({ value, label, id, range }: { value: number; label: stri
         </div>
     );
 };
+
 
 export default function SystemOutcomes() {
     const [activeTab, setActiveTab] = useState(0);
