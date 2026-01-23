@@ -56,7 +56,7 @@ export default function Sectors() {
     );
     sectionObserver.observe(section);
 
-    // Observer for mobile items - RE-RUN whenever activeIndex changes to ensure triggers work
+    // Observer for mobile items - precise center triggering for shorter triggers
     const itemObservers = sectors.map((_, index) => {
       const observer = new IntersectionObserver(
         ([entry]) => {
@@ -66,7 +66,7 @@ export default function Sectors() {
         },
         { 
           threshold: 0,
-          rootMargin: "-45% 0px -45% 0px"
+          rootMargin: "-48% 0px -48% 0px" // Very tight center line
         }
       );
       
@@ -115,7 +115,7 @@ export default function Sectors() {
     <>
       <section className="bg-black py-12 md:py-24 overflow-hidden relative font-['Poppins'] group">
         <div className="flex items-center justify-center">
-          <h2 className="relative text-[12vw] md:text-[140px] lg:text-[180px] font-black uppercase tracking-tighter leading-none text-center text-[#1a1a1a] opacity-60">
+          <h2 className="relative text-[7vw] sm:text-[8vw] md:text-[100px] lg:text-[150px] font-black uppercase tracking-tighter leading-none text-center text-[#1a1a1a] opacity-60 whitespace-nowrap">
             <span className="block">SECTORS WE SERVE</span>
             <span className="reveal-text absolute inset-0 block">
               SECTORS WE SERVE
@@ -184,7 +184,7 @@ export default function Sectors() {
                   >
                     <div className="flex items-center">
                       <h3
-                        className={`text-[20px] md:text-[26px] font-black leading-tight tracking-tight md:tracking-[-2px] transition-colors duration-500 ${
+                        className={`text-[18px] md:text-[22px] font-black leading-tight tracking-tight md:tracking-[-1.5px] transition-colors duration-500 ${
                           isActive ? "text-white" : "text-white/60"
                         }`}
                       >
@@ -192,7 +192,7 @@ export default function Sectors() {
                       </h3>
                     </div>
                     <p
-                      className={`text-[13px] md:text-[15px] leading-relaxed tracking-tight transition-colors duration-500 max-w-md ${
+                      className={`text-[12px] md:text-[14px] leading-relaxed tracking-tight transition-colors duration-500 max-w-md ${
                         isActive ? "text-white/80" : "text-white/40"
                       }`}
                     >
@@ -210,36 +210,36 @@ export default function Sectors() {
 
             {/* Mobile View: Sticky Text + Invisible Triggers */}
             <div className="block lg:hidden">
-              <div className="sticky top-[calc(8rem+300px+1.5rem)] z-50 bg-black pb-4 pointer-events-none">
+              <div className="sticky top-[calc(8rem+300px+1rem)] z-50 bg-black pb-10 pointer-events-none">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeIndex}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.4 }}
-                    className="flex flex-col items-start gap-2 pointer-events-auto"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="flex flex-col items-start gap-3 pointer-events-auto"
                   >
-                    <h3 className="text-[20px] font-black leading-tight text-white">
+                    <h3 className="text-[22px] font-black leading-tight text-white tracking-tight">
                       {sectors[activeIndex].title}
                     </h3>
-                    <p className="text-[13px] text-white/80">
+                    <p className="text-[13px] text-white/80 leading-relaxed">
                       {sectors[activeIndex].subtitle}
                     </p>
-                    <div className="h-px w-full bg-[linear-gradient(90deg,#ff5e00_0%,rgba(255,94,0,0.6)_55%,rgba(255,94,0,0)_100%)]" />
+                    <div className="h-[2px] w-full bg-[linear-gradient(90deg,#ff5e00_0%,rgba(255,94,0,0.6)_55%,rgba(255,94,0,0)_100%)] mt-1" />
                   </motion.div>
                 </AnimatePresence>
               </div>
 
               {/* Invisible triggers to drive scrolling on mobile */}
-              <div className="flex flex-col relative z-10 pt-[5vh]">
+              <div className="flex flex-col relative z-10 -mt-[150px]">
                 {sectors.map((_, index) => (
                   <div
                     key={index}
                     ref={(el) => {
                       itemRefs.current[index] = el;
                     }}
-                    className="h-[50vh] w-full bg-transparent"
+                    className="h-[40vh] w-full bg-transparent"
                   />
                 ))}
               </div>
