@@ -34,8 +34,7 @@ const Counter = ({ value, duration = 2, decimals = 0 }: { value: number; duratio
 };
 
 const AnimatedGauge = ({ value, label, id, range }: { value: number; label: string; id: string; range?: { min: number, max: number } }) => {
-    const [gaugeValue, setGaugeValue] = useState(0);
-    const [rangeProgress, setRangeProgress] = useState({ min: 0, max: 0 });
+    const [progress, setProgress] = useState(0);
     const ref = React.useRef(null);
     const isInView = useInView(ref, { once: true, margin: "-10% 0px" });
 
@@ -43,21 +42,14 @@ const AnimatedGauge = ({ value, label, id, range }: { value: number; label: stri
         if (isInView) {
             const controls = animate(0, 1, {
                 duration: 2.5,
-                ease: [0.16, 1, 0.3, 1], // Smooth easeOutExpo
-                onUpdate: (progress) => {
-                    setGaugeValue(progress * value);
-                    if (range) {
-                        setRangeProgress({
-                            min: Math.round(progress * range.min),
-                            max: Math.round(progress * range.max)
-                        });
-                    }
-                },
+                ease: [0.16, 1, 0.3, 1],
+                onUpdate: (latest) => setProgress(latest),
             });
             return () => controls.stop();
         }
-    }, [isInView, value, range]);
-    const glowIntensity = gaugeValue / value;
+    }, [isInView]);
+
+    const currentPos = progress * value;
 
     return (
         <div ref={ref} className="relative flex flex-col items-center">
@@ -72,61 +64,45 @@ const AnimatedGauge = ({ value, label, id, range }: { value: number; label: stri
 
             <div className="w-48 h-36 md:w-64 md:h-48 relative">
                 <Gauge
-                    value={gaugeValue}
+                    value={currentPos}
                     startAngle={-110}
                     endAngle={110}
                     innerRadius="88%"
                     outerRadius="100%"
                     sx={{
-                        [`& .${gaugeClasses.valueText}`]: {
-                            display: 'none',
-                        },
+                        [`& .${gaugeClasses.valueText}`]: { display: 'none' },
                         [`& .${gaugeClasses.valueArc}`]: {
                             fill: `url(#gauge-gradient-${id})`,
-                            filter: glowIntensity > 0.2 ? 'drop-shadow(0 0 2px #FF8C00)' : 'none',
-                            stroke: 'none',
+                            // 1. We create a dash (the orange block) 
+                            // 2. The first number is the width of the block.
+                            // 3. We use a CSS calc or a large second number to hide the rest of the line.
+                            strokeDasharray: '10 1000', 
+                            
+                            // This is the magic: we "pull" the dash to the end of the path
+                            // 'pathLength' in SVG is usually 100 for these components
+                            strokeDashoffset: -1, 
+                            
+                            strokeLinecap: 'butt', 
+                            filter: 'drop-shadow(0 0 12px #FF4500)',
+                            transition: 'none', // Prevent MUI default transition from fighting the animation
                         },
                         [`& .${gaugeClasses.referenceArc}`]: {
-                            fill: 'rgba(255, 255, 255, 0.12)',
+                            fill: 'rgba(255, 255, 255, 0.1)',
                             stroke: 'none',
                         },
-                        '& svg': {
-                            overflow: 'visible',
-                        }
+                        '& svg': { overflow: 'visible' }
                     }}
                 />
+                
                 <div className="absolute inset-0 flex flex-col items-center justify-center pt-6 md:pt-8 pointer-events-none">
-                    <span
-                        className="text-xl md:text-[28px]"
-                        style={{
-                            color: '#FFF',
-                            textAlign: 'center',
-                            fontFamily: '"Gemunu Libre", sans-serif',
-                            fontStyle: 'normal',
-                            fontWeight: 400,
-                            lineHeight: '1',
-                            textShadow: '0 0 10px rgba(255, 255, 255, 0.2)',
-                        }}
-                    >
-                        {range
-                            ? `${rangeProgress.min}-${rangeProgress.max}%`
-                            : `${Math.round(gaugeValue)}%`
+                    <span className="text-xl md:text-[28px] text-white font-['Gemunu_Libre']">
+                        {range 
+                            ? `${Math.round(progress * range.min)}-${Math.round(progress * range.max)}%`
+                            : `${Math.round(currentPos)}%`
                         }
                     </span>
                     <div className="mt-0 md:mt-1">
-                        <span
-                            className="text-[12px] md:text-[15px]"
-                            style={{
-                                color: '#EAEAEA',
-                                textAlign: 'center',
-                                fontFamily: 'Arial',
-                                fontStyle: 'normal',
-                                fontWeight: 900,
-                                lineHeight: '1.2',
-                                letterSpacing: '-0.5px',
-                                opacity: 0.9,
-                            }}
-                        >
+                        <span className="text-[12px] md:text-[15px] text-[#EAEAEA] font-black uppercase tracking-tighter">
                             {label}
                         </span>
                     </div>
@@ -197,16 +173,16 @@ export default function SystemOutcomes() {
                                     {activeTab === tab.id && (
                                         <motion.div
                                             layoutId="gaugeTabIndicator"
-                                            className="absolute bottom-1.5 md:bottom-3 left-0 right-0 flex justify-center z-30"
+                                            className="absolute bottom-1 md:bottom-2.5 left-0 right-0 flex justify-center z-50 pointer-events-none"
                                         >
                                             <motion.div
-                                                className="h-[3px] w-8 md:w-10 bg-[#ff6b1a] rounded-full shadow-[0_0_20px_rgba(255,107,26,0.9)]"
-                                                initial={{ y: 2, scaleX: 0, opacity: 0 }}
-                                                animate={{ y: 0, scaleX: 1, opacity: 1 }}
+                                                className="h-[4px] w-10 md:w-12 bg-[#ff6b1a] rounded-full shadow-[0_0_25px_rgba(255,107,26,1)]"
+                                                initial={{ y: 20, opacity: 0, scaleX: 0.5 }}
+                                                animate={{ y: 1, opacity: 1, scaleX: 1 }}
                                                 transition={{
                                                     type: "spring",
-                                                    stiffness: 400,
-                                                    damping: 30
+                                                    stiffness: 350,
+                                                    damping: 25
                                                 }}
                                             />
                                         </motion.div>
@@ -225,7 +201,7 @@ export default function SystemOutcomes() {
                                 <h3 className="text-white font-bold text-center mb-1 md:mb-2 uppercase tracking-wide text-[10px] md:text-sm h-4 md:h-5">System Outcomes</h3>
 
                                 {/* Batteries Revived Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-36 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[110px] md:h-40 w-full">
                                     <div className="flex items-center gap-1">
                                         <span className="text-2xl md:text-3xl font-black text-white">
                                             <Counter value={20000} />
@@ -237,7 +213,7 @@ export default function SystemOutcomes() {
                                 </div>
 
                                 {/* Warranty Months Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-36 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[110px] md:h-40 w-full">
                                     <div className="flex items-center gap-1">
                                         <span className="text-2xl md:text-3xl font-black text-white">
                                             <Counter value={300000} />
@@ -249,7 +225,7 @@ export default function SystemOutcomes() {
                                 </div>
 
                                 {/* Client Savings Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-36 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[110px] md:h-40 w-full">
                                     <div className="flex items-center gap-1">
                                         <span className="text-2xl md:text-3xl font-black text-white">$<Counter value={1.5} decimals={1} /></span>
                                         <span className="text-2xl md:text-3xl font-black text-[#ff6b1a]"> M</span>
@@ -281,7 +257,7 @@ export default function SystemOutcomes() {
                                 <h3 className="text-white font-bold text-center mb-1 md:mb-2 uppercase tracking-wide text-[10px] md:text-sm h-4 md:h-5">Environmental Impact</h3>
 
                                 {/* CO2 Avoided Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-36 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[110px] md:h-40 w-full">
                                     <div className="flex items-center gap-1">
                                         <span className="text-2xl md:text-3xl font-black text-white">
                                             <Counter value={1.23} decimals={2} />M
@@ -293,7 +269,7 @@ export default function SystemOutcomes() {
                                 </div>
 
                                 {/* Waste Prevented Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-36 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[110px] md:h-40 w-full">
                                     <div className="flex items-center gap-1">
                                         <span className="text-2xl md:text-3xl font-black text-white">
                                             <Counter value={500} /> tonne
@@ -304,7 +280,7 @@ export default function SystemOutcomes() {
                                 </div>
 
                                 {/* Liquid Discharge Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-36 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[110px] md:h-40 w-full">
                                     <div className="flex items-center gap-1">
                                         <span className="text-2xl md:text-3xl font-black text-white">
                                             <Counter value={0} />
