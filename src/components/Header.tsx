@@ -46,16 +46,14 @@ export default function Header() {
 
         {/* Mobile Hamburger Button */}
         <button
-          className="md:hidden p-2 text-white relative z-[110]"
+          className="md:hidden p-2 text-white relative z-[110] outline-none"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
-          <motion.div
-            initial={false}
-            animate={{ rotate: isMenuOpen ? 90 : 0 }}
-            transition={{ duration: 0.2 }}
+          <div
+            className={`transition-transform duration-200 ${isMenuOpen ? 'rotate-90' : 'rotate-0'}`}
           >
             {isMenuOpen ? <X size={32} /> : <Menu size={32} />}
-          </motion.div>
+          </div>
         </button>
 
         {/* Mobile Menu Overlay */}

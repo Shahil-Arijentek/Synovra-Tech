@@ -47,12 +47,12 @@ export default function Challenges() {
       <section className="relative z-20 w-full bg-black -mt-[300px] sm:-mt-[350px] md:-mt-[500px] pb-16 md:pb-32">
         <div className="relative flex flex-col items-center px-4 sm:px-6 md:px-8 mt-0">
           <div className="w-full max-w-[1040px] z-20">
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={currentIndex}
-                initial={{ x: 120, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: -120, opacity: 0 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 transition={{ duration: 0.4, ease: 'easeOut' }}
                 className="flex flex-col md:flex-row w-full overflow-hidden rounded-[20px] border border-white/10 bg-black shadow-[0_-5px_30px_rgba(0,0,0,0.4)] min-h-[480px] sm:min-h-[440px] md:min-h-[400px] md:h-[400px]"
               >

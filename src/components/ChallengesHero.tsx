@@ -7,7 +7,9 @@ type ChallengesHeroProps = PropsWithChildren<{
 }>
 
 export default function ChallengesHero({ children, title, className = '' }: ChallengesHeroProps) {
-  const [isMobile, setIsMobile] = useState(false)
+  const [isMobile, setIsMobile] = useState(() => 
+    typeof window !== 'undefined' ? window.innerWidth < 768 : false
+  )
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768)
