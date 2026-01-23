@@ -149,7 +149,7 @@ export default function Sectors() {
       >
         <div className="mx-auto flex w-full max-w-[1680px] flex-col lg:flex-row lg:items-start lg:gap-16 px-6">
           {/* Image - On mobile it becomes sticky at the top */}
-          <div className="sticky top-24 lg:top-32 w-full lg:flex-[3.0] z-40 mb-12 lg:mb-0 order-1 lg:order-2">
+          <div className="sticky top-32 lg:top-32 w-full lg:flex-[3.0] z-40 mb-12 lg:mb-0 order-1 lg:order-2">
             <div className="relative h-[300px] sm:h-[580px] lg:h-[760px] overflow-hidden rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/5 bg-black">
               <AnimatePresence mode="wait">
                 <motion.img
@@ -210,7 +210,7 @@ export default function Sectors() {
 
             {/* Mobile View: Sticky Text + Invisible Triggers */}
             <div className="block lg:hidden">
-              <div className="sticky top-[calc(6rem+300px+1.5rem)] z-50 bg-black pb-4 pointer-events-none">
+              <div className="sticky top-[calc(8rem+300px+1.5rem)] z-50 bg-black pb-4 pointer-events-none">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeIndex}
@@ -232,14 +232,14 @@ export default function Sectors() {
               </div>
 
               {/* Invisible triggers to drive scrolling on mobile */}
-              <div className="flex flex-col relative z-10 pt-[10vh]">
+              <div className="flex flex-col relative z-10 pt-[5vh]">
                 {sectors.map((_, index) => (
                   <div
                     key={index}
                     ref={(el) => {
                       itemRefs.current[index] = el;
                     }}
-                    className="h-[80vh] w-full bg-transparent"
+                    className="h-[50vh] w-full bg-transparent"
                   />
                 ))}
               </div>
