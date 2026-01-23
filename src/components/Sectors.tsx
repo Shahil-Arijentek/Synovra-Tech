@@ -36,64 +36,45 @@ export default function Sectors() {
     "/sector/image5.png",
     "/sector/image6.png",
   ];
+
   const [activeIndex, setActiveIndex] = useState(0);
   const sectionRef = useRef<HTMLElement | null>(null);
-  const isInViewRef = useRef(false);
-  const scrollLockRef = useRef(0);
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+    const observers = sectors.map((_, index) => {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setActiveIndex(index);
+          }
+        },
+        { 
+          threshold: 0.5,
+          rootMargin: "-20% 0px -20% 0px"
+        }
+      );
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        isInViewRef.current = entry.isIntersecting;
-      },
-      { threshold: 0.4 }
-    );
+      const element = itemRefs.current[index];
+      if (element) observer.observe(element);
+      return observer;
+    });
 
-    observer.observe(section);
-
-    const onWheel = (event: WheelEvent) => {
-      if (!isInViewRef.current) return;
-      const now = Date.now();
-      if (now - scrollLockRef.current < 500) {
-        event.preventDefault();
-        return;
-      }
-
-      if (event.deltaY > 0 && activeIndex < sectors.length - 1) {
-        scrollLockRef.current = now;
-        event.preventDefault();
-        setActiveIndex((prev) => Math.min(prev + 1, sectors.length - 1));
-        return;
-      }
-
-      if (event.deltaY < 0 && activeIndex > 0) {
-        scrollLockRef.current = now;
-        event.preventDefault();
-        setActiveIndex((prev) => Math.max(prev - 1, 0));
-      }
-    };
-
-    section.addEventListener("wheel", onWheel, { passive: false });
-
-    return () => {
-      observer.disconnect();
-      section.removeEventListener("wheel", onWheel);
-    };
-  }, [activeIndex, sectors.length]);
+    return () => observers.forEach((o) => o.disconnect());
+  }, [sectors.length]);
 
   return (
     <>
       <section className="bg-black py-12 md:py-24 overflow-hidden relative font-['Poppins'] group">
-        <div className="flex items-center justify-center">
-          <h2 className="relative text-[12vw] md:text-[140px] lg:text-[180px] font-black uppercase tracking-tighter leading-none text-center text-[#1a1a1a] opacity-60">
-            <span className="block">SECTORS WE SERVE</span>
-            <span className="reveal-text absolute inset-0 block">
-              SECTORS WE SERVE
-            </span>
-          </h2>
+        <div className="container mx-auto px-6">
+          <div className="flex items-center justify-center">
+            <h2 className="relative text-[10vw] sm:text-[12vw] md:text-[140px] lg:text-[180px] font-black uppercase tracking-tighter leading-none text-center text-[#1a1a1a] opacity-60">
+              <span className="block">SECTORS WE SERVE</span>
+              <span className="reveal-text absolute inset-0 block">
+                SECTORS WE SERVE
+              </span>
+            </h2>
+          </div>
         </div>
 
         <style>{`
@@ -118,25 +99,26 @@ export default function Sectors() {
 
       <section
         ref={sectionRef}
-        className="bg-black py-12 md:py-24 text-white -mt-16 md:-mt-34"
+        className="bg-black py-12 md:py-24 text-white -mt-8 md:-mt-16"
       >
-        <div className="mx-auto flex w-full max-w-[1680px] flex-col gap-10 px-6 lg:flex-row lg:items-start lg:gap-16">
-          <div className="w-full lg:flex-1 lg:max-w-[360px]">
-            <div className="space-y-4 md:space-y-6">
+        <div className="mx-auto flex w-full max-w-[1680px] flex-col-reverse lg:flex-row lg:items-start lg:gap-16 px-6">
+          <div className="w-full lg:flex-1 lg:max-w-[400px]">
+            <div className="space-y-12 md:space-y-32 py-12 lg:py-32">
               {sectors.map((sector, index) => {
                 const isActive = index === activeIndex;
                 return (
-                  <button
+                  <div
                     key={sector.title}
-                    className={`group flex w-full flex-col items-start gap-2 md:gap-3 border-b border-[#0d0d0d] pb-4 md:pb-6 text-left transition-opacity duration-500 ${
-                      isActive ? "opacity-100" : "opacity-40"
+                    ref={(el) => {
+                      itemRefs.current[index] = el;
+                    }}
+                    className={`group flex w-full flex-col items-start gap-4 md:gap-6 border-l-2 pl-6 md:pl-8 transition-all duration-700 ${
+                      isActive ? "border-[#ff5e00] opacity-100" : "border-white/10 opacity-30"
                     }`}
-                    onClick={() => setActiveIndex(index)}
-                    type="button"
                   >
                     <div className="flex items-center">
                       <h3
-                        className={`text-[20px] md:text-[26px] font-black leading-tight tracking-tight md:tracking-[-2px] transition-colors duration-500 ${
+                        className={`text-[24px] md:text-[32px] lg:text-[40px] font-black leading-tight tracking-tight transition-colors duration-500 ${
                           isActive ? "text-white" : "text-white/60"
                         }`}
                       >
@@ -144,35 +126,31 @@ export default function Sectors() {
                       </h3>
                     </div>
                     <p
-                      className={`text-[13px] md:text-[15px] tracking-tight transition-colors duration-500 ${
+                      className={`text-[15px] md:text-[18px] leading-relaxed tracking-tight transition-colors duration-500 max-w-md ${
                         isActive ? "text-white/80" : "text-white/40"
                       }`}
                     >
                       {sector.subtitle}
                     </p>
-                    <span
-                      className={`h-px w-full bg-[linear-gradient(90deg,#ff5e00_0%,rgba(255,94,0,0.6)_55%,rgba(255,94,0,0)_100%)] transition-opacity duration-500 ${
-                        isActive ? "opacity-100" : "opacity-0"
-                      }`}
-                    />
-                  </button>
+                  </div>
                 );
               })}
             </div>
           </div>
 
-          <div className="relative w-full lg:flex-[3.0]">
-            <div className="relative h-[300px] overflow-hidden rounded-2xl shadow-[0_0_0_1px_rgba(255,255,255,0.04)] sm:h-[580px] lg:h-[760px]">
+          <div className="sticky top-24 lg:top-32 w-full lg:flex-[2.5] z-10 mb-12 lg:mb-0">
+            <div className="relative aspect-[4/3] md:aspect-video lg:aspect-[16/10] w-full overflow-hidden rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/5">
               {images.map((src, index) => (
                 <img
                   key={src}
                   alt={sectors[index]?.title ?? "Sector image"}
-                  className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-                    index === activeIndex ? "opacity-100" : "opacity-0"
+                  className={`absolute inset-0 h-full w-full object-cover transition-all duration-1000 ease-in-out ${
+                    index === activeIndex ? "opacity-100 scale-100 rotate-0" : "opacity-0 scale-110 rotate-1"
                   }`}
                   src={src}
                 />
               ))}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
             </div>
           </div>
         </div>
