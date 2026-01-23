@@ -161,12 +161,12 @@ export default function SystemOutcomes() {
                         {/* The "Opacity Black Line" Track */}
                         <div className="absolute inset-x-4 h-[1px] bg-white/10 bottom-1.5 md:bottom-3" />
 
-                        <div className="flex w-full justify-center gap-8">
+                        <div className="flex w-full justify-center gap-4">
                             {tabs.map((tab) => (
                                 <button
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
-                                    className={`relative py-1.5 md:py-4 text-[10px] md:text-[10px] font-black uppercase tracking-wide md:tracking-[0.2em] transition-colors duration-500 ${activeTab === tab.id ? "text-white" : "text-white/40"
+                                    className={`relative py-1.5 md:py-4 text-[10px] md:text-[10px] font-black uppercase tracking-widest md:tracking-[0.2em] transition-colors duration-500 ${activeTab === tab.id ? "text-white" : "text-white/40"
                                         }`}
                                 >
                                     <span className="relative z-20">{tab.label}</span>
