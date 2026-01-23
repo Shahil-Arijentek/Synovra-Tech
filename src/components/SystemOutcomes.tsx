@@ -33,21 +33,30 @@ const Counter = ({ value, duration = 2, decimals = 0 }: { value: number; duratio
     return <motion.span ref={ref}>{rounded}</motion.span>;
 };
 
-const AnimatedGauge = ({ value, label, id }: { value: number; label: string; id: string }) => {
+const AnimatedGauge = ({ value, label, id, range }: { value: number; label: string; id: string; range?: { min: number, max: number } }) => {
     const [gaugeValue, setGaugeValue] = useState(0);
+    const [rangeProgress, setRangeProgress] = useState({ min: 0, max: 0 });
     const ref = React.useRef(null);
     const isInView = useInView(ref, { once: true, margin: "-10% 0px" });
 
     useEffect(() => {
         if (isInView) {
-            const controls = animate(0, value, {
+            const controls = animate(0, 1, {
                 duration: 2.5,
                 ease: [0.16, 1, 0.3, 1], // Smooth easeOutExpo
-                onUpdate: (latest) => setGaugeValue(latest),
+                onUpdate: (progress) => {
+                    setGaugeValue(progress * value);
+                    if (range) {
+                        setRangeProgress({
+                            min: Math.round(progress * range.min),
+                            max: Math.round(progress * range.max)
+                        });
+                    }
+                },
             });
             return () => controls.stop();
         }
-    }, [isInView, value]);
+    }, [isInView, value, range]);
     const glowIntensity = gaugeValue / value;
 
     return (
@@ -58,14 +67,10 @@ const AnimatedGauge = ({ value, label, id }: { value: number; label: string; id:
                         <stop offset="0%" stopColor="#FF4500" />
                         <stop offset="100%" stopColor="#FF8C00" />
                     </linearGradient>
-                    <filter id={`glow-${id}`} x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur stdDeviation="3" result="blur" />
-                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                    </filter>
                 </defs>
             </svg>
 
-            <div className="w-64 h-48 relative">
+            <div className="w-48 h-36 md:w-64 md:h-48 relative">
                 <Gauge
                     value={gaugeValue}
                     startAngle={-110}
@@ -78,11 +83,11 @@ const AnimatedGauge = ({ value, label, id }: { value: number; label: string; id:
                         },
                         [`& .${gaugeClasses.valueArc}`]: {
                             fill: `url(#gauge-gradient-${id})`,
-                            filter: glowIntensity > 0.2 ? `url(#glow-${id})` : 'none',
+                            filter: glowIntensity > 0.2 ? 'drop-shadow(0 0 2px #FF8C00)' : 'none',
                             stroke: 'none',
                         },
                         [`& .${gaugeClasses.referenceArc}`]: {
-                            fill: 'rgba(255, 255, 255, 0.1)',
+                            fill: 'rgba(255, 255, 255, 0.12)',
                             stroke: 'none',
                         },
                         '& svg': {
@@ -90,28 +95,31 @@ const AnimatedGauge = ({ value, label, id }: { value: number; label: string; id:
                         }
                     }}
                 />
-                <div className="absolute inset-0 flex flex-col items-center justify-center pt-8 pointer-events-none">
+                <div className="absolute inset-0 flex flex-col items-center justify-center pt-6 md:pt-8 pointer-events-none">
                     <span
+                        className="text-xl md:text-[28px]"
                         style={{
                             color: '#FFF',
                             textAlign: 'center',
                             fontFamily: '"Gemunu Libre", sans-serif',
-                            fontSize: '34px',
                             fontStyle: 'normal',
                             fontWeight: 400,
                             lineHeight: '1',
                             textShadow: '0 0 10px rgba(255, 255, 255, 0.2)',
                         }}
                     >
-                        {Math.round(gaugeValue)}%
+                        {range
+                            ? `${rangeProgress.min}-${rangeProgress.max}%`
+                            : `${Math.round(gaugeValue)}%`
+                        }
                     </span>
-                    <div className="mt-1">
+                    <div className="mt-0 md:mt-1">
                         <span
+                            className="text-[12px] md:text-[15px]"
                             style={{
                                 color: '#EAEAEA',
                                 textAlign: 'center',
                                 fontFamily: 'Arial',
-                                fontSize: '15px',
                                 fontStyle: 'normal',
                                 fontWeight: 900,
                                 lineHeight: '1.2',
@@ -171,122 +179,140 @@ export default function SystemOutcomes() {
                     </>
                 }
             >
-                <div className="w-full h-full bg-[#0a0a0a] p-4 md:p-6 flex flex-col">
+                <div className="w-full h-full bg-[#0a0a0a] p-3 md:p-6 flex flex-col overflow-hidden">
                     {/* Tab Switcher - Mobile Only */}
-                    <div className="flex md:hidden mb-4 bg-[#111] p-1 rounded-lg border border-white/10 shrink-0">
-                        {tabs.map((tab) => (
-                            <button
-                                key={tab.id}
-                                onClick={() => setActiveTab(tab.id)}
-                                className={`flex-1 py-2 text-[10px] font-bold uppercase tracking-wider transition-all rounded-md ${
-                                    activeTab === tab.id
-                                        ? "bg-[#ff6b1a] text-white shadow-lg"
-                                        : "text-white/40 hover:text-white/60"
-                                }`}
-                            >
-                                {tab.label}
-                            </button>
-                        ))}
+                    <div className="flex md:hidden mb-4 relative px-4 shrink-0 h-10 md:h-14 items-center">
+                        {/* The "Opacity Black Line" Track */}
+                        <div className="absolute inset-x-4 h-[1px] bg-white/10 bottom-1.5 md:bottom-3" />
+
+                        <div className="flex w-full">
+                            {tabs.map((tab) => (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => setActiveTab(tab.id)}
+                                    className={`flex-1 relative py-1.5 md:py-4 text-[10px] font-black uppercase tracking-[0.2em] transition-colors duration-500 ${activeTab === tab.id ? "text-white" : "text-white/40"
+                                        }`}
+                                >
+                                    <span className="relative z-20">{tab.label}</span>
+                                    {activeTab === tab.id && (
+                                        <motion.div
+                                            layoutId="gaugeTabIndicator"
+                                            className="absolute bottom-1.5 md:bottom-3 left-0 right-0 flex justify-center z-30"
+                                        >
+                                            <motion.div
+                                                className="h-[3px] w-8 md:w-10 bg-[#ff6b1a] rounded-full shadow-[0_0_20px_rgba(255,107,26,0.9)]"
+                                                initial={{ y: 2, scaleX: 0, opacity: 0 }}
+                                                animate={{ y: 0, scaleX: 1, opacity: 1 }}
+                                                transition={{
+                                                    type: "spring",
+                                                    stiffness: 400,
+                                                    damping: 30
+                                                }}
+                                            />
+                                        </motion.div>
+                                    )}
+                                </button>
+                            ))}
+                        </div>
                     </div>
 
-                    <div className="flex-1 overflow-y-auto pr-1 -mr-1 custom-scrollbar">
+                    <div className="flex-1 overflow-hidden">
                         {/* Main Grid Layout */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 max-w-7xl mx-auto h-full">
 
                             {/* Left Column */}
-                            <div className={`${activeTab === 0 ? "flex" : "hidden"} md:flex flex-col gap-6 justify-start pt-2 md:pt-8`}>
-                                <h3 className="text-white font-bold text-center mb-2 uppercase tracking-wide text-xs md:text-sm h-5">System Outcomes</h3>
+                            <div className={`${activeTab === 0 ? "flex" : "hidden"} md:flex flex-col gap-3 md:gap-6 justify-start pt-1 md:pt-8`}>
+                                <h3 className="text-white font-bold text-center mb-1 md:mb-2 uppercase tracking-wide text-[10px] md:text-sm h-4 md:h-5">System Outcomes</h3>
 
                                 {/* Batteries Revived Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-5 flex flex-col justify-center gap-1 shadow-lg h-36 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-36 w-full">
                                     <div className="flex items-center gap-1">
-                                        <span className="text-3xl font-black text-white">
+                                        <span className="text-2xl md:text-3xl font-black text-white">
                                             <Counter value={20000} />
                                         </span>
-                                        <span className="text-3xl font-black text-[#ff6b1a]"> +</span>
+                                        <span className="text-2xl md:text-3xl font-black text-[#ff6b1a]"> +</span>
                                     </div>
-                                    <span className="text-[#ff6b1a] font-bold text-sm">Batteries Revived</span>
-                                    <p className="text-white/50 text-xs leading-tight">Across critical applications and operating conditions</p>
+                                    <span className="text-[#ff6b1a] font-bold text-[11px] md:text-sm">Batteries Revived</span>
+                                    <p className="text-white/50 text-[9px] md:text-xs leading-tight">Across critical applications and operating conditions</p>
                                 </div>
 
                                 {/* Warranty Months Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-5 flex flex-col justify-center gap-1 shadow-lg h-36 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-36 w-full">
                                     <div className="flex items-center gap-1">
-                                        <span className="text-3xl font-black text-white">
-                                            <Counter value={300} />
+                                        <span className="text-2xl md:text-3xl font-black text-white">
+                                            <Counter value={300000} />
                                         </span>
-                                        <span className="text-3xl font-black text-[#ff6b1a]"> k+</span>
+                                        {/* <span className="text-2xl md:text-3xl font-black text-[#ff6b1a]"> k+</span> */}
                                     </div>
-                                    <span className="text-[#ff6b1a] font-bold text-sm">Warranty Months</span>
-                                    <p className="text-white/50 text-xs leading-tight">12–36 month warranty-backed revival performance</p>
+                                    <span className="text-[#ff6b1a] font-bold text-[11px] md:text-sm">Warranty Months</span>
+                                    <p className="text-white/50 text-[9px] md:text-xs leading-tight">12–36 month warranty-backed revival performance</p>
                                 </div>
 
                                 {/* Client Savings Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-5 flex flex-col justify-center gap-1 shadow-lg h-36 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-36 w-full">
                                     <div className="flex items-center gap-1">
-                                        <span className="text-3xl font-black text-white">$<Counter value={1.5} decimals={1} /></span>
-                                        <span className="text-3xl font-black text-[#ff6b1a]"> M</span>
+                                        <span className="text-2xl md:text-3xl font-black text-white">$<Counter value={1.5} decimals={1} /></span>
+                                        <span className="text-2xl md:text-3xl font-black text-[#ff6b1a]"> M</span>
                                     </div>
-                                    <span className="text-[#ff6b1a] font-bold text-sm">Client Savings</span>
-                                    <p className="text-white/50 text-xs leading-tight">Through predictable lifecycle decisions</p>
+                                    <span className="text-[#ff6b1a] font-bold text-[11px] md:text-sm">Client Savings</span>
+                                    <p className="text-white/50 text-[9px] md:text-xs leading-tight">Through predictable lifecycle decisions</p>
                                 </div>
                             </div>
 
                             {/* Center Column - Gauges */}
-                            <div className={`${activeTab === 1 ? "flex" : "hidden"} md:flex flex-col gap-8 items-center justify-start pt-2 md:pt-8`}>
-                                <h3 className="text-white font-bold text-center mb-2 uppercase tracking-wide text-xs md:text-sm h-5">Performance Restoration</h3>
+                            <div className={`${activeTab === 1 ? "flex" : "hidden"} md:flex flex-col gap-2 md:gap-8 items-center justify-start pt-2 md:pt-8`}>
+                                <h3 className="text-white font-bold text-center mb-1 md:mb-2 uppercase tracking-wide text-[10px] md:text-sm h-4 md:h-5">Performance Restoration</h3>
 
                                 {/* Gauge 1 */}
-                                <div className="flex flex-col items-center justify-center flex-1">
-                                    <AnimatedGauge id="soh" value={95} label="SOH Recovery" />
-                                    <p className="text-white/60 text-center text-xs mt-[-20px] px-4 max-w-[200px]">Near-new operating health restored</p>
+                                <div className="flex flex-col items-center justify-center">
+                                    <AnimatedGauge id="soh" value={100} range={{ min: 95, max: 100 }} label="SOH Recovery" />
+                                    <p className="text-white/60 text-center text-[10px] md:text-xs mt-[-15px] md:mt-[-20px] px-4 max-w-[180px] md:max-w-[200px]">Near-new operating health restored</p>
                                 </div>
 
                                 {/* Gauge 2 */}
-                                <div className="flex flex-col items-center justify-center flex-1">
-                                    <AnimatedGauge id="capacity" value={95} label="Capacity Recovery" />
-                                    <p className="text-white/60 text-center text-xs mt-[-20px] px-4 max-w-[200px]">Usable charge capacity restored</p>
+                                <div className="flex flex-col items-center justify-center">
+                                    <AnimatedGauge id="capacity" value={100} range={{ min: 95, max: 100 }} label="Capacity Recovery" />
+                                    <p className="text-white/60 text-center text-[10px] md:text-xs mt-[-15px] md:mt-[-20px] px-4 max-w-[180px] md:max-w-[200px]">Usable charge capacity restored</p>
                                 </div>
                             </div>
 
                             {/* Right Column */}
-                            <div className={`${activeTab === 2 ? "flex" : "hidden"} md:flex flex-col gap-6 justify-start pt-2 md:pt-8`}>
-                                <h3 className="text-white font-bold text-center mb-2 uppercase tracking-wide text-xs md:text-sm h-5">Environmental Impact</h3>
+                            <div className={`${activeTab === 2 ? "flex" : "hidden"} md:flex flex-col gap-3 md:gap-6 justify-start pt-1 md:pt-8`}>
+                                <h3 className="text-white font-bold text-center mb-1 md:mb-2 uppercase tracking-wide text-[10px] md:text-sm h-4 md:h-5">Environmental Impact</h3>
 
                                 {/* CO2 Avoided Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-5 flex flex-col justify-center gap-1 shadow-lg h-36 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-36 w-full">
                                     <div className="flex items-center gap-1">
-                                        <span className="text-3xl font-black text-white">
+                                        <span className="text-2xl md:text-3xl font-black text-white">
                                             <Counter value={1.23} decimals={2} />M
                                         </span>
-                                        <span className="text-3xl font-black text-[#ff6b1a]"> kg</span>
+                                        <span className="text-2xl md:text-3xl font-black text-[#ff6b1a]"> kg</span>
                                     </div>
-                                    <span className="text-[#ff6b1a] font-bold text-sm">CO₂ Avoided</span>
-                                    <p className="text-white/50 text-xs leading-tight">By extending life before recycling</p>
+                                    <span className="text-[#ff6b1a] font-bold text-[11px] md:text-sm">CO₂ Avoided</span>
+                                    <p className="text-white/50 text-[9px] md:text-xs leading-tight">By extending life before recycling</p>
                                 </div>
 
                                 {/* Waste Prevented Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-5 flex flex-col justify-center gap-1 shadow-lg h-36 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-36 w-full">
                                     <div className="flex items-center gap-1">
-                                        <span className="text-3xl font-black text-white">
-                                            <Counter value={500} />t
+                                        <span className="text-2xl md:text-3xl font-black text-white">
+                                            <Counter value={500} /> tonne
                                         </span>
-                                        <span className="text-3xl font-black text-[#ff6b1a]"> +</span>
                                     </div>
-                                    <span className="text-[#ff6b1a] font-bold text-sm">Waste Prevented</span>
-                                    <p className="text-white/50 text-xs leading-tight">Batteries retained in active use</p>
+                                    <span className="text-[#ff6b1a] font-bold text-[11px] md:text-sm">Waste Prevented</span>
+                                    <p className="text-white/50 text-[9px] md:text-xs leading-tight">Batteries retained in active use</p>
                                 </div>
 
                                 {/* Liquid Discharge Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-5 flex flex-col justify-center gap-1 shadow-lg h-36 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-36 w-full">
                                     <div className="flex items-center gap-1">
-                                        <span className="text-3xl font-black text-white">
+                                        <span className="text-2xl md:text-3xl font-black text-white">
                                             <Counter value={0} />
                                         </span>
-                                        <span className="text-3xl font-black text-[#ff6b1a]"> %</span>
+                                        <span className="text-2xl md:text-3xl font-black text-[#ff6b1a]"> %</span>
                                     </div>
-                                    <span className="text-[#ff6b1a] font-bold text-sm">Liquid Discharge</span>
-                                    <p className="text-white/50 text-xs leading-tight">All electrolyte filtered and reused</p>
+                                    <span className="text-[#ff6b1a] font-bold text-[11px] md:text-sm">Liquid Discharge</span>
+                                    <p className="text-white/50 text-[9px] md:text-xs leading-tight">All electrolyte filtered and reused</p>
                                 </div>
 
                             </div>
