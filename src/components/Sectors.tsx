@@ -204,7 +204,7 @@ export default function Sectors() {
                         </h3>
                       </div>
                       <p
-                        className={`text-[12px] md:text-[14px] leading-relaxed tracking-tight transition-colors duration-500 max-w-md ${isActive ? "text-white/80" : "text-white/40"
+                        className={`text-sm sm:text-base md:text-base lg:text-lg leading-relaxed tracking-tight transition-colors duration-500 max-w-md ${isActive ? "text-white/80" : "text-white/40"
                           }`}
                       >
                         {sector.subtitle}
@@ -242,7 +242,7 @@ export default function Sectors() {
                         <h3 className="text-[20px] font-black leading-tight text-white tracking-tight">
                           {sector.title}
                         </h3>
-                        <p className="text-[13px] text-white/70 leading-relaxed mt-2 max-w-[90%]">
+                        <p className="text-sm sm:text-base md:text-base lg:text-lg text-white/70 leading-relaxed mt-2 max-w-[90%]">
                           {sector.subtitle}
                         </p>
                         <div className="relative mt-2">

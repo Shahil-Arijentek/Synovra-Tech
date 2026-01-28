@@ -76,7 +76,7 @@ const StorytellingSection: React.FC = () => {
   }, [isMounted]);
 
   return (
-    <div id="why-revive" ref={containerRef} className="relative w-full h-[250vh] bg-[#0d0d0d] z-10">
+    <div id="why-revive" ref={containerRef} className="relative w-full h-[250vh] bg-[#0c0c0c] z-10">
       <div className="w-full h-screen flex flex-col items-center justify-start pt-[10vh] md:pt-[15vh] overflow-hidden">
         <div className="relative w-[60%] h-[30%] sm:w-[45%] sm:h-[35%] md:w-[35%] md:h-[40%] z-0 pointer-events-none">
           <video ref={video1Ref} src="/whyrevive/video1.mp4" className="absolute inset-0 w-full h-full object-contain" muted playsInline preload="auto" />
@@ -86,13 +86,13 @@ const StorytellingSection: React.FC = () => {
 
         <div className="relative flex-1 w-full max-w-6xl mt-4 pointer-events-none z-10 px-4">
           <div ref={layer1Ref} className="absolute inset-0 flex flex-col items-center text-center">
-            <h2 className="text-white mb-8 md:mb-12 px-4 text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed md:leading-[39px] max-w-[680px]">
+            <h2 className="text-white mb-8 md:mb-12 px-4 text-sm sm:text-base md:text-base lg:text-lg leading-relaxed md:leading-[39px] max-w-[680px]">
               A global shift to a greener future is underway — the kind where the impossible is becoming everyday life.
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full px-4 pointer-events-auto max-w-5xl">
               {['Electric mobility.', 'Renewable energy.', 'Regulated recycling.'].map((text, i) => (
                 <div key={i} className="bg-zinc-900/30 backdrop-blur-sm border border-white/5 rounded-2xl py-6 md:py-10 px-4 md:px-6">
-                  <p className="text-white/80 text-base md:text-lg font-light">{text}</p>
+                  <p className="text-white/80 text-sm sm:text-base md:text-base lg:text-lg font-light">{text}</p>
                 </div>
               ))}
             </div>
@@ -124,7 +124,7 @@ const StorytellingSection: React.FC = () => {
                 </button>
               ))}
             </div>
-            <p className="text-white/70 font-light text-sm md:text-base max-w-3xl px-4">We are not anti-recycling — we are anti-waste.</p>
+            <p className="text-white/70 font-light text-sm sm:text-base md:text-base lg:text-lg max-w-3xl px-4">We are not anti-recycling — we are anti-waste.</p>
           </div>
         </div>
       </div>
@@ -135,7 +135,7 @@ const StorytellingSection: React.FC = () => {
 const ProblemCard: React.FC<{ title: string; subtitle: string }> = ({ title, subtitle }) => (
   <div className="text-left p-3 md:p-5 border border-red-500/30 bg-red-950/20 rounded-[14px] shadow-2xl w-full max-w-[360px] min-h-[70px] md:h-[98px] mx-auto">
     <h3 className="text-[#FF6467] text-sm md:text-2xl font-bold mb-0.5 md:mb-1">{title}</h3>
-    <p className="text-white/60 text-xs md:text-base">{subtitle}</p>
+    <p className="text-white/60 text-sm sm:text-base md:text-base lg:text-lg">{subtitle}</p>
   </div>
 );
 

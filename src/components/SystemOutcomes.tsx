@@ -202,7 +202,7 @@ export default function SystemOutcomes() {
                                 <h3 className="text-white font-bold text-center mb-1 md:mb-2 uppercase tracking-wide text-[10px] md:text-sm h-4 md:h-5">System Outcomes</h3>
 
                                 {/* Batteries Revived Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[110px] md:h-40 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-32 w-full">
                                     <div className="flex items-center gap-1">
                                         <span className="text-2xl md:text-3xl font-black text-white">
                                             <Counter value={20000} />
@@ -214,7 +214,7 @@ export default function SystemOutcomes() {
                                 </div>
 
                                 {/* Warranty Months Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[110px] md:h-40 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-32 w-full">
                                     <div className="flex items-center gap-1">
                                         <span className="text-2xl md:text-3xl font-black text-white">
                                             <Counter value={300000} />
@@ -226,7 +226,7 @@ export default function SystemOutcomes() {
                                 </div>
 
                                 {/* Client Savings Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[110px] md:h-40 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-32 w-full">
                                     <div className="flex items-center gap-1">
                                         <span className="text-2xl md:text-3xl font-black text-white">$<Counter value={1.5} decimals={1} /></span>
                                         <span className="text-2xl md:text-3xl font-black text-[#ff6b1a]"> M</span>
@@ -258,7 +258,7 @@ export default function SystemOutcomes() {
                                 <h3 className="text-white font-bold text-center mb-1 md:mb-2 uppercase tracking-wide text-[10px] md:text-sm h-4 md:h-5">Environmental & Compliance</h3>
 
                                 {/* CO2 Avoided Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[110px] md:h-40 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-32 w-full">
                                     <div className="flex items-center gap-1">
                                         <span className="text-2xl md:text-3xl font-black text-white">
                                             <Counter value={1.23} decimals={2} />M
@@ -270,7 +270,7 @@ export default function SystemOutcomes() {
                                 </div>
 
                                 {/* Waste Prevented Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[110px] md:h-40 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-32 w-full">
                                     <div className="flex items-center gap-1">
                                         <span className="text-2xl md:text-3xl font-black text-white">
                                             <Counter value={500} /> tonne
@@ -281,7 +281,7 @@ export default function SystemOutcomes() {
                                 </div>
 
                                 {/* Liquid Discharge Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[110px] md:h-40 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-32 w-full">
                                     <div className="flex items-center gap-1">
                                         <span className="text-2xl md:text-3xl font-black text-white">
                                             <Counter value={0} />

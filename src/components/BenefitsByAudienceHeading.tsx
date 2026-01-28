@@ -29,11 +29,10 @@ export default function BenefitsByAudienceHeading() {
             Benefits by Audience
           </h2>
           <p
-            className="text-white/70"
+            className="text-white/70 text-sm sm:text-base md:text-base lg:text-lg"
             style={{
               fontFamily: 'Arial',
               fontWeight: 400,
-              fontSize: 'clamp(12px, 3.5vw, 14px)',
               lineHeight: '1.4',
               margin: 0
             }}

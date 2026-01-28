@@ -38,7 +38,7 @@ export default function ExperienceRevival() {
           <span className="whitespace-nowrap">Experience Revival.</span>
           <span className="whitespace-nowrap">Experience Performance.</span>
         </h2>
-        <p className="mt-4 sm:mt-6 text-[10px] sm:text-xs tracking-[0.1em] sm:tracking-[0.3em] text-white/90 uppercase max-w-[280px] sm:max-w-none mx-auto leading-relaxed px-2">
+        <p className="mt-4 sm:mt-6 text-sm sm:text-base md:text-base lg:text-lg tracking-[0.1em] sm:tracking-[0.3em] text-white/90 uppercase max-w-[280px] sm:max-w-none mx-auto leading-relaxed px-2">
           Redefining battery afterlife with premium, precision-engineered power built to last.
         </p>
       </div>

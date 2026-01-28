@@ -20,7 +20,7 @@ export default function ChallengesHero({ children, title, className = '' }: Chal
 
   return (
     <section className={`relative ${className}`}>
-      <div className="relative min-h-[500px] md:min-h-[700px] overflow-hidden bg-[#000000]">
+      <div className="relative min-h-[500px] md:min-h-[700px] overflow-hidden bg-[#0d0d0d]">
         <RippleGrid
           className="absolute inset-x-0 top-0 md:-top-40 h-full md:h-[calc(100%+32px)] z-0"
           enableRainbow={false}
@@ -40,7 +40,7 @@ export default function ChallengesHero({ children, title, className = '' }: Chal
               <h2 className="text-center text-3xl sm:text-4xl md:text-5xl font-bold text-white drop-shadow-2xl">
                 {title}
               </h2>
-              <p className="mt-4 max-w-[781px] w-full font-['Arial'] text-[#9CA3AF] text-sm md:text-base opacity-100 px-4">
+              <p className="mt-4 max-w-[781px] w-full font-['Arial'] text-[#9CA3AF] text-sm sm:text-base md:text-base lg:text-lg opacity-100 px-4">
                 We eliminate the cost, risk, and unpredictability from your battery afterlife.
               </p>
             </div>
