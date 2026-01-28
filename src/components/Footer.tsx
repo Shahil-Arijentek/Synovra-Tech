@@ -72,7 +72,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-10 md:mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 text-center md:text-left text-[11px] md:text-sm text-white/50 md:flex-row md:items-center md:justify-between">
-          <p>© 2025 Synovra Technologies</p>
+          <p>© 2026 Synovra Technologies</p>
           <div className="flex items-center justify-center gap-6">
             <a className="transition hover:text-white" href="#">
               Privacy

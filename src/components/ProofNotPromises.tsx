@@ -1,49 +1,109 @@
-// export default function ProofNotPromises() {
-//   const tickerData = ['Cycle #278', '12.6V', 'Lead Recovery 95%', 'Carbon Credit: $42.13', 'Waste Prevented 22kg']
+import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
+import { useInView } from 'framer-motion'
+import { useRef } from 'react'
 
-//   return (
-//     <section className="bg-black py-8 px-8 overflow-hidden font-sans text-white border-y border-white/5">
-//       <div className="max-w-[1200px] mx-auto">
-//         <div className="relative h-12 mb-6 overflow-hidden bg-white/5 flex items-center rounded-lg">
-//           <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent z-10" />
-//           <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black to-transparent z-10" />
-          
-//           <div className="flex animate-scroll whitespace-nowrap items-center">
-//             {[...tickerData, ...tickerData, ...tickerData].map((item, i) => (
-//               <div key={i} className="flex items-center px-6">
-//                 <span className="text-white/70 font-medium mr-4">{item}</span>
-//                 <div className="w-2 h-2 bg-[#ff6b1a] rounded-full" />
-//               </div>
-//             ))}
-//           </div>
-//         </div>
+export default function ProofNotPromises() {
+  const [isFinished, setIsFinished] = useState(false)
+  const sectionRef = useRef(null)
+  const isInView = useInView(sectionRef, { once: true, amount: 0.3 })
 
-//         {/* Call to Action */}
-//         <div className="flex flex-col items-center justify-center gap-4 px-4">
-//           <p 
-//             className="text-[18px] text-[#4A5565] text-center font-normal leading-[28px]"
-//             style={{ fontFamily: 'Arial' }}
-//           >
-//              Measured outcomes. Verified performance. Extended life.
-//           </p>
-//           <button 
-//             className="bg-[#ff6b1a] h-[58px] rounded-[4px] px-10 text-[#FFF] font-normal text-[18px] leading-[28px] text-center border-none cursor-pointer transition-all hover:bg-[#ff6b1a]/90 shadow-[0_0_20px_rgba(255,107,26,0.6)] hover:shadow-[0_0_30px_rgba(255,107,26,0.8)] whitespace-nowrap"
-//             style={{ fontFamily: 'Arial' }}
-//           >
-//             Request Custom Report
-//           </button>
-//         </div>
-//       </div>
+  // Scroll lock effect
+  useEffect(() => {
+    if (!isFinished) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
 
-//       <style>{`
-//         @keyframes scroll {
-//           from { transform: translateX(0); }
-//           to { transform: translateX(-33.33%); }
-//         }
-//         .animate-scroll {
-//           animation: scroll 20s linear infinite;
-//         }
-//       `}</style>
-//     </section>
-//   )
-// }
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isFinished])
+
+  const barAnimation = {
+    initial: { width: 0 },
+    animate: { width: '75%' },
+    transition: { duration: 20, ease: [0.16, 1, 0.3, 1] }
+  }
+
+  const shortBarAnimation = {
+    initial: { width: 0 },
+    animate: { width: '55%' },
+    transition: { duration: 20, ease: [0.16, 1, 0.3, 1] }
+  }
+
+  return (
+    <div className="relative" style={{ marginTop: '-2900px' }}>
+      <section ref={sectionRef} className="bg-black py-20 px-8 font-sans text-white sticky top-0 z-[300]">
+        <div className="max-w-[1400px] mx-auto">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h2 className="text-5xl md:text-6xl font-bold mb-6">
+            The Proof in Numbers
+          </h2>
+          <p className="text-xl text-white/70 max-w-3xl mx-auto">
+            Revival keeps capacity in service and delays smelting — reducing emissions by up to 90%.
+          </p>
+        </div>
+
+        {/* Comparison Bars */}
+        <div className="max-w-4xl mx-auto mb-16 space-y-12">
+          {/* Recycling Only */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Recycling Only</h3>
+            <div className="w-full bg-[#111111] rounded-[12px] overflow-hidden p-[2px]">
+              <motion.div
+                className="bg-[#FF6B1A] rounded-[10px] p-8 h-full flex items-center"
+                initial="initial"
+                animate={isInView ? "animate" : "initial"}
+                variants={barAnimation}
+              >
+                <p className="text-3xl font-bold text-white">
+                  10.0 kg CO<sub>2</sub>
+                </p>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Revival First, Then Recycle */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Revival First, Then Recycle</h3>
+            <div className="w-full bg-[#111111] rounded-[12px] overflow-hidden p-[2px]">
+              <motion.div
+                className="bg-[#FF6B1A] rounded-[10px] p-8 h-full flex items-center"
+                initial="initial"
+                animate={isInView ? "animate" : "initial"}
+                variants={shortBarAnimation}
+                onAnimationComplete={() => setIsFinished(true)}
+              >
+                <p className="text-3xl font-bold whitespace-nowrap text-white">
+                  1.2 kg CO<sub>2</sub>
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Text */}
+        <div className="text-center mb-10">
+          <p className="text-xl text-white/70 max-w-2xl mx-auto">
+            Revival keeps capacity in service and delays smelting — cutting emissions by up to 90%.
+          </p>
+        </div>
+
+        {/* Call to Action Buttons */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <button className="bg-[#ff6b1a] hover:bg-[#ff7a2e] text-white font-medium text-lg px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl whitespace-nowrap">
+            See Your CO<sub>2</sub> Savings
+          </button>
+          <button className="bg-white hover:bg-gray-100 text-black font-medium text-lg px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl whitespace-nowrap">
+            Book a Revival Pickup
+          </button>
+        </div>
+      </div>
+      </section>
+    </div>
+  )
+}

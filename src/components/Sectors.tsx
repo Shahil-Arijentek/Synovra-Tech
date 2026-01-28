@@ -151,12 +151,12 @@ export default function Sectors() {
 
       <section
         ref={sectionRef}
-        className="bg-black py-12 md:py-24 text-white -mt-16 md:-mt-34"
+        className="bg-black pt-12 pb-0 md:pt-24 md:pb-24 text-white -mt-16 md:-mt-34"
       >
         {/* Container with extra height for mobile scroll interaction */}
         <div
           ref={containerRef}
-          className="relative lg:h-auto h-[400vh]"
+          className="relative lg:h-auto h-[250vh]"
         >
           {/* Sticky wrapper for visible content on mobile */}
           <div className="sticky top-0 h-screen lg:h-auto lg:relative flex w-full max-w-[1680px] flex-col lg:flex-row lg:items-start lg:gap-16 px-6 mx-auto overflow-hidden lg:overflow-visible">
@@ -219,7 +219,7 @@ export default function Sectors() {
               </div>
 
               {/* Mobile View: Vertical Conveyor Belt Transition */}
-              <div className="block lg:hidden h-[360px] relative overflow-hidden mt-4">
+              <div className="block lg:hidden h-[360px] relative overflow-hidden mt-8">
                 <motion.div
                   style={{ y: textTranslateY }}
                   className="flex flex-col gap-0"

@@ -110,14 +110,19 @@ const AnimatedGauge = ({ value, label, id, range }: { value: number; label: stri
 
 export default function SystemOutcomes() {
     const [activeTab, setActiveTab] = useState(0);
+    const [isLoaded, setIsLoaded] = useState(false);
     const tabs = [
         { id: 0, label: "System" },
         { id: 1, label: "Performance" },
         { id: 2, label: "Environmental" },
     ];
 
+    useEffect(() => {
+        setIsLoaded(true);
+    }, []);
+
     return (
-        <div className="flex flex-col overflow-hidden bg-black">
+        <div className="flex flex-col overflow-hidden bg-black" style={{ opacity: isLoaded ? 1 : 0, transition: 'opacity 0.3s ease-in' }}>
             <ContainerScroll
                 titleComponent={
                     <>
@@ -292,7 +297,7 @@ export default function SystemOutcomes() {
                     </div>
                 </div>
             </ContainerScroll>
-            <div className="bg-black py-4 md:py-8 px-8 overflow-hidden font-sans text-white -mt-48 md:-mt-64 relative z-30">
+            <div className="bg-black py-4 md:py-8 px-8 overflow-hidden font-sans text-white -mt-48 md:-mt-64 relative z-30" style={{ minHeight: '200px' }}>
                 <div className="max-w-[1200px] mx-auto">
                     <div className="relative h-12 mb-6 overflow-hidden flex items-center rounded-lg">
                         <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent z-10" />
