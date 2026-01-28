@@ -8,11 +8,37 @@ export default function Hero() {
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
-    video.play().catch(console.error)
+    
+    let isCancelled = false
+    
+    // Wait a tick to ensure DOM is ready
     const timer = setTimeout(() => {
-      video.pause()
-    }, 3000)
-    return () => clearTimeout(timer)
+      if (isCancelled || !video) return
+      
+      const playPromise = video.play()
+      
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Silently handle play interruptions
+        })
+      }
+      
+      // Pause after 3 seconds
+      setTimeout(() => {
+        if (!isCancelled && video) {
+          video.pause()
+        }
+      }, 3000)
+    }, 100)
+    
+    return () => {
+      isCancelled = true
+      clearTimeout(timer)
+      if (video) {
+        video.pause()
+        video.currentTime = 0
+      }
+    }
   }, [])
   return (
     <section className="relative bg-black overflow-hidden min-h-[500px] md:min-h-[900px] text-white">

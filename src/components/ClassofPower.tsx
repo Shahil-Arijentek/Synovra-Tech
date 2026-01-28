@@ -4,6 +4,7 @@ import { motion, AnimatePresence, useInView } from "framer-motion";
 export default function ClassofPower() {
   const [showVideo, setShowVideo] = useState(false);
   const sectionRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
 
   useEffect(() => {
@@ -15,6 +16,16 @@ export default function ClassofPower() {
       return () => clearTimeout(timer);
     }
   }, [isInView]);
+
+  useEffect(() => {
+    return () => {
+      // Clean up video on unmount
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.src = '';
+      }
+    };
+  }, []);
 
   return (
     <section
@@ -71,6 +82,7 @@ export default function ClassofPower() {
           ) : (
             <motion.video
               key="battery-video"
+              ref={videoRef}
               src="/classofpower.webm"
               className="block h-auto"
               style={{

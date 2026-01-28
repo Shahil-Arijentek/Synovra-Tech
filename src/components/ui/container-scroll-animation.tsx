@@ -12,6 +12,7 @@ export const ContainerScroll = ({
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
         target: containerRef,
+        offset: ["start start", "end start"],
     });
     const [isMobile, setIsMobile] = React.useState(false);
 
@@ -36,7 +37,8 @@ export const ContainerScroll = ({
 
     return (
         <div
-            className="h-[60rem] md:h-[80rem] flex items-center justify-center relative p-2 md:p-20"
+            className="relative h-[60rem] md:h-[80rem] flex items-center justify-center p-2 md:p-20"
+            style={{ position: 'relative' }}
             ref={containerRef}
         >
             <div

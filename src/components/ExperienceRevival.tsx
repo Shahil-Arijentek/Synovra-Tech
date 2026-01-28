@@ -1,10 +1,25 @@
+import { useRef, useEffect } from 'react'
+
 export default function ExperienceRevival() {
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    return () => {
+      // Clean up video on unmount
+      if (videoRef.current) {
+        videoRef.current.pause()
+        videoRef.current.src = ''
+      }
+    }
+  }, [])
+
   return (
     <section id="lifecycle" className="revival-experience relative flex min-h-[400px] md:min-h-[600px] items-center justify-center overflow-hidden bg-black px-6 text-center text-white sm:px-8 py-12 md:py-20">
 
       {/* Background Video */}
       <div className="absolute inset-0 h-full w-full">
         <video
+          ref={videoRef}
           autoPlay
           loop
           muted
