@@ -20,16 +20,20 @@ export default function ProofNotPromises() {
     }
   }, [])
 
-  const barAnimation = {
+  const barVariants = {
     initial: { width: 0 },
-    animate: { width: '75%' },
-    transition: { duration: 5, ease: [0.25, 0.1, 0.25, 1] }
+    animate: { 
+      width: '75%',
+      transition: { duration: 5, ease: [0.25, 0.1, 0.25, 1] as const }
+    }
   }
 
-  const shortBarAnimation = {
+  const shortBarVariants = {
     initial: { width: 0 },
-    animate: { width: '55%' },
-    transition: { duration: 5, ease: [0.25, 0.1, 0.25, 1] }
+    animate: { 
+      width: '55%',
+      transition: { duration: 5, ease: [0.25, 0.1, 0.25, 1] as const }
+    }
   }
 
   return (
@@ -53,12 +57,12 @@ export default function ProofNotPromises() {
             <h3 className="text-lg font-semibold mb-4">Recycling Only</h3>
             <div className="w-full bg-black rounded-[12px] overflow-hidden p-[2px]">
               <motion.div
-                className="bg-[#FF6B1A] rounded-[10px] p-8 h-full flex items-center"
+                className="bg-[#FF6B1A] rounded-[10px] p-6 h-full flex items-center"
                 initial="initial"
                 animate={isInView ? "animate" : "initial"}
-                variants={barAnimation}
+                variants={barVariants}
               >
-                <p className="text-3xl font-bold text-white">
+                <p className="text-2xl font-bold whitespace-nowrap text-white">
                   10.0 kg CO<sub>2</sub>
                 </p>
               </motion.div>
@@ -70,12 +74,12 @@ export default function ProofNotPromises() {
             <h3 className="text-lg font-semibold mb-4">Revival First, Then Recycle</h3>
             <div className="w-full bg-black rounded-[12px] overflow-hidden p-[2px]">
               <motion.div
-                className="bg-[#FF6B1A] rounded-[10px] p-8 h-full flex items-center"
+                className="bg-[#FF6B1A] rounded-[10px] p-6 h-full flex items-center"
                 initial="initial"
                 animate={isInView ? "animate" : "initial"}
-                variants={shortBarAnimation}
+                variants={shortBarVariants}
               >
-                <p className="text-3xl font-bold whitespace-nowrap text-white">
+                <p className="text-2xl font-bold whitespace-nowrap text-white">
                   1.2 kg CO<sub>2</sub>
                 </p>
               </motion.div>
