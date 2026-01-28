@@ -283,7 +283,7 @@ const MythTruthContent: React.FC<{ myth: string; truth: string }> = ({ myth, tru
         }}>
           MYTH
         </h3>
-        <p className="text-white text-sm sm:text-base md:text-lg lg:text-xl font-light leading-relaxed">
+        <p className="text-white text-sm sm:text-base md:text-base lg:text-lg font-light leading-relaxed">
           {myth}
         </p>
       </div>
@@ -298,7 +298,7 @@ const MythTruthContent: React.FC<{ myth: string; truth: string }> = ({ myth, tru
         <h3 className="text-[#FF6B35] text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold tracking-wider">
           TRUTH
         </h3>
-        <p className="text-white text-sm sm:text-base md:text-lg lg:text-xl font-light leading-relaxed">
+        <p className="text-white text-sm sm:text-base md:text-base lg:text-lg font-light leading-relaxed">
           {truth}
         </p>
       </div>

@@ -94,8 +94,8 @@ export default function BenefitsByAudience() {
               <ul className="space-y-1.5">
                 {card.benefits.map((benefit, idx) => (
                   <li key={idx} className="flex items-start gap-2 text-gray-300">
-                    <span className="text-[#FF6B1A] text-xs mt-0.5 flex-shrink-0">•</span>
-                    <span className="text-xs leading-tight">{benefit}</span>
+                    <span className="text-[#FF6B1A] text-sm mt-0.5 flex-shrink-0">•</span>
+                    <span className="text-sm sm:text-base md:text-base lg:text-lg leading-tight">{benefit}</span>
                   </li>
                 ))}
               </ul>

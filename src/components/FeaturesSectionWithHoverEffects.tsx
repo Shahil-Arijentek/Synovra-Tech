@@ -74,7 +74,7 @@ function Feature({
           <h3 className="text-2xl font-semibold transition-transform duration-200 group-hover:translate-x-2">
             {title}
           </h3>
-          <p className="mt-3 max-w-md text-sm text-white/70">{description}</p>
+          <p className="mt-3 max-w-md text-sm sm:text-base md:text-base lg:text-lg text-white/70">{description}</p>
         </div>
       </div>
     </article>

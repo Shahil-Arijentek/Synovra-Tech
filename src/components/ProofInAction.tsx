@@ -58,7 +58,7 @@ export default function ProofInAction() {
         <h2 className="text-center text-[32px] md:text-5xl font-bold leading-tight">
           Proven in Live Environments
         </h2>
-        <p className="mt-3 text-center text-xs md:text-base text-white/70">
+        <p className="mt-3 text-center text-sm sm:text-base md:text-base lg:text-lg text-white/70">
           Operating where failure isn't an option
         </p>
 
@@ -98,7 +98,7 @@ export default function ProofInAction() {
                 <h3 className="text-xl md:text-3xl font-semibold leading-tight">
                   {currentSlide.headline}
                 </h3>
-                <p className="mt-2 md:mt-3 text-[13px] md:text-base text-white/70">
+                <p className="mt-2 md:mt-3 text-sm sm:text-base md:text-base lg:text-lg text-white/70">
                   {currentSlide.subhead}
                 </p>
               </motion.div>

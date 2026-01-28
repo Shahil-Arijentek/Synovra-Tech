@@ -29,7 +29,7 @@ export default function BeforeYouRecycle() {
 
         {/* Subtitle */}
         <p 
-          className="text-white/90 mb-8 md:mb-12 text-sm sm:text-base md:text-lg"
+          className="text-white/90 mb-8 md:mb-12 text-sm sm:text-base md:text-base lg:text-lg"
           style={{
             fontFamily: 'Arial',
             fontWeight: 400,

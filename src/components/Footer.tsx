@@ -24,7 +24,7 @@ export default function Footer() {
                 Synovra
               </span>
             </div>
-            <p className="max-w-lg mx-auto md:mx-0 text-[13px] md:text-base leading-relaxed text-white/70">
+            <p className="max-w-lg mx-auto md:mx-0 text-sm sm:text-base md:text-base lg:text-lg leading-relaxed text-white/70">
               Redefining battery lifecycle management through precision
               engineering and circular economy principles.
             </p>
@@ -34,7 +34,7 @@ export default function Footer() {
             <p className="text-xs md:text-sm uppercase tracking-[0.2em] text-white/50">
               Navigation
             </p>
-            <div className="space-y-2 md:space-y-3 text-[13px] md:text-base text-white/70">
+            <div className="space-y-2 md:space-y-3 text-sm sm:text-base md:text-base lg:text-lg text-white/70">
               <a className="block transition hover:text-white" href="#process">
                 Process
               </a>
@@ -54,7 +54,7 @@ export default function Footer() {
             <p className="text-xs md:text-sm uppercase tracking-[0.2em] text-white/50">
               Contact
             </p>
-            <div className="space-y-2 md:space-y-3 text-[13px] md:text-base text-white/70">
+            <div className="space-y-2 md:space-y-3 text-sm sm:text-base md:text-base lg:text-lg text-white/70">
               <a
                 className="block transition hover:text-white"
                 href="mailto:hello@synovra.tech"

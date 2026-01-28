@@ -72,13 +72,13 @@ export default function Challenges() {
                     <p className="text-[10px] font-bold uppercase text-red-500 mb-1">
                       The Challenge
                     </p>
-                    <p className="text-[13px] sm:text-[14px] md:text-[14px] text-gray-200">{currentChallenge.problem}</p>
+                    <p className="text-sm sm:text-base md:text-base lg:text-lg text-gray-200">{currentChallenge.problem}</p>
                   </div>
                   <div className="mb-0">
                     <p className="text-[10px] font-bold uppercase text-emerald-500 mb-1">
                       How Synovra Solves It
                     </p>
-                    <p className="text-[13px] sm:text-[14px] md:text-[14px] text-gray-200">{currentChallenge.solution}</p>
+                    <p className="text-sm sm:text-base md:text-base lg:text-lg text-gray-200">{currentChallenge.solution}</p>
                   </div>
                 </div>
               </motion.div>

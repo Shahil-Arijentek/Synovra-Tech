@@ -45,7 +45,7 @@ export default function ProofNotPromises() {
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6">
             The Proof in Numbers
           </h2>
-          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/70 max-w-3xl mx-auto px-4">
+          <p className="text-sm sm:text-base md:text-base lg:text-lg text-white/70 max-w-3xl mx-auto px-4">
             Revival keeps capacity in service and delays smelting — reducing emissions by up to 90%.
           </p>
         </div>
@@ -89,7 +89,7 @@ export default function ProofNotPromises() {
 
         {/* Bottom Text - Hidden on mobile, shown on desktop */}
         <div className="text-center mb-6 md:mb-6 hidden md:block">
-          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/70 max-w-2xl mx-auto px-4">
+          <p className="text-sm sm:text-base md:text-base lg:text-lg text-white/70 max-w-2xl mx-auto px-4">
             Revival keeps capacity in service and delays smelting — cutting emissions by up to 90%.
           </p>
         </div>
