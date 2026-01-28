@@ -1,40 +1,13 @@
-import { useState } from 'react';
-import ProofInNumbers from '../components/ProofInNumbers';
 import ProofInNumbersGSAP from '../components/ProofInNumbersGSAP';
 
 const ProofInNumbersDemo = () => {
-  const [activeVersion, setActiveVersion] = useState<'css' | 'gsap'>('gsap');
 
   return (
     <div className="bg-black min-h-screen">
-      {/* Version Selector */}
+      {/* Header */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-gray-900 border-b border-gray-700 p-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <h1 className="text-white text-xl font-bold">Proof in Numbers - Demo</h1>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setActiveVersion('css')}
-                className={`px-4 py-2 rounded-lg font-semibold transition-all ${
-                  activeVersion === 'css'
-                    ? 'bg-orange-500 text-white'
-                    : 'bg-gray-800 text-gray-400 hover:text-white'
-                }`}
-              >
-                CSS Version
-              </button>
-              <button
-                onClick={() => setActiveVersion('gsap')}
-                className={`px-4 py-2 rounded-lg font-semibold transition-all ${
-                  activeVersion === 'gsap'
-                    ? 'bg-orange-500 text-white'
-                    : 'bg-gray-800 text-gray-400 hover:text-white'
-                }`}
-              >
-                GSAP Version ⭐
-              </button>
-            </div>
-          </div>
+          <h1 className="text-white text-xl font-bold">Proof in Numbers - Demo</h1>
           <div className="text-gray-400 text-sm">
             Scroll down to see the scroll-lock in action
           </div>
@@ -72,7 +45,7 @@ const ProofInNumbersDemo = () => {
       </div>
 
       {/* Active Component */}
-      {activeVersion === 'css' ? <ProofInNumbers /> : <ProofInNumbersGSAP />}
+      <ProofInNumbersGSAP />
 
       {/* Footer Section */}
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-t from-gray-900 to-black">
@@ -85,29 +58,17 @@ const ProofInNumbersDemo = () => {
           </p>
           <div className="bg-gray-800 rounded-xl p-8 max-w-2xl mx-auto text-left">
             <h3 className="text-2xl font-bold text-white mb-4">
-              {activeVersion === 'css' ? '📝 CSS Version' : '⚡ GSAP Version'}
+              ⚡ GSAP Version
             </h3>
-            {activeVersion === 'css' ? (
-              <ul className="text-gray-300 space-y-2">
-                <li>✅ Simple implementation</li>
-                <li>✅ No additional libraries</li>
-                <li>✅ Easy to understand</li>
-                <li>✅ Good for prototyping</li>
-                <li className="mt-4 text-orange-500">
-                  💡 Try the GSAP version for smoother scrolling!
-                </li>
-              </ul>
-            ) : (
-              <ul className="text-gray-300 space-y-2">
-                <li>✅ Ultra-smooth pinning</li>
-                <li>✅ Premium user experience</li>
-                <li>✅ Better mobile support</li>
-                <li>✅ No scroll jumps</li>
-                <li className="mt-4 text-green-500">
-                  ⭐ Recommended for production!
-                </li>
-              </ul>
-            )}
+            <ul className="text-gray-300 space-y-2">
+              <li>✅ Ultra-smooth pinning</li>
+              <li>✅ Premium user experience</li>
+              <li>✅ Better mobile support</li>
+              <li>✅ No scroll jumps</li>
+              <li className="mt-4 text-green-500">
+                ⭐ Recommended for production!
+              </li>
+            </ul>
           </div>
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
