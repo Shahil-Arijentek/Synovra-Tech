@@ -65,7 +65,7 @@ export default function BenefitsByAudience() {
               fontFamily: 'Arial',
               fontStyle: 'normal',
               lineHeight: '120%',
-              letterSpacing: '-2.4px'
+              letterSpacing: '1px'
             }}
           >
             Benefits by Audience

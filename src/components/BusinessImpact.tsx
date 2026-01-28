@@ -19,7 +19,7 @@ export default function BusinessImpact() {
     ]
   
   return (
-    <section className="bg-[#0d0d0d] py-12 md:py-20 px-4 sm:px-6 md:px-8 font-sans text-white relative z-[310]" style={{ marginTop: '-20vh' }}>
+    <section className="bg-[#0d0d0d] py-12 md:py-20 px-4 sm:px-6 md:px-8 font-sans text-white relative z-[310] -mt-8 md:-mt-[20vh]">
       <div className="max-w-[1400px] mx-auto">
         {/* Header */}
         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-10 md:mb-16">
