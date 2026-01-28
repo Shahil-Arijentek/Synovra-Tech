@@ -1,26 +1,24 @@
 import { motion } from 'framer-motion'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useInView } from 'framer-motion'
 import { useRef } from 'react'
 
 export default function ProofNotPromises() {
-  const [isFinished, setIsFinished] = useState(false)
   const sectionRef = useRef(null)
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 })
 
-  // Scroll lock effect
+  // Ensure scroll is always enabled
   useEffect(() => {
-    if (!isFinished) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
+    // Make sure body is scrollable
+    document.body.style.overflow = ''
+    document.documentElement.style.overflow = ''
 
     // Cleanup on unmount
     return () => {
       document.body.style.overflow = ''
+      document.documentElement.style.overflow = ''
     }
-  }, [isFinished])
+  }, [])
 
   const barAnimation = {
     initial: { width: 0 },
@@ -76,7 +74,6 @@ export default function ProofNotPromises() {
                 initial="initial"
                 animate={isInView ? "animate" : "initial"}
                 variants={shortBarAnimation}
-                onAnimationComplete={() => setIsFinished(true)}
               >
                 <p className="text-3xl font-bold whitespace-nowrap text-white">
                   1.2 kg CO<sub>2</sub>

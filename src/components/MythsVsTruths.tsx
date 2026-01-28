@@ -30,71 +30,174 @@ const mythTruthData: MythTruthPair[] = [
 
 const MythsVsTruths: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const layer1Ref = useRef<HTMLDivElement>(null);
   const layer2Ref = useRef<HTMLDivElement>(null);
   const layer3Ref = useRef<HTMLDivElement>(null);
   const layer4Ref = useRef<HTMLDivElement>(null);
+  const [isMounted, setIsMounted] = React.useState(false);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    // Ensure body is scrollable on mount
+    if (typeof window !== 'undefined') {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.documentElement.style.overflow = '';
+    }
+    
+    // Mark as mounted after a brief delay
+    const mountTimer = setTimeout(() => {
+      setIsMounted(true);
+    }, 50);
 
-    const ctx = gsap.context(() => {
-      // Set Layer 1 visible immediately at position 0
-      gsap.set(layer1Ref.current, { opacity: 1, y: 0 });
-      // Set other layers below the viewport (positive Y) and invisible
-      gsap.set([layer2Ref.current, layer3Ref.current, layer4Ref.current], { opacity: 0, y: 300 });
+    return () => {
+      clearTimeout(mountTimer);
+      setIsMounted(false);
+    };
+  }, []);
 
-      const tl = gsap.timeline({
+  useEffect(() => {
+    if (!containerRef.current || !isMounted) return;
+
+    let isActive = true;
+    let ctx: gsap.Context | null = null;
+
+    // Set initial visibility immediately (before GSAP)
+    if (layer1Ref.current) {
+      layer1Ref.current.style.opacity = '1';
+    }
+
+    // Wait for DOM to be fully ready before initializing GSAP
+    const initTimer = setTimeout(() => {
+      if (!isActive || !containerRef.current) return;
+
+      ctx = gsap.context(() => {
+        // Ensure all refs exist before setting up animations
+        if (!layer1Ref.current || !layer2Ref.current || !layer3Ref.current || !layer4Ref.current) {
+          return;
+        }
+
+        // Set Layer 1 visible immediately at position 0
+        gsap.set(layer1Ref.current, { opacity: 1, y: 0 });
+        // Set other layers below the viewport (positive Y) and invisible
+        gsap.set([layer2Ref.current, layer3Ref.current, layer4Ref.current], { opacity: 0, y: 300 });
+
+        const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top top',
           end: 'bottom bottom',
           scrub: 0.5,
           pin: true,
+          pinSpacing: true,
+          anticipatePin: 1,
           invalidateOnRefresh: true,
         },
       });
 
-      // Stage 1: Hold first content (0 - 0.1)
-      tl.to(layer1Ref.current, { opacity: 1, duration: 0.1 }, 0);
+        // Stage 1: Hold first content (0 - 0.1)
+        if (layer1Ref.current) {
+          tl.to(layer1Ref.current, { opacity: 1, duration: 0.1 }, 0);
+        }
 
-      // Transition 1→2 (0.1 - 0.25)
-      // Layer 1 moves UP and fades out
-      tl.to(layer1Ref.current, { opacity: 0, y: -100, duration: 0.15 }, 0.1);
-      // Layer 2 moves UP from below and fades in
-      tl.fromTo(layer2Ref.current, { opacity: 0, y: 300 }, { opacity: 1, y: 0, duration: 0.15 }, 0.1);
+        // Transition 1→2 (0.1 - 0.25)
+        if (layer1Ref.current && layer2Ref.current) {
+          // Layer 1 moves UP and fades out
+          tl.to(layer1Ref.current, { opacity: 0, y: -100, duration: 0.15 }, 0.1);
+          // Layer 2 moves UP from below and fades in
+          tl.fromTo(layer2Ref.current, { opacity: 0, y: 300 }, { opacity: 1, y: 0, duration: 0.15 }, 0.1);
+        }
 
-      // Stage 2: Hold second content (0.25 - 0.35)
-      tl.to(layer2Ref.current, { opacity: 1, y: 0, duration: 0.1 }, 0.25);
+        // Stage 2: Hold second content (0.25 - 0.35)
+        if (layer2Ref.current) {
+          tl.to(layer2Ref.current, { opacity: 1, y: 0, duration: 0.1 }, 0.25);
+        }
 
-      // Transition 2→3 (0.35 - 0.50)
-      // Layer 2 moves UP and fades out
-      tl.to(layer2Ref.current, { opacity: 0, y: -100, duration: 0.15 }, 0.35);
-      // Layer 3 moves UP from below and fades in
-      tl.fromTo(layer3Ref.current, { opacity: 0, y: 300 }, { opacity: 1, y: 0, duration: 0.15 }, 0.35);
+        // Transition 2→3 (0.35 - 0.50)
+        if (layer2Ref.current && layer3Ref.current) {
+          // Layer 2 moves UP and fades out
+          tl.to(layer2Ref.current, { opacity: 0, y: -100, duration: 0.15 }, 0.35);
+          // Layer 3 moves UP from below and fades in
+          tl.fromTo(layer3Ref.current, { opacity: 0, y: 300 }, { opacity: 1, y: 0, duration: 0.15 }, 0.35);
+        }
 
-      // Stage 3: Hold third content (0.50 - 0.60)
-      tl.to(layer3Ref.current, { opacity: 1, y: 0, duration: 0.1 }, 0.50);
+        // Stage 3: Hold third content (0.50 - 0.60)
+        if (layer3Ref.current) {
+          tl.to(layer3Ref.current, { opacity: 1, y: 0, duration: 0.1 }, 0.50);
+        }
 
-      // Transition 3→4 (0.60 - 0.75)
-      // Layer 3 moves UP and fades out
-      tl.to(layer3Ref.current, { opacity: 0, y: -100, duration: 0.15 }, 0.60);
-      // Layer 4 moves UP from below and fades in
-      tl.fromTo(layer4Ref.current, { opacity: 0, y: 300 }, { opacity: 1, y: 0, duration: 0.15 }, 0.60);
+        // Transition 3→4 (0.60 - 0.75)
+        if (layer3Ref.current && layer4Ref.current) {
+          // Layer 3 moves UP and fades out
+          tl.to(layer3Ref.current, { opacity: 0, y: -100, duration: 0.15 }, 0.60);
+          // Layer 4 moves UP from below and fades in
+          tl.fromTo(layer4Ref.current, { opacity: 0, y: 300 }, { opacity: 1, y: 0, duration: 0.15 }, 0.60);
+        }
 
-      // Stage 4: Hold last content (0.75 - 1.0)
-      tl.to(layer4Ref.current, { opacity: 1, y: 0, duration: 0.25 }, 0.75);
+        // Stage 4: Hold last content (0.75 - 1.0)
+        if (layer4Ref.current) {
+          tl.to(layer4Ref.current, { opacity: 1, y: 0, duration: 0.25 }, 0.75);
+        }
 
-    }, containerRef);
+      }, containerRef);
 
-    return () => ctx.revert();
-  }, []);
+      // Refresh ScrollTrigger after setup
+      ScrollTrigger.refresh();
+    }, 100);
+
+    return () => {
+      isActive = false;
+      clearTimeout(initTimer);
+      
+      // IMMEDIATE cleanup - kill all ScrollTriggers synchronously
+      const triggers = ScrollTrigger.getAll();
+      triggers.forEach(trigger => {
+        try {
+          trigger.kill(true); // true = revert pinning immediately
+        } catch (error) {
+          // Already killed
+        }
+      });
+      
+      // Then revert GSAP context
+      if (ctx) {
+        try {
+          ctx.revert();
+        } catch (error) {
+          // Already reverted
+        }
+      }
+      
+      // Clean up video on unmount
+      if (videoRef.current) {
+        try {
+          videoRef.current.pause();
+          videoRef.current.src = '';
+        } catch (error) {
+          // Video already cleaned up
+        }
+      }
+      
+      // Force DOM to be responsive again
+      if (typeof window !== 'undefined') {
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.documentElement.style.overflow = '';
+        
+        // Force refresh ScrollTrigger to ensure clean state
+        setTimeout(() => {
+          ScrollTrigger.refresh();
+        }, 10);
+      }
+    };
+  }, [isMounted]);
 
   return (
-    <div ref={containerRef} className="relative w-full h-[400vh] bg-black overflow-hidden z-[200] -mt-[600px] -mb-[400px]">
-      <div className="sticky top-0 w-full min-h-[90vh] bg-black flex items-start justify-center overflow-hidden pt-24 pb-16">
+    <div ref={containerRef} className="relative w-full h-[400vh] bg-black z-[200] -mt-[600px] -mb-[400px]">
+      <div className="sticky top-0 w-full min-h-[90vh] bg-black flex items-start justify-center pt-24 pb-16">
       {/* Background Video with low opacity */}
       <video
+        ref={videoRef}
         autoPlay
         loop
         muted

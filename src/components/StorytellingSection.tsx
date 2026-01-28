@@ -12,30 +12,73 @@ const StorytellingSection: React.FC = () => {
   const layer1Ref = useRef<HTMLDivElement>(null);
   const layer2Ref = useRef<HTMLDivElement>(null);
   const layer3Ref = useRef<HTMLDivElement>(null);
+  const [isMounted, setIsMounted] = React.useState(false);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    // Ensure body is scrollable on mount
+    if (typeof window !== 'undefined') {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.documentElement.style.overflow = '';
+    }
+    
+    // Mark as mounted after a brief delay
+    const mountTimer = setTimeout(() => {
+      setIsMounted(true);
+    }, 50);
 
-    // Ensure all videos start paused at first frame
-    const videos = [video1Ref.current, video2Ref.current, video3Ref.current];
-    videos.forEach(vid => {
-      if (vid) {
-        vid.currentTime = 0;
-        vid.pause();
-      }
-    });
+    return () => {
+      clearTimeout(mountTimer);
+      setIsMounted(false);
+    };
+  }, []);
 
-    const ctx = gsap.context(() => {
-      // Set Layer 1 content to be visible immediately on load
-      gsap.set(layer1Ref.current, { opacity: 1 });
+  useEffect(() => {
+    if (!containerRef.current || !isMounted) return;
 
-      const tl = gsap.timeline({
+    let isActive = true;
+    let ctx: gsap.Context | null = null;
+
+    // Set initial visibility immediately (before GSAP)
+    if (layer1Ref.current) {
+      layer1Ref.current.style.opacity = '1';
+    }
+
+    // Wait for DOM to be fully ready before initializing GSAP
+    const initTimer = setTimeout(() => {
+      if (!isActive || !containerRef.current) return;
+
+      // Ensure all videos start paused at first frame
+      const videos = [video1Ref.current, video2Ref.current, video3Ref.current];
+      videos.forEach(vid => {
+        if (vid && isActive) {
+          try {
+            vid.currentTime = 0;
+            vid.pause();
+          } catch (error) {
+            // Silently handle video initialization errors
+          }
+        }
+      });
+
+      ctx = gsap.context(() => {
+        // Ensure all refs exist before setting up animations
+        if (!layer1Ref.current || !layer2Ref.current || !layer3Ref.current) {
+          return;
+        }
+
+        // Set Layer 1 content to be visible immediately on load
+        gsap.set(layer1Ref.current, { opacity: 1 });
+
+        const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top top',
           end: 'bottom bottom',
           scrub: 0.5,
           pin: true,
+          pinSpacing: true,
+          anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             const progress = self.progress;
@@ -74,33 +117,93 @@ const StorytellingSection: React.FC = () => {
       // Hold at first frame for 0.1 seconds - Keep Layer 1 visible
       tl.to(layer1Ref.current, { opacity: 1, duration: 0.1 }, 0);
      
-      // Fade out Layer 1 (Vision) and fade in Layer 2 (Problem)
-      tl.to(layer1Ref.current, { opacity: 0, duration: 0.1 }, 0.1);
-      tl.to(layer2Ref.current, { opacity: 1, duration: 0.1 }, 0.15);
+        // Fade out Layer 1 (Vision) and fade in Layer 2 (Problem)
+        if (layer1Ref.current && layer2Ref.current) {
+          tl.to(layer1Ref.current, { opacity: 0, duration: 0.1 }, 0.1);
+          tl.to(layer2Ref.current, { opacity: 1, duration: 0.1 }, 0.15);
+        }
 
-      // Transition to Stage 2
-      tl.to(video1Ref.current, { opacity: 0, duration: 0.05 }, 0.35);
-      tl.to(video2Ref.current, { opacity: 1, duration: 0.05 }, 0.35);
+        // Transition to Stage 2
+        if (video1Ref.current && video2Ref.current) {
+          tl.to(video1Ref.current, { opacity: 0, duration: 0.05 }, 0.35);
+          tl.to(video2Ref.current, { opacity: 1, duration: 0.05 }, 0.35);
+        }
 
-      // --- STAGE 2: PROBLEM ---
-      // Layer 2 visible, Video 2 playing
-     
-      // Transition to Stage 3 - Fade out Layer 2
-      tl.to(layer2Ref.current, { opacity: 0, duration: 0.1 }, 0.55);
-      tl.to(video2Ref.current, { opacity: 0, duration: 0.05 }, 0.60);
-      tl.to(video3Ref.current, { opacity: 1, duration: 0.05 }, 0.60);
+        // --- STAGE 2: PROBLEM ---
+        // Layer 2 visible, Video 2 playing
+       
+        // Transition to Stage 3 - Fade out Layer 2
+        if (layer2Ref.current && video2Ref.current && video3Ref.current) {
+          tl.to(layer2Ref.current, { opacity: 0, duration: 0.1 }, 0.55);
+          tl.to(video2Ref.current, { opacity: 0, duration: 0.05 }, 0.60);
+          tl.to(video3Ref.current, { opacity: 1, duration: 0.05 }, 0.60);
+        }
 
-      // --- STAGE 3: SOLUTION ---
-      // Fade in Layer 3 (Solution)
-      tl.to(layer3Ref.current, { opacity: 1, duration: 0.1 }, 0.70);
+        // --- STAGE 3: SOLUTION ---
+        // Fade in Layer 3 (Solution)
+        if (layer3Ref.current) {
+          tl.to(layer3Ref.current, { opacity: 1, duration: 0.1 }, 0.70);
+        }
 
-    }, containerRef);
+      }, containerRef);
 
-    return () => ctx.revert();
-  }, []);
+      // Refresh ScrollTrigger after setup
+      ScrollTrigger.refresh();
+    }, 100);
+
+    return () => {
+      isActive = false;
+      clearTimeout(initTimer);
+      
+      // IMMEDIATE cleanup - kill all ScrollTriggers synchronously
+      const triggers = ScrollTrigger.getAll();
+      triggers.forEach(trigger => {
+        try {
+          trigger.kill(true); // true = revert pinning immediately
+        } catch (error) {
+          // Already killed
+        }
+      });
+      
+      // Then revert GSAP context
+      if (ctx) {
+        try {
+          ctx.revert();
+        } catch (error) {
+          // Already reverted
+        }
+      }
+      
+      // Clean up videos on unmount
+      const videos = [video1Ref.current, video2Ref.current, video3Ref.current];
+      videos.forEach(vid => {
+        if (vid) {
+          try {
+            vid.pause();
+            vid.currentTime = 0;
+            vid.src = '';
+          } catch (error) {
+            // Video already cleaned up
+          }
+        }
+      });
+      
+      // Force DOM to be responsive again
+      if (typeof window !== 'undefined') {
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.documentElement.style.overflow = '';
+        
+        // Force refresh ScrollTrigger to ensure clean state
+        setTimeout(() => {
+          ScrollTrigger.refresh();
+        }, 10);
+      }
+    };
+  }, [isMounted]);
 
   return (
-    <div id="why-revive" ref={containerRef} className="relative w-full h-[150vh] bg-black overflow-hidden z-10">
+    <div id="why-revive" ref={containerRef} className="relative w-full h-[150vh] bg-black z-10">
       <div className="sticky top-0 w-full h-screen flex flex-col items-center justify-start pt-[15vh]">
        
         {/* Floating Video Layer: Removed border, shadow, and bg-black */}
@@ -129,7 +232,7 @@ const StorytellingSection: React.FC = () => {
         <div className="relative flex-1 w-full max-w-6xl mt-4 pointer-events-none z-10">
          
           {/* Layer 1: Vision */}
-          <div ref={layer1Ref} className="absolute inset-0 flex flex-col items-center text-center opacity-0">
+          <div ref={layer1Ref} className="absolute inset-0 flex flex-col items-center text-center opacity-100">
             <h2 className="text-white mb-12 px-4" style={{
               width: '680px',
               maxWidth: '90%',
