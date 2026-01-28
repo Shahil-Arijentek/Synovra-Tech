@@ -193,7 +193,7 @@ const MythsVsTruths: React.FC = () => {
   }, [isMounted]);
 
   return (
-    <div ref={containerRef} className="relative w-full h-[400vh] bg-black z-[200] -mt-[600px] -mb-[400px]">
+   <div ref={containerRef} className="relative w-full h-[400vh] bg-black z-[101]">
       <div className="sticky top-0 w-full min-h-[90vh] bg-black flex items-start justify-center pt-24 pb-16">
       {/* Background Video with low opacity */}
       <video
