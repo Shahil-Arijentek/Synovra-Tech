@@ -77,7 +77,7 @@ const ProofInNumbersGSAP = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen bg-black text-white py-20 px-6 md:px-12 lg:px-24 flex items-center justify-center"
+      className="relative min-h-screen bg-[#0d0d0d] text-white py-20 px-6 md:px-12 lg:px-24 flex items-center justify-center"
     >
       <div className="max-w-5xl w-full">
         {/* Header */}

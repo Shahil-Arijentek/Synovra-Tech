@@ -44,7 +44,7 @@ export default function Challenges() {
 
   return (
     <ChallengesHero title="Your Challenges, Solved" className="w-full">
-      <section className="relative z-20 w-full bg-black -mt-[300px] sm:-mt-[350px] md:-mt-[500px] pb-16 md:pb-32">
+      <section className="relative z-20 w-full bg-[#0d0d0d] -mt-[300px] sm:-mt-[350px] md:-mt-[500px] pb-16 md:pb-32">
         <div className="relative flex flex-col items-center px-4 sm:px-6 md:px-8 mt-0">
           <div className="w-full max-w-[1040px] z-20">
             <AnimatePresence mode="wait" initial={false}>
@@ -54,17 +54,17 @@ export default function Challenges() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.4, ease: 'easeOut' }}
-                className="flex flex-col md:flex-row w-full overflow-hidden rounded-[20px] border border-white/10 bg-black shadow-[0_-5px_30px_rgba(0,0,0,0.4)] min-h-[480px] sm:min-h-[440px] md:min-h-[400px] md:h-[400px]"
+                className="flex flex-col md:flex-row w-full overflow-hidden rounded-[20px] border border-white/10 bg-[#0d0d0d] shadow-[0_-5px_30px_rgba(0,0,0,0.4)] min-h-[480px] sm:min-h-[440px] md:min-h-[400px] md:h-[400px]"
               >
                 <div
-                  className="h-48 sm:h-64 md:h-full w-full md:w-1/2 bg-black"
+                  className="h-48 sm:h-64 md:h-full w-full md:w-1/2 bg-[#0d0d0d]"
                   style={{
                     backgroundImage: `url(${currentChallenge.image})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center'
                   }}
                 />
-                <div className="flex w-full md:w-1/2 flex-col justify-center bg-black p-6 sm:p-8 md:p-10 text-center md:text-left">
+                <div className="flex w-full md:w-1/2 flex-col justify-center bg-[#0d0d0d] p-6 sm:p-8 md:p-10 text-center md:text-left">
                   <h3 className="mb-4 text-[18px] sm:text-[20px] md:text-[24px] font-bold text-white leading-tight">
                     {currentChallenge.title}
                   </h3>

@@ -30,7 +30,7 @@ export default function ClassofPower() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex w-full flex-col items-center justify-start bg-black overflow-hidden pt-12 pb-8 px-6 md:pt-16 md:pb-12 md:px-8"
+      className="relative flex w-full flex-col items-center justify-start bg-[#0d0d0d] overflow-hidden pt-12 pb-8 px-6 md:pt-16 md:pb-12 md:px-8"
     >
       <div
         className="flex w-full max-w-[1200px] flex-col items-center gap-4 md:gap-6"

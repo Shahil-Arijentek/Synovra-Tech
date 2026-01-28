@@ -1,17 +1,17 @@
 export default function Footer() {
   return (
-    <footer className="w-full overflow-hidden bg-black text-white">
-      <div className="relative w-full">
+    <footer className="relative w-full bg-[#0d0d0d] text-white z-[500]">
+      <div className="relative w-full overflow-visible md:mt-0 lg:mt-0">
         <img
           src="/footer.png"
           alt=""
-          className="h-24 sm:h-32 md:h-48 lg:h-64 w-full object-cover select-none"
+          className="h-24 sm:h-32 md:h-64 lg:h-80 w-full object-cover select-none relative md:z-10 opacity-20"
         />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/70 via-black/35 to-black" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-black/70" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#0d0d0d]/20 via-[#0d0d0d]/10 to-[#0d0d0d] md:z-20" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0d0d0d]/30 via-transparent to-[#0d0d0d]/30 md:z-20" />
       </div>
 
-      <div className="mx-auto w-full max-w-[1600px] px-6 md:px-8 lg:px-20 pb-10 pt-0">
+      <div className="mx-auto w-full max-w-[1600px] px-6 md:px-8 lg:px-20 pb-10 pt-0 md:pt-8 lg:pt-12">
         <div className="grid gap-8 md:gap-12 grid-cols-1 md:grid-cols-[1.3fr_1fr_1fr]">
           <div className="space-y-4 text-center md:text-left">
             <div className="flex items-center justify-center md:justify-start gap-3 uppercase tracking-[0.3em] text-[#f59d0f]">

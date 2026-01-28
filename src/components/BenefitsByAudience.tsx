@@ -53,19 +53,17 @@ export default function BenefitsByAudience() {
   ]
 
   return (
-    <section className="bg-black py-20 px-6 md:px-8 font-sans text-white relative z-[310]">
+    <section className="bg-[#0d0d0d] py-12 md:py-20 px-4 sm:px-6 md:px-8 font-sans text-white relative z-[310]">
       <div className="max-w-[1400px] mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 md:mb-16">
           <h2 
-            className="mb-4"
+            className="mb-3 md:mb-4 text-3xl sm:text-4xl md:text-5xl font-black"
             style={{
               color: '#FFF',
               textAlign: 'center',
               fontFamily: 'Arial',
-              fontSize: '45px',
               fontStyle: 'normal',
-              fontWeight: 900,
               lineHeight: '120%',
               letterSpacing: '-2.4px'
             }}
@@ -73,11 +71,11 @@ export default function BenefitsByAudience() {
             Benefits by Audience
           </h2>
           <p 
+            className="text-sm sm:text-base md:text-lg px-4"
             style={{
               color: '#9C9C9C',
               textAlign: 'center',
               fontFamily: 'Arial',
-              fontSize: '18px',
               fontStyle: 'normal',
               fontWeight: 400,
               lineHeight: '28px'
@@ -88,16 +86,11 @@ export default function BenefitsByAudience() {
         </div>
 
         {/* Cards Grid */}
-        <div className="grid grid-cols-2 gap-6 mx-auto" style={{ maxWidth: '920px' }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mx-auto max-w-[920px]">
           {benefitCards.map((card, index) => (
             <div
               key={index}
-              className="bg-black border border-[#2A2A2A] rounded-xl relative overflow-hidden group transition-all duration-300"
-              style={{
-                width: '430px',
-                height: '250px',
-                padding: '24px'
-              }}
+              className="bg-[#0d0d0d] border border-[#2A2A2A] rounded-xl relative overflow-hidden group transition-all duration-300 p-5 md:p-6"
             >
               {/* Animated Orange Border */}
               <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#FF6B1A] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out" 

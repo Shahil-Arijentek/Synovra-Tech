@@ -51,7 +51,7 @@ export default function GlowBattery() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full bg-black"
+      className="relative w-full bg-[#0d0d0d]"
       style={{ height: '500vh' }}
     >
       <style>{`
@@ -77,9 +77,9 @@ export default function GlowBattery() {
         }
       `}</style>
       <div className="sticky top-0 h-screen w-full overflow-hidden">
-        {/* Shading Gradients to blend with black background */}
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black to-transparent z-10" />
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black to-transparent z-10" />
+        {/* Shading Gradients to blend with dark background */}
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#0d0d0d] to-transparent z-10" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#0d0d0d] to-transparent z-10" />
 
         {/* Battery Assets & Switching Glow with Stage-based Fade */}
         <div className="absolute inset-0 pointer-events-none">

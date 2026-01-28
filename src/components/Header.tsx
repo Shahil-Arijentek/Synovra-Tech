@@ -72,7 +72,7 @@ export default function Header() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="absolute top-[94px] left-0 right-0 bg-black/90 backdrop-blur-md border border-white/10 rounded-[10px] p-6 flex flex-col gap-6 md:hidden z-[100]"
+              className="absolute top-[94px] left-0 right-0 bg-[#0d0d0d]/90 backdrop-blur-md border border-white/10 rounded-[10px] p-6 flex flex-col gap-6 md:hidden z-[100]"
             >
               <Link
                 to="/"

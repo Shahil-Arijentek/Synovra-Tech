@@ -3,7 +3,7 @@ import ProofInNumbersGSAP from '../components/ProofInNumbersGSAP';
 const ProofInNumbersDemo = () => {
 
   return (
-    <div className="bg-black min-h-screen">
+    <div className="bg-[#0d0d0d] min-h-screen">
       {/* Header */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-gray-900 border-b border-gray-700 p-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -18,7 +18,7 @@ const ProofInNumbersDemo = () => {
       <div className="h-20" />
 
       {/* Hero Section */}
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-900 to-black">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-900 to-[#0d0d0d]">
         <div className="text-center px-6">
           <h2 className="text-5xl md:text-7xl font-bold text-white mb-6">
             Welcome to the Demo
@@ -48,7 +48,7 @@ const ProofInNumbersDemo = () => {
       <ProofInNumbersGSAP />
 
       {/* Footer Section */}
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-t from-gray-900 to-black">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-t from-gray-900 to-[#0d0d0d]">
         <div className="text-center px-6">
           <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
             Animation Complete! 🎉

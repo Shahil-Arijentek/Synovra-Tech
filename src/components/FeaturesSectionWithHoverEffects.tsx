@@ -32,8 +32,8 @@ export function FeaturesSectionWithHoverEffects() {
   ]
 
   return (
-    <section className="relative overflow-hidden bg-black px-6 py-20 text-white sm:px-10">
-      <div className="pointer-events-none absolute inset-0 bg-black" />
+    <section className="relative overflow-hidden bg-[#0d0d0d] px-6 py-20 text-white sm:px-10">
+      <div className="pointer-events-none absolute inset-0 bg-[#0d0d0d]" />
       <div className="relative mx-auto max-w-6xl">
         <div className="text-center">
           <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">

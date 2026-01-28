@@ -84,7 +84,7 @@ export const BentoGridItem = ({
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => setIsHovered(!isHovered)}
       className={cn(
-        "group/bento relative flex flex-col justify-end overflow-hidden rounded-3xl border border-white/10 bg-black min-h-[320px] md:min-h-[200px]",
+        "group/bento relative flex flex-col justify-end overflow-hidden rounded-3xl border border-white/10 bg-[#0d0d0d] min-h-[320px] md:min-h-[200px]",
         "will-change-transform transform-gpu cursor-pointer md:cursor-default",
         className
       )}
@@ -162,7 +162,7 @@ export const BentoGridItem = ({
 };
 export const PulseX = () => {
   return (
-    <section className="relative overflow-hidden bg-black pt-8 pb-12 px-6 md:px-12 lg:pt-12 lg:pb-16">
+    <section className="relative overflow-hidden bg-[#0d0d0d] pt-8 pb-12 px-6 md:px-12 lg:pt-12 lg:pb-16">
       <div className="relative mx-auto max-w-[1200px]">
         <div className="mb-6 md:mb-10 space-y-4 text-center">
 
