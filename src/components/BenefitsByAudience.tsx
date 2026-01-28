@@ -1,3 +1,5 @@
+import BenefitsByAudienceHeading from './BenefitsByAudienceHeading'
+
 interface BenefitCard {
   iconPath: string
   category: string
@@ -53,55 +55,28 @@ export default function BenefitsByAudience() {
   ]
 
   return (
-    <section className="bg-[#0d0d0d] py-12 md:py-20 px-4 sm:px-6 md:px-8 font-sans text-white relative z-[310]">
-      <div className="max-w-[1400px] mx-auto">
-        {/* Header */}
-        <div className="text-center mb-10 md:mb-16">
-          <h2 
-            className="mb-3 md:mb-4 text-3xl sm:text-4xl md:text-5xl font-black"
-            style={{
-              color: '#FFF',
-              textAlign: 'center',
-              fontFamily: 'Arial',
-              fontStyle: 'normal',
-              lineHeight: '120%',
-              letterSpacing: '1px'
-            }}
-          >
-            Benefits by Audience
-          </h2>
-          <p 
-            className="text-sm sm:text-base md:text-lg px-4"
-            style={{
-              color: '#9C9C9C',
-              textAlign: 'center',
-              fontFamily: 'Arial',
-              fontStyle: 'normal',
-              fontWeight: 400,
-              lineHeight: '28px'
-            }}
-          >
-            One system. Different value at every stage of the battery lifecycle.
-          </p>
-        </div>
+    <section className="relative flex w-full flex-col items-center justify-start bg-[#0d0d0d] overflow-hidden font-sans text-white z-[310] pt-12 pb-8 px-6 md:pt-16 md:pb-12 md:px-8">
+      <BenefitsByAudienceHeading />
+      
+      <div className="max-w-[1400px] mx-auto pb-4 md:pb-8">
 
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mx-auto max-w-[920px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mx-auto max-w-[1600px]">
           {benefitCards.map((card, index) => (
             <div
               key={index}
-              className="bg-[#0d0d0d] border border-[#2A2A2A] rounded-xl relative overflow-hidden group transition-all duration-300 p-5 md:p-6"
+              className="bg-[#0d0d0d] border border-[#2A2A2A] rounded-xl relative overflow-hidden group transition-all duration-300 py-6 px-16 md:py-8 md:px-24"
             >
               {/* Animated Orange Border */}
               <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#FF6B1A] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out" 
                    style={{ width: '6px' }}
               />
               {/* Icon */}
-              <div className={`${index === 3 ? 'w-12 h-12' : 'w-10 h-10'} bg-[#FF6B1A] rounded-lg flex items-center justify-center mb-3`}>
+              <div className="w-12 h-12 bg-[#FF6B1A] rounded-lg flex items-center justify-center mb-3">
                 <img 
                   src={card.iconPath} 
                   alt={card.title}
-                  className={index === 3 ? 'w-8 h-8' : 'w-5 h-5'}
+                  className="w-8 h-8"
                 />
               </div>
 
