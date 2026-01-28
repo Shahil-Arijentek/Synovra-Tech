@@ -30,6 +30,7 @@ const mythTruthData: MythTruthPair[] = [
 
 const MythsVsTruths: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const layer1Ref = useRef<HTMLDivElement>(null);
   const layer2Ref = useRef<HTMLDivElement>(null);
@@ -134,9 +135,14 @@ const MythsVsTruths: React.FC = () => {
           tl.fromTo(layer4Ref.current, { opacity: 0, y: 300 }, { opacity: 1, y: 0, duration: 0.15 }, 0.60);
         }
 
-        // Stage 4: Hold last content (0.75 - 1.0)
+        // Stage 4: Hold last content (0.75 - 0.85)
         if (layer4Ref.current) {
-          tl.to(layer4Ref.current, { opacity: 1, y: 0, duration: 0.25 }, 0.75);
+          tl.to(layer4Ref.current, { opacity: 1, y: 0, duration: 0.1 }, 0.75);
+        }
+
+        // Fade out entire section (0.85 - 1.0)
+        if (contentRef.current) {
+          tl.to(contentRef.current, { opacity: 0, duration: 0.15 }, 0.85);
         }
 
       }, containerRef);
@@ -193,8 +199,8 @@ const MythsVsTruths: React.FC = () => {
   }, [isMounted]);
 
   return (
-   <div ref={containerRef} className="relative w-full h-[400vh] bg-black z-[101]">
-      <div className="sticky top-0 w-full min-h-[90vh] bg-black flex items-start justify-center pt-24 pb-16">
+    <div ref={containerRef} className="relative w-full h-[400vh] bg-black z-[101] -mt-[150vh]">
+      <div ref={contentRef} className="sticky top-0 w-full min-h-[90vh] bg-black flex items-start justify-center pt-24 pb-16">
       {/* Background Video with low opacity */}
       <video
         ref={videoRef}

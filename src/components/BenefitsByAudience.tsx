@@ -1,0 +1,140 @@
+interface BenefitCard {
+  iconPath: string
+  category: string
+  title: string
+  benefits: string[]
+}
+
+export default function BenefitsByAudience() {
+  const benefitCards: BenefitCard[] = [
+    {
+      iconPath: "/benefit/icon1.svg",
+      category: "MANUFACTURERS",
+      title: "Market Edge",
+      benefits: [
+        "Warranty-backed revived units",
+        "Longer life = ESG edge",
+        "Built-in proof, no extra reporting"
+      ]
+    },
+    {
+      iconPath: "/benefit/icon2.svg",
+      category: "END-USERS",
+      title: "Premium Power, Proven Value",
+      benefits: [
+        "Premium, certified, warranty-backed",
+        "2+ lifespan",
+        "Up to 50% cheaper",
+        "Higher trade-in when returned to Synovra/partners"
+      ]
+    },
+    {
+      iconPath: "/benefit/icon3.svg",
+      category: "DISTRIBUTORS",
+      title: "More Cash, Less Work",
+      benefits: [
+        "Higher payouts",
+        "Save labor & space",
+        "Faster turnover",
+        "Bigger CO₂ savings"
+      ]
+    },
+    {
+      iconPath: "/benefit/icon4.svg",
+      category: "RECYCLERS",
+      title: "3× Revenue",
+      benefits: [
+        "2.5-3× more revenue",
+        "Spent-only streams = higher yield",
+        "No premature smelting",
+        "ESG data included"
+      ]
+    }
+  ]
+
+  return (
+    <section className="bg-black py-20 px-6 md:px-8 font-sans text-white relative z-[310]">
+      <div className="max-w-[1400px] mx-auto">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h2 
+            className="mb-4"
+            style={{
+              color: '#FFF',
+              textAlign: 'center',
+              fontFamily: 'Arial',
+              fontSize: '45px',
+              fontStyle: 'normal',
+              fontWeight: 900,
+              lineHeight: '120%',
+              letterSpacing: '-2.4px'
+            }}
+          >
+            Benefits by Audience
+          </h2>
+          <p 
+            style={{
+              color: '#9C9C9C',
+              textAlign: 'center',
+              fontFamily: 'Arial',
+              fontSize: '18px',
+              fontStyle: 'normal',
+              fontWeight: 400,
+              lineHeight: '28px'
+            }}
+          >
+            One system. Different value at every stage of the battery lifecycle.
+          </p>
+        </div>
+
+        {/* Cards Grid */}
+        <div className="grid grid-cols-2 gap-6 mx-auto" style={{ maxWidth: '920px' }}>
+          {benefitCards.map((card, index) => (
+            <div
+              key={index}
+              className="bg-black border border-[#2A2A2A] rounded-xl relative overflow-hidden group transition-all duration-300"
+              style={{
+                width: '430px',
+                height: '250px',
+                padding: '24px'
+              }}
+            >
+              {/* Animated Orange Border */}
+              <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#FF6B1A] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out" 
+                   style={{ width: '6px' }}
+              />
+              {/* Icon */}
+              <div className={`${index === 3 ? 'w-12 h-12' : 'w-10 h-10'} bg-[#FF6B1A] rounded-lg flex items-center justify-center mb-3`}>
+                <img 
+                  src={card.iconPath} 
+                  alt={card.title}
+                  className={index === 3 ? 'w-8 h-8' : 'w-5 h-5'}
+                />
+              </div>
+
+              {/* Category */}
+              <p className="text-gray-500 text-[10px] font-semibold tracking-wider mb-1">
+                {card.category}
+              </p>
+
+              {/* Title */}
+              <h3 className="text-lg font-bold text-white mb-3">
+                {card.title}
+              </h3>
+
+              {/* Benefits List */}
+              <ul className="space-y-1.5">
+                {card.benefits.map((benefit, idx) => (
+                  <li key={idx} className="flex items-start gap-2 text-gray-300">
+                    <span className="text-[#FF6B1A] text-xs mt-0.5 flex-shrink-0">•</span>
+                    <span className="text-xs leading-tight">{benefit}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}

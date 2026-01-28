@@ -23,11 +23,7 @@ const StorytellingSection: React.FC = () => {
     if (!containerRef.current || !isMounted) return;
 
     let ctx = gsap.context(() => {
-      // 1. Initial Styles: Hide layers 2 & 3, keep videos at full opacity but hidden
       gsap.set([layer2Ref.current, layer3Ref.current], { opacity: 0 });
-      gsap.set(layer1Ref.current, { opacity: 1 });
-      
-      // Ensure videos are always opaque (no fading)
       gsap.set([video1Ref.current, video2Ref.current, video3Ref.current], { opacity: 1 });
       gsap.set([video2Ref.current, video3Ref.current], { visibility: 'hidden' });
 
@@ -43,27 +39,20 @@ const StorytellingSection: React.FC = () => {
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             const progress = self.progress;
-            
-            // --- VIDEO SWITCHING & SCRUBBING LOGIC ---
-            // Stage 1 (0% - 33%)
             if (progress < 0.33) {
               gsap.set(video1Ref.current, { visibility: 'visible' });
               gsap.set([video2Ref.current, video3Ref.current], { visibility: 'hidden' });
               if (video1Ref.current?.duration) {
                 video1Ref.current.currentTime = (progress / 0.33) * video1Ref.current.duration;
               }
-            } 
-            // Stage 2 (33% - 66%)
-            else if (progress >= 0.33 && progress < 0.66) {
+            } else if (progress >= 0.33 && progress < 0.66) {
               gsap.set(video2Ref.current, { visibility: 'visible' });
               gsap.set([video1Ref.current, video3Ref.current], { visibility: 'hidden' });
               if (video2Ref.current?.duration) {
                 const p = (progress - 0.33) / 0.33;
                 video2Ref.current.currentTime = p * video2Ref.current.duration;
               }
-            } 
-            // Stage 3 (66% - 100%)
-            else {
+            } else {
               gsap.set(video3Ref.current, { visibility: 'visible' });
               gsap.set([video1Ref.current, video2Ref.current], { visibility: 'hidden' });
               if (video3Ref.current?.duration) {
@@ -75,12 +64,9 @@ const StorytellingSection: React.FC = () => {
         },
       });
 
-      // --- TEXT FADE TIMELINE ---
-      // Transition Text 1 -> 2
       tl.to(layer1Ref.current, { opacity: 0, duration: 0.1 }, 0.28)
         .to(layer2Ref.current, { opacity: 1, duration: 0.1 }, 0.33);
 
-      // Transition Text 2 -> 3
       tl.to(layer2Ref.current, { opacity: 0, duration: 0.1 }, 0.61)
         .to(layer3Ref.current, { opacity: 1, duration: 0.1 }, 0.66);
 
@@ -92,15 +78,12 @@ const StorytellingSection: React.FC = () => {
   return (
     <div id="why-revive" ref={containerRef} className="relative w-full h-[250vh] bg-black z-10">
       <div className="w-full h-screen flex flex-col items-center justify-start pt-[15vh] overflow-hidden">
-        
-        {/* Floating Video Container */}
         <div className="relative w-[45%] h-[35%] md:w-[35%] md:h-[40%] z-0 pointer-events-none">
           <video ref={video1Ref} src="/whyrevive/video1.mp4" className="absolute inset-0 w-full h-full object-contain" muted playsInline preload="auto" />
           <video ref={video2Ref} src="/whyrevive/video2.mp4" className="absolute inset-0 w-full h-full object-contain" muted playsInline preload="auto" />
           <video ref={video3Ref} src="/whyrevive/video3.mp4" className="absolute inset-0 w-full h-full object-contain" muted playsInline preload="auto" />
         </div>
 
-        {/* Content Layers */}
         <div className="relative flex-1 w-full max-w-6xl mt-4 pointer-events-none z-10">
           <div ref={layer1Ref} className="absolute inset-0 flex flex-col items-center text-center">
             <h2 className="text-white mb-12 px-4 text-[22px] leading-[39px] max-w-[680px]">
@@ -136,7 +119,7 @@ const StorytellingSection: React.FC = () => {
             </div>
             <div className="flex flex-wrap justify-center gap-4 max-w-5xl pointer-events-auto mb-8">
               {['One loop', 'Revival-first', 'Zero-Liquid-Discharge', '90% less CO₂', 'Material recovery', 'Recycle at end'].map((text, i) => (
-                <button key={i} className="px-8 py-3 bg-zinc-800/60 backdrop-blur-sm border border-white/20 rounded-full text-white font-semibold hover:bg-zinc-700/60 transition-all">
+                <button key={i} className="px-8 py-3 bg-zinc-800/60 backdrop-blur-sm border border-white/20 rounded-full text-white font-semibold">
                   {text}
                 </button>
               ))}

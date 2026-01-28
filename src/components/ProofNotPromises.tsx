@@ -23,21 +23,21 @@ export default function ProofNotPromises() {
   const barAnimation = {
     initial: { width: 0 },
     animate: { width: '75%' },
-    transition: { duration: 20, ease: [0.16, 1, 0.3, 1] }
+    transition: { duration: 5, ease: [0.25, 0.1, 0.25, 1] }
   }
 
   const shortBarAnimation = {
     initial: { width: 0 },
     animate: { width: '55%' },
-    transition: { duration: 20, ease: [0.16, 1, 0.3, 1] }
+    transition: { duration: 5, ease: [0.25, 0.1, 0.25, 1] }
   }
 
   return (
-    <div className="relative" style={{ marginTop: '-2900px' }}>
-      <section ref={sectionRef} className="bg-black py-20 px-8 font-sans text-white sticky top-0 z-[300]">
+    <div className="relative" style={{ marginTop: '-3200px' }}>
+      <section ref={sectionRef} className="bg-black py-12 px-8 font-sans text-white sticky top-0 z-[105]">
         <div className="max-w-[1400px] mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
           <h2 className="text-5xl md:text-6xl font-bold mb-6">
             The Proof in Numbers
           </h2>
@@ -47,11 +47,11 @@ export default function ProofNotPromises() {
         </div>
 
         {/* Comparison Bars */}
-        <div className="max-w-4xl mx-auto mb-16 space-y-12">
+        <div className="max-w-4xl mx-auto mb-10 space-y-8">
           {/* Recycling Only */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Recycling Only</h3>
-            <div className="w-full bg-[#111111] rounded-[12px] overflow-hidden p-[2px]">
+            <div className="w-full bg-black rounded-[12px] overflow-hidden p-[2px]">
               <motion.div
                 className="bg-[#FF6B1A] rounded-[10px] p-8 h-full flex items-center"
                 initial="initial"
@@ -68,7 +68,7 @@ export default function ProofNotPromises() {
           {/* Revival First, Then Recycle */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Revival First, Then Recycle</h3>
-            <div className="w-full bg-[#111111] rounded-[12px] overflow-hidden p-[2px]">
+            <div className="w-full bg-black rounded-[12px] overflow-hidden p-[2px]">
               <motion.div
                 className="bg-[#FF6B1A] rounded-[10px] p-8 h-full flex items-center"
                 initial="initial"
@@ -84,7 +84,7 @@ export default function ProofNotPromises() {
         </div>
 
         {/* Bottom Text */}
-        <div className="text-center mb-10">
+        <div className="text-center mb-6">
           <p className="text-xl text-white/70 max-w-2xl mx-auto">
             Revival keeps capacity in service and delays smelting — cutting emissions by up to 90%.
           </p>
