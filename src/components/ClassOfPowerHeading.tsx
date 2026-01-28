@@ -1,7 +1,7 @@
 export default function ClassOfPowerHeading() {
   return (
-    <div className="max-w-[900px] mx-auto px-4 sm:px-6 md:px-8 mb-4 md:mb-10">
-      <div className="relative overflow-hidden rounded-2xl py-16 md:py-20">
+    <div className="max-w-[600px] mx-auto px-4 sm:px-6 md:px-8 mb-4 md:mb-8">
+      <div className="relative overflow-hidden rounded-2xl py-10 md:py-14">
         {/* Video Background */}
         <video
           autoPlay
@@ -17,13 +17,13 @@ export default function ClassOfPowerHeading() {
         {/* Content */}
         <div className="relative z-10 text-center">
           <h2
-            className="text-white font-bold mb-4 md:mb-6"
+            className="text-white font-bold mb-3 md:mb-4"
             style={{
               fontFamily: 'Arial',
-              fontSize: 'clamp(28px, 8vw, 48px)',
+              fontSize: 'clamp(24px, 6vw, 38px)',
               lineHeight: '1.2',
               letterSpacing: '-0.8px',
-              margin: '0 0 1rem 0'
+              margin: '0 0 0.75rem 0'
             }}
           >
             A New Class of Power
@@ -33,7 +33,7 @@ export default function ClassOfPowerHeading() {
             style={{
               fontFamily: 'Arial',
               fontWeight: 400,
-              fontSize: 'clamp(12px, 3.5vw, 14px)',
+              fontSize: 'clamp(11px, 3vw, 13px)',
               lineHeight: '1.4',
               margin: 0
             }}
