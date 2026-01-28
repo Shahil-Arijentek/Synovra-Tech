@@ -10,7 +10,7 @@ export default function Header() {
   const isActive = (path: string) => location.pathname === path
 
   return (
-    <header className="fixed top-0 mt-5 left-0 right-0 z-[100] w-full px-[21px] py-0">
+    <header className="fixed top-0 mt-5 left-0 right-0 z-[9999] w-full px-[21px] py-0">
       <nav
         className="backdrop-blur-[10px] backdrop-filter border border-[rgba(255,255,255,0.1)] border-solid rounded-[10px] flex items-center justify-between px-[21px] py-px h-[84px] w-full max-w-[1376px] mx-auto bg-transparent relative"
       >
