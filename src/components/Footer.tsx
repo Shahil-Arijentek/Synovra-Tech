@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 export default function Footer() {
   return (
     <footer className="relative w-full bg-[#0d0d0d] text-white z-[500]">
@@ -35,18 +37,18 @@ export default function Footer() {
               Navigation
             </p>
             <div className="space-y-2 md:space-y-3 text-sm sm:text-base md:text-base lg:text-lg text-white/70">
-              <a className="block transition hover:text-white" href="#process">
-                Process
-              </a>
-              <a className="block transition hover:text-white" href="#impact">
-                Impact
-              </a>
-              <a
+              <Link className="block transition hover:text-white" to="/">
+                Lifecycle
+              </Link>
+              <Link className="block transition hover:text-white" to="/why-revive">
+                Why Revive
+              </Link>
+              <Link
                 className="block transition hover:text-white"
-                href="#technology"
+                to="/about-us"
               >
-                Technology
-              </a>
+                About Us
+              </Link>
             </div>
           </div>
 
@@ -73,14 +75,7 @@ export default function Footer() {
 
         <div className="mt-10 md:mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 text-center md:text-left text-[11px] md:text-sm text-white/50 md:flex-row md:items-center md:justify-between">
           <p>© 2026 Synovra Technologies</p>
-          <div className="flex items-center justify-center gap-6">
-            <a className="transition hover:text-white" href="#">
-              Privacy
-            </a>
-            <a className="transition hover:text-white" href="#">
-              Terms
-            </a>
-          </div>
+          <p>Made by <span className="font-bold">Arijentek Solutions</span></p>
         </div>
       </div>
     </footer>
