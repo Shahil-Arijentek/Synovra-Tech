@@ -53,11 +53,11 @@ export default function Header() {
               About Us
             </Link>
           </div>
-          <button className="bg-[#ff6b1a] h-[58px] overflow-clip relative rounded-[4px] shrink-0 w-[156px] border-none cursor-pointer transition-all hover:bg-[#ff6b1a]/90 shadow-[0_0_20px_rgba(255,107,26,0.6)] hover:shadow-[0_0_30px_rgba(255,107,26,0.8)]">
-            <span className="absolute font-['Arial',sans-serif] leading-[28px] left-[32px] text-[18px] text-white whitespace-nowrap top-[15px]">
+          <Link to="/get-started" className="bg-[#ff6b1a] h-[58px] overflow-clip relative rounded-[4px] shrink-0 w-[156px] border-none cursor-pointer transition-all hover:bg-[#ff6b1a]/90 shadow-[0_0_20px_rgba(255,107,26,0.6)] hover:shadow-[0_0_30px_rgba(255,107,26,0.8)] flex items-center justify-center">
+            <span className="font-['Arial',sans-serif] leading-[28px] text-[18px] text-white whitespace-nowrap">
               Get Started
             </span>
-          </button>
+          </Link>
         </div>
 
         {/* Mobile Hamburger Button */}
@@ -109,12 +109,13 @@ export default function Header() {
               >
                 About Us
               </Link>
-              <button
-                className="bg-[#ff6b1a] h-[58px] rounded-[4px] text-white font-['Arial',sans-serif] text-[18px] shadow-[0_0_20px_rgba(255,107,26,0.6)]"
+              <Link
+                to="/get-started"
+                className="bg-[#ff6b1a] h-[58px] rounded-[4px] text-white font-['Arial',sans-serif] text-[18px] shadow-[0_0_20px_rgba(255,107,26,0.6)] flex items-center justify-center"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Get Started
-              </button>
+              </Link>
             </motion.div>
           )}
         </AnimatePresence>
