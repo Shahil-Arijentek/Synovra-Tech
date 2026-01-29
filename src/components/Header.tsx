@@ -44,6 +44,14 @@ export default function Header() {
             >
               Why Revive
             </Link>
+            <Link
+              to="/about-us"
+              className={`h-[20px] relative shrink-0 w-auto text-[14px] leading-[20px] font-['Arial',sans-serif] no-underline transition-colors whitespace-nowrap ${
+                isActive('/about-us') ? 'text-[#ff6b1a]' : 'text-[#4a5565] hover:text-[#ff6b1a]'
+              }`}
+            >
+              About Us
+            </Link>
           </div>
           <button className="bg-[#ff6b1a] h-[58px] overflow-clip relative rounded-[4px] shrink-0 w-[156px] border-none cursor-pointer transition-all hover:bg-[#ff6b1a]/90 shadow-[0_0_20px_rgba(255,107,26,0.6)] hover:shadow-[0_0_30px_rgba(255,107,26,0.8)]">
             <span className="absolute font-['Arial',sans-serif] leading-[28px] left-[32px] text-[18px] text-white whitespace-nowrap top-[15px]">
@@ -91,6 +99,15 @@ export default function Header() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Why Revive
+              </Link>
+              <Link
+                to="/about-us"
+                className={`text-[18px] font-['Arial',sans-serif] no-underline ${
+                  isActive('/about-us') ? 'text-[#ff6b1a]' : 'text-white'
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                About Us
               </Link>
               <button
                 className="bg-[#ff6b1a] h-[58px] rounded-[4px] text-white font-['Arial',sans-serif] text-[18px] shadow-[0_0_20px_rgba(255,107,26,0.6)]"
