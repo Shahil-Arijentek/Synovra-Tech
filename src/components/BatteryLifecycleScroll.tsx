@@ -1,60 +1,246 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import VoltageCard from './cards/VoltageCard'
+import InternalResistanceCard from './cards/InternalResistanceCard'
+import HealthGaugeCard from './cards/HealthGaugeCard'
+import SulphationCard from './cards/SulphationCard'
+import SulphationDetectedCard from './cards/SulphationDetectedCard'
+import DecisionCard from './cards/DecisionCard'
+import BarcodeCard from './cards/BarcodeCard'
+import SystemRecordCard from './cards/SystemRecordCard'
+import RouteCard from './cards/RouteCard'
+import SealCard from './cards/SealCard'
+import RecordLockCard from './cards/RecordLockCard'
+import VoltageTrendCard from './cards/VoltageTrendCard'
+import ElectrochemicalCorrectionCard from './cards/ElectrochemicalCorrectionCard'
+import PlateConditionCard from './cards/PlateConditionCard'
+import PerformanceRestoredCard from './cards/PerformanceRestoredCard'
+import WarrantyCard from './cards/WarrantyCard'
+import LeadCard from './cards/LeadCard'
+import PolymerCard from './cards/PolymerCard'
+import ComplianceRecordCard from './cards/ComplianceRecordCard'
+import RecoveryCertifiedCard from './cards/RecoveryCertifiedCard'
 
 gsap.registerPlugin(ScrollTrigger)
 
-interface DiagnosticCard {
-  id: number
-  title: string
-  value: string
-  status: string
-}
-
-const diagnosticCards: DiagnosticCard[] = [
-  {
+// Scene configuration - each scene can have multiple cards
+const sceneConfig = [
+  { 
     id: 1,
-    title: 'VOLTAGE',
-    value: '12.4 V',
-    status: 'STABLE'
+    title: 'DIAGNOSTIC SCAN',
+    cards: [
+      { 
+        cardType: 'voltage',
+        value: '12.4 V',
+        status: 'STABLE',
+        position: 'left'
+      },
+      { 
+        cardType: 'resistance',
+        value: '4.2 mΩ',
+        status: 'LOW',
+        position: 'right'
+      },
+      {
+        cardType: 'health',
+        value: '99%',
+        status: 'RESTORED',
+        position: 'bottom-left'
+      },
+      {
+        cardType: 'sulphation',
+        value: 'NEGLIGIBLE',
+        status: '',
+        position: 'bottom-right'
+      }
+    ]
   },
-  {
+  { 
     id: 2,
     title: 'PLATE ANALYSIS',
-    value: 'OPTIMAL',
-    status: 'CLEAN'
+    cards: [
+      { 
+        cardType: 'voltage',
+        value: '12.4 V',
+        status: 'STABLE',
+        position: 'left'
+      },
+      { 
+        cardType: 'resistance',
+        value: '7.8 mΩ',
+        status: 'LOW',
+        position: 'right'
+      },
+      {
+        cardType: 'sulphation-detected',
+        value: 'DETECTED',
+        status: '',
+        position: 'bottom-left'
+      },
+      {
+        cardType: 'decision',
+        value: 'MAINTENANCE',
+        status: 'RECOMMENDED',
+        position: 'bottom-right'
+      }
+    ]
   },
-  {
+  { 
     id: 3,
     title: 'LOGISTICS',
-    value: 'SNV-A12',
-    status: 'TRACKED'
+    cards: [
+      {
+        cardType: 'barcode',
+        value: 'SNV-A1042',
+        status: '',
+        position: 'left'
+      },
+      {
+        cardType: 'system-record',
+        value: 'SYSTEM RECORD CREATED',
+        status: '',
+        position: 'bottom-left'
+      },
+      {
+        cardType: 'route',
+        value: 'Pickup → Facility',
+        status: '',
+        position: 'bottom-right'
+      },
+      {
+        cardType: 'seal',
+        value: 'SEALED & LOGGED',
+        status: '',
+        position: 'right'
+      }
+    ]
   },
-  {
+  { 
     id: 4,
     title: 'RACK STATUS',
-    value: 'ACTIVE',
-    status: 'SECURED'
+    cards: [
+      {
+        cardType: 'voltage',
+        value: '11.2 V',
+        status: 'STABLE',
+        position: 'left'
+      },
+      {
+        cardType: 'resistance',
+        value: '14.5 mΩ',
+        status: 'HIGH',
+        position: 'right'
+      },
+      {
+        cardType: 'sulphation-detected',
+        value: 'CONFIRMED',
+        status: '',
+        position: 'bottom-left'
+      },
+      {
+        cardType: 'record-lock',
+        value: 'DIAGNOSTIC',
+        status: 'RECORD LOCKED',
+        position: 'bottom-right'
+      }
+    ]
   },
-  {
+  { 
     id: 5,
     title: 'INTERNAL RESISTANCE',
-    value: '4.2 mΩ',
-    status: 'LOW'
+    cards: [
+      {
+        cardType: 'voltage-trend',
+        value: '14.0 V',
+        status: 'RISING',
+        position: 'left'
+      },
+      {
+        cardType: 'resistance',
+        value: '7.8 mΩ',
+        status: 'LOW',
+        position: 'right'
+      },
+      {
+        cardType: 'electrochemical',
+        value: '',
+        status: '',
+        position: 'bottom-left'
+      },
+      {
+        cardType: 'plate-condition',
+        value: 'Plate\nRestored',
+        status: '',
+        position: 'bottom-right'
+      }
+    ]
   },
-  {
+  { 
     id: 6,
     title: 'CHARGING PHASE',
-    value: '99%',
-    status: 'RESTORED'
+    cards: [
+      {
+        cardType: 'performance-restored',
+        value: '',
+        status: '',
+        position: 'top'
+      },
+      {
+        cardType: 'health',
+        value: '98%',
+        status: '',
+        position: 'left',
+        video: '98.mp4',
+        width: '200px'
+      },
+      {
+        cardType: 'warranty',
+        value: '',
+        status: 'WARRANTY ACTIVE',
+        position: 'right',
+        coverage: 'EXTENDED COVERAGE ENABLED'
+      },
+      {
+        cardType: 'record-lock',
+        value: 'DIAGNOSTIC',
+        status: 'RECORD LOCKED',
+        position: 'bottom'
+      }
+    ]
   },
-  {
+  { 
     id: 7,
     title: 'DIAGNOSTIC SUMMARY',
-    value: '100%',
-    status: 'OPTIMAL'
+    cards: [
+      {
+        cardType: 'lead',
+        value: '98%',
+        status: '',
+        position: 'left'
+      },
+      {
+        cardType: 'polymer',
+        value: '92% Recovered',
+        status: '',
+        position: 'right'
+      },
+      {
+        cardType: 'compliance-record',
+        value: 'COMPLIANCE RECORD GENERATED',
+        status: '',
+        position: 'bottom-left'
+      },
+      {
+        cardType: 'recovery-certified',
+        value: 'RECOVERY CERTIFIED',
+        status: '',
+        position: 'bottom-right'
+      }
+    ]
   }
 ]
+
 
 // Scene timings in seconds
 const sceneTimings = [
@@ -94,9 +280,9 @@ export default function BatteryLifecycleScroll() {
       }
     })
 
-    // Calculate total scroll height
+    // Calculate total scroll height with extra padding at end to prevent jump
     const totalScrollMultiplier = scrollSections.reduce((sum, s) => sum + s.scrollMultiplier, 0)
-    const scrollHeight = window.innerHeight * totalScrollMultiplier
+    const scrollHeight = window.innerHeight * (totalScrollMultiplier + 4) // Add 4vh extra padding for smooth end
 
     // Set container height to enable scrolling
     gsap.set(container, { height: scrollHeight })
@@ -107,10 +293,14 @@ export default function BatteryLifecycleScroll() {
       start: 'top top',
       end: 'bottom bottom',
       pin: true,
-      pinSpacing: false,
+      pinSpacing: true,
+      anticipatePin: 1,
       scrub: 5,
+      invalidateOnRefresh: true,
       onUpdate: (self) => {
-        const progress = Math.min(self.progress, 1) // Clamp progress to 1
+        // Clamp progress between 0 and 1, extending the final scene
+        const rawProgress = self.progress
+        const progress = Math.min(rawProgress, 1)
         let currentTime = 0
         let accumulatedProgress = 0
 
@@ -131,24 +321,76 @@ export default function BatteryLifecycleScroll() {
             const sceneProgress = (progress - sceneStart) / sceneProgressShare
             const sceneDuration = scene.pause - scene.start
             
-            // Clamp currentTime to not exceed video duration
-            currentTime = Math.min(
-              scene.start + (sceneProgress * sceneDuration),
-              videoDuration - 0.033
-            )
+            // Calculate current time - keep slightly before end to prevent video end event
+            currentTime = scene.start + (sceneProgress * sceneDuration)
+            
+            // Clamp to prevent video from reaching absolute end (which causes reset/blink)
+            currentTime = Math.min(currentTime, videoDuration - 0.001)
 
             // Show/hide cards based on scene
             setActiveCardIndex(scene.cardIndex)
 
+            // Hide all cards first
+            sceneConfig.forEach((scn, scnIdx) => {
+              if (scnIdx !== scene.cardIndex && scn.cards) {
+                scn.cards.forEach((_cardData, cardIdx) => {
+                  const cardRefIndex = scnIdx * 10 + cardIdx
+                  const card = cardRefs.current[cardRefIndex]
+                  if (card) {
+                    const cardSide = card.getAttribute('data-card-side')
+                    if (cardSide === 'right') {
+                      gsap.to(card, {
+                        x: 400,
+                        opacity: 0,
+                        duration: 0.4,
+                        ease: 'power2.in'
+                      })
+                    } else if (cardSide === 'bottom') {
+                      gsap.to(card, {
+                        y: 200,
+                        opacity: 0,
+                        duration: 0.4,
+                        ease: 'power2.in'
+                      })
+                    } else {
+                      gsap.to(card, {
+                        x: -400,
+                        opacity: 0,
+                        duration: 0.4,
+                        ease: 'power2.in'
+                      })
+                    }
+                  }
+                })
+              }
+            })
+
             // Animate card in when entering scene
             if (sceneProgress > 0.1) {
-              const card = cardRefs.current[scene.cardIndex]
-              if (card) {
-                gsap.to(card, {
-                  x: 0,
-                  opacity: 1,
-                  duration: 0.6,
-                  ease: 'power3.out'
+              // Animate all cards for this scene
+              const currentScene = sceneConfig[scene.cardIndex]
+              if (currentScene && currentScene.cards) {
+                currentScene.cards.forEach((_cardData, cardIdx) => {
+                  const cardRefIndex = scene.cardIndex * 10 + cardIdx
+                  const card = cardRefs.current[cardRefIndex]
+                  if (card) {
+                    const cardSide = card.getAttribute('data-card-side')
+                    if (cardSide === 'bottom') {
+                      gsap.to(card, {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.6,
+                        ease: 'power3.out'
+                      })
+                    } else {
+                      gsap.to(card, {
+                        x: 0,
+                        opacity: 1,
+                        duration: 0.6,
+                        ease: 'power3.out'
+                      })
+                    }
+                  }
                 })
               }
             }
@@ -161,7 +403,8 @@ export default function BatteryLifecycleScroll() {
 
         // Update video time and prevent seeking beyond duration
         if (video && !isNaN(currentTime)) {
-          const clampedTime = Math.max(0, Math.min(currentTime, videoDuration - 0.033))
+          // Keep video just before end to prevent ended event/reset/blink
+          const clampedTime = Math.max(0, Math.min(currentTime, videoDuration - 0.001))
           if (Math.abs(video.currentTime - clampedTime) > 0.01) {
             video.currentTime = clampedTime
           }
@@ -169,10 +412,17 @@ export default function BatteryLifecycleScroll() {
       }
     })
 
-    // Initial setup: hide all cards
+    // Initial setup: hide all cards with correct direction
     cardRefs.current.forEach(card => {
       if (card) {
-        gsap.set(card, { x: -400, opacity: 0 })
+        const cardSide = card.getAttribute('data-card-side')
+        if (cardSide === 'right') {
+          gsap.set(card, { x: 400, opacity: 0 })
+        } else if (cardSide === 'bottom') {
+          gsap.set(card, { y: 200, opacity: 0 })
+        } else {
+          gsap.set(card, { x: -400, opacity: 0 })
+        }
       }
     })
 
@@ -219,19 +469,6 @@ export default function BatteryLifecycleScroll() {
             preload="metadata"
             loop={false}
             onLoadedMetadata={handleVideoReady}
-            onTimeUpdate={(e) => {
-              // Safety: prevent video from reaching the very end
-              const video = e.currentTarget
-              if (video.currentTime > video.duration - 0.033) {
-                video.currentTime = video.duration - 0.033
-              }
-            }}
-            onEnded={(e) => {
-              // Prevent video from resetting - lock to final frame
-              const video = e.currentTarget
-              video.currentTime = video.duration - 0.033
-              video.pause()
-            }}
           >
             <source src="/lifecycle/fullscene.webm" type="video/webm" />
           </video>
@@ -300,7 +537,7 @@ export default function BatteryLifecycleScroll() {
                     }}
                   >
                     <p className="text-white/90 text-base font-['Arial',sans-serif] tracking-wide uppercase whitespace-nowrap">
-                      Scene {activeCardIndex + 1} — {diagnosticCards[activeCardIndex]?.title}
+                      Scene {activeCardIndex + 1} — {sceneConfig[activeCardIndex]?.title}
                     </p>
                   </div>
                 </div>
@@ -309,72 +546,153 @@ export default function BatteryLifecycleScroll() {
           )}
 
           {/* Diagnostic Cards Container */}
-          <div className="absolute left-8 top-1/2 -translate-y-1/2 z-10 max-w-md">
-            {diagnosticCards.map((card, index) => (
-              <div
-                key={card.id}
-                ref={el => { cardRefs.current[index] = el }}
-                className={`absolute left-0 top-0 ${
-                  activeCardIndex === index ? 'pointer-events-auto' : 'pointer-events-none'
-                }`}
-                style={{ opacity: 0, transform: 'translateX(-400px)' }}
-              >
-                {/* Glassmorphism Card - High Fidelity Production Style */}
-                <div className="relative backdrop-blur-xl bg-black/40 border border-white/5 rounded-2xl p-8 min-w-[420px] overflow-hidden">
-                  {/* Bottom Accent Glow */}
-                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#ff6b1a]/50 to-transparent"></div>
-                  
-                  {/* Card Content */}
-                  <div className="relative z-10 space-y-6">
-                    {/* Title */}
-                    <div className="border-b border-white/10 pb-3">
-                      <h3 className="text-white/90 font-['Arial',sans-serif] font-bold text-xl tracking-wide uppercase">
-                        {card.title}
-                      </h3>
-                    </div>
+          {sceneConfig.map((scene, sceneIndex) => {
+            // Render all cards for this scene
+            return scene.cards.map((cardData, cardIndex) => {
+              const uniqueKey = `${scene.id}-${cardIndex}`
+              const cardRefIndex = sceneIndex * 10 + cardIndex // Unique index for card refs
 
-                    {/* Value Display */}
-                    <div className="bg-black/60 rounded-xl p-6 border border-white/10">
-                      <div className="text-center">
-                        <div className="text-[#ff6b1a] font-bold text-5xl font-mono tracking-tight mb-2">
-                          {card.value}
-                        </div>
-                      </div>
-                    </div>
+              // Define position based on card position property and scene
+              const getCardPosition = () => {
+                // Scene-specific positioning
+                if (sceneIndex === 0) {
+                  // Scene 1 positions
+                  if (cardData.position === 'right') return 'left-[16rem] top-32'
+                  if (cardData.position === 'left') return 'left-8 top-32'
+                  if (cardData.position === 'bottom-left') return 'left-8 top-[22rem]'
+                  if (cardData.position === 'bottom-right') return 'left-[2rem] top-[40rem]'
+                } else if (sceneIndex === 1) {
+                  // Scene 2 positions
+                  if (cardData.position === 'right') return 'left-[16rem] top-32'
+                  if (cardData.position === 'left') return 'left-8 top-32'
+                  if (cardData.position === 'bottom-left') return 'left-8 top-[22rem]'
+                  if (cardData.position === 'bottom-right') return 'left-[2rem] top-[40rem]'
+                } else if (sceneIndex === 2) {
+                  // Scene 3 positions
+                  if (cardData.position === 'right') return 'left-[2rem] top-[44rem]'
+                  if (cardData.position === 'left') return 'left-8 top-32'
+                  if (cardData.position === 'bottom-left') return 'left-8 top-[18rem]'
+                  if (cardData.position === 'bottom-right') return 'left-[2rem] top-[30rem]'
+                } else if (sceneIndex === 3) {
+                  // Scene 4 positions
+                  if (cardData.position === 'right') return 'left-[16rem] top-32'
+                  if (cardData.position === 'left') return 'left-8 top-32'
+                  if (cardData.position === 'bottom-left') return 'left-8 top-[22rem]'
+                  if (cardData.position === 'bottom-right') return 'left-[2rem] top-[40rem]'
+                } else if (sceneIndex === 4) {
+                  // Scene 5 positions
+                  if (cardData.position === 'right') return 'left-[16rem] top-32'
+                  if (cardData.position === 'left') return 'left-8 top-32'
+                  if (cardData.position === 'bottom-left') return 'left-8 top-[22rem]'
+                  if (cardData.position === 'bottom-right') return 'left-[2rem] top-[40rem]'
+                } else if (sceneIndex === 5) {
+                  // Scene 6 positions
+                  if (cardData.position === 'top') return 'left-8 top-32'
+                  if (cardData.position === 'left') return 'left-8 top-[26rem]'
+                  if (cardData.position === 'right') return 'left-[16rem] top-[26rem]'
+                  if (cardData.position === 'bottom') return 'left-8 top-[42rem]'
+                } else if (sceneIndex === 6) {
+                  // Scene 7 positions
+                  if (cardData.position === 'left') return 'left-8 top-32'
+                  if (cardData.position === 'right') return 'left-[16rem] top-32'
+                  if (cardData.position === 'bottom-left') return 'left-8 top-[26rem]'
+                  if (cardData.position === 'bottom-right') return 'left-[2rem] top-[40rem]'
+                }
+                
+                // Default positions for other scenes
+                if (cardData.position === 'right') return 'left-[16rem] top-32'
+                if (cardData.position === 'left') return 'left-8 top-32'
+                if (cardData.position === 'bottom-left') return 'left-8 top-[22rem]'
+                if (cardData.position === 'bottom-right') return 'left-[16rem] top-[28rem]'
+                if (cardData.position === 'center-bottom') return 'left-8 top-[22rem]'
+                if (cardData.position === 'top') return 'left-8 top-32'
+                
+                return 'left-8 top-1/2 -translate-y-1/2'
+              }
 
-                    {/* Status Display */}
-                    <div className="flex items-center justify-between bg-white/5 rounded-lg p-4 border border-white/10">
-                      <span className="text-white/60 text-sm font-['Arial',sans-serif] uppercase tracking-wider">
-                        Status
-                      </span>
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-[#ff6b1a] animate-pulse"></div>
-                        <span className="text-white font-['Arial',sans-serif] font-semibold text-sm uppercase tracking-wide">
-                          {card.status}
-                        </span>
-                      </div>
-                    </div>
+              const isRightSide = cardData.position === 'right' || cardData.position === 'bottom-right'
+              const isBottomCard = cardData.position === 'bottom-left' || cardData.position === 'bottom-right' || cardData.position === 'center-bottom'
+              const initialTransform = isRightSide ? 'translateX(400px)' : isBottomCard ? 'translateY(200px)' : 'translateX(-400px)'
 
-                    {/* Scene Progress */}
-                    <div className="flex items-center gap-3 pt-2">
-                      <div className="flex-1 h-0.5 bg-white/10 rounded-full overflow-hidden">
-                        <div 
-                          className="h-full bg-gradient-to-r from-[#ff6b1a] to-[#ff9b1a] rounded-full transition-all duration-500"
-                          style={{ width: `${((index + 1) / diagnosticCards.length) * 100}%` }}
-                        ></div>
-                      </div>
-                      <span className="text-white/40 text-xs font-['Arial',sans-serif] font-mono">
-                        {index + 1}/{diagnosticCards.length}
-                      </span>
-                    </div>
-                  </div>
+              // Render appropriate card component based on cardType
+              const renderCard = () => {
+                switch (cardData.cardType) {
+                  case 'voltage':
+                    return <VoltageCard value={cardData.value} status={cardData.status} />
+                  case 'voltage-trend':
+                    return <VoltageTrendCard value={cardData.value} status={cardData.status} />
+                  case 'resistance':
+                    return <InternalResistanceCard value={cardData.value} status={cardData.status} />
+                  case 'health':
+                    return <HealthGaugeCard 
+                      value={cardData.value} 
+                      status={cardData.status} 
+                      video={(cardData as any).video}
+                      width={(cardData as any).width}
+                    />
+                  case 'sulphation':
+                    return <SulphationCard value={cardData.value} status={cardData.status} />
+                  case 'sulphation-detected':
+                    return <SulphationDetectedCard value={cardData.value} />
+                  case 'decision':
+                    return <DecisionCard value={cardData.value} status={cardData.status} />
+                  case 'barcode':
+                    return <BarcodeCard value={cardData.value} />
+                  case 'system-record':
+                    return <SystemRecordCard value={cardData.value} />
+                  case 'route':
+                    return <RouteCard />
+                  case 'seal':
+                    return <SealCard value={cardData.value} />
+                  case 'record-lock':
+                    return <RecordLockCard value={cardData.value} status={cardData.status} />
+                  case 'electrochemical':
+                    return <ElectrochemicalCorrectionCard />
+                  case 'plate-condition':
+                    return <PlateConditionCard value={cardData.value} />
+                  case 'performance-restored':
+                    return <PerformanceRestoredCard 
+                      voltageFrom="11.2" 
+                      voltageTo="12.6 V" 
+                      resistanceFrom="14.5" 
+                      resistanceTo="4.8 mΩ" 
+                    />
+                  case 'warranty':
+                    return <WarrantyCard 
+                      status={(cardData as any).status || 'WARRANTY ACTIVE'} 
+                      coverage={(cardData as any).coverage || 'EXTENDED COVERAGE ENABLED'} 
+                    />
+                  case 'lead':
+                    return <LeadCard value={cardData.value} />
+                  case 'polymer':
+                    return <PolymerCard value={cardData.value} />
+                  case 'compliance-record':
+                    return <ComplianceRecordCard value={cardData.value} />
+                  case 'recovery-certified':
+                    return <RecoveryCertifiedCard value={cardData.value} />
+                  default:
+                    return null
+                }
+              }
 
-                  {/* Subtle corner accent */}
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-[#ff6b1a]/10 to-transparent rounded-tr-2xl pointer-events-none"></div>
+              const card = renderCard()
+              if (!card) return null
+
+              return (
+                <div
+                  key={uniqueKey}
+                  ref={el => { cardRefs.current[cardRefIndex] = el }}
+                  className={`absolute z-10 ${getCardPosition()} ${
+                    activeCardIndex === sceneIndex ? 'pointer-events-auto' : 'pointer-events-none'
+                  }`}
+                  style={{ opacity: 0, transform: initialTransform }}
+                  data-card-side={isRightSide ? 'right' : isBottomCard ? 'bottom' : 'left'}
+                >
+                  {card}
                 </div>
-              </div>
-            ))}
-          </div>
+              )
+            })
+          })}
 
           {/* Scroll Indicator (only visible when not loading) */}
           {!isLoading && (
