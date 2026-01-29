@@ -1,14 +1,14 @@
 export default function BenefitsByAudienceHeading() {
   return (
-    <div className="max-w-9xl mx-auto px-4 sm:px-6 md:px-8 mb-2 md:mb-4">
-      <div className="relative overflow-visible py-20 md:py-28">
+    <div className="max-w-7xl lg:max-w-9xl mx-auto px-4 sm:px-6 md:px-8 mb-2 md:mb-4">
+      <div className="relative overflow-hidden md:overflow-visible rounded-lg md:rounded-none py-16 md:py-20 lg:py-28">
         <video
           autoPlay
           loop
           muted
           playsInline
           preload="auto"
-          className="absolute inset-0 w-full h-full object-cover opacity-100 scale-125"
+          className="absolute inset-0 w-full h-full object-cover opacity-100 scale-110 md:scale-125"
         >
           <source src="/Comp 1_5.mp4" type="video/mp4" />
         </video>
