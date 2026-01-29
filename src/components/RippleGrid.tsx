@@ -65,16 +65,30 @@ const RippleGrid = ({
         : [1, 1, 1]
     }
 
-    const renderer = new Renderer({
-      dpr: Math.min(window.devicePixelRatio, 2),
-      alpha: true
-    })
-    const gl = renderer.gl
-    gl.enable(gl.BLEND)
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
-    gl.canvas.style.width = '100%'
-    gl.canvas.style.height = '100%'
-    containerRef.current.appendChild(gl.canvas)
+    let renderer: Renderer
+    let gl: typeof Renderer.prototype.gl
+
+    try {
+      renderer = new Renderer({
+        dpr: Math.min(window.devicePixelRatio, 2),
+        alpha: true
+      })
+      gl = renderer.gl
+      
+      if (!gl) {
+        console.warn('RippleGrid: WebGL not available')
+        return
+      }
+
+      gl.enable(gl.BLEND)
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
+      gl.canvas.style.width = '100%'
+      gl.canvas.style.height = '100%'
+      containerRef.current.appendChild(gl.canvas)
+    } catch (error) {
+      console.warn('RippleGrid: WebGL initialization failed', error)
+      return
+    }
 
     const vert = `
 attribute vec2 position;
@@ -270,8 +284,12 @@ void main() {
         container.removeEventListener('mouseleave', handleMouseLeave)
       }
       cancelAnimationFrame(rafId)
-      renderer.gl.getExtension('WEBGL_lose_context')?.loseContext()
-      container?.removeChild(gl.canvas)
+      if (renderer && gl) {
+        renderer.gl.getExtension('WEBGL_lose_context')?.loseContext()
+        if (container?.contains(gl.canvas)) {
+          container.removeChild(gl.canvas)
+        }
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -321,6 +339,9 @@ void main() {
     <div
       ref={containerRef}
       className={`relative h-full w-full overflow-hidden [&_canvas]:block ${className ?? ''}`}
+      style={{
+        background: 'radial-gradient(ellipse at center, rgba(255, 107, 26, 0.1) 0%, transparent 70%)'
+      }}
     />
   )
 }
