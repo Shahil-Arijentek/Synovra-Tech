@@ -609,7 +609,6 @@ export default function BatteryLifecycleScroll() {
       pinSpacing: false,
       scrub: true,
       invalidateOnRefresh: true,
-      ease: "none",
       fastScrollEnd: true,
       refreshPriority: -1,
       anticipatePin: 1,
