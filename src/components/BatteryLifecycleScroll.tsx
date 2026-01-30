@@ -369,7 +369,6 @@ export default function BatteryLifecycleScroll() {
           >
             <HealthGaugeCard 
               value={cardData.value} 
-              status={cardData.status}
               video={sceneIndex === 5 ? '98.mp4' : '99.mp4'}
               width={sceneIndex === 5 ? '200px' : '420px'}
             />
@@ -564,7 +563,7 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(400px)' }}
           >
-            <RecoveryCertifiedCard value={cardData.value} />
+            <RecoveryCertifiedCard />
           </div>
         )
       default:
