@@ -42,7 +42,7 @@ export default function GetStarted() {
         onLoadedData={() => setVideoLoaded(true)}
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
       >
-        <source src="/beforeyourecycle.mp4" type="video/mp4" />
+        <source src="/beforeyourecycle.webm" type="video/webm" />
       </video>
 
       {/* Overlay */}

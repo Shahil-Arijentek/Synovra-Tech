@@ -4,7 +4,7 @@
 
 ### Priority 1 - Videos (142 MB):
 - `getstarted.mp4` (54.22 MB)
-- `beforeyourecycle.mp4` (43.69 MB)
+- `beforeyourecycle.webm` (43.69 MB)
 - `lifecycle/fullscene.webm` (22.66 MB)
 - `whyrevive/plexus-black-white.mov` (12.31 MB)
 - Other large videos
@@ -155,7 +155,7 @@ Here's what to replace in your codebase:
 #### Videos to Replace:
 ```
 /getstarted.mp4 → synovra/getstarted.mp4
-/beforeyourecycle.mp4 → synovra/beforeyourecycle.mp4
+/beforeyourecycle.webm → synovra/beforeyourecycle.webm
 /lifecycle/fullscene.webm → synovra/lifecycle/fullscene.webm
 /whyrevive/plexus-black-white.mov → synovra/whyrevive/plexus-black-white.mov
 ```

@@ -27,7 +27,7 @@ export default function ExperienceRevival() {
           className="h-full w-full object-cover opacity-60"
           style={{ mixBlendMode: 'screen' }}
         >
-          <source src="/beforeyourecycle.mp4" type="video/mp4" />
+          <source src="/beforeyourecycle.webm" type="video/webm" />
         </video>
         {/* Black overlay to blend video with black background */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/70" />

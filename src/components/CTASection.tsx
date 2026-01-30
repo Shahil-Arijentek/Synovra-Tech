@@ -9,7 +9,7 @@ export default function CTASection() {
         playsInline
         className="absolute inset-0 w-full h-full object-cover"
       >
-        <source src="/beforeyourecycle.mp4" type="video/mp4" />
+        <source src="/beforeyourecycle.webm" type="video/webm" />
       </video>
 
       {/* Dark Overlay */}
