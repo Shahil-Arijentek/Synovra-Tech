@@ -2,12 +2,11 @@ import { useEffect, useRef } from 'react'
 
 interface HealthGaugeCardProps {
   value: string
-  status: string
   video?: string
   width?: string
 }
 
-export default function HealthGaugeCard({ value, status, video = '99.mp4', width = '420px' }: HealthGaugeCardProps) {
+export default function HealthGaugeCard({ value, video = '99.mp4', width = '420px' }: HealthGaugeCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
