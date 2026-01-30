@@ -124,10 +124,10 @@ export default function BuyBatteries() {
     <>
       <section
         ref={sectionRef}
-        className="relative overflow-hidden bg-[#0d0d0d] px-6 py-12 md:py-20 text-center text-white"
+        className="relative overflow-hidden bg-black px-6 py-12 md:py-20 text-center text-white"
       >
       <div
-        className="pointer-events-none absolute inset-x-0 top-12 mx-auto h-[620px] max-w-[1119px] bg-[linear-gradient(270deg,rgba(13,13,13,0)_0%,#0d0d0d_20.192%,#0d0d0d_76.923%,rgba(13,13,13,0)_100%)]"
+        className="pointer-events-none absolute inset-x-0 top-12 mx-auto h-[620px] max-w-[1119px] bg-[linear-gradient(270deg,rgba(0,0,0,0)_0%,#000000_20.192%,#000000_76.923%,rgba(0,0,0,0)_100%)]"
         aria-hidden="true"
       />
       <div className="relative mx-auto flex w-full max-w-[1119px] flex-col items-center gap-4 md:gap-6">
@@ -183,17 +183,17 @@ export default function BuyBatteries() {
         </div>
       </div>
 
-        <div className="pointer-events-none absolute bottom-0 left-1/2 h-[200px] w-full md:w-[1460px] -translate-x-1/2 bg-gradient-to-t from-[#0d0d0d] from-[65%] to-transparent" />
-        <div className="relative mx-auto mt-6 md:mt-10 flex w-full max-w-[649px] flex-col items-center gap-1 rounded-[10px] px-6 py-4 md:py-6 text-center">
+        <div className="pointer-events-none absolute bottom-0 left-1/2 h-[200px] w-full md:w-[1460px] -translate-x-1/2 bg-gradient-to-t from-black from-[65%] to-transparent" />
+        <div className="relative mx-auto mt-6 md:mt-10 flex w-full max-w-[649px] flex-col items-center gap-1 rounded-[10px] bg-black px-6 py-4 md:py-6 text-center">
           <p className="text-[18px] md:text-[20px] font-bold leading-tight text-white">Healthy / Near New</p>
           <p className="text-[13px] md:text-[14px] leading-relaxed text-white/60">
             High-performance batteries — we buy them too. No need to hold for resale.
           </p>
         </div>
       </section>
-      <section className="bg-[#0d0d0d] px-6 pb-16 md:pb-20 text-white">
+      <section className="bg-black px-6 pb-16 md:pb-20 text-white">
         <div className="mx-auto flex w-full max-w-[1320px] justify-center">
-          <div className="flex w-full max-w-[1180px] flex-col items-center gap-6 md:gap-8 rounded-[24px] border border-white/10 bg-[rgba(255,255,255,0.01)] px-6 py-10 md:px-12 md:py-[49px] text-center">
+          <div className="flex w-full max-w-[1180px] flex-col items-center gap-6 md:gap-8 rounded-[24px] border border-white/10 bg-black/80 px-6 py-10 md:px-12 md:py-[49px] text-center">
             <p className="text-[18px] md:text-[20px] font-bold leading-tight text-white">
               No Sorting. No Guesswork. No Missed Value.
             </p>

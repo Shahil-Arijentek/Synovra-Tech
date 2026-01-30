@@ -77,7 +77,8 @@ const ProofInNumbersGSAP = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen bg-[#0d0d0d] text-white py-20 px-6 md:px-12 lg:px-24 flex items-center justify-center"
+      className="relative min-h-screen text-white py-20 px-6 md:px-12 lg:px-24 flex items-center justify-center"
+      style={{ backgroundColor: '#0d0d0d' }}
     >
       <div className="max-w-5xl w-full">
         {/* Header */}
@@ -121,7 +122,7 @@ const ProofInNumbersGSAP = () => {
                   },
                 },
               }}
-              className="bg-gray-900 rounded-2xl p-8"
+              className="bg-[#0d0d0d] rounded-2xl p-8"
             >
               {/* Label and Value */}
               <div className="flex justify-between items-center mb-4">
@@ -137,7 +138,7 @@ const ProofInNumbersGSAP = () => {
               </div>
 
               {/* Progress Bar Background */}
-              <div className="relative w-full h-12 bg-gray-800 rounded-full overflow-hidden">
+              <div className="relative w-full h-12 bg-[#0d0d0d]/80 rounded-full overflow-hidden">
                 {/* Animated Progress Bar */}
                 <motion.div
                   initial={{ width: 0 }}

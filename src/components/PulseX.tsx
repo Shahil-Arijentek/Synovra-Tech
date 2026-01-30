@@ -84,7 +84,7 @@ export const BentoGridItem = ({
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => setIsHovered(!isHovered)}
       className={cn(
-        "group/bento relative flex flex-col justify-end overflow-hidden rounded-3xl border border-white/10 bg-[#0d0d0d] min-h-[320px] md:min-h-[200px]",
+        "group/bento relative flex flex-col justify-end overflow-hidden rounded-3xl border border-white/10 bg-black min-h-[320px] md:min-h-[200px]",
         "will-change-transform transform-gpu cursor-pointer md:cursor-default",
         className
       )}
@@ -104,12 +104,12 @@ export const BentoGridItem = ({
       <motion.div
         className="absolute bottom-4 left-4 right-4 z-10 p-4 md:p-5 overflow-hidden rounded-[12px] border border-[#262626]/60"
         style={{
-          background: "rgba(0, 0, 0, 0.28)",
+          background: "rgba(0, 0, 0, 0.7)",
           backdropFilter: "blur(5.2px)",
           WebkitBackdropFilter: "blur(5.2px)"
         }}
         animate={{
-          background: isHovered ? "rgba(0, 0, 0, 0.45)" : "rgba(0, 0, 0, 0.28)",
+          background: isHovered ? "rgba(0, 0, 0, 0.85)" : "rgba(0, 0, 0, 0.7)",
         }}
         transition={{ duration: 0.4 }}
       >
@@ -162,7 +162,9 @@ export const BentoGridItem = ({
 };
 export const PulseX = () => {
   return (
-    <section className="relative overflow-hidden bg-[#0d0d0d] pt-8 pb-12 px-6 md:px-12 lg:pt-12 lg:pb-16">
+    <section className="relative overflow-hidden pt-8 pb-12 px-6 md:px-12 lg:pt-12 lg:pb-16" style={{ backgroundColor: '#0d0d0d' }}>
+      {/* Fade to black gradient at bottom */}
+      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-black pointer-events-none z-10" />
       <div className="relative mx-auto max-w-[1200px]">
         <div className="mb-6 md:mb-10 space-y-4 text-center">
 

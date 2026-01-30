@@ -267,12 +267,13 @@
 //   { start: 25, pause: 40, sceneIndex: 3 },    // Scene 4: 25-40s
 //   { start: 40, pause: 42, sceneIndex: 4 },    // Scene 5: 40-42s
 //   { start: 42, pause: 55, sceneIndex: 5 },    // Scene 6: 42-55s
-//   { start: 55, pause: 67, sceneIndex: 6 }     // Scene 7: 55-67s (1:07)
+//   { start: 55, pause: 67, sceneIndex: 6 }     // Scene 7: 55-67s 
 // ]
 
 // export default function BatteryLifecycleScroll() {
 //   const containerRef = useRef<HTMLDivElement>(null)
 //   const videoRef = useRef<HTMLVideoElement>(null)
+//   const stickyContainerRef = useRef<HTMLDivElement>(null)
 //   const [isLoading, setIsLoading] = useState(true)
 //   const [activeSceneIndex, setActiveSceneIndex] = useState<number | null>(null)
 //   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
@@ -368,7 +369,6 @@
 //           >
 //             <HealthGaugeCard 
 //               value={cardData.value} 
-//               status={cardData.status}
 //               video={sceneIndex === 5 ? '98.mp4' : '99.mp4'}
 //               width={sceneIndex === 5 ? '200px' : '420px'}
 //             />
@@ -563,7 +563,7 @@
 //             className={`absolute ${getCardPosition()} z-10`}
 //             style={{ opacity: 0, transform: 'translateX(400px)' }}
 //           >
-//             <RecoveryCertifiedCard value={cardData.value} />
+//             <RecoveryCertifiedCard />
 //           </div>
 //         )
 //       default:
@@ -606,8 +606,109 @@
 //       pin: true,
 //       pinSpacing: false,
 //       scrub: 5,
+//       invalidateOnRefresh: true,
+//       onLeave: () => {
+//         // Completely hide all cards and video when leaving the section (scrolling down past it)
+//         setActiveSceneIndex(null)
+        
+//         // Hide the sticky video container
+//         if (stickyContainerRef.current) {
+//           gsap.set(stickyContainerRef.current, { opacity: 0, visibility: 'hidden', pointerEvents: 'none' })
+//         }
+        
+//         // Collapse the container height to remove empty space
+//         if (container) {
+//           gsap.set(container, { height: '100vh' })
+//         }
+        
+//         sceneConfig.forEach((scene, sceneIndex) => {
+//           scene.cards.forEach((_: CardData, cardIndex: number) => {
+//             const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
+//             const card = cardRefs.current[cardKey]
+//             if (card) {
+//               gsap.set(card, { opacity: 0, visibility: 'hidden' })
+//             }
+//           })
+//         })
+//       },
+//       onEnterBack: () => {
+//         // Re-enable visibility when scrolling back into the section from below
+        
+//         // Show the sticky video container
+//         if (stickyContainerRef.current) {
+//           gsap.set(stickyContainerRef.current, { opacity: 1, visibility: 'visible', pointerEvents: 'auto' })
+//         }
+        
+//         // Restore the container height for scrolling
+//         if (container) {
+//           gsap.set(container, { height: scrollHeight })
+//         }
+        
+//         sceneConfig.forEach((scene, sceneIndex) => {
+//           scene.cards.forEach((_: CardData, cardIndex: number) => {
+//             const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
+//             const card = cardRefs.current[cardKey]
+//             if (card) {
+//               gsap.set(card, { visibility: 'visible' })
+//             }
+//           })
+//         })
+//       },
 //       onUpdate: (self) => {
-//         const progress = Math.min(self.progress, 1) // Clamp progress to 1
+//         const progress = self.progress
+        
+//         // If scrolled past the end (progress >= 1), hide everything and keep it hidden
+//         if (progress >= 1) {
+//           if (activeSceneIndex !== null) {
+//             setActiveSceneIndex(null)
+            
+//             // Hide sticky container
+//             if (stickyContainerRef.current) {
+//               gsap.set(stickyContainerRef.current, { opacity: 0, visibility: 'hidden', pointerEvents: 'none' })
+//             }
+            
+//             // Collapse container height
+//             if (container) {
+//               gsap.set(container, { height: '100vh' })
+//             }
+            
+//             sceneConfig.forEach((scene, sceneIndex) => {
+//               scene.cards.forEach((_: CardData, cardIndex: number) => {
+//                 const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
+//                 const card = cardRefs.current[cardKey]
+//                 if (card) {
+//                   const cardData = scene.cards[cardIndex]
+//                   const exitX = cardData.position === 'right' || cardData.position === 'bottom-right' ? 400 : -400
+//                   gsap.set(card, {
+//                     x: exitX,
+//                     opacity: 0
+//                   })
+//                 }
+//               })
+//             })
+//           }
+//           return // Exit early - don't process scenes
+//         }
+        
+//         // Only re-enable scenes if we're scrolling BACK into the lifecycle section
+//         // This prevents cards from showing when scrolling through sections AFTER lifecycle
+//         if (progress < 0.95 && activeSceneIndex === null) {
+//           // User scrolled back up into the lifecycle section
+          
+//           // Show sticky container
+//           if (stickyContainerRef.current) {
+//             gsap.set(stickyContainerRef.current, { opacity: 1, visibility: 'visible', pointerEvents: 'auto' })
+//           }
+          
+//           // Restore container height
+//           if (container) {
+//             gsap.set(container, { height: scrollHeight })
+//           }
+          
+//           setActiveSceneIndex(6) // Show last scene when coming back
+//         }
+        
+//         const clampedProgress = Math.min(progress, 1)
 //         let currentTime = 0
 //         let accumulatedProgress = 0
 
@@ -621,11 +722,11 @@
 
 //           // For the last scene, include the end boundary (<=), otherwise use (<)
 //           const isInScene = isLastScene 
-//             ? (progress >= sceneStart && progress <= sceneEnd)
-//             : (progress >= sceneStart && progress < sceneEnd)
+//             ? (clampedProgress >= sceneStart && clampedProgress <= sceneEnd)
+//             : (clampedProgress >= sceneStart && clampedProgress < sceneEnd)
 
 //           if (isInScene) {
-//             const sceneProgress = (progress - sceneStart) / sceneProgressShare
+//             const sceneProgress = (clampedProgress - sceneStart) / sceneProgressShare
 //             const sceneDuration = scene.pause - scene.start
             
 //             // Clamp currentTime to not exceed video duration
@@ -737,7 +838,7 @@
 //       {/* Scroll Container */}
 //       <div ref={containerRef} className="relative w-full">
 //         {/* Sticky Video Container */}
-//         <div className="sticky top-0 left-0 w-full h-screen overflow-hidden">
+//         <div ref={stickyContainerRef} className="sticky top-0 left-0 w-full h-screen overflow-hidden">
 //           <video
 //             ref={videoRef}
 //             className="absolute inset-0 w-full h-full object-cover"
@@ -846,8 +947,8 @@
 //             ))}
 //           </div>
 
-//           {/* Scroll Indicator (only visible when not loading) */}
-//           {!isLoading && (
+//           {/* Scroll Indicator (only visible when not loading and in active scene) */}
+//           {!isLoading && activeSceneIndex !== null && activeSceneIndex < 6 && (
 //             <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 animate-bounce">
 //               <p className="text-white/60 text-sm font-['Arial',sans-serif]">Scroll to explore</p>
 //               <svg className="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -859,4 +960,4 @@
 //       </div>
 //     </div>
 //   )
-// // }
+// }

@@ -5,7 +5,7 @@ const ProofInNumbersDemo = () => {
   return (
     <div className="bg-[#0d0d0d] min-h-screen">
       {/* Header */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-gray-900 border-b border-gray-700 p-4">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-black border-b border-white/20 p-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <h1 className="text-white text-xl font-bold">Proof in Numbers - Demo</h1>
           <div className="text-gray-400 text-sm">
@@ -56,7 +56,7 @@ const ProofInNumbersDemo = () => {
           <p className="text-xl text-gray-400 mb-8">
             You can now scroll freely
           </p>
-          <div className="bg-gray-800 rounded-xl p-8 max-w-2xl mx-auto text-left">
+          <div className="bg-black/80 rounded-xl p-8 max-w-2xl mx-auto text-left">
             <h3 className="text-2xl font-bold text-white mb-4">
               ⚡ GSAP Version
             </h3>

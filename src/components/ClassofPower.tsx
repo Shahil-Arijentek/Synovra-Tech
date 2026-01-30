@@ -31,7 +31,8 @@ export default function ClassofPower() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex w-full flex-col items-center justify-start bg-[#0d0d0d] overflow-hidden pt-12 pb-8 px-6 md:pt-16 md:pb-12 md:px-8"
+      className="relative flex w-full flex-col items-center justify-start overflow-hidden pt-12 pb-8 px-6 md:pt-16 md:pb-12 md:px-8"
+      style={{ backgroundColor: '#0d0d0d' }}
     >
       <ClassOfPowerHeading />
 
@@ -61,7 +62,8 @@ export default function ClassofPower() {
               className="block h-auto"
               style={{
                 width: 'min(1024px, 92vw)',
-                objectFit: 'contain'
+                objectFit: 'contain',
+                mixBlendMode: 'screen'
               }}
               autoPlay
               muted

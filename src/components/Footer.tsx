@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 export default function Footer() {
   return (
-    <footer className="relative w-full bg-[#0d0d0d] text-white z-[500]">
+    <footer className="relative w-full text-white z-[500]" style={{ backgroundColor: '#0d0d0d' }}>
       <div className="relative w-full overflow-visible">
         <img
           src="/footer.png"

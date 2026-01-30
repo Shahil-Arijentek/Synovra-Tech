@@ -134,7 +134,7 @@ export default function CinematicBattery({ className }: CinematicBatteryProps) {
   const controlsRef = useRef<OrbitControlsImpl | null>(null)
 
   return (
-    <div className={className ?? 'relative flex min-h-[85vh] w-full items-center justify-center bg-[#050505]'}>
+    <div className={className ?? 'relative flex min-h-[85vh] w-full items-center justify-center bg-black'}>
       <Canvas
         shadows
         camera={{ position: [8, 6, 10], fov: 28 }}

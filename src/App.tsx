@@ -32,7 +32,7 @@ function AppContent() {
   return (
     <>
       <ScrollToTop />
-      <div className="w-full min-h-screen font-sans">
+      <div className="w-full min-h-screen font-sans bg-black">
         <Header />
         <main>
           <Routes location={location} key={location.pathname}>

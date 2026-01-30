@@ -52,7 +52,7 @@ export default function GetStarted() {
         </div>
 
         {/* Form Container */}
-        <div className="flex flex-col items-start w-full min-h-[632px] md:h-auto bg-[rgba(26,26,26,0.74)] border border-[rgba(255,255,255,0.05)] rounded-[14px] pt-[24px] sm:pt-[33px] px-[20px] sm:px-[33px] pb-[24px] sm:pb-px">
+        <div className="flex flex-col items-start w-full min-h-[632px] md:h-auto bg-black/80 border border-[rgba(255,255,255,0.05)] rounded-[14px] pt-[24px] sm:pt-[33px] px-[20px] sm:px-[33px] pb-[24px] sm:pb-px">
           <form onSubmit={handleSubmit} className="flex flex-col gap-[20px] sm:gap-[24px] w-full">
             {/* Row 1: Full Name and Company Name */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px] sm:gap-[24px]">
@@ -68,7 +68,7 @@ export default function GetStarted() {
                   value={formData.fullName}
                   onChange={handleChange}
                   placeholder="Enter your full name"
-                  className="flex items-center self-stretch bg-[rgba(13,13,13,0.46)] border border-[rgba(255,255,255,0.16)] rounded-[8px] sm:rounded-[10px] h-[45px] sm:h-[50px] px-[14px] sm:px-[16px] py-[10px] sm:py-[12px] font-['Arial',sans-serif] text-[15px] sm:text-[16px] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors"
+                  className="flex items-center self-stretch bg-black/60 border border-[rgba(255,255,255,0.16)] rounded-[8px] sm:rounded-[10px] h-[45px] sm:h-[50px] px-[14px] sm:px-[16px] py-[10px] sm:py-[12px] font-['Arial',sans-serif] text-[15px] sm:text-[16px] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors"
                 />
               </div>
               <div className="flex flex-col gap-[6px] sm:gap-[8px]">
@@ -83,7 +83,7 @@ export default function GetStarted() {
                   value={formData.companyName}
                   onChange={handleChange}
                   placeholder="Enter company name"
-                  className="flex items-center self-stretch bg-[rgba(13,13,13,0.46)] border border-[rgba(255,255,255,0.16)] rounded-[8px] sm:rounded-[10px] h-[45px] sm:h-[50px] px-[14px] sm:px-[16px] py-[10px] sm:py-[12px] font-['Arial',sans-serif] text-[15px] sm:text-[16px] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors"
+                  className="flex items-center self-stretch bg-black/60 border border-[rgba(255,255,255,0.16)] rounded-[8px] sm:rounded-[10px] h-[45px] sm:h-[50px] px-[14px] sm:px-[16px] py-[10px] sm:py-[12px] font-['Arial',sans-serif] text-[15px] sm:text-[16px] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors"
                 />
               </div>
             </div>
@@ -101,7 +101,7 @@ export default function GetStarted() {
                 value={formData.role}
                 onChange={handleChange}
                 placeholder="Enter your role"
-                className="flex items-center self-stretch bg-[rgba(13,13,13,0.46)] border border-[rgba(255,255,255,0.16)] rounded-[8px] sm:rounded-[10px] h-[45px] sm:h-[50px] px-[14px] sm:px-[16px] py-[10px] sm:py-[12px] font-['Arial',sans-serif] text-[15px] sm:text-[16px] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors"
+                className="flex items-center self-stretch bg-black/60 border border-[rgba(255,255,255,0.16)] rounded-[8px] sm:rounded-[10px] h-[45px] sm:h-[50px] px-[14px] sm:px-[16px] py-[10px] sm:py-[12px] font-['Arial',sans-serif] text-[15px] sm:text-[16px] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors"
               />
             </div>
 
@@ -119,7 +119,7 @@ export default function GetStarted() {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="you@company.com"
-                  className="flex items-center self-stretch bg-[rgba(13,13,13,0.46)] border border-[rgba(255,255,255,0.16)] rounded-[8px] sm:rounded-[10px] h-[45px] sm:h-[50px] px-[14px] sm:px-[16px] py-[10px] sm:py-[12px] font-['Arial',sans-serif] text-[15px] sm:text-[16px] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors"
+                  className="flex items-center self-stretch bg-black/60 border border-[rgba(255,255,255,0.16)] rounded-[8px] sm:rounded-[10px] h-[45px] sm:h-[50px] px-[14px] sm:px-[16px] py-[10px] sm:py-[12px] font-['Arial',sans-serif] text-[15px] sm:text-[16px] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors"
                 />
               </div>
               <div className="flex flex-col gap-[6px] sm:gap-[8px]">
@@ -133,7 +133,7 @@ export default function GetStarted() {
                   value={formData.phone}
                   onChange={handleChange}
                   placeholder="+1 (555) 000-0000"
-                  className="flex items-center self-stretch bg-[rgba(13,13,13,0.46)] border border-[rgba(255,255,255,0.16)] rounded-[8px] sm:rounded-[10px] h-[45px] sm:h-[50px] px-[14px] sm:px-[16px] py-[10px] sm:py-[12px] font-['Arial',sans-serif] text-[15px] sm:text-[16px] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors"
+                  className="flex items-center self-stretch bg-black/60 border border-[rgba(255,255,255,0.16)] rounded-[8px] sm:rounded-[10px] h-[45px] sm:h-[50px] px-[14px] sm:px-[16px] py-[10px] sm:py-[12px] font-['Arial',sans-serif] text-[15px] sm:text-[16px] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors"
                 />
               </div>
             </div>
@@ -151,7 +151,7 @@ export default function GetStarted() {
                 onChange={handleChange}
                 placeholder="Tell us about your battery revival needs..."
                 rows={5}
-                className="bg-[rgba(13,13,13,0.46)] border border-[rgba(255,255,255,0.16)] rounded-[8px] sm:rounded-[10px] h-[120px] sm:h-[146px] px-[14px] sm:px-[16px] py-[10px] sm:py-[12px] font-['Arial',sans-serif] text-[15px] sm:text-[16px] leading-[22px] sm:leading-[24px] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors resize-none"
+                className="bg-black/60 border border-[rgba(255,255,255,0.16)] rounded-[8px] sm:rounded-[10px] h-[120px] sm:h-[146px] px-[14px] sm:px-[16px] py-[10px] sm:py-[12px] font-['Arial',sans-serif] text-[15px] sm:text-[16px] leading-[22px] sm:leading-[24px] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors resize-none"
               />
             </div>
 
@@ -168,7 +168,7 @@ export default function GetStarted() {
         {/* Contact Information Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mt-8 sm:mt-10 md:mt-12 max-w-[1100px] mx-auto">
           {/* Email Card */}
-          <div className="bg-[rgba(26,26,26,0.74)] border border-[rgba(255,255,255,0.05)] rounded-[14px] p-5 sm:p-6 flex flex-col items-center justify-center text-center min-h-[120px] sm:min-h-[130px]">
+          <div className="bg-black/80 border border-[rgba(255,255,255,0.05)] rounded-[14px] p-5 sm:p-6 flex flex-col items-center justify-center text-center min-h-[120px] sm:min-h-[130px]">
             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[rgba(255,255,255,0.05)] flex items-center justify-center mb-3">
               <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -181,7 +181,7 @@ export default function GetStarted() {
           </div>
 
           {/* Phone Card */}
-          <div className="bg-[rgba(26,26,26,0.74)] border border-[rgba(255,255,255,0.05)] rounded-[14px] p-5 sm:p-6 flex flex-col items-center justify-center text-center min-h-[120px] sm:min-h-[130px]">
+          <div className="bg-black/80 border border-[rgba(255,255,255,0.05)] rounded-[14px] p-5 sm:p-6 flex flex-col items-center justify-center text-center min-h-[120px] sm:min-h-[130px]">
             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[rgba(255,255,255,0.05)] flex items-center justify-center mb-3">
               <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -194,7 +194,7 @@ export default function GetStarted() {
           </div>
 
           {/* Address Card */}
-          <div className="bg-[rgba(26,26,26,0.74)] border border-[rgba(255,255,255,0.05)] rounded-[14px] p-5 sm:p-6 flex flex-col items-center justify-center text-center min-h-[120px] sm:min-h-[130px]">
+          <div className="bg-black/80 border border-[rgba(255,255,255,0.05)] rounded-[14px] p-5 sm:p-6 flex flex-col items-center justify-center text-center min-h-[120px] sm:min-h-[130px]">
             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[rgba(255,255,255,0.05)] flex items-center justify-center mb-3">
               <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />

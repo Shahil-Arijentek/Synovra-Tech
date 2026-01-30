@@ -76,7 +76,9 @@ const StorytellingSection: React.FC = () => {
   }, [isMounted]);
 
   return (
-    <div id="why-revive" ref={containerRef} className="relative w-full h-[250vh] bg-[#0c0c0c] z-10">
+    <div id="why-revive" ref={containerRef} className="relative w-full h-[250vh] bg-black z-10">
+      {/* Fade to #0d0d0d at bottom */}
+      <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-black via-black/80 to-[#0d0d0d] pointer-events-none z-20" />
       <div className="w-full h-screen flex flex-col items-center justify-start pt-[10vh] md:pt-[15vh] overflow-hidden">
         <div className="relative w-[60%] h-[30%] sm:w-[45%] sm:h-[35%] md:w-[35%] md:h-[40%] z-0 pointer-events-none">
           <video ref={video1Ref} src="/whyrevive/video1.mp4" className="absolute inset-0 w-full h-full object-contain" muted playsInline preload="auto" />
@@ -91,7 +93,7 @@ const StorytellingSection: React.FC = () => {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full px-4 pointer-events-auto max-w-5xl">
               {['Electric mobility.', 'Renewable energy.', 'Regulated recycling.'].map((text, i) => (
-                <div key={i} className="bg-zinc-900/30 backdrop-blur-sm border border-white/5 rounded-2xl py-6 md:py-10 px-4 md:px-6">
+                <div key={i} className="bg-black/60 backdrop-blur-sm border border-white/5 rounded-2xl py-6 md:py-10 px-4 md:px-6">
                   <p className="text-white/80 text-sm sm:text-base md:text-base lg:text-lg font-light">{text}</p>
                 </div>
               ))}
@@ -119,7 +121,7 @@ const StorytellingSection: React.FC = () => {
             </div>
             <div className="flex flex-wrap justify-center gap-2 md:gap-4 max-w-5xl pointer-events-auto mb-6 md:mb-8 px-4">
               {['One loop', 'Revival-first', 'Zero-Liquid-Discharge', '90% less CO₂', 'Material recovery', 'Recycle at end'].map((text, i) => (
-                <button key={i} className="px-4 md:px-8 py-2 md:py-3 bg-zinc-800/60 backdrop-blur-sm border border-white/20 rounded-full text-white text-xs md:text-base font-semibold">
+                <button key={i} className="px-4 md:px-8 py-2 md:py-3 bg-black/70 backdrop-blur-sm border border-white/20 rounded-full text-white text-xs md:text-base font-semibold">
                   {text}
                 </button>
               ))}

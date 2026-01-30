@@ -267,7 +267,7 @@ const sceneTimings = [
   { start: 25, pause: 40, sceneIndex: 3 },    // Scene 4: 25-40s
   { start: 40, pause: 42, sceneIndex: 4 },    // Scene 5: 40-42s
   { start: 42, pause: 55, sceneIndex: 5 },    // Scene 6: 42-55s
-  { start: 55, pause: 67, sceneIndex: 6 }     // Scene 7: 55-67s (1:07)
+  { start: 55, pause: 67, sceneIndex: 6 }     // Scene 7: 55-67s 
 ]
 
 export default function BatteryLifecycleScroll() {
@@ -875,7 +875,7 @@ export default function BatteryLifecycleScroll() {
                     height: '75px',
                     borderRadius: '16px',
                     border: '1px solid rgba(255, 255, 255, 0.10)',
-                    background: 'rgba(20, 20, 20, 0.70)',
+                    background: 'rgba(0, 0, 0, 0.80)',
                     padding: '0 20px'
                     
                   }}
@@ -923,7 +923,7 @@ export default function BatteryLifecycleScroll() {
                       height: '75px',
                       borderRadius: '16px',
                       border: '1px solid rgba(255, 255, 255, 0.10)',
-                      background: 'rgba(20, 20, 20, 0.70)',
+                      background: 'rgba(0, 0, 0, 0.80)',
                       padding: '0 32px'
                     }}
                   >
