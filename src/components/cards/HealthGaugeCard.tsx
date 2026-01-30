@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 interface HealthGaugeCardProps {
   value: string
@@ -8,18 +8,38 @@ interface HealthGaugeCardProps {
 
 export default function HealthGaugeCard({ value, video = '99.mp4', width = '420px' }: HealthGaugeCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [hasPlayed, setHasPlayed] = useState(false)
 
   useEffect(() => {
-    // Auto-play the video when component mounts
-    if (videoRef.current) {
-      videoRef.current.play().catch(err => {
-        console.log('Video autoplay prevented:', err)
-      })
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !hasPlayed && videoRef.current) {
+            videoRef.current.play().catch(err => {
+              console.log('Video autoplay prevented:', err)
+            })
+            setHasPlayed(true)
+          }
+        })
+      },
+      { threshold: 0.5 } // Play when 50% of the card is visible
+    )
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current)
     }
-  }, [])
+
+    return () => {
+      if (containerRef.current) {
+        observer.unobserve(containerRef.current)
+      }
+    }
+  }, [hasPlayed])
 
   return (
     <div 
+      ref={containerRef}
       className="backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-2xl p-3 h-[240px] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)]"
       style={{ width }}
     >
@@ -35,9 +55,7 @@ export default function HealthGaugeCard({ value, video = '99.mp4', width = '420p
           src={`/cards/${video}`}
           className="w-full h-full object-contain scale-100"
           muted
-          loop
           playsInline
-          autoPlay
         />
       </div>
 

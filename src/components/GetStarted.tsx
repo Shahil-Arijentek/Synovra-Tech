@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function GetStarted() {
+  const [videoLoaded, setVideoLoaded] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const [formData, setFormData] = useState({
     fullName: '',
     companyName: '',
@@ -9,6 +11,12 @@ export default function GetStarted() {
     phone: '',
     message: '',
   })
+
+  useEffect(() => {
+    // Ensure smooth rendering
+    const timer = setTimeout(() => setMounted(true), 50)
+    return () => clearTimeout(timer)
+  }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -24,14 +32,15 @@ export default function GetStarted() {
   }
 
   return (
-    <div className="relative w-full min-h-screen flex items-center justify-center overflow-hidden overflow-y-auto pb-0">
+    <div className={`relative w-full min-h-screen flex items-center justify-center overflow-hidden overflow-y-auto pb-0 transition-opacity duration-300 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
       {/* Background Video */}
       <video
         autoPlay
         loop
         muted
         playsInline
-        className="absolute inset-0 w-full h-full object-cover"
+        onLoadedData={() => setVideoLoaded(true)}
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
       >
         <source src="/getstarted.mp4" type="video/mp4" />
       </video>
@@ -158,7 +167,7 @@ export default function GetStarted() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="bg-[#ff6b1a] hover:bg-[#ff6b1a]/90 rounded-[4px] h-[50px] sm:h-[56px] font-['Arial',sans-serif] text-[15px] sm:text-[16px] leading-[24px] text-white text-center transition-all shadow-[0_0_20px_rgba(255,107,26,0.6)] hover:shadow-[0_0_30px_rgba(255,107,26,0.8)] w-full"
+              className="bg-[#ff6b1a] hover:bg-[#ff6b1a]/90 rounded-[4px] h-[50px] sm:h-[56px] font-['Arial',sans-serif] text-[15px] sm:text-[16px] leading-[24px] text-white text-center transition-all duration-300 will-change-[box-shadow] shadow-[0_0_15px_rgba(255,107,26,0.4),0_0_30px_rgba(255,107,26,0.2)] hover:shadow-[0_0_20px_rgba(255,107,26,0.5),0_0_40px_rgba(255,107,26,0.25)] w-full"
             >
               Get Started
             </button>

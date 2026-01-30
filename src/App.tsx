@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { useEffect } from 'react'
 import './App.css'
 import { LoadingProvider } from './contexts/LoadingContext'
+import { NavbarProvider, useNavbar } from './contexts/NavbarContext'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Home from './pages/Home'
@@ -27,13 +28,14 @@ function ScrollToTop() {
 
 function AppContent() {
   const location = useLocation()
+  const { isNavbarVisible } = useNavbar()
   const hideFooter = location.pathname === '/battery-lifecycle'
   
   return (
     <>
       <ScrollToTop />
       <div className="w-full min-h-screen font-sans bg-black">
-        <Header />
+        {isNavbarVisible && <Header />}
         <main>
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Home />} />
@@ -53,7 +55,9 @@ function App() {
   return (
     <Router>
       <LoadingProvider initialLoadingTime={1500}>
-        <AppContent />
+        <NavbarProvider>
+          <AppContent />
+        </NavbarProvider>
       </LoadingProvider>
     </Router>
   )

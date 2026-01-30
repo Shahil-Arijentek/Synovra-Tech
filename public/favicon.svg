@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#000000"/>
+  <!-- Battery stack -->
+  <g transform="translate(32, 32)">
+    <!-- Top layer -->
+    <path d="M -18 -15 L -18 -8 L 18 -8 L 18 -15 Z" fill="#FF8C42" stroke="#000" stroke-width="1.5"/>
+    <path d="M -16 -8 L -14 -5 L 14 -5 L 16 -8 Z" fill="#FF7F2E"/>
+    
+    <!-- Middle layer -->
+    <path d="M -16 -5 L -16 2 L 16 2 L 16 -5 Z" fill="#FF8C42" stroke="#000" stroke-width="1.5"/>
+    <path d="M -14 2 L -12 5 L 12 5 L 14 2 Z" fill="#FF7F2E"/>
+    
+    <!-- Lightning bolt -->
+    <path d="M 2 8 L -3 15 L 0 15 L -2 22 L 6 12 L 3 12 L 5 8 Z" fill="#FF8C42" stroke="#000" stroke-width="1"/>
+  </g>
+</svg>

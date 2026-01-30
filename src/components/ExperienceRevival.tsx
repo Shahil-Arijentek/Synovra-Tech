@@ -27,7 +27,7 @@ export default function ExperienceRevival() {
           className="h-full w-full object-cover opacity-60"
           style={{ mixBlendMode: 'screen' }}
         >
-          <source src="/envato_video_gen_Dec_22_2025_10_05_24.mp4" type="video/mp4" />
+          <source src="/beforeyourecycle.mp4" type="video/mp4" />
         </video>
         {/* Black overlay to blend video with black background */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/70" />
@@ -35,11 +35,11 @@ export default function ExperienceRevival() {
 
       {/* Content Container */}
       <div className="relative z-10 mx-auto w-full max-w-full pointer-events-none px-4 sm:px-6">
-        <h2 className="text-center font-['Arial'] font-black leading-[1.1] tracking-tight sm:tracking-tighter md:tracking-[-2.4px] text-white uppercase flex flex-col items-center gap-1" style={{ fontSize: 'clamp(1.25rem, 5vw, 3rem)' }}>
+        <h2 className="text-center font-['Arial'] font-black leading-[1.1] tracking-tight sm:tracking-tighter md:tracking-[-2.4px] text-white uppercase flex flex-col items-center gap-0" style={{ fontSize: 'clamp(1.25rem, 5vw, 3rem)' }}>
           <span className="whitespace-nowrap">Experience Revival.</span>
           <span className="whitespace-nowrap">Experience Performance.</span>
         </h2>
-        <p className="mt-4 sm:mt-6 text-sm sm:text-base md:text-base lg:text-lg tracking-[0.1em] sm:tracking-[0.3em] text-white/90 uppercase max-w-[280px] sm:max-w-none mx-auto leading-relaxed px-2">
+        <p className="mt-4 sm:mt-6 text-[15px] sm:text-[16px] tracking-normal text-white/80 normal-case font-normal mx-auto px-2 whitespace-nowrap">
           Redefining battery afterlife with premium, precision-engineered power built to last.
         </p>
       </div>

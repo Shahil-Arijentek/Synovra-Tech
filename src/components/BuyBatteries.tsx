@@ -202,7 +202,7 @@ export default function BuyBatteries() {
               time testing, grading, or preparing units.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
-              <button className="h-[52px] md:h-[58px] w-full sm:w-auto rounded-[4px] bg-[#ff6b1a] px-8 text-[15px] md:text-[16px] font-bold text-[#0d0d0d] transition-all hover:bg-[#ff6b1a]/90 shadow-[0_0_20px_rgba(255,107,26,0.6)] hover:shadow-[0_0_30px_rgba(255,107,26,0.8)]">
+              <button className="h-[52px] md:h-[58px] w-full sm:w-auto rounded-[4px] bg-[#ff6b1a] px-8 text-[15px] md:text-[16px] font-bold text-[#0d0d0d] transition-all duration-300 will-change-[box-shadow] hover:bg-[#ff6b1a]/90 shadow-[0_0_15px_rgba(255,107,26,0.4),0_0_30px_rgba(255,107,26,0.2)] hover:shadow-[0_0_20px_rgba(255,107,26,0.5),0_0_40px_rgba(255,107,26,0.25)]">
                 Partner With Us
               </button>
               <button className="h-[52px] md:h-[58px] w-full sm:w-auto rounded-[4px] border border-white/20 bg-[#191919] px-8 text-[15px] md:text-[16px] font-bold text-white transition-colors hover:bg-white hover:text-black">
