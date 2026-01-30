@@ -30,12 +30,12 @@ export default function Sectors() {
     },
   ];
   const images = [
-    "/sector/image1.png",
-    "/sector/image2.png",
-    "/sector/image3.png",
-    "/sector/image4.png",
-    "/sector/image5.png",
-    "/sector/image6.png",
+    "/sector/image1.webp",
+    "/sector/image2.webp",
+    "/sector/image3.webp",
+    "/sector/image4.webp",
+    "/sector/image5.webp",
+    "/sector/image6.webp",
   ];
   const [activeIndex, setActiveIndex] = useState(0);
   const sectionRef = useRef<HTMLElement | null>(null);

@@ -12,25 +12,25 @@ interface Challenge {
 export default function Challenges() {
   const challenges: Challenge[] = [
     {
-      image: '/challenges/card1.png',
+      image: '/challenges/card1.webp',
       title: 'Premium Batteries Are Expensive to Replace',
       problem: 'OEM-grade batteries with warranties demand large upfront capital — making scale painful.',
       solution: 'We deliver performance-verified batteries with warranty coverage — without the cost of buying new.'
     },
     {
-      image: '/challenges/card2.png',
+      image: '/challenges/card2.webp',
       title: 'Returns Are Unpredictable',
       problem: 'Battery value fluctuates based on chemistry, age, and grading — making outcomes uncertain.',
       solution: 'Every battery receives a consistent, pre-defined value — creating predictable, repeatable returns.'
     },
     {
-      image: '/challenges/card3.png',
+      image: '/challenges/card3.webp',
       title: 'Storage and Sorting Slow You Down',
       problem: 'Testing, sorting, and storing used batteries consumes space, labor, and time.',
       solution: 'We collect mixed loads in any condition — no testing, no sorting, no preparation.'
     },
     {
-      image: '/challenges/card4.png',
+      image: '/challenges/card4.webp',
       title: 'Informal Handling Creates Risk',
       problem: 'Poor handling exposes brands to environmental risk, compliance gaps, and reputational damage.',
       solution: 'Our Zero Discharge Facility ensures closed-loop handling — no liquid discharge, full electrolyte reuse, and reduced chemical dependency.'
