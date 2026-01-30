@@ -162,7 +162,7 @@ Plus: Terrible user experience = lost customers
 #### Videos (142 MB) - Priority 1:
 ```
 ✅ getstarted.mp4 (54.22 MB)
-✅ beforeyourecycle.mp4 (43.69 MB)
+✅ beforeyourecycle.webm (43.69 MB)
 ✅ lifecycle/fullscene.webm (22.66 MB) ⭐ CRITICAL
 ✅ whyrevive/plexus-black-white.mov (12.31 MB)
 ✅ All other videos (9.14 MB)
@@ -197,7 +197,7 @@ Plus: Terrible user experience = lost customers
 synovra/
 ├── videos/
 │   ├── getstarted.mp4
-│   ├── beforeyourecycle.mp4
+│   ├── beforeyourecycle.webm
 │   └── ...
 ├── lifecycle/
 │   ├── fullscene.webm
