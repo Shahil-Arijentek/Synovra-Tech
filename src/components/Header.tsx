@@ -55,10 +55,10 @@ export default function Header() {
           </div>
           <Link 
             to="/get-started" 
-            className="bg-[#ff6b1a] h-[58px] overflow-hidden relative rounded-[4px] shrink-0 w-[156px] border-none cursor-pointer transition-all duration-300 hover:bg-[#ff6b1a]/90 will-change-[box-shadow] shadow-[0_0_15px_rgba(255,107,26,0.4),0_0_30px_rgba(255,107,26,0.2)] hover:shadow-[0_0_20px_rgba(255,107,26,0.5),0_0_40px_rgba(255,107,26,0.25)] flex items-center justify-center focus:outline-none active:scale-[0.98]"
+            className="bg-[#ff6b1a] h-[58px] overflow-visible relative rounded-[4px] shrink-0 w-[156px] border-none cursor-pointer transition-all duration-300 hover:bg-[#ff6b1a]/90 flex items-center justify-center focus:outline-none active:scale-[0.98] isolate before:absolute before:inset-0 before:rounded-[4px] before:bg-[#ff6b1a] before:blur-[15px] before:opacity-40 before:-z-10 before:transition-opacity before:duration-300 hover:before:opacity-50 hover:before:blur-[20px]"
             onMouseDown={(e) => e.preventDefault()}
           >
-            <span className="font-['Arial',sans-serif] leading-[28px] text-[18px] text-white whitespace-nowrap">
+            <span className="font-['Arial',sans-serif] leading-[28px] text-[18px] text-white whitespace-nowrap relative z-10">
               Get Started
             </span>
           </Link>
@@ -115,10 +115,10 @@ export default function Header() {
               </Link>
               <Link
                 to="/get-started"
-                className="bg-[#ff6b1a] h-[58px] rounded-[4px] text-white font-['Arial',sans-serif] text-[18px] transition-all duration-300 will-change-[box-shadow] shadow-[0_0_15px_rgba(255,107,26,0.4),0_0_30px_rgba(255,107,26,0.2)] hover:shadow-[0_0_20px_rgba(255,107,26,0.5),0_0_40px_rgba(255,107,26,0.25)] flex items-center justify-center"
+                className="bg-[#ff6b1a] h-[58px] rounded-[4px] text-white font-['Arial',sans-serif] text-[18px] transition-all duration-300 flex items-center justify-center relative isolate overflow-visible before:absolute before:inset-0 before:rounded-[4px] before:bg-[#ff6b1a] before:blur-[15px] before:opacity-40 before:-z-10 before:transition-opacity before:duration-300 hover:before:opacity-50"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Get Started
+                <span className="relative z-10">Get Started</span>
               </Link>
             </motion.div>
           )}
