@@ -53,7 +53,7 @@ export default function ProofInAction() {
   }
 
   return (
-    <section className="bg-[#0d0d0d] px-6 py-12 md:py-20 text-white">
+    <section className="bg-black px-6 py-12 md:py-20 text-white">
       <div className="mx-auto flex max-w-6xl flex-col items-center">
         <h2 className="text-center text-[32px] md:text-5xl font-bold leading-tight">
           Proven in Live Environments
@@ -63,7 +63,7 @@ export default function ProofInAction() {
         </p>
 
           <div className="mt-8 md:mt-12 flex w-full flex-col items-center">
-            <div className="w-full overflow-hidden rounded-[20px] md:rounded-[24px] border border-white/5 bg-[#0d0d0d] shadow-[0_12px_32px_rgba(0,0,0,0.35)]">
+            <div className="w-full overflow-hidden rounded-[20px] md:rounded-[24px] border border-white/5 bg-black shadow-[0_12px_32px_rgba(0,0,0,0.35)]">
               <AnimatePresence mode="wait" custom={direction}>
                 <motion.div
                   key={currentIndex}

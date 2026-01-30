@@ -41,7 +41,7 @@ export default function Hero() {
     }
   }, [])
   return (
-    <section className="relative bg-[#0d0d0d] overflow-hidden min-h-[500px] md:min-h-[900px] text-white">
+    <section className="relative bg-black overflow-hidden min-h-[500px] md:min-h-[900px] text-white">
       <div className="relative z-10 mx-auto max-w-[1200px] pt-[160px] md:pt-[140px] pb-[20px] md:pb-[120px] px-6 text-center">
         <p className="hero-top-text mb-2">
           EVERY BATTERY DESERVES

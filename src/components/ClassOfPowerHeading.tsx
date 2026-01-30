@@ -12,6 +12,8 @@ export default function ClassOfPowerHeading() {
         >
           <source src="/Comp 1_5.mp4" type="video/mp4" />
         </video>
+        {/* Overlay to ensure text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d]/60 via-transparent to-[#0d0d0d]/60" />
 
         <div className="relative z-10 text-center max-w-2xl mx-auto">
           <h2

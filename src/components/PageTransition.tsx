@@ -19,7 +19,7 @@ export default function PageTransition({ children, delay = 100 }: PageTransition
 
   if (!isReady) {
     return (
-      <div className="min-h-screen bg-[#0d0d0d] flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

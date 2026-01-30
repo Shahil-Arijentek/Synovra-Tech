@@ -119,7 +119,7 @@ export default function Sectors() {
 
   return (
     <>
-      <section className="bg-[#0d0d0d] py-12 md:py-24 overflow-hidden relative font-['Poppins'] group">
+      <section className="bg-black py-12 md:py-24 overflow-hidden relative font-['Poppins'] group">
         <div className="flex items-center justify-center">
           <h2 className="relative text-[7vw] sm:text-[8vw] md:text-[100px] lg:text-[150px] font-black uppercase tracking-tighter leading-none text-center text-[#1a1a1a] opacity-60 whitespace-nowrap">
             <span className="block">SECTORS WE SERVE</span>
@@ -151,7 +151,7 @@ export default function Sectors() {
 
       <section
         ref={sectionRef}
-        className="bg-[#0d0d0d] pt-12 pb-0 md:pt-24 md:pb-24 text-white -mt-16 md:-mt-34"
+        className="bg-black pt-12 pb-0 md:pt-24 md:pb-24 text-white -mt-16 md:-mt-34"
       >
         {/* Container with extra height for mobile scroll interaction */}
         <div
@@ -163,7 +163,7 @@ export default function Sectors() {
 
             {/* Image - Perfect sticky at top on mobile */}
             <div className="w-full lg:flex-[3.0] z-40 mb-2 lg:mb-0 order-1 lg:order-2 mt-28 lg:mt-0">
-              <div className="relative h-[250px] sm:h-[400px] lg:h-[760px] overflow-hidden rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/5 bg-[#0d0d0d]">
+              <div className="relative h-[250px] sm:h-[400px] lg:h-[760px] overflow-hidden rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/5 bg-black">
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={images[activeIndex]}

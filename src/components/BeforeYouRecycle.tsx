@@ -1,6 +1,6 @@
 export default function BeforeYouRecycle() {
   return (
-    <section className="relative min-h-screen w-full overflow-hidden flex items-center justify-center bg-[#0d0d0d] z-[320] py-12 md:py-0">
+    <section className="relative min-h-screen w-full overflow-hidden flex items-center justify-center bg-black z-[320] py-12 md:py-0">
       {/* Background Video */}
       <video
         autoPlay

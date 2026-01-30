@@ -20,7 +20,7 @@ export default function ChallengesHero({ children, title, className = '' }: Chal
 
   return (
     <section className={`relative ${className}`}>
-      <div className="relative min-h-[500px] md:min-h-[700px] overflow-hidden bg-[#0d0d0d]">
+      <div className="relative min-h-[500px] md:min-h-[700px] overflow-hidden bg-black">
         <RippleGrid
           className="absolute inset-x-0 top-0 md:-top-40 h-full md:h-[calc(100%+32px)] z-0"
           enableRainbow={false}
@@ -33,6 +33,8 @@ export default function ChallengesHero({ children, title, className = '' }: Chal
           opacity={isMobile ? 0.5 : 0.40}
           fadeDistance={isMobile ? 2.5 : 1.5}
         />
+        {/* Radial gradient to show orange only in center */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,transparent_30%,black_70%)] z-[1]" />
 
         {title && (
           <div className="absolute inset-0 z-10 flex items-start pt-12 justify-center px-6 md:items-start md:px-8 md:pt-64 pointer-events-none">

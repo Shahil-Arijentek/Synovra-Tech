@@ -51,7 +51,7 @@ export default function GlowBattery() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full bg-[#0d0d0d]"
+      className="relative w-full bg-black"
       style={{ height: '500vh' }}
     >
       <style>{`
@@ -76,15 +76,15 @@ export default function GlowBattery() {
           animation: image-blink 2s ease-in-out infinite;
         }
       `}</style>
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        {/* Shading Gradients to blend with dark background */}
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#0d0d0d] to-transparent z-10" />
+      <div className="sticky top-0 h-screen w-full overflow-hidden bg-black">
+        {/* Shading Gradients to blend with surrounding sections */}
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black to-transparent z-10" />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#0d0d0d] to-transparent z-10" />
 
         {/* Battery Assets & Switching Glow with Stage-based Fade */}
         <div className="absolute inset-0 pointer-events-none">
           <div
-            className="absolute bottom-12 left-0 h-[30vh] md:h-[90%] w-1/2 md:w-auto transition-opacity duration-150 flex items-end"
+            className="absolute bottom-4 -left-8 md:-left-12 h-[30vh] md:h-[90%] w-1/2 md:w-auto transition-opacity duration-150 flex items-end"
           >
             {/* Soft Radial Glow behind the Left Battery */}
             <div
@@ -100,7 +100,7 @@ export default function GlowBattery() {
           </div>
 
           <div
-            className="absolute bottom-12 right-0 h-[30vh] md:h-[90%] w-1/2 md:w-auto transition-opacity duration-150 flex items-end justify-end"
+            className="absolute bottom-0 -right-16 md:-right-24 h-[30vh] md:h-[90%] w-1/2 md:w-auto transition-opacity duration-150 flex items-end justify-end"
           >
             {/* Soft Radial Glow behind the Right Battery */}
             <div

@@ -61,7 +61,7 @@ export default function OurLeadership() {
 
         {/* CEO Card - Large at top */}
         <div className="flex justify-center mb-8 sm:mb-10 md:mb-12">
-          <div className="bg-[#2a2a2a] rounded-xl sm:rounded-2xl overflow-hidden w-full max-w-[280px] sm:max-w-[320px] md:max-w-[350px] transform transition-transform hover:scale-105 duration-300">
+          <div className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden w-full max-w-[280px] sm:max-w-[320px] md:max-w-[350px] transform transition-transform hover:scale-105 duration-300">
             <div className="aspect-[3/4] bg-gradient-to-br from-gray-600 to-gray-800 relative">
               <img 
                 src={ceo.image} 
@@ -84,7 +84,7 @@ export default function OurLeadership() {
           {leadership.slice(0, 3).map((leader, index) => (
             <div 
               key={index}
-              className="bg-[#2a2a2a] rounded-xl sm:rounded-2xl overflow-hidden transform transition-transform hover:scale-105 duration-300 max-w-[280px] sm:max-w-[320px] md:max-w-[350px] mx-auto w-full"
+              className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden transform transition-transform hover:scale-105 duration-300 max-w-[280px] sm:max-w-[320px] md:max-w-[350px] mx-auto w-full"
             >
               <div className="aspect-[3/4] bg-gradient-to-br from-gray-600 to-gray-800 relative">
                 <img 
@@ -109,7 +109,7 @@ export default function OurLeadership() {
           {leadership.slice(3, 6).map((leader, index) => (
             <div 
               key={index}
-              className="bg-[#2a2a2a] rounded-xl sm:rounded-2xl overflow-hidden transform transition-transform hover:scale-105 duration-300 max-w-[280px] sm:max-w-[320px] md:max-w-[350px] mx-auto w-full"
+              className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden transform transition-transform hover:scale-105 duration-300 max-w-[280px] sm:max-w-[320px] md:max-w-[350px] mx-auto w-full"
             >
               <div className="aspect-[3/4] bg-gradient-to-br from-gray-600 to-gray-800 relative">
                 <img 

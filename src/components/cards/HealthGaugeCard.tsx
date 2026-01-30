@@ -20,7 +20,7 @@ export default function HealthGaugeCard({ value, video = '99.mp4', width = '420p
 
   return (
     <div 
-      className="backdrop-blur-[14.9px] bg-[#111111]/70 border border-white/10 rounded-2xl p-3 h-[240px] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)]"
+      className="backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-2xl p-3 h-[240px] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)]"
       style={{ width }}
     >
       {/* Title */}

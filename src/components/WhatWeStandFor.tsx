@@ -25,7 +25,7 @@ export default function WhatWeStandFor() {
           {principles.map((principle, index) => (
             <div 
               key={index} 
-              className="flex items-center justify-center gap-3 bg-[#1a1a1a] rounded-full px-6 py-3 sm:py-4 w-full sm:w-auto sm:flex-1 sm:min-w-[200px] md:min-w-[240px] hover:bg-[#252525] transition-colors"
+              className="flex items-center justify-center gap-3 bg-black/80 border border-white/10 rounded-full px-6 py-3 sm:py-4 w-full sm:w-auto sm:flex-1 sm:min-w-[200px] md:min-w-[240px] hover:bg-black transition-colors"
             >
               <div className="w-2 h-2 bg-[#FF6B35] rounded-full flex-shrink-0" />
               <span className="text-sm sm:text-base text-white/90 text-center whitespace-nowrap">{principle}</span>
