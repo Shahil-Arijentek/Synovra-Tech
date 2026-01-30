@@ -607,8 +607,12 @@ export default function BatteryLifecycleScroll() {
       end: 'bottom bottom',
       pin: true,
       pinSpacing: false,
-      scrub: 5,
+      scrub: true,
       invalidateOnRefresh: true,
+      ease: "none",
+      fastScrollEnd: true,
+      refreshPriority: -1,
+      anticipatePin: 1,
       onEnter: () => {
         // Hide navbar when entering the section
         setNavbarVisible(false)
@@ -761,8 +765,10 @@ export default function BatteryLifecycleScroll() {
                     gsap.to(card, {
                       x: -400,
                       opacity: 0,
-                      duration: 0.6,
-                      ease: 'power2.inOut'
+                      duration: 0.2,
+                      ease: 'power2.inOut',
+                      force3D: true,
+                      overwrite: 'auto'
                     })
                   }
                 })
@@ -770,7 +776,7 @@ export default function BatteryLifecycleScroll() {
             })
 
             // Animate cards in - smooth entrance
-            if (sceneProgress > 0.3) {
+            if (sceneProgress > 0.15) {
               const currentScene = sceneConfig[scene.sceneIndex]
               currentScene.cards.forEach((_: CardData, cardIndex: number) => {
                 const cardKey = `scene-${scene.sceneIndex}-card-${cardIndex}`
@@ -779,8 +785,10 @@ export default function BatteryLifecycleScroll() {
                   gsap.to(card, {
                     x: 0,
                     opacity: 1,
-                    duration: 0.8,
-                    ease: 'power2.out'
+                    duration: 0.25,
+                    ease: 'power2.out',
+                    force3D: true,
+                    overwrite: 'auto'
                   })
                 }
               })
@@ -795,7 +803,8 @@ export default function BatteryLifecycleScroll() {
         // Update video time and prevent seeking beyond duration
         if (video && !isNaN(currentTime)) {
           const clampedTime = Math.max(0, Math.min(currentTime, videoDuration - 0.033))
-          if (Math.abs(video.currentTime - clampedTime) > 0.01) {
+          // Only update if difference is significant to reduce unnecessary seeks
+          if (Math.abs(video.currentTime - clampedTime) > 0.033) {
             video.currentTime = clampedTime
           }
         }
@@ -830,7 +839,7 @@ export default function BatteryLifecycleScroll() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsLoading(false)
-    }, 2000) // Remove loading screen after 2 seconds max
+    }, 1000) // Remove loading screen after 1 second max
 
     return () => clearTimeout(timeout)
   }, [])
@@ -850,14 +859,17 @@ export default function BatteryLifecycleScroll() {
       {/* Scroll Container */}
       <div ref={containerRef} className="relative w-full">
         {/* Sticky Video Container */}
-        <div ref={stickyContainerRef} className="sticky top-0 left-0 w-full h-screen overflow-hidden">
+        <div ref={stickyContainerRef} className="sticky top-0 left-0 w-full h-screen overflow-hidden" style={{ transform: 'translate3d(0, 0, 0)', contain: 'layout style paint' }}>
           <video
             ref={videoRef}
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover pointer-events-none"
             muted
             playsInline
-            preload="metadata"
+            preload="auto"
             loop={false}
+            disablePictureInPicture
+            disableRemotePlayback
+            style={{ willChange: 'transform', imageRendering: 'crisp-edges' }}
             onLoadedMetadata={handleVideoReady}
             onTimeUpdate={(e) => {
               // Safety: prevent video from reaching the very end
@@ -882,13 +894,14 @@ export default function BatteryLifecycleScroll() {
               {/* Progress Boxes Container */}
               <div className="absolute top-8 left-[38rem] z-20">
                 <div 
-                  className="flex items-center gap-2 backdrop-blur-md"
+                  className="flex items-center gap-2 backdrop-blur-sm"
                   style={{
                     height: '75px',
                     borderRadius: '16px',
                     border: '1px solid rgba(255, 255, 255, 0.10)',
                     background: 'rgba(0, 0, 0, 0.4)',
-                    padding: '0 20px'
+                    padding: '0 20px',
+                    willChange: 'transform'
                     
                   }}
                 >
@@ -930,14 +943,15 @@ export default function BatteryLifecycleScroll() {
               {activeSceneIndex !== null && (
                 <div className="absolute top-8 right-16 z-20">
                   <div
-                    className="flex items-center justify-center backdrop-blur-md"
+                    className="flex items-center justify-center backdrop-blur-sm"
                     style={{
                       height: '75px',
                       borderRadius: '16px',
                       border: '1px solid rgba(255, 255, 255, 0.10)',
                       background: 'rgba(0, 0, 0, 0.4)',
                       padding: '0 48px',
-                      width: '650px'
+                      width: '650px',
+                      willChange: 'transform'
                     }}
                   >
                     <p className="text-white/90 text-base font-['Arial',sans-serif] tracking-wide uppercase whitespace-nowrap">
