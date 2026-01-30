@@ -11,11 +11,13 @@ import Sectors from '../components/Sectors'
 import BuyBatteries from '../components/BuyBatteries'
 import { FeaturesSectionWithHoverEffects } from '../components/FeaturesSectionWithHoverEffects'
 import BatteryLifecycleScroll from '../components/BatteryLifecycleScroll'
+import BatteryHero from '../components/BatteryHero'
 
 export default function Home() {
   return (
     <>
       <Hero />
+      <BatteryHero/>
       <BatteryLifecycleScroll/>
       <ExperienceRevival />
       <SystemOutcomes />

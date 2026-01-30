@@ -22,19 +22,19 @@ export default function ProofInAction() {
 
   const slides: ProofSlide[] = [
     {
-      image: '/proof-in-action/image1.png',
+      image: '/proof-in-action/image1.webp',
       alt: 'UPS racks in a live data center',
       headline: 'First in India to Deliver Third-Life UPS Revival',
       subhead: 'Warranty-backed revival deployed in live UPS systems.'
     },
     {
-      image: '/proof-in-action/image2.png',
+      image: '/proof-in-action/image2.webp',
       alt: 'Warranty-active VRLA battery in industrial environment',
       headline: 'Two-Year Warranties on Seven-Year-Old VRLA Batteries',
       subhead: 'Issued for enterprise-grade deployments supporting global operations.'
     },
     {
-      image: '/proof-in-action/image3.png',
+      image: '/proof-in-action/image3.webp',
       alt: 'Live battery swap programs at scale',
       headline: 'Live Battery Swap Programs, Executed at Scale',
       subhead: 'Revived batteries operating in active UPS environments.'
