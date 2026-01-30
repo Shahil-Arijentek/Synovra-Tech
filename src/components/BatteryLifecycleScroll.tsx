@@ -286,46 +286,46 @@ export default function BatteryLifecycleScroll() {
       // Scene-specific positioning
       if (sceneIndex === 0) {
         // Scene 1 positions
-        if (cardData.position === 'right') return 'left-[16rem] top-20'
-        if (cardData.position === 'left') return 'left-8 top-20'
-        if (cardData.position === 'bottom-left') return 'left-8 top-[20rem]'
-        if (cardData.position === 'bottom-right') return 'left-[2rem] top-[38rem]'
+        if (cardData.position === 'right') return 'left-[19em] top-12'
+        if (cardData.position === 'left') return 'left-12 top-12'
+        if (cardData.position === 'bottom-left') return 'left-[4rem] top-[22rem]'
+        if (cardData.position === 'bottom-right') return 'left-[4rem] top-[41rem]'
       } else if (sceneIndex === 1) {
         // Scene 2 positions
-        if (cardData.position === 'right') return 'left-[16rem] top-20'
-        if (cardData.position === 'left') return 'left-8 top-20'
-        if (cardData.position === 'bottom-left') return 'left-8 top-[20rem]'
-        if (cardData.position === 'bottom-right') return 'left-[2rem] top-[38rem]'
+        if (cardData.position === 'right') return 'left-[19em] top-12'
+        if (cardData.position === 'left') return 'left-12 top-12'
+        if (cardData.position === 'bottom-left') return 'left-16 top-[22rem]'
+        if (cardData.position === 'bottom-right') return 'left-16 top-[40rem]'
       } else if (sceneIndex === 2) {
         // Scene 3 positions
-        if (cardData.position === 'right') return 'left-[2rem] top-[42rem]'
-        if (cardData.position === 'left') return 'left-8 top-20'
-        if (cardData.position === 'bottom-left') return 'left-8 top-[16rem]'
-        if (cardData.position === 'bottom-right') return 'left-[2rem] top-[27rem]'
+        if (cardData.position === 'right') return 'left-12 top-[42rem]'
+        if (cardData.position === 'left') return 'left-12 top-12'
+        if (cardData.position === 'bottom-left') return 'left-12 top-[14rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 top-[26rem]'
       } else if (sceneIndex === 3) {
         // Scene 4 positions
-        if (cardData.position === 'right') return 'left-[16rem] top-20'
-        if (cardData.position === 'left') return 'left-8 top-20'
-        if (cardData.position === 'bottom-left') return 'left-8 top-[20rem]'
-        if (cardData.position === 'bottom-right') return 'left-[2rem] top-[38rem]'
+        if (cardData.position === 'right') return 'left-[19em] top-12'
+        if (cardData.position === 'left') return 'left-12 top-12'
+        if (cardData.position === 'bottom-left') return 'left-16 top-[24rem]'
+        if (cardData.position === 'bottom-right') return 'left-16 top-[42rem]'
       } else if (sceneIndex === 4) {
         // Scene 5 positions
-        if (cardData.position === 'right') return 'left-[16rem] top-20'
-        if (cardData.position === 'left') return 'left-8 top-20'
-        if (cardData.position === 'bottom-left') return 'left-8 top-[20rem]'
-        if (cardData.position === 'bottom-right') return 'left-[2rem] top-[38rem]'
+        if (cardData.position === 'right') return 'left-[19em] top-12'
+        if (cardData.position === 'left') return 'left-12 top-12'
+        if (cardData.position === 'bottom-left') return 'left-16 top-[22rem]'
+        if (cardData.position === 'bottom-right') return 'left-16 top-[42rem]'
       } else if (sceneIndex === 5) {
         // Scene 6 positions
-        if (cardData.position === 'top') return 'left-8 top-20'
+        if (cardData.position === 'top') return 'left-12 top-16'
         if (cardData.position === 'left') return 'left-8 top-[25rem]'
-        if (cardData.position === 'right') return 'left-[16rem] top-[25rem]'
-        if (cardData.position === 'bottom') return 'left-8 top-[42em]'
+        if (cardData.position === 'right') return 'left-[18rem] top-[25rem]'
+        if (cardData.position === 'bottom') return 'left-12 top-[44rem]'
       } else if (sceneIndex === 6) {
         // Scene 7 positions
-        if (cardData.position === 'left') return 'left-8 top-20'
-        if (cardData.position === 'right') return 'left-[16rem] top-20'
-        if (cardData.position === 'bottom-left') return 'left-8 top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-[2rem] top-[36rem]'
+        if (cardData.position === 'left') return 'left-12 top-12'
+        if (cardData.position === 'right') return 'left-[19em] top-12'
+        if (cardData.position === 'bottom-left') return 'left-16 top-[24rem]'
+        if (cardData.position === 'bottom-right') return 'left-16 top-[40rem]'
       }
       // Default positions
       if (cardData.position === 'right') return 'left-[16rem] top-20'
@@ -345,7 +345,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <VoltageCard value={cardData.value} status={cardData.status} />
           </div>
@@ -356,7 +356,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <InternalResistanceCard value={cardData.value} status={cardData.status} />
           </div>
@@ -367,7 +367,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <HealthGaugeCard 
               value={cardData.value} 
@@ -382,7 +382,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <SulphationCard value={cardData.value} status={cardData.status} />
           </div>
@@ -393,7 +393,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <SulphationDetectedCard value={cardData.value} />
           </div>
@@ -404,7 +404,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <DecisionCard value={cardData.value} status={cardData.status} />
           </div>
@@ -415,7 +415,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <BarcodeCard value={cardData.value} />
           </div>
@@ -426,7 +426,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <SystemRecordCard value={cardData.value} />
           </div>
@@ -437,7 +437,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <RouteCard />
           </div>
@@ -448,7 +448,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <SealCard value={cardData.value} />
           </div>
@@ -459,7 +459,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <RecordLockCard value={cardData.value} status={cardData.status} />
           </div>
@@ -470,7 +470,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <VoltageTrendCard value={cardData.value} status={cardData.status} />
           </div>
@@ -481,7 +481,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <ElectrochemicalCorrectionCard />
           </div>
@@ -492,7 +492,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <PlateConditionCard value={cardData.value} />
           </div>
@@ -503,7 +503,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <PerformanceRestoredCard
               voltageFrom="11.8V"
@@ -519,7 +519,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <WarrantyCard status={cardData.value} coverage={cardData.status} />
           </div>
@@ -530,7 +530,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <LeadCard value={cardData.value} status={cardData.status} />
           </div>
@@ -541,7 +541,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <PolymerCard value={cardData.value} status={cardData.status} />
           </div>
@@ -552,7 +552,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <ComplianceRecordCard value={cardData.value} />
           </div>
@@ -563,7 +563,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <RecoveryCertifiedCard />
           </div>
@@ -880,7 +880,7 @@ export default function BatteryLifecycleScroll() {
           {!isLoading && (
             <>
               {/* Progress Boxes Container */}
-              <div className="absolute top-20 left-[33rem] z-20">
+              <div className="absolute top-8 left-[38rem] z-20">
                 <div 
                   className="flex items-center gap-2 backdrop-blur-md"
                   style={{
@@ -928,7 +928,7 @@ export default function BatteryLifecycleScroll() {
 
               {/* Scene Title Label - Separate Container */}
               {activeSceneIndex !== null && (
-                <div className="absolute top-20 right-64 z-20">
+                <div className="absolute top-8 right-16 z-20">
                   <div
                     className="flex items-center justify-center backdrop-blur-md"
                     style={{
