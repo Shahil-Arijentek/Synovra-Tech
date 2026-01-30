@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useNavbar } from '../contexts/NavbarContext'
 
 // Import all card components
 import VoltageCard from './cards/VoltageCard'
@@ -43,7 +44,7 @@ const sceneConfig: SceneConfig[] = [
   // Scene 1: Initial Diagnostics
   {
     id: 1,
-    title: 'INITIAL DIAGNOSTICS',
+    title: 'OPERATING WITHIN OPTIMAL RANGE',
     cards: [
       {
         cardType: 'voltage',
@@ -74,7 +75,7 @@ const sceneConfig: SceneConfig[] = [
   // Scene 2: Sulphation Detection
   {
     id: 2,
-    title: 'SULPHATION DETECTION',
+    title: 'EARLY PERFORMANCE DRIFT DETECTED',
     cards: [
       {
         cardType: 'voltage',
@@ -105,7 +106,7 @@ const sceneConfig: SceneConfig[] = [
   // Scene 3: Logistics & Tracking
   {
     id: 3,
-    title: 'LOGISTICS & TRACKING',
+    title: 'EARLY PERFORMANCE DRIFT DETECTED',
     cards: [
       {
         cardType: 'barcode',
@@ -136,7 +137,7 @@ const sceneConfig: SceneConfig[] = [
   // Scene 4: Diagnostic Lock
   {
     id: 4,
-    title: 'DIAGNOSTIC LOCK',
+    title: 'REVIVAL ELIGIBLE',
     cards: [
       {
         cardType: 'voltage',
@@ -167,7 +168,7 @@ const sceneConfig: SceneConfig[] = [
   // Scene 5: Recovery Process
   {
     id: 5,
-    title: 'RECOVERY PROCESS',
+    title: 'REVIVAL PROCESS IN PROGRESS',
     cards: [
       {
         cardType: 'voltage-trend',
@@ -198,7 +199,7 @@ const sceneConfig: SceneConfig[] = [
   // Scene 6: Performance Verification
   {
     id: 6,
-    title: 'PERFORMANCE VERIFICATION',
+    title: 'PERFORMANCE RESTORED FOR EXTENDED USE',
     cards: [
       {
         cardType: 'performance-restored',
@@ -229,7 +230,7 @@ const sceneConfig: SceneConfig[] = [
   // Scene 7: Final Summary
   {
     id: 7,
-    title: 'DIAGNOSTIC SUMMARY',
+    title: 'MATERIAL RECOVERY INITIATED',
     cards: [
       {
         cardType: 'lead',
@@ -277,6 +278,7 @@ export default function BatteryLifecycleScroll() {
   const [isLoading, setIsLoading] = useState(true)
   const [activeSceneIndex, setActiveSceneIndex] = useState<number | null>(null)
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
+  const { setNavbarVisible } = useNavbar()
 
   // Function to render specific card type
   const renderCard = (cardType: string, cardData: CardData, sceneIndex: number, cardIndex: number) => {
@@ -284,52 +286,52 @@ export default function BatteryLifecycleScroll() {
       // Scene-specific positioning
       if (sceneIndex === 0) {
         // Scene 1 positions
-        if (cardData.position === 'right') return 'left-[16rem] top-32'
-        if (cardData.position === 'left') return 'left-8 top-32'
-        if (cardData.position === 'bottom-left') return 'left-8 top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-[2rem] top-[40rem]'
+        if (cardData.position === 'right') return 'left-[16rem] top-20'
+        if (cardData.position === 'left') return 'left-8 top-20'
+        if (cardData.position === 'bottom-left') return 'left-8 top-[20rem]'
+        if (cardData.position === 'bottom-right') return 'left-[2rem] top-[38rem]'
       } else if (sceneIndex === 1) {
         // Scene 2 positions
-        if (cardData.position === 'right') return 'left-[16rem] top-32'
-        if (cardData.position === 'left') return 'left-8 top-32'
-        if (cardData.position === 'bottom-left') return 'left-8 top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-[2rem] top-[40rem]'
+        if (cardData.position === 'right') return 'left-[16rem] top-20'
+        if (cardData.position === 'left') return 'left-8 top-20'
+        if (cardData.position === 'bottom-left') return 'left-8 top-[20rem]'
+        if (cardData.position === 'bottom-right') return 'left-[2rem] top-[38rem]'
       } else if (sceneIndex === 2) {
         // Scene 3 positions
-        if (cardData.position === 'right') return 'left-[2rem] top-[44rem]'
-        if (cardData.position === 'left') return 'left-8 top-32'
-        if (cardData.position === 'bottom-left') return 'left-8 top-[18rem]'
-        if (cardData.position === 'bottom-right') return 'left-[2rem] top-[30rem]'
+        if (cardData.position === 'right') return 'left-[2rem] top-[42rem]'
+        if (cardData.position === 'left') return 'left-8 top-20'
+        if (cardData.position === 'bottom-left') return 'left-8 top-[16rem]'
+        if (cardData.position === 'bottom-right') return 'left-[2rem] top-[27rem]'
       } else if (sceneIndex === 3) {
         // Scene 4 positions
-        if (cardData.position === 'right') return 'left-[16rem] top-32'
-        if (cardData.position === 'left') return 'left-8 top-32'
-        if (cardData.position === 'bottom-left') return 'left-8 top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-[2rem] top-[40rem]'
+        if (cardData.position === 'right') return 'left-[16rem] top-20'
+        if (cardData.position === 'left') return 'left-8 top-20'
+        if (cardData.position === 'bottom-left') return 'left-8 top-[20rem]'
+        if (cardData.position === 'bottom-right') return 'left-[2rem] top-[38rem]'
       } else if (sceneIndex === 4) {
         // Scene 5 positions
-        if (cardData.position === 'right') return 'left-[16rem] top-32'
-        if (cardData.position === 'left') return 'left-8 top-32'
-        if (cardData.position === 'bottom-left') return 'left-8 top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-[2rem] top-[40rem]'
+        if (cardData.position === 'right') return 'left-[16rem] top-20'
+        if (cardData.position === 'left') return 'left-8 top-20'
+        if (cardData.position === 'bottom-left') return 'left-8 top-[20rem]'
+        if (cardData.position === 'bottom-right') return 'left-[2rem] top-[38rem]'
       } else if (sceneIndex === 5) {
         // Scene 6 positions
-        if (cardData.position === 'top') return 'left-8 top-32'
-        if (cardData.position === 'left') return 'left-8 top-[26rem]'
-        if (cardData.position === 'right') return 'left-[16rem] top-[26rem]'
-        if (cardData.position === 'bottom') return 'left-8 top-[42rem]'
+        if (cardData.position === 'top') return 'left-8 top-20'
+        if (cardData.position === 'left') return 'left-8 top-[25rem]'
+        if (cardData.position === 'right') return 'left-[16rem] top-[25rem]'
+        if (cardData.position === 'bottom') return 'left-8 top-[42em]'
       } else if (sceneIndex === 6) {
         // Scene 7 positions
-        if (cardData.position === 'left') return 'left-8 top-32'
-        if (cardData.position === 'right') return 'left-[16rem] top-32'
-        if (cardData.position === 'bottom-left') return 'left-8 top-[26rem]'
-        if (cardData.position === 'bottom-right') return 'left-[2rem] top-[40rem]'
+        if (cardData.position === 'left') return 'left-8 top-20'
+        if (cardData.position === 'right') return 'left-[16rem] top-20'
+        if (cardData.position === 'bottom-left') return 'left-8 top-[22rem]'
+        if (cardData.position === 'bottom-right') return 'left-[2rem] top-[36rem]'
       }
       // Default positions
-      if (cardData.position === 'right') return 'left-[16rem] top-32'
-      if (cardData.position === 'left') return 'left-8 top-32'
-      if (cardData.position === 'bottom-left') return 'left-8 top-[22rem]'
-      if (cardData.position === 'bottom-right') return 'left-[16rem] top-[28rem]'
+      if (cardData.position === 'right') return 'left-[16rem] top-20'
+      if (cardData.position === 'left') return 'left-8 top-20'
+      if (cardData.position === 'bottom-left') return 'left-8 top-[16rem]'
+      if (cardData.position === 'bottom-right') return 'left-[16rem] top-[22rem]'
       
       return 'left-8 top-1/2 -translate-y-1/2'
     }
@@ -607,7 +609,13 @@ export default function BatteryLifecycleScroll() {
       pinSpacing: false,
       scrub: 5,
       invalidateOnRefresh: true,
+      onEnter: () => {
+        // Hide navbar when entering the section
+        setNavbarVisible(false)
+      },
       onLeave: () => {
+        // Show navbar when leaving the section (scrolling down past it)
+        setNavbarVisible(true)
         // Completely hide all cards and video when leaving the section (scrolling down past it)
         setActiveSceneIndex(null)
         
@@ -632,6 +640,8 @@ export default function BatteryLifecycleScroll() {
         })
       },
       onEnterBack: () => {
+        // Hide navbar when scrolling back into the section from below
+        setNavbarVisible(false)
         // Re-enable visibility when scrolling back into the section from below
         
         // Show the sticky video container
@@ -653,6 +663,10 @@ export default function BatteryLifecycleScroll() {
             }
           })
         })
+      },
+      onLeaveBack: () => {
+        // Show navbar when scrolling back up above the section
+        setNavbarVisible(true)
       },
       onUpdate: (self) => {
         const progress = self.progress
@@ -806,8 +820,10 @@ export default function BatteryLifecycleScroll() {
 
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+      // Show navbar when component unmounts
+      setNavbarVisible(true)
     }
-  }, [isLoading])
+  }, [isLoading, setNavbarVisible])
 
   const handleVideoReady = () => {
     // Remove loading screen immediately when video metadata is available
@@ -868,14 +884,14 @@ export default function BatteryLifecycleScroll() {
           {!isLoading && (
             <>
               {/* Progress Boxes Container */}
-              <div className="absolute top-32 left-[30rem] z-20">
+              <div className="absolute top-20 left-[33rem] z-20">
                 <div 
                   className="flex items-center gap-2 backdrop-blur-md"
                   style={{
                     height: '75px',
                     borderRadius: '16px',
                     border: '1px solid rgba(255, 255, 255, 0.10)',
-                    background: 'rgba(0, 0, 0, 0.80)',
+                    background: 'rgba(0, 0, 0, 0.4)',
                     padding: '0 20px'
                     
                   }}
@@ -916,19 +932,20 @@ export default function BatteryLifecycleScroll() {
 
               {/* Scene Title Label - Separate Container */}
               {activeSceneIndex !== null && (
-                <div className="absolute top-32 right-64 z-20">
+                <div className="absolute top-20 right-64 z-20">
                   <div
-                    className="flex items-center backdrop-blur-md"
+                    className="flex items-center justify-center backdrop-blur-md"
                     style={{
                       height: '75px',
                       borderRadius: '16px',
                       border: '1px solid rgba(255, 255, 255, 0.10)',
-                      background: 'rgba(0, 0, 0, 0.80)',
-                      padding: '0 32px'
+                      background: 'rgba(0, 0, 0, 0.4)',
+                      padding: '0 48px',
+                      width: '650px'
                     }}
                   >
                     <p className="text-white/90 text-base font-['Arial',sans-serif] tracking-wide uppercase whitespace-nowrap">
-                      Scene {activeSceneIndex + 1} — {sceneConfig[activeSceneIndex]?.title}
+                      {sceneConfig[activeSceneIndex]?.title}
                     </p>
                   </div>
                 </div>

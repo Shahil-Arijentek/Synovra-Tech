@@ -44,7 +44,7 @@ export default function BeforeYouRecycle() {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 justify-center items-center">
-          <button className="w-full sm:w-auto bg-[#ff6b1a] hover:bg-[#ff6b1a]/90 text-white font-medium text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-lg transition-all duration-300 shadow-[0_0_20px_rgba(255,107,26,0.6)] hover:shadow-[0_0_30px_rgba(255,107,26,0.8)]">
+          <button className="w-full sm:w-auto bg-[#ff6b1a] hover:bg-[#ff6b1a]/90 text-white font-medium text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-lg transition-all duration-300 will-change-[box-shadow] shadow-[0_0_15px_rgba(255,107,26,0.4),0_0_30px_rgba(255,107,26,0.2)] hover:shadow-[0_0_20px_rgba(255,107,26,0.5),0_0_40px_rgba(255,107,26,0.25)]">
             Book a Revival Pickup
           </button>
           <button className="w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 rounded-lg border border-white/20 bg-[#191919] text-white font-medium text-base md:text-lg transition-all duration-300 hover:bg-white hover:text-black">

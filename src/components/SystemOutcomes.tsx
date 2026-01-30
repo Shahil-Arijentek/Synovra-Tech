@@ -324,7 +324,7 @@ export default function SystemOutcomes() {
                             Measured outcomes. Verified performance. Extended life.
                         </p>
                         <button
-                            className="bg-[#ff6b1a] h-[48px] md:h-[58px] rounded-[4px] px-6 md:px-10 text-[#FFF] font-normal text-[15px] md:text-[18px] leading-normal md:leading-[28px] text-center border-none cursor-pointer transition-all hover:bg-[#ff6b1a]/90 shadow-[0_0_20px_rgba(255,107,26,0.6)] hover:shadow-[0_0_30px_rgba(255,107,26,0.8)] whitespace-nowrap"
+                            className="bg-[#ff6b1a] h-[48px] md:h-[58px] rounded-[4px] px-6 md:px-10 text-[#FFF] font-normal text-[15px] md:text-[18px] leading-normal md:leading-[28px] text-center border-none cursor-pointer transition-all duration-300 will-change-[box-shadow] hover:bg-[#ff6b1a]/90 shadow-[0_0_20px_rgba(255,107,26,0.6)] hover:shadow-[0_0_30px_rgba(255,107,26,0.8)] whitespace-nowrap"
                             style={{ fontFamily: 'Arial' }}
                         >
                             Request Custom Report
