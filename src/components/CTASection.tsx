@@ -25,7 +25,7 @@ export default function CTASection() {
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6">
           {/* Get in Touch Button - Orange */}
-          <button className="bg-[#ff6b1a] text-black font-semibold px-6 sm:px-10 py-2.5 sm:py-4 rounded-full text-sm sm:text-lg transition-all duration-300 will-change-[box-shadow] shadow-[0_0_20px_rgba(255,107,26,0.6)] hover:shadow-[0_0_30px_rgba(255,107,26,0.8)] hover:bg-[#ff6b1a]/90 w-full sm:w-auto sm:min-w-[180px] max-w-[240px] sm:max-w-[280px]">
+          <button className="bg-[#ff6b1a] text-black font-semibold px-6 sm:px-10 py-2.5 sm:py-4 rounded-full text-sm sm:text-lg transition-all duration-300 will-change-[box-shadow] shadow-[0_0_15px_rgba(255,107,26,0.4),0_0_30px_rgba(255,107,26,0.2)] hover:shadow-[0_0_20px_rgba(255,107,26,0.5),0_0_40px_rgba(255,107,26,0.25)] hover:bg-[#ff6b1a]/90 w-full sm:w-auto sm:min-w-[180px] max-w-[240px] sm:max-w-[280px]">
             Get in Touch
           </button>
 
