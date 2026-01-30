@@ -8,7 +8,7 @@ import Home from './pages/Home'
 import WhyRevive from './pages/WhyRevive'
 import AboutUs from './pages/AboutUs'
 import GetStarted from './pages/GetStarted'
-import BatteryLifecycle from './pages/BatteryLifecycle'
+// import BatteryLifecycle from './pages/BatteryLifecycle'
 
 function ScrollToTop() {
   const location = useLocation()
@@ -40,7 +40,7 @@ function AppContent() {
             <Route path="/why-revive" element={<WhyRevive />} />
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/get-started" element={<GetStarted />} />
-            <Route path="/battery-lifecycle" element={<BatteryLifecycle />} />
+            {/* <Route path="/battery-lifecycle" element={<BatteryLifecycle />} /> */}
           </Routes>
         </main>
         {!hideFooter && <Footer />}
