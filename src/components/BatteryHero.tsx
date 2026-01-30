@@ -25,6 +25,11 @@ export default function BatteryHero() {
 
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/60" />
+      
+      {/* Vignette Effect - Fade edges to black */}
+      <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black" style={{
+        background: 'radial-gradient(circle at center, transparent 20%, rgba(0, 0, 0, 0.4) 70%, rgba(0, 0, 0, 0.9) 100%)'
+      }} />
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-20 flex flex-col items-center justify-center text-center">
