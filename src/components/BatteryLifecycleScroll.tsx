@@ -345,7 +345,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: cardData.position === 'right' ? 'translateX(400px)' : 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px)' }}
           >
             <VoltageCard value={cardData.value} status={cardData.status} />
           </div>
@@ -356,7 +356,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: cardData.position === 'right' ? 'translateX(400px)' : 'translateX(-400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px)' }}
           >
             <InternalResistanceCard value={cardData.value} status={cardData.status} />
           </div>
@@ -448,7 +448,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px)' }}
           >
             <SealCard value={cardData.value} />
           </div>
@@ -519,7 +519,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px)' }}
           >
             <WarrantyCard status={cardData.value} coverage={cardData.status} />
           </div>
@@ -541,7 +541,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px)' }}
           >
             <PolymerCard value={cardData.value} status={cardData.status} />
           </div>
@@ -563,7 +563,7 @@ export default function BatteryLifecycleScroll() {
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
             className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(400px)' }}
+            style={{ opacity: 0, transform: 'translateX(-400px)' }}
           >
             <RecoveryCertifiedCard />
           </div>
@@ -691,10 +691,9 @@ export default function BatteryLifecycleScroll() {
                 const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
                 const card = cardRefs.current[cardKey]
                 if (card) {
-                  const cardData = scene.cards[cardIndex]
-                  const exitX = cardData.position === 'right' || cardData.position === 'bottom-right' ? 400 : -400
+                  // All cards exit to the left
                   gsap.set(card, {
-                    x: exitX,
+                    x: -400,
                     opacity: 0
                   })
                 }
@@ -752,28 +751,26 @@ export default function BatteryLifecycleScroll() {
             // Show/hide cards based on scene
             setActiveSceneIndex(scene.sceneIndex)
 
-            // Hide cards from all other scenes
+            // Hide cards from all other scenes - smooth exit
             sceneConfig.forEach((otherScene, otherSceneIndex) => {
               if (otherSceneIndex !== scene.sceneIndex) {
-                otherScene.cards.forEach((otherCardData: CardData, cardIndex: number) => {
+                otherScene.cards.forEach((_otherCardData: CardData, cardIndex: number) => {
                   const cardKey = `scene-${otherSceneIndex}-card-${cardIndex}`
                   const card = cardRefs.current[cardKey]
                   if (card) {
-                    // Animate out to the side based on position
-                    const exitX = otherCardData.position === 'right' || otherCardData.position === 'bottom-right' ? 400 : -400
                     gsap.to(card, {
-                      x: exitX,
+                      x: -400,
                       opacity: 0,
-                      duration: 0.3,
-                      ease: 'power2.in'
+                      duration: 0.6,
+                      ease: 'power2.inOut'
                     })
                   }
                 })
               }
             })
 
-            // Animate cards in when entering scene
-            if (sceneProgress > 0.1) {
+            // Animate cards in - smooth entrance
+            if (sceneProgress > 0.3) {
               const currentScene = sceneConfig[scene.sceneIndex]
               currentScene.cards.forEach((_: CardData, cardIndex: number) => {
                 const cardKey = `scene-${scene.sceneIndex}-card-${cardIndex}`
@@ -782,8 +779,8 @@ export default function BatteryLifecycleScroll() {
                   gsap.to(card, {
                     x: 0,
                     opacity: 1,
-                    duration: 0.6,
-                    ease: 'power3.out'
+                    duration: 0.8,
+                    ease: 'power2.out'
                   })
                 }
               })
@@ -807,13 +804,12 @@ export default function BatteryLifecycleScroll() {
 
     // Initial setup: hide all cards and reset their positions
     sceneConfig.forEach((scene, sceneIndex) => {
-      scene.cards.forEach((cardData, cardIndex) => {
+      scene.cards.forEach((_cardData, cardIndex) => {
         const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
         const card = cardRefs.current[cardKey]
         if (card) {
-          // Set initial position based on card position
-          const initialX = cardData.position === 'right' || cardData.position === 'bottom-right' ? 400 : -400
-          gsap.set(card, { x: initialX, opacity: 0 })
+          // All cards start from the left
+          gsap.set(card, { x: -400, opacity: 0 })
         }
       })
     })
