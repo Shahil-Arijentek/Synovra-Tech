@@ -27,6 +27,17 @@ import RecoveryCertifiedCard from './cards/RecoveryCertifiedCard'
 
 gsap.registerPlugin(ScrollTrigger)
 
+// Frame counts per scene (15 FPS)
+const SCENE_FRAME_COUNTS = [
+  60,   // Scene 1: 0-4s (60 frames)
+  45,   // Scene 2: 4-7s (45 frames)
+  270,  // Scene 3: 7-25s (270 frames)
+  225,  // Scene 4: 25-40s (225 frames)
+  30,   // Scene 5: 40-42s (30 frames)
+  195,  // Scene 6: 42-55s (195 frames)
+  180   // Scene 7: 55-67s (180 frames)
+]
+
 interface CardData {
   cardType: string
   value: string
@@ -273,10 +284,11 @@ const sceneTimings = [
 
 export default function BatteryLifecycleScroll() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const videoRef = useRef<HTMLVideoElement>(null)
   const stickyContainerRef = useRef<HTMLDivElement>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [activeSceneIndex, setActiveSceneIndex] = useState<number | null>(null)
+  const [currentFrame, setCurrentFrame] = useState(1) // Current frame to display (1-based)
+  const [currentSceneForFrame, setCurrentSceneForFrame] = useState(0) // Scene index for frame rendering (0-based)
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
   const { setNavbarVisible } = useNavbar()
 
@@ -574,12 +586,9 @@ export default function BatteryLifecycleScroll() {
   }
 
   useEffect(() => {
-    const video = videoRef.current
     const container = containerRef.current
 
-    if (!video || !container) return
-
-    const videoDuration = 67 // Total duration: 1:07 (67 seconds)
+    if (!container) return
     
     // Create scroll sections for each scene
     const scrollSections = sceneTimings.map((scene, index) => {
@@ -600,13 +609,13 @@ export default function BatteryLifecycleScroll() {
     // Set container height to enable scrolling
     gsap.set(container, { height: scrollHeight })
 
-    // Main ScrollTrigger for video scrubbing
+    // Main ScrollTrigger for frame scrubbing
     ScrollTrigger.create({
       trigger: container,
       start: 'top top',
       end: 'bottom bottom',
-      pin: true,
-      pinSpacing: false,
+      pin: stickyContainerRef.current,
+      pinSpacing: true,
       scrub: true,
       invalidateOnRefresh: true,
       fastScrollEnd: true,
@@ -619,53 +628,10 @@ export default function BatteryLifecycleScroll() {
       onLeave: () => {
         // Show navbar when leaving the section (scrolling down past it)
         setNavbarVisible(true)
-        // Completely hide all cards and video when leaving the section (scrolling down past it)
-        setActiveSceneIndex(null)
-        
-        // Hide the sticky video container
-        if (stickyContainerRef.current) {
-          gsap.set(stickyContainerRef.current, { opacity: 0, visibility: 'hidden', pointerEvents: 'none' })
-        }
-        
-        // Collapse the container height to remove empty space
-        if (container) {
-          gsap.set(container, { height: '100vh' })
-        }
-        
-        sceneConfig.forEach((scene, sceneIndex) => {
-          scene.cards.forEach((_: CardData, cardIndex: number) => {
-            const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
-            const card = cardRefs.current[cardKey]
-            if (card) {
-              gsap.set(card, { opacity: 0, visibility: 'hidden' })
-            }
-          })
-        })
       },
       onEnterBack: () => {
         // Hide navbar when scrolling back into the section from below
         setNavbarVisible(false)
-        // Re-enable visibility when scrolling back into the section from below
-        
-        // Show the sticky video container
-        if (stickyContainerRef.current) {
-          gsap.set(stickyContainerRef.current, { opacity: 1, visibility: 'visible', pointerEvents: 'auto' })
-        }
-        
-        // Restore the container height for scrolling
-        if (container) {
-          gsap.set(container, { height: scrollHeight })
-        }
-        
-        sceneConfig.forEach((scene, sceneIndex) => {
-          scene.cards.forEach((_: CardData, cardIndex: number) => {
-            const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
-            const card = cardRefs.current[cardKey]
-            if (card) {
-              gsap.set(card, { visibility: 'visible' })
-            }
-          })
-        })
       },
       onLeaveBack: () => {
         // Show navbar when scrolling back up above the section
@@ -674,58 +640,8 @@ export default function BatteryLifecycleScroll() {
       onUpdate: (self) => {
         const progress = self.progress
         
-        // If scrolled past the end (progress >= 1), hide everything and keep it hidden
-        if (progress >= 1) {
-          if (activeSceneIndex !== null) {
-            setActiveSceneIndex(null)
-            
-            // Hide sticky container
-            if (stickyContainerRef.current) {
-              gsap.set(stickyContainerRef.current, { opacity: 0, visibility: 'hidden', pointerEvents: 'none' })
-            }
-            
-            // Collapse container height
-            if (container) {
-              gsap.set(container, { height: '100vh' })
-            }
-            
-            sceneConfig.forEach((scene, sceneIndex) => {
-              scene.cards.forEach((_: CardData, cardIndex: number) => {
-                const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
-                const card = cardRefs.current[cardKey]
-                if (card) {
-                  // All cards exit to the left
-                  gsap.set(card, {
-                    x: -400,
-                    opacity: 0
-                  })
-                }
-              })
-            })
-          }
-          return // Exit early - don't process scenes
-        }
-        
-        // Only re-enable scenes if we're scrolling BACK into the lifecycle section
-        // This prevents cards from showing when scrolling through sections AFTER lifecycle
-        if (progress < 0.95 && activeSceneIndex === null) {
-          // User scrolled back up into the lifecycle section
-          
-          // Show sticky container
-          if (stickyContainerRef.current) {
-            gsap.set(stickyContainerRef.current, { opacity: 1, visibility: 'visible', pointerEvents: 'auto' })
-          }
-          
-          // Restore container height
-          if (container) {
-            gsap.set(container, { height: scrollHeight })
-          }
-          
-          setActiveSceneIndex(6) // Show last scene when coming back
-        }
-        
-        const clampedProgress = Math.min(progress, 1)
-        let currentTime = 0
+        // Clamp progress to ensure we stay within bounds
+        const clampedProgress = Math.max(0, Math.min(progress, 1))
         let accumulatedProgress = 0
 
         // Find which scene we're in based on scroll progress
@@ -742,14 +658,17 @@ export default function BatteryLifecycleScroll() {
             : (clampedProgress >= sceneStart && clampedProgress < sceneEnd)
 
           if (isInScene) {
-            const sceneProgress = (clampedProgress - sceneStart) / sceneProgressShare
-            const sceneDuration = scene.pause - scene.start
+            // Calculate scene progress, ensuring it doesn't exceed 1
+            const sceneProgress = Math.min((clampedProgress - sceneStart) / sceneProgressShare, 1)
             
-            // Clamp currentTime to not exceed video duration
-            currentTime = Math.min(
-              scene.start + (sceneProgress * sceneDuration),
-              videoDuration - 0.05
-            )
+            // Calculate frame index based on scene progress
+            const frameCount = SCENE_FRAME_COUNTS[scene.sceneIndex]
+            const frameIndex = Math.floor(sceneProgress * (frameCount - 1))
+            const clampedFrameIndex = Math.max(0, Math.min(frameIndex, frameCount - 1))
+            
+            // Update frame state (convert to 1-based for file naming)
+            setCurrentFrame(clampedFrameIndex + 1)
+            setCurrentSceneForFrame(scene.sceneIndex)
 
             // Show/hide cards based on scene
             setActiveSceneIndex(scene.sceneIndex)
@@ -775,7 +694,9 @@ export default function BatteryLifecycleScroll() {
             })
 
             // Animate cards in - smooth entrance
-            if (sceneProgress > 0.15) {
+            // For the last scene, show cards earlier to ensure they're visible
+            const showThreshold = isLastScene ? 0.05 : 0.15
+            if (sceneProgress > showThreshold) {
               const currentScene = sceneConfig[scene.sceneIndex]
               currentScene.cards.forEach((_: CardData, cardIndex: number) => {
                 const cardKey = `scene-${scene.sceneIndex}-card-${cardIndex}`
@@ -799,14 +720,8 @@ export default function BatteryLifecycleScroll() {
           accumulatedProgress = sceneEnd
         }
 
-        // Update video time and prevent seeking beyond duration
-        if (video && !isNaN(currentTime)) {
-          const clampedTime = Math.max(0, Math.min(currentTime, videoDuration - 0.033))
-          // Only update if difference is significant to reduce unnecessary seeks
-          if (Math.abs(video.currentTime - clampedTime) > 0.033) {
-            video.currentTime = clampedTime
-          }
-        }
+        // Frame rendering is handled via state updates above
+        // No video seeking required
       }
     })
 
@@ -829,16 +744,11 @@ export default function BatteryLifecycleScroll() {
     }
   }, [isLoading, setNavbarVisible])
 
-  const handleVideoReady = () => {
-    // Remove loading screen immediately when video metadata is available
-    setIsLoading(false)
-  }
-
-  // Also try to remove loading after a timeout as fallback
+  // Remove loading screen after frames are ready
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsLoading(false)
-    }, 1000) // Remove loading screen after 1 second max
+    }, 500) // Remove loading screen after brief delay
 
     return () => clearTimeout(timeout)
   }, [])
@@ -857,35 +767,15 @@ export default function BatteryLifecycleScroll() {
 
       {/* Scroll Container */}
       <div ref={containerRef} className="relative w-full">
-        {/* Sticky Video Container */}
+        {/* Sticky Frame Container */}
         <div ref={stickyContainerRef} className="sticky top-0 left-0 w-full h-screen overflow-hidden" style={{ transform: 'translate3d(0, 0, 0)', contain: 'layout style paint' }}>
-          <video
-            ref={videoRef}
+          {/* Frame-by-frame renderer */}
+          <img
+            src={`/lifecycle/frames/scene-${currentSceneForFrame + 1}/frame_${String(currentFrame).padStart(4, '0')}.webp`}
+            alt="Battery lifecycle animation"
             className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-            muted
-            playsInline
-            preload="auto"
-            loop={false}
-            disablePictureInPicture
-            disableRemotePlayback
             style={{ willChange: 'transform', imageRendering: 'crisp-edges' }}
-            onLoadedMetadata={handleVideoReady}
-            onTimeUpdate={(e) => {
-              // Safety: prevent video from reaching the very end
-              const video = e.currentTarget
-              if (video.currentTime > video.duration - 0.033) {
-                video.currentTime = video.duration - 0.033
-              }
-            }}
-            onEnded={(e) => {
-              // Prevent video from resetting - lock to final frame
-              const video = e.currentTarget
-              video.currentTime = video.duration - 0.033
-              video.pause()
-            }}
-          >
-            <source src="/lifecycle/fullscene.webm" type="video/webm" />
-          </video>
+          />
 
           {/* Scene Progress Indicator - Separate Containers */}
           {!isLoading && (
