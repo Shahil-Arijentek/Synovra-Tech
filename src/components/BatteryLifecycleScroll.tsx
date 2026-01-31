@@ -30,11 +30,11 @@ gsap.registerPlugin(ScrollTrigger)
 // Frame counts per scene (15 FPS)
 const SCENE_FRAME_COUNTS = [
   60,   // Scene 1: 0-4s (60 frames)
-  45,   // Scene 2: 4-7s (45 frames)
-  270,  // Scene 3: 7-25s (270 frames)
-  225,  // Scene 4: 25-40s (225 frames)
-  30,   // Scene 5: 40-42s (30 frames)
-  195,  // Scene 6: 42-55s (195 frames)
+  60,   // Scene 2: 4-8s (60 frames)
+  270,  // Scene 3: 8-26s (270 frames)
+  240,  // Scene 4: 26-42s (240 frames)
+  45,   // Scene 5: 42-45s (45 frames)
+  150,  // Scene 6: 45-55s (150 frames)
   180   // Scene 7: 55-67s (180 frames)
 ]
 
@@ -274,11 +274,11 @@ const sceneConfig: SceneConfig[] = [
 // Scene timings in seconds
 const sceneTimings = [
   { start: 0, pause: 4, sceneIndex: 0 },      // Scene 1: 0-4s
-  { start: 4, pause: 7, sceneIndex: 1 },      // Scene 2: 4-7s
-  { start: 7, pause: 25, sceneIndex: 2 },     // Scene 3: 7-25s
-  { start: 25, pause: 40, sceneIndex: 3 },    // Scene 4: 25-40s
-  { start: 40, pause: 42, sceneIndex: 4 },    // Scene 5: 40-42s
-  { start: 42, pause: 55, sceneIndex: 5 },    // Scene 6: 42-55s
+  { start: 4, pause: 8, sceneIndex: 1 },      // Scene 2: 4-8s
+  { start: 8, pause: 26, sceneIndex: 2 },     // Scene 3: 8-26s
+  { start: 26, pause: 42, sceneIndex: 3 },    // Scene 4: 26-42s
+  { start: 42, pause: 45, sceneIndex: 4 },    // Scene 5: 42-45s
+  { start: 45, pause: 55, sceneIndex: 5 },    // Scene 6: 45-55s
   { start: 55, pause: 67, sceneIndex: 6 }     // Scene 7: 55-67s 
 ]
 
@@ -862,6 +862,41 @@ export default function BatteryLifecycleScroll() {
               </div>
             ))}
           </div>
+
+          {/* End of Life Warning - appears in Scene 7 from 59s to 61.2s */}
+          {!isLoading && activeSceneIndex === 6 && currentFrame >= 60 && currentFrame <= 93 && (
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30">
+              <div
+                className="backdrop-blur-md animate-pulse"
+                style={{
+                  borderRadius: '20px',
+                  border: '2px solid rgba(255, 107, 26, 0.8)',
+                  background: 'rgba(255, 107, 26, 0.15)',
+                  padding: '32px 64px',
+                  boxShadow: '0 0 40px rgba(255, 107, 26, 0.6), inset 0 0 20px rgba(255, 107, 26, 0.2)',
+                }}
+              >
+                <div className="flex flex-col items-center gap-3">
+                  {/* Warning Icon */}
+                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-[#ff6b1a]/30 border-2 border-[#ff6b1a]">
+                    <svg className="w-8 h-8 text-[#ff6b1a]" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  
+                  {/* Warning Text */}
+                  <div className="text-center">
+                    <h2 className="text-3xl font-bold text-[#ff6b1a] font-['Arial',sans-serif] tracking-wider mb-2">
+                      END OF LIFE
+                    </h2>
+                    <p className="text-xl text-white/90 font-['Arial',sans-serif] tracking-wide">
+                      NEXT STAGE: RECYCLE
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Scroll Indicator (only visible when not loading and in active scene) */}
           {!isLoading && activeSceneIndex !== null && activeSceneIndex < 6 && (
