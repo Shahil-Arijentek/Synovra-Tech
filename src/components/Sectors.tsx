@@ -71,6 +71,7 @@ export default function Sectors() {
     [0, -(sectors.length - 1) * 120]
   );
 
+  // Desktop: GSAP ScrollTrigger for auto-pin
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
