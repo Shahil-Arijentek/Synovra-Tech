@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import ChallengesHero from './ChallengesHero'
 import { AnimatePresence, motion } from 'framer-motion'
 
 interface Challenge {
@@ -43,71 +42,87 @@ export default function Challenges() {
     setCurrentIndex((prev) => (prev - 1 + challenges.length) % challenges.length)
 
   return (
-    <ChallengesHero title="Your Challenges, Solved" className="w-full">
-      <section className="relative z-20 w-full bg-black -mt-[300px] sm:-mt-[350px] md:-mt-[500px] pb-16 md:pb-32">
-        <div className="relative flex flex-col items-center px-4 sm:px-6 md:px-8 mt-0">
-          <div className="w-full max-w-[1040px] z-20">
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={currentIndex}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.4, ease: 'easeOut' }}
-                className="flex flex-col md:flex-row w-full overflow-hidden rounded-[20px] border border-white/10 bg-black shadow-[0_-5px_30px_rgba(0,0,0,0.4)] min-h-[480px] sm:min-h-[440px] md:min-h-[400px] md:h-[400px]"
-              >
+    <section className="relative w-full bg-black py-16 md:py-24">
+      {/* Heading Section */}
+      <div className="text-center px-6 md:px-8 mb-12 md:mb-16">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
+          Your Challenges, Solved
+        </h2>
+        <p className="max-w-[781px] mx-auto font-['Arial'] text-[#9CA3AF] text-sm sm:text-base md:text-base lg:text-lg">
+          We eliminate the cost, risk, and unpredictability from your battery afterlife.
+        </p>
+      </div>
+
+      {/* Cards Section */}
+      <div className="relative flex flex-col items-center px-4 sm:px-6 md:px-8">
+        <div className="w-full max-w-[1200px]">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={currentIndex}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+              className="flex flex-col md:flex-row w-full gap-8 md:gap-12 items-center md:items-start"
+            >
+              {/* Image with border */}
+              <div className="w-full md:w-1/2">
                 <div
-                  className="h-48 sm:h-64 md:h-full w-full md:w-1/2 bg-black"
+                  className="w-full h-[300px] sm:h-[350px] md:h-[400px] rounded-[20px] border-2 border-black overflow-hidden"
                   style={{
                     backgroundImage: `url(${currentChallenge.image})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center'
                   }}
                 />
-                <div className="flex w-full md:w-1/2 flex-col justify-center bg-black p-6 sm:p-8 md:p-10 text-center md:text-left">
-                  <h3 className="mb-4 text-[18px] sm:text-[20px] md:text-[24px] font-bold text-white leading-tight">
-                    {currentChallenge.title}
-                  </h3>
-                  <div className="mb-4">
-                    <p className="text-[10px] font-bold uppercase text-red-500 mb-1">
-                      The Challenge
-                    </p>
-                    <p className="text-sm sm:text-base md:text-base lg:text-lg text-gray-200">{currentChallenge.problem}</p>
-                  </div>
-                  <div className="mb-0">
-                    <p className="text-[10px] font-bold uppercase text-emerald-500 mb-1">
-                      How Synovra Solves It
-                    </p>
-                    <p className="text-sm sm:text-base md:text-base lg:text-lg text-gray-200">{currentChallenge.solution}</p>
-                  </div>
+              </div>
+
+              {/* Text content without box */}
+              <div className="flex w-full md:w-1/2 flex-col justify-center items-center md:items-start text-center md:text-left px-4 md:px-0 h-[300px] sm:h-[350px] md:h-[400px]">
+                <h3 className="mb-6 text-[24px] sm:text-[28px] md:text-[32px] font-bold text-white leading-tight">
+                  {currentChallenge.title}
+                </h3>
+                <div className="mb-6">
+                  <p className="text-[13px] sm:text-[14px] md:text-[15px] font-bold uppercase text-red-500 mb-2">
+                    The Challenge
+                  </p>
+                  <p className="text-base sm:text-lg md:text-lg lg:text-xl text-gray-200 leading-relaxed">{currentChallenge.problem}</p>
                 </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-          <div className="relative z-50 mt-4 flex items-center justify-center gap-4">
-            <button
-              type="button"
-              onClick={handlePrev}
-              aria-label="Previous challenge"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white transition hover:bg-white/10"
-            >
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M15 18l-6-6 6-6" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              onClick={handleNext}
-              aria-label="Next challenge"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white transition hover:bg-white/10"
-            >
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M9 6l6 6-6 6" />
-              </svg>
-            </button>
-          </div>
+                <div className="mb-0">
+                  <p className="text-[13px] sm:text-[14px] md:text-[15px] font-bold uppercase text-emerald-500 mb-2">
+                    How Synovra Solves It
+                  </p>
+                  <p className="text-base sm:text-lg md:text-lg lg:text-xl text-gray-200 leading-relaxed">{currentChallenge.solution}</p>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
-      </section>
-    </ChallengesHero>
+        
+        {/* Navigation Buttons */}
+        <div className="relative mt-6 flex items-center justify-center gap-4">
+          <button
+            type="button"
+            onClick={handlePrev}
+            aria-label="Previous challenge"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white transition hover:bg-white/10"
+          >
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            onClick={handleNext}
+            aria-label="Next challenge"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white transition hover:bg-white/10"
+          >
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
   )
 }

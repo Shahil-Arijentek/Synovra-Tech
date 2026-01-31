@@ -63,7 +63,8 @@ export default function ClassofPower() {
               style={{
                 width: 'min(1024px, 92vw)',
                 objectFit: 'contain',
-                mixBlendMode: 'screen'
+                background: '#0d0d0d',
+                mixBlendMode: 'lighten'
               }}
               autoPlay
               muted

@@ -42,25 +42,30 @@ export default function Hero() {
   }, [])
   return (
     <section className="relative bg-black overflow-hidden min-h-[500px] md:min-h-[900px] text-white">
-      <div className="relative z-10 mx-auto max-w-[1200px] pt-[160px] md:pt-[140px] pb-[20px] md:pb-[120px] px-6 text-center">
+      {/* Bottom Gradient Fade to black */}
+      <div className="absolute bottom-0 left-0 right-0 h-[30%] pointer-events-none z-20" style={{
+        background: 'linear-gradient(to bottom, transparent 0%, #000000 100%)'
+      }} />
+      
+      <div className="relative z-10 mx-auto max-w-[1600px] pt-[160px] md:pt-[110px] pb-[20px] md:pb-[120px] px-6 text-center">
         <p className="hero-top-text mb-2">
           EVERY BATTERY DESERVES
         </p>
         <div className="max-w-[340px] md:max-w-none mx-auto">
           <div className="afterlife-scale-wrapper">
             <p
-              className="afterlife-animation text-[60px] sm:text-[11vw] lg:text-[155px] font-normal tracking-[0.02em] leading-none uppercase max-w-[1240px] mx-auto w-full relative z-0"
+              className="afterlife-animation text-[80px] sm:text-[14vw] lg:text-[220px] font-normal tracking-[0.02em] leading-none uppercase max-w-[1400px] mx-auto w-full relative z-0"
               data-text="AN AFTERLIFE"
             >
               AN AFTERLIFE
             </p>
           </div>
 
-          <div className="relative -mt-[30px] sm:-mt-[100px] md:-mt-[220px] lg:-mt-[240px] flex justify-center z-10 pointer-events-none">
-            <div className="w-full md:w-[1400px] max-w-full aspect-[4/3] scale-[1.3] sm:scale-[1.5] md:scale-100 origin-center">
+          <div className="relative mt-0 sm:-mt-[40px] md:-mt-[100px] lg:-mt-[130px] flex justify-center items-center z-10 pointer-events-none">
+            <div className="w-full md:w-[1400px] max-w-full scale-[1.3] sm:scale-[1.5] md:scale-100 origin-center flex justify-center items-center">
               <video
                 ref={videoRef}
-                className="h-full w-full object-contain mix-blend-screen"
+                className="w-full h-auto object-contain mix-blend-screen"
                 muted
                 playsInline
               >

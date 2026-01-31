@@ -15,7 +15,7 @@ export default function Header() {
         className="backdrop-blur-[10px] backdrop-filter border border-[rgba(255,255,255,0.1)] border-solid rounded-[10px] flex items-center justify-between px-[21px] py-px h-[84px] w-full max-w-[1376px] mx-auto bg-transparent relative"
       >
         {/* Logo - Stays on left */}
-        <Link to="/" className="cursor-pointer h-[38px] relative shrink-0 w-[150px] md:w-[175px] bg-transparent border-none p-0 flex items-center">
+        <Link to="/" className="cursor-pointer h-[38px] relative shrink-0 w-[150px] md:w-[175px] bg-transparent border-none p-0 flex items-center ml-4 md:ml-6">
           <div className="h-[13px] relative shrink-0 w-[122px]">
             <img
               src="/synovra.png"
@@ -30,7 +30,7 @@ export default function Header() {
           <div className="flex gap-[32px] h-[36px] items-center justify-end px-[24px] py-0 relative shrink-0 w-auto">
             <Link
               to="/"
-              className={`h-[20px] relative shrink-0 w-auto text-[14px] leading-[20px] font-['Arial',sans-serif] no-underline transition-colors whitespace-nowrap ${
+              className={`h-[20px] relative shrink-0 w-auto text-[15px] leading-[20px] font-['Arial',sans-serif] font-semibold no-underline transition-colors whitespace-nowrap ${
                 isActive('/') ? 'text-[#ff6b1a]' : 'text-[#4a5565] hover:text-[#ff6b1a]'
               }`}
             >
@@ -38,7 +38,7 @@ export default function Header() {
             </Link>
             <Link
               to="/why-revive"
-              className={`h-[20px] relative shrink-0 w-auto text-[14px] leading-[20px] font-['Arial',sans-serif] no-underline transition-colors whitespace-nowrap ${
+              className={`h-[20px] relative shrink-0 w-auto text-[15px] leading-[20px] font-['Arial',sans-serif] font-semibold no-underline transition-colors whitespace-nowrap ${
                 isActive('/why-revive') ? 'text-[#ff6b1a]' : 'text-[#4a5565] hover:text-[#ff6b1a]'
               }`}
             >
@@ -46,7 +46,7 @@ export default function Header() {
             </Link>
             <Link
               to="/about-us"
-              className={`h-[20px] relative shrink-0 w-auto text-[14px] leading-[20px] font-['Arial',sans-serif] no-underline transition-colors whitespace-nowrap ${
+              className={`h-[20px] relative shrink-0 w-auto text-[15px] leading-[20px] font-['Arial',sans-serif] font-semibold no-underline transition-colors whitespace-nowrap ${
                 isActive('/about-us') ? 'text-[#ff6b1a]' : 'text-[#4a5565] hover:text-[#ff6b1a]'
               }`}
             >
@@ -88,7 +88,7 @@ export default function Header() {
             >
               <Link
                 to="/"
-                className={`text-[18px] font-['Arial',sans-serif] no-underline ${
+                className={`text-[19px] font-['Arial',sans-serif] font-semibold no-underline ${
                   isActive('/') ? 'text-[#ff6b1a]' : 'text-white'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
@@ -97,7 +97,7 @@ export default function Header() {
               </Link>
               <Link
                 to="/why-revive"
-                className={`text-[18px] font-['Arial',sans-serif] no-underline ${
+                className={`text-[19px] font-['Arial',sans-serif] font-semibold no-underline ${
                   isActive('/why-revive') ? 'text-[#ff6b1a]' : 'text-white'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
@@ -106,7 +106,7 @@ export default function Header() {
               </Link>
               <Link
                 to="/about-us"
-                className={`text-[18px] font-['Arial',sans-serif] no-underline ${
+                className={`text-[19px] font-['Arial',sans-serif] font-semibold no-underline ${
                   isActive('/about-us') ? 'text-[#ff6b1a]' : 'text-white'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
