@@ -59,9 +59,9 @@ export default function Footer() {
             <div className="space-y-2 sm:space-y-2 md:space-y-3 text-sm sm:text-base md:text-base lg:text-lg text-white/70">
               <a
                 className="block transition hover:text-white hover:translate-x-1 duration-200 break-all"
-                href="mailto:hello@synovra.tech"
+                href="mailto:yjdoshi@synovratech.com"
               >
-                hello@synovra.tech
+               yjdoshi@synovratech.com
               </a>
               <a className="block transition hover:text-white hover:translate-x-1 duration-200" href="#">
                 LinkedIn
@@ -75,7 +75,7 @@ export default function Footer() {
 
         <div className="mt-8 sm:mt-10 md:mt-12 flex flex-col gap-3 sm:gap-4 border-t border-white/10 pt-5 sm:pt-6 text-center md:text-left text-[10px] sm:text-[11px] md:text-sm text-white/50 md:flex-row md:items-center md:justify-between">
           <p>© 2026 Synovra Technologies</p>
-          <p>Made by <span className="font-bold">Arijentek Solutions</span></p>
+          <p>Made by <span className="font-bold">Arijentek Solution</span></p>
         </div>
       </div>
     </footer>

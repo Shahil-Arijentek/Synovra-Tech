@@ -38,14 +38,16 @@
 
 @media (min-width: 1024px) {
   .hero-top-text {
-    width: 1139px !important;
-    font-size: 43.640px !important;
+    width: 1400px !important;
+    font-size: 54px !important;
     line-height: 74.192px !important;
     font-weight: 900 !important;
     font-family: 'Arial', sans-serif !important;
     text-align: center !important;
     display: block !important;
     margin: 0 auto !important;
+    margin-left: calc(50% + 10px) !important;
+    transform: translateX(-50%);
     white-space: nowrap;
     text-transform: uppercase;
     color: #FFFFFF !important;
@@ -113,10 +115,10 @@
 
 @media (min-width: 1024px) {
   .afterlife-animation {
-    width: 1139px !important;
-    height: 222px !important;
-    font-size: 155px !important;
-    line-height: 222px !important; /* Force line-height to match box height */
+    width: 1400px !important;
+    height: 250px !important;
+    font-size: 190px !important;
+    line-height: 250px !important; /* Force line-height to match box height */
     display: block !important;
     letter-spacing: -0.01em !important;
     margin: 0 auto !important;
@@ -128,7 +130,7 @@
 
 @media (max-width: 1023px) {
   .hero-top-text {
-    font-size: clamp(24px, 5vw, 42px);
+    font-size: clamp(28px, 6vw, 50px);
     width: auto !important;
     text-align: center !important;
     letter-spacing: 0.1em !important;
@@ -140,7 +142,7 @@
   }
 
   .afterlife-animation {
-    font-size: clamp(40px, 12vw, 100px) !important;
+    font-size: clamp(50px, 14vw, 120px) !important;
     width: 100% !important;
     text-align: center !important;
     letter-spacing: 0.01em !important;
