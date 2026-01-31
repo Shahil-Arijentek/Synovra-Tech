@@ -232,8 +232,8 @@ const sceneConfig: SceneConfig[] = [
       },
       {
         cardType: 'record-lock',
-        value: 'RECOVERY',
-        status: 'VERIFIED',
+        value: 'DIAGNOSTIC',
+        status: 'RECORD LOCKED',
         position: 'bottom'
       }
     ]
@@ -300,49 +300,49 @@ export default function BatteryLifecycleScroll() {
         // Scene 1 positions
         if (cardData.position === 'right') return 'left-[19em] top-12'
         if (cardData.position === 'left') return 'left-12 top-12'
-        if (cardData.position === 'bottom-left') return 'left-[4rem] top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-[4rem] top-[41rem]'
+        if (cardData.position === 'bottom-left') return 'left-[4rem] top-[24rem]'
+        if (cardData.position === 'bottom-right') return 'left-[4rem] top-[45rem]'
       } else if (sceneIndex === 1) {
         // Scene 2 positions
         if (cardData.position === 'right') return 'left-[19em] top-12'
         if (cardData.position === 'left') return 'left-12 top-12'
-        if (cardData.position === 'bottom-left') return 'left-16 top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-16 top-[40rem]'
+        if (cardData.position === 'bottom-left') return 'left-16 top-[24rem]'
+        if (cardData.position === 'bottom-right') return 'left-16 top-[44rem]'
       } else if (sceneIndex === 2) {
         // Scene 3 positions
-        if (cardData.position === 'right') return 'left-12 top-[42rem]'
-        if (cardData.position === 'left') return 'left-12 top-12'
-        if (cardData.position === 'bottom-left') return 'left-12 top-[14rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 top-[26rem]'
+        if (cardData.position === 'right') return 'left-20 top-[48rem]'
+        if (cardData.position === 'left') return 'left-20 top-14'
+        if (cardData.position === 'bottom-left') return 'left-20 top-[16rem]'
+        if (cardData.position === 'bottom-right') return 'left-20 top-[30rem]'
       } else if (sceneIndex === 3) {
         // Scene 4 positions
         if (cardData.position === 'right') return 'left-[19em] top-12'
         if (cardData.position === 'left') return 'left-12 top-12'
         if (cardData.position === 'bottom-left') return 'left-16 top-[24rem]'
-        if (cardData.position === 'bottom-right') return 'left-16 top-[42rem]'
+        if (cardData.position === 'bottom-right') return 'left-16 top-[44rem]'
       } else if (sceneIndex === 4) {
         // Scene 5 positions
         if (cardData.position === 'right') return 'left-[19em] top-12'
         if (cardData.position === 'left') return 'left-12 top-12'
-        if (cardData.position === 'bottom-left') return 'left-16 top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-16 top-[42rem]'
+        if (cardData.position === 'bottom-left') return 'left-16 top-[24rem]'
+        if (cardData.position === 'bottom-right') return 'left-16 top-[46rem]'
       } else if (sceneIndex === 5) {
         // Scene 6 positions
-        if (cardData.position === 'top') return 'left-12 top-16'
-        if (cardData.position === 'left') return 'left-8 top-[25rem]'
-        if (cardData.position === 'right') return 'left-[18rem] top-[25rem]'
-        if (cardData.position === 'bottom') return 'left-12 top-[44rem]'
+        if (cardData.position === 'top') return 'left-20 top-16'
+        if (cardData.position === 'left') return 'left-16 top-[25rem]'
+        if (cardData.position === 'right') return 'left-[20rem] top-[25rem]'
+        if (cardData.position === 'bottom') return 'left-20 top-[44rem]'
       } else if (sceneIndex === 6) {
         // Scene 7 positions
-        if (cardData.position === 'left') return 'left-12 top-12'
-        if (cardData.position === 'right') return 'left-[19em] top-12'
+        if (cardData.position === 'left') return 'left-12 top-16'
+        if (cardData.position === 'right') return 'left-[19em] top-16'
         if (cardData.position === 'bottom-left') return 'left-16 top-[24rem]'
         if (cardData.position === 'bottom-right') return 'left-16 top-[40rem]'
       }
       // Default positions
       if (cardData.position === 'right') return 'left-[16rem] top-20'
       if (cardData.position === 'left') return 'left-8 top-20'
-      if (cardData.position === 'bottom-left') return 'left-8 top-[16rem]'
+      if (cardData.position === 'bottom-left') return 'left-8 top-[20rem]'
       if (cardData.position === 'bottom-right') return 'left-[16rem] top-[22rem]'
       
       return 'left-8 top-1/2 -translate-y-1/2'
@@ -839,7 +839,7 @@ export default function BatteryLifecycleScroll() {
                       border: '1px solid rgba(255, 255, 255, 0.10)',
                       background: 'rgba(0, 0, 0, 0.4)',
                       padding: '0 48px',
-                      width: '650px',
+                      width: '750px',
                       willChange: 'transform'
                     }}
                   >

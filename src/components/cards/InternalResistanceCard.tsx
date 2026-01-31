@@ -12,11 +12,11 @@ export default function InternalResistanceCard({ value, status }: InternalResist
       </div>
 
       {/* Image Visualization - Cylindrical Battery */}
-      <div className="relative w-full h-[145px] mb-2 flex items-center justify-center">
+      <div className="relative w-full h-[145px] mb-2 flex items-center justify-center overflow-hidden">
         <img
           src="/cards/internalresistance.png"
           alt="Internal Resistance"
-          className="w-full h-full object-contain"
+          className="w-full h-full object-contain scale-125"
         />
       </div>
 
