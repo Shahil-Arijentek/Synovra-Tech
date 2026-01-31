@@ -18,7 +18,7 @@ export default function ComplianceRecordCard({ value }: ComplianceRecordCardProp
           className="w-full h-full object-contain"
         />
         {/* Text Overlay - Centered on Image */}
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="absolute inset-0 flex items-center justify-center" style={{ marginTop: '-8px' }}>
           <div
             className="text-[#FF6B00] font-['Arial',sans-serif] font-bold uppercase tracking-wide text-center"
             style={{

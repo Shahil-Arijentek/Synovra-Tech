@@ -57,7 +57,7 @@ export default function HealthGaugeCard({ value, video = '99.mp4', width = '420p
           <video
             ref={videoRef}
             src={`/cards/${video}`}
-            className="w-full h-full object-contain scale-[1.4]"
+            className="w-full h-full object-contain scale-[1.2]"
             muted
             playsInline
           />
