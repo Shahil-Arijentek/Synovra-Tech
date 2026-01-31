@@ -152,7 +152,7 @@ export default function Sectors() {
 
       <section
         ref={sectionRef}
-        className="bg-black pt-12 pb-0 md:pt-24 md:pb-24 text-white -mt-16 md:-mt-34"
+        className="bg-black pt-12 pb-0 md:pt-24 md:pb-24 text-white -mt-16 md:-mt-24"
       >
         {/* Container with extra height for mobile scroll interaction */}
         <div

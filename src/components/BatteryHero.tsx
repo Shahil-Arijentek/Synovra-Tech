@@ -32,8 +32,8 @@ export default function BatteryHero() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.5
+        staggerChildren: 0.08,
+        delayChildren: 0.3
       }
     }
   }
@@ -128,7 +128,7 @@ export default function BatteryHero() {
           className="text-center mb-12 sm:mb-16 md:mb-20"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ delay: 2.2, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ delay: 1.5, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           style={{ 
             willChange: 'transform, opacity',
             color: '#71717B',
@@ -149,7 +149,7 @@ export default function BatteryHero() {
           className="flex flex-col items-center gap-3 sm:gap-4"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ delay: 2.8, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ delay: 1.9, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           style={{ willChange: 'transform, opacity' }}
         >
           <motion.h2 
@@ -163,7 +163,7 @@ export default function BatteryHero() {
             className="text-sm sm:text-base text-gray-400 max-w-2xl"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ delay: 3.0, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 2.1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             Witness the full journey from degradation to certified revival and recycle
           </motion.p>

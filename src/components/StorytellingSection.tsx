@@ -78,12 +78,12 @@ const StorytellingSection: React.FC = () => {
   return (
     <div id="why-revive" ref={containerRef} className="relative w-full h-[250vh] bg-black z-10">
       {/* Fade to #0d0d0d at bottom */}
-      <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-black via-black/80 to-[#0d0d0d] pointer-events-none z-20" />
+      <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-b from-transparent via-black/50 to-[#0d0d0d] pointer-events-none z-20" />
       <div className="w-full h-screen flex flex-col items-center justify-start pt-[10vh] md:pt-[15vh] overflow-hidden">
-        <div className="relative w-[60%] h-[30%] sm:w-[45%] sm:h-[35%] md:w-[35%] md:h-[40%] z-0 pointer-events-none">
-          <video ref={video1Ref} src="/whyrevive/video1.mp4" className="absolute inset-0 w-full h-full object-contain" muted playsInline preload="auto" />
-          <video ref={video2Ref} src="/whyrevive/video2.mp4" className="absolute inset-0 w-full h-full object-contain" muted playsInline preload="auto" />
-          <video ref={video3Ref} src="/whyrevive/video3.mp4" className="absolute inset-0 w-full h-full object-contain" muted playsInline preload="auto" />
+        <div className="relative w-[70%] h-[38%] sm:w-[55%] sm:h-[43%] md:w-[45%] md:h-[50%] z-0 pointer-events-none bg-black">
+          <video ref={video1Ref} src="/whyrevive/video1.mp4" className="absolute inset-0 w-full h-full object-contain" style={{ mixBlendMode: 'screen' }} muted playsInline preload="auto" />
+          <video ref={video2Ref} src="/whyrevive/video2.mp4" className="absolute inset-0 w-full h-full object-contain" style={{ mixBlendMode: 'screen' }} muted playsInline preload="auto" />
+          <video ref={video3Ref} src="/whyrevive/video3.mp4" className="absolute inset-0 w-full h-full object-contain" style={{ mixBlendMode: 'screen' }} muted playsInline preload="auto" />
         </div>
 
         <div className="relative flex-1 w-full max-w-6xl mt-4 pointer-events-none z-10 px-4">
@@ -135,9 +135,9 @@ const StorytellingSection: React.FC = () => {
 };
 
 const ProblemCard: React.FC<{ title: string; subtitle: string }> = ({ title, subtitle }) => (
-  <div className="text-left p-3 md:p-5 border border-red-500/30 bg-red-950/20 rounded-[14px] shadow-2xl w-full max-w-[360px] min-h-[70px] md:h-[98px] mx-auto">
-    <h3 className="text-[#FF6467] text-sm md:text-2xl font-bold mb-0.5 md:mb-1">{title}</h3>
-    <p className="text-white/60 text-sm sm:text-base md:text-base lg:text-lg">{subtitle}</p>
+  <div className="text-left p-4 md:p-6 border border-red-500/30 bg-red-950/20 rounded-[14px] shadow-2xl w-full max-w-[380px] min-h-[95px] md:min-h-[115px] mx-auto">
+    <h3 className="text-[#FF6467] text-base md:text-2xl font-bold mb-1 md:mb-1.5">{title}</h3>
+    <p className="text-white/60 text-sm sm:text-base md:text-base lg:text-lg leading-snug">{subtitle}</p>
   </div>
 );
 
