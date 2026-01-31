@@ -65,37 +65,37 @@ export default function BenefitsByAudience() {
           {benefitCards.map((card, index) => (
             <div
               key={index}
-              className="bg-[#0d0d0d] border border-[#2A2A2A] rounded-xl relative overflow-hidden group transition-all duration-300 py-5 px-8 md:py-6 md:px-10"
+              className="bg-[#0d0d0d] border border-[#2A2A2A] rounded-xl relative overflow-hidden group transition-all duration-300 py-8 px-10 md:py-10 md:px-12"
             >
               {/* Animated Orange Border */}
               <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#FF6B1A] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out" 
                    style={{ width: '6px' }}
               />
               {/* Icon */}
-              <div className="w-10 h-10 bg-[#FF6B1A] rounded-lg flex items-center justify-center mb-2">
+              <div className="w-14 h-14 bg-[#FF6B1A] rounded-lg flex items-center justify-center mb-3">
                 <img 
                   src={card.iconPath} 
                   alt={card.title}
-                  className="w-6 h-6"
+                  className={index === 3 ? "w-11 h-11" : "w-8 h-8"}
                 />
               </div>
 
               {/* Category */}
-              <p className="text-gray-500 text-[9px] font-semibold tracking-wider mb-1">
+              <p className="text-gray-500 text-xs md:text-sm font-semibold tracking-wider mb-2">
                 {card.category}
               </p>
 
               {/* Title */}
-              <h3 className="text-base font-bold text-white mb-2">
+              <h3 className="text-lg md:text-xl font-bold text-white mb-3">
                 {card.title}
               </h3>
 
               {/* Benefits List */}
-              <ul className="space-y-1">
+              <ul className="space-y-2">
                 {card.benefits.map((benefit, idx) => (
                   <li key={idx} className="flex items-start gap-2 text-gray-300">
-                    <span className="text-[#FF6B1A] text-sm mt-0.5 flex-shrink-0">•</span>
-                    <span className="text-xs sm:text-sm md:text-sm leading-tight">{benefit}</span>
+                    <span className="text-[#FF6B1A] text-base mt-0.5 flex-shrink-0">•</span>
+                    <span className="text-sm sm:text-base md:text-base leading-relaxed">{benefit}</span>
                   </li>
                 ))}
               </ul>

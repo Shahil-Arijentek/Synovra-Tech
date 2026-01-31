@@ -756,14 +756,14 @@ export default function BatteryLifecycleScroll() {
   return (
     <div className="relative w-full bg-black">
       {/* Loading Overlay */}
-      {isLoading && (
+      {/* {isLoading && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
           <div className="text-center">
             <div className="w-16 h-16 border-4 border-[#ff6b1a] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
             <p className="text-white text-lg font-['Arial',sans-serif]">Loading Battery Lifecycle...</p>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Scroll Container */}
       <div ref={containerRef} className="relative w-full">

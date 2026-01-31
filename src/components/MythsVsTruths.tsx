@@ -219,12 +219,12 @@ const MythsVsTruths: React.FC = () => {
       {/* Content */}
       <div className="relative z-[210] w-full max-w-7xl mx-auto px-4 md:px-8">
         {/* Title */}
-        <h2 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 md:mb-8 lg:mb-12">
+        <h2 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mt-8 md:mt-12 lg:mt-16 mb-8 md:mb-8 lg:mb-12">
           Myths vs Truths
         </h2>
 
         {/* Content Layers Container */}
-        <div className="relative w-full" style={{ minHeight: '450px' }}>
+        <div className="relative w-full mt-12 md:mt-16 lg:mt-24" style={{ minHeight: '450px' }}>
           {/* Layer 1 */}
           <div ref={layer1Ref} className="absolute inset-0 w-full">
             <MythTruthContent 

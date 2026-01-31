@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import './App.css'
-import { LoadingProvider } from './contexts/LoadingContext'
+// import { LoadingProvider } from './contexts/LoadingContext'
 import { NavbarProvider, useNavbar } from './contexts/NavbarContext'
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -54,11 +54,11 @@ function AppContent() {
 function App() {
   return (
     <Router>
-      <LoadingProvider initialLoadingTime={1500}>
+      {/* <LoadingProvider initialLoadingTime={1500}> */}
         <NavbarProvider>
           <AppContent />
         </NavbarProvider>
-      </LoadingProvider>
+      {/* </LoadingProvider> */}
     </Router>
   )
 }
