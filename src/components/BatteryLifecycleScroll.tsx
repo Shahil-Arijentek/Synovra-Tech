@@ -864,8 +864,6 @@ export default function BatteryLifecycleScroll() {
           <img
             src={`/lifecycle/frames/scene-${currentSceneForFrame + 1}/frame_${String(currentFrame).padStart(4, '0')}.webp`}
             alt="Battery lifecycle animation"
-            loading="lazy"
-            decoding="async"
             className="absolute inset-0 w-full h-full object-cover pointer-events-none"
             style={{ willChange: 'transform', imageRendering: 'crisp-edges' }}
           />
