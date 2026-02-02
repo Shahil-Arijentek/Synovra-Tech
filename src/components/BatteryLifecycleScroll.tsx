@@ -1,29 +1,29 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, lazy, Suspense } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useNavbar } from '../contexts/NavbarContext'
 
-// Import all card components
-import VoltageCard from './cards/VoltageCard'
-import InternalResistanceCard from './cards/InternalResistanceCard'
-import HealthGaugeCard from './cards/HealthGaugeCard'
-import SulphationCard from './cards/SulphationCard'
-import SulphationDetectedCard from './cards/SulphationDetectedCard'
-import DecisionCard from './cards/DecisionCard'
-import BarcodeCard from './cards/BarcodeCard'
-import SystemRecordCard from './cards/SystemRecordCard'
-import RouteCard from './cards/RouteCard'
-import SealCard from './cards/SealCard'
-import RecordLockCard from './cards/RecordLockCard'
-import VoltageTrendCard from './cards/VoltageTrendCard'
-import ElectrochemicalCorrectionCard from './cards/ElectrochemicalCorrectionCard'
-import PlateConditionCard from './cards/PlateConditionCard'
-import PerformanceRestoredCard from './cards/PerformanceRestoredCard'
-import WarrantyCard from './cards/WarrantyCard'
-import LeadCard from './cards/LeadCard'
-import PolymerCard from './cards/PolymerCard'
-import ComplianceRecordCard from './cards/ComplianceRecordCard'
-import RecoveryCertifiedCard from './cards/RecoveryCertifiedCard'
+// Lazy load all card components for better performance
+const VoltageCard = lazy(() => import('./cards/VoltageCard'))
+const InternalResistanceCard = lazy(() => import('./cards/InternalResistanceCard'))
+const HealthGaugeCard = lazy(() => import('./cards/HealthGaugeCard'))
+const SulphationCard = lazy(() => import('./cards/SulphationCard'))
+const SulphationDetectedCard = lazy(() => import('./cards/SulphationDetectedCard'))
+const DecisionCard = lazy(() => import('./cards/DecisionCard'))
+const BarcodeCard = lazy(() => import('./cards/BarcodeCard'))
+const SystemRecordCard = lazy(() => import('./cards/SystemRecordCard'))
+const RouteCard = lazy(() => import('./cards/RouteCard'))
+const SealCard = lazy(() => import('./cards/SealCard'))
+const RecordLockCard = lazy(() => import('./cards/RecordLockCard'))
+const VoltageTrendCard = lazy(() => import('./cards/VoltageTrendCard'))
+const ElectrochemicalCorrectionCard = lazy(() => import('./cards/ElectrochemicalCorrectionCard'))
+const PlateConditionCard = lazy(() => import('./cards/PlateConditionCard'))
+const PerformanceRestoredCard = lazy(() => import('./cards/PerformanceRestoredCard'))
+const WarrantyCard = lazy(() => import('./cards/WarrantyCard'))
+const LeadCard = lazy(() => import('./cards/LeadCard'))
+const PolymerCard = lazy(() => import('./cards/PolymerCard'))
+const ComplianceRecordCard = lazy(() => import('./cards/ComplianceRecordCard'))
+const RecoveryCertifiedCard = lazy(() => import('./cards/RecoveryCertifiedCard'))
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -355,232 +355,272 @@ export default function BatteryLifecycleScroll() {
     switch (cardType) {
       case 'voltage':
         return (
-          <div
-            key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
-          >
-            <VoltageCard value={cardData.value} status={cardData.status} />
-          </div>
+          <Suspense key={cardKey} fallback={<div className="absolute w-20 h-20 animate-pulse bg-white/10 rounded-lg" />}>
+            <div
+              key={cardKey}
+              ref={el => { cardRefs.current[cardKey] = el }}
+              className={`absolute ${getCardPosition()} z-10`}
+              style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            >
+              <VoltageCard value={cardData.value} status={cardData.status} />
+            </div>
+          </Suspense>
         )
       case 'internal-resistance':
         return (
-          <div
-            key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
-          >
-            <InternalResistanceCard value={cardData.value} status={cardData.status} />
-          </div>
+          <Suspense key={cardKey} fallback={<div className="absolute w-20 h-20 animate-pulse bg-white/10 rounded-lg" />}>
+            <div
+              key={cardKey}
+              ref={el => { cardRefs.current[cardKey] = el }}
+              className={`absolute ${getCardPosition()} z-10`}
+              style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            >
+              <InternalResistanceCard value={cardData.value} status={cardData.status} />
+            </div>
+          </Suspense>
         )
       case 'health-gauge':
         return (
-          <div
-            key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
-          >
-            <HealthGaugeCard 
-              value={cardData.value} 
-              video={sceneIndex === 5 ? '98.mp4' : '99.mp4'}
-              width={sceneIndex === 5 ? '200px' : '420px'}
-            />
-          </div>
+          <Suspense key={cardKey} fallback={<div className="absolute w-20 h-20 animate-pulse bg-white/10 rounded-lg" />}>
+            <div
+              key={cardKey}
+              ref={el => { cardRefs.current[cardKey] = el }}
+              className={`absolute ${getCardPosition()} z-10`}
+              style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            >
+              <HealthGaugeCard 
+                value={cardData.value} 
+                video={sceneIndex === 5 ? '98.mp4' : '99.mp4'}
+                width={sceneIndex === 5 ? '200px' : '420px'}
+              />
+            </div>
+          </Suspense>
         )
       case 'sulphation':
         return (
-          <div
-            key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
-          >
-            <SulphationCard value={cardData.value} status={cardData.status} />
-          </div>
+          <Suspense key={cardKey} fallback={<div className="absolute w-20 h-20 animate-pulse bg-white/10 rounded-lg" />}>
+            <div
+              key={cardKey}
+              ref={el => { cardRefs.current[cardKey] = el }}
+              className={`absolute ${getCardPosition()} z-10`}
+              style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            >
+              <SulphationCard value={cardData.value} status={cardData.status} />
+            </div>
+          </Suspense>
         )
       case 'sulphation-detected':
         return (
-          <div
-            key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
-          >
-            <SulphationDetectedCard value={cardData.value} />
-          </div>
+          <Suspense key={cardKey} fallback={<div className="absolute w-20 h-20 animate-pulse bg-white/10 rounded-lg" />}>
+            <div
+              key={cardKey}
+              ref={el => { cardRefs.current[cardKey] = el }}
+              className={`absolute ${getCardPosition()} z-10`}
+              style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            >
+              <SulphationDetectedCard value={cardData.value} />
+            </div>
+          </Suspense>
         )
       case 'decision':
         return (
-          <div
-            key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
-          >
-            <DecisionCard value={cardData.value} status={cardData.status} />
-          </div>
+          <Suspense key={cardKey} fallback={<div className="absolute w-20 h-20 animate-pulse bg-white/10 rounded-lg" />}>
+            <div
+              key={cardKey}
+              ref={el => { cardRefs.current[cardKey] = el }}
+              className={`absolute ${getCardPosition()} z-10`}
+              style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            >
+              <DecisionCard value={cardData.value} status={cardData.status} />
+            </div>
+          </Suspense>
         )
       case 'barcode':
         return (
-          <div
-            key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
-          >
-            <BarcodeCard value={cardData.value} />
-          </div>
+          <Suspense key={cardKey} fallback={<div className="absolute w-20 h-20 animate-pulse bg-white/10 rounded-lg" />}>
+            <div
+              key={cardKey}
+              ref={el => { cardRefs.current[cardKey] = el }}
+              className={`absolute ${getCardPosition()} z-10`}
+              style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            >
+              <BarcodeCard value={cardData.value} />
+            </div>
+          </Suspense>
         )
       case 'system-record':
         return (
-          <div
-            key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
-          >
-            <SystemRecordCard value={cardData.value} />
-          </div>
+          <Suspense key={cardKey} fallback={<div className="absolute w-20 h-20 animate-pulse bg-white/10 rounded-lg" />}>
+            <div
+              key={cardKey}
+              ref={el => { cardRefs.current[cardKey] = el }}
+              className={`absolute ${getCardPosition()} z-10`}
+              style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            >
+              <SystemRecordCard value={cardData.value} />
+            </div>
+          </Suspense>
         )
       case 'route':
         return (
-          <div
-            key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
-          >
-            <RouteCard />
-          </div>
+          <Suspense key={cardKey} fallback={<div className="absolute w-20 h-20 animate-pulse bg-white/10 rounded-lg" />}>
+            <div
+              key={cardKey}
+              ref={el => { cardRefs.current[cardKey] = el }}
+              className={`absolute ${getCardPosition()} z-10`}
+              style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            >
+              <RouteCard />
+            </div>
+          </Suspense>
         )
       case 'seal':
         return (
-          <div
-            key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
-          >
-            <SealCard value={cardData.value} />
-          </div>
+          <Suspense key={cardKey} fallback={<div className="absolute w-20 h-20 animate-pulse bg-white/10 rounded-lg" />}>
+            <div
+              key={cardKey}
+              ref={el => { cardRefs.current[cardKey] = el }}
+              className={`absolute ${getCardPosition()} z-10`}
+              style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            >
+              <SealCard value={cardData.value} />
+            </div>
+          </Suspense>
         )
       case 'record-lock':
         return (
-          <div
-            key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
-          >
-            <RecordLockCard value={cardData.value} status={cardData.status} />
-          </div>
+          <Suspense key={cardKey} fallback={<div className="absolute w-20 h-20 animate-pulse bg-white/10 rounded-lg" />}>
+            <div
+              key={cardKey}
+              ref={el => { cardRefs.current[cardKey] = el }}
+              className={`absolute ${getCardPosition()} z-10`}
+              style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            >
+              <RecordLockCard value={cardData.value} status={cardData.status} />
+            </div>
+          </Suspense>
         )
       case 'voltage-trend':
         return (
-          <div
-            key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
-          >
-            <VoltageTrendCard value={cardData.value} status={cardData.status} />
-          </div>
+          <Suspense key={cardKey} fallback={<div className="absolute w-20 h-20 animate-pulse bg-white/10 rounded-lg" />}>
+            <div
+              key={cardKey}
+              ref={el => { cardRefs.current[cardKey] = el }}
+              className={`absolute ${getCardPosition()} z-10`}
+              style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            >
+              <VoltageTrendCard value={cardData.value} status={cardData.status} />
+            </div>
+          </Suspense>
         )
       case 'electrochemical-correction':
         return (
-          <div
-            key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
-          >
-            <ElectrochemicalCorrectionCard />
-          </div>
+          <Suspense key={cardKey} fallback={<div className="absolute w-20 h-20 animate-pulse bg-white/10 rounded-lg" />}>
+            <div
+              key={cardKey}
+              ref={el => { cardRefs.current[cardKey] = el }}
+              className={`absolute ${getCardPosition()} z-10`}
+              style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            >
+              <ElectrochemicalCorrectionCard />
+            </div>
+          </Suspense>
         )
       case 'plate-condition':
         return (
-          <div
-            key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
-          >
-            <PlateConditionCard value={cardData.value} />
-          </div>
+          <Suspense key={cardKey} fallback={<div className="absolute w-20 h-20 animate-pulse bg-white/10 rounded-lg" />}>
+            <div
+              key={cardKey}
+              ref={el => { cardRefs.current[cardKey] = el }}
+              className={`absolute ${getCardPosition()} z-10`}
+              style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            >
+              <PlateConditionCard value={cardData.value} />
+            </div>
+          </Suspense>
         )
       case 'performance-restored':
         return (
-          <div
-            key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
-          >
-            <PerformanceRestoredCard
-              voltageFrom="11.8V"
-              voltageTo="12.4V"
-              resistanceFrom="8.7mΩ"
-              resistanceTo="4.2mΩ"
-            />
-          </div>
+          <Suspense key={cardKey} fallback={<div className="absolute w-20 h-20 animate-pulse bg-white/10 rounded-lg" />}>
+            <div
+              key={cardKey}
+              ref={el => { cardRefs.current[cardKey] = el }}
+              className={`absolute ${getCardPosition()} z-10`}
+              style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            >
+              <PerformanceRestoredCard
+                voltageFrom="11.8V"
+                voltageTo="12.4V"
+                resistanceFrom="8.7mΩ"
+                resistanceTo="4.2mΩ"
+              />
+            </div>
+          </Suspense>
         )
       case 'warranty':
         return (
-          <div
-            key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
-          >
-            <WarrantyCard status={cardData.value} coverage={cardData.status} />
-          </div>
+          <Suspense key={cardKey} fallback={<div className="absolute w-20 h-20 animate-pulse bg-white/10 rounded-lg" />}>
+            <div
+              key={cardKey}
+              ref={el => { cardRefs.current[cardKey] = el }}
+              className={`absolute ${getCardPosition()} z-10`}
+              style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            >
+              <WarrantyCard status={cardData.value} coverage={cardData.status} />
+            </div>
+          </Suspense>
         )
       case 'lead':
         return (
-          <div
-            key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
-          >
-            <LeadCard value={cardData.value} status={cardData.status} />
-          </div>
+          <Suspense key={cardKey} fallback={<div className="absolute w-20 h-20 animate-pulse bg-white/10 rounded-lg" />}>
+            <div
+              key={cardKey}
+              ref={el => { cardRefs.current[cardKey] = el }}
+              className={`absolute ${getCardPosition()} z-10`}
+              style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            >
+              <LeadCard value={cardData.value} status={cardData.status} />
+            </div>
+          </Suspense>
         )
       case 'polymer':
         return (
-          <div
-            key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
-          >
-            <PolymerCard value={cardData.value} status={cardData.status} />
-          </div>
+          <Suspense key={cardKey} fallback={<div className="absolute w-20 h-20 animate-pulse bg-white/10 rounded-lg" />}>
+            <div
+              key={cardKey}
+              ref={el => { cardRefs.current[cardKey] = el }}
+              className={`absolute ${getCardPosition()} z-10`}
+              style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            >
+              <PolymerCard value={cardData.value} status={cardData.status} />
+            </div>
+          </Suspense>
         )
       case 'compliance-record':
         return (
-          <div
-            key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
-          >
-            <ComplianceRecordCard value={cardData.value} />
-          </div>
+          <Suspense key={cardKey} fallback={<div className="absolute w-20 h-20 animate-pulse bg-white/10 rounded-lg" />}>
+            <div
+              key={cardKey}
+              ref={el => { cardRefs.current[cardKey] = el }}
+              className={`absolute ${getCardPosition()} z-10`}
+              style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            >
+              <ComplianceRecordCard value={cardData.value} />
+            </div>
+          </Suspense>
         )
       case 'recovery-certified':
         return (
-          <div
-            key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
-          >
-            <RecoveryCertifiedCard />
-          </div>
+          <Suspense key={cardKey} fallback={<div className="absolute w-20 h-20 animate-pulse bg-white/10 rounded-lg" />}>
+            <div
+              key={cardKey}
+              ref={el => { cardRefs.current[cardKey] = el }}
+              className={`absolute ${getCardPosition()} z-10`}
+              style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            >
+              <RecoveryCertifiedCard />
+            </div>
+          </Suspense>
         )
       default:
         return null
@@ -824,6 +864,8 @@ export default function BatteryLifecycleScroll() {
           <img
             src={`/lifecycle/frames/scene-${currentSceneForFrame + 1}/frame_${String(currentFrame).padStart(4, '0')}.webp`}
             alt="Battery lifecycle animation"
+            loading="lazy"
+            decoding="async"
             className="absolute inset-0 w-full h-full object-cover pointer-events-none"
             style={{ willChange: 'transform', imageRendering: 'crisp-edges' }}
           />
