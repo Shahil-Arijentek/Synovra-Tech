@@ -144,7 +144,7 @@ export default function BatteryHero() {
       filter: "blur(0px)",
       transition: {
         duration: 0.8,
-        ease: [0.2, 0.65, 0.3, 0.9]
+        ease: [0.2, 0.65, 0.3, 0.9] as const
       }
     }
   }
@@ -224,7 +224,7 @@ export default function BatteryHero() {
                           transition={{
                             delay: delay,
                             duration: 0.8,
-                            ease: [0.2, 0.65, 0.3, 0.9]
+                            ease: [0.2, 0.65, 0.3, 0.9] as const
                           }}
                           className="inline-block"
                         >
