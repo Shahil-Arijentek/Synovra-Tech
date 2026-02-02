@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect, lazy, Suspense, useLayoutEffect } from 'react'
+import React from 'react'
 import './App.css'
 // import { LoadingProvider } from './contexts/LoadingContext'
 import { NavbarProvider, useNavbar } from './contexts/NavbarContext'
@@ -76,15 +77,42 @@ function AppContent() {
 }
 
 function App() {
+  const [isInitialLoading, setIsInitialLoading] = React.useState(true)
+  const [isFadingOut, setIsFadingOut] = React.useState(false)
+
   // Disable browser's scroll restoration
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual'
     }
   }, [])
+
+  // Initial website loading
+  useEffect(() => {
+    // Show loading for initial resources
+    const loadingTimer = setTimeout(() => {
+      setIsFadingOut(true)
+      
+      // Remove loading screen after fade-out animation
+      const fadeOutTimer = setTimeout(() => {
+        setIsInitialLoading(false)
+      }, 500) // Match fade-out animation duration
+      
+      return () => clearTimeout(fadeOutTimer)
+    }, 1500) // Show loading for 1.5 seconds
+
+    return () => clearTimeout(loadingTimer)
+  }, [])
   
   return (
     <Router>
+      {/* Full-page loading overlay when entering website */}
+      {isInitialLoading && (
+        <div className={isFadingOut ? 'animate-fadeOut' : ''}>
+          <LoadingSpinner />
+        </div>
+      )}
+      
       {/* <LoadingProvider initialLoadingTime={1500}> */}
         <NavbarProvider>
           <AppContent />
