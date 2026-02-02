@@ -1,11 +1,10 @@
-import { motion } from 'framer-motion'
-import { useEffect } from 'react'
-import { useInView } from 'framer-motion'
-import { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
 
 export default function ProofNotPromises() {
   const sectionRef = useRef(null)
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 })
+  const [isMounted, setIsMounted] = React.useState(false)
 
   // Ensure scroll is always enabled
   useEffect(() => {
@@ -13,8 +12,12 @@ export default function ProofNotPromises() {
     document.body.style.overflow = ''
     document.documentElement.style.overflow = ''
 
+    // Mount with delay for smooth fade-in
+    const timer = setTimeout(() => setIsMounted(true), 100)
+
     // Cleanup on unmount
     return () => {
+      clearTimeout(timer)
       document.body.style.overflow = ''
       document.documentElement.style.overflow = ''
     }
@@ -37,7 +40,7 @@ export default function ProofNotPromises() {
   }
 
   return (
-    <div className="relative overflow-hidden md:overflow-visible" style={{ marginTop: '-3200px' }}>
+    <div className={`relative overflow-hidden md:overflow-visible transition-opacity duration-500 ${isMounted ? 'opacity-100' : 'opacity-0'}`} style={{ marginTop: '-3200px' }}>
       <section ref={sectionRef} className="py-8 md:py-12 px-4 sm:px-6 md:px-8 pb-32 md:pb-12 font-sans text-white sticky top-0 z-[105] overflow-hidden md:overflow-visible" style={{ backgroundColor: '#0d0d0d' }}>
         <div className="max-w-[1400px] mx-auto overflow-hidden md:overflow-visible">
         {/* Header */}

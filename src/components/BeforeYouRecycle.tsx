@@ -1,6 +1,15 @@
+import { useEffect, useState } from 'react'
+
 export default function BeforeYouRecycle() {
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsMounted(true), 100)
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
-    <section className="relative min-h-screen w-full overflow-hidden flex items-center justify-center bg-black z-[320] py-12 md:py-0">
+    <section className={`relative min-h-screen w-full overflow-hidden flex items-center justify-center bg-black z-[320] py-12 md:py-0 transition-opacity duration-500 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
       {/* Background Video */}
       <video
         autoPlay
