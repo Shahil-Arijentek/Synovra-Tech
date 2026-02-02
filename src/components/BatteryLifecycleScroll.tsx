@@ -27,15 +27,15 @@ import RecoveryCertifiedCard from './cards/RecoveryCertifiedCard'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// Frame counts per scene (15 FPS)
+// Frame counts per scene (Variable FPS for optimized performance)
 const SCENE_FRAME_COUNTS = [
-  60,   // Scene 1: 0-4s (60 frames)
-  60,   // Scene 2: 4-8s (60 frames)
-  270,  // Scene 3: 8-26s (270 frames)
-  240,  // Scene 4: 26-42s (240 frames)
-  45,   // Scene 5: 42-45s (45 frames)
-  150,  // Scene 6: 45-55s (150 frames)
-  180   // Scene 7: 55-67s (180 frames)
+  60,   // Scene 1: 0-4s (15 FPS - Smooth intro)
+  60,   // Scene 2: 4-8s (15 FPS - Clear change)
+  180,  // Scene 3: 8-26s (10 FPS - Long scene, light)
+  160,  // Scene 4: 26-42s (10 FPS - Stable)
+  36,   // Scene 5: 42-45s (12 FPS - Short + fluid)
+  100,  // Scene 6: 45-55s (10 FPS - Verification)
+  96    // Scene 7: 55-67s (8 FPS - Calm ending)
 ]
 
 interface CardData {
@@ -54,6 +54,8 @@ interface SceneConfig {
 const sceneConfig: SceneConfig[] = [
   // Scene 1: Initial Diagnostics
   {
+
+    
     id: 1,
     title: 'OPERATING WITHIN OPTIMAL RANGE',
     cards: [
@@ -752,6 +754,32 @@ export default function BatteryLifecycleScroll() {
 
     return () => clearTimeout(timeout)
   }, [])
+
+  // Preload next frames for smooth scrolling
+  useEffect(() => {
+    if (isLoading) return
+
+    const preloadCount = 10 // Preload next 10 frames
+    const frameCount = SCENE_FRAME_COUNTS[currentSceneForFrame]
+    
+    for (let i = 1; i <= preloadCount; i++) {
+      const nextFrame = currentFrame + i
+      
+      // Preload frames within current scene
+      if (nextFrame <= frameCount) {
+        const img = new Image()
+        img.src = `/lifecycle/frames/scene-${currentSceneForFrame + 1}/frame_${String(nextFrame).padStart(4, '0')}.webp`
+      } else if (currentSceneForFrame < SCENE_FRAME_COUNTS.length - 1) {
+        // Preload first frames of next scene
+        const nextSceneIndex = currentSceneForFrame + 1
+        const nextSceneFrame = nextFrame - frameCount
+        if (nextSceneFrame <= SCENE_FRAME_COUNTS[nextSceneIndex]) {
+          const img = new Image()
+          img.src = `/lifecycle/frames/scene-${nextSceneIndex + 1}/frame_${String(nextSceneFrame).padStart(4, '0')}.webp`
+        }
+      }
+    }
+  }, [currentFrame, currentSceneForFrame, isLoading])
 
   return (
     <div className="relative w-full bg-black">
