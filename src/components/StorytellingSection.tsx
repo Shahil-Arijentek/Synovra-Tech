@@ -12,18 +12,48 @@ const StorytellingSection: React.FC = () => {
   const layer2Ref = useRef<HTMLDivElement>(null);
   const layer3Ref = useRef<HTMLDivElement>(null);
   const [isMounted, setIsMounted] = React.useState(false);
+  const [isReady, setIsReady] = React.useState(false);
   const [currentVideo, setCurrentVideo] = React.useState(1);
   const [video1Frame, setVideo1Frame] = React.useState(1);
   const [video2Frame, setVideo2Frame] = React.useState(1);
   const [video3Frame, setVideo3Frame] = React.useState(1);
 
+  // Preload first few frames of each video for smooth start
   useEffect(() => {
-    const mountTimer = setTimeout(() => setIsMounted(true), 50);
-    return () => clearTimeout(mountTimer);
+    const preloadFrames = async () => {
+      const promises: Promise<void>[] = [];
+      
+      // Preload first 5 frames of each video
+      for (let video = 1; video <= 3; video++) {
+        for (let frame = 1; frame <= 5; frame++) {
+          const promise = new Promise<void>((resolve) => {
+            const img = new Image();
+            img.onload = () => resolve();
+            img.onerror = () => resolve(); // Continue even if image fails
+            img.src = `/whyrevive/frames/video${video}/frame_${String(frame).padStart(4, '0')}.webp`;
+          });
+          promises.push(promise);
+        }
+      }
+      
+      await Promise.all(promises);
+      setIsReady(true);
+    };
+    
+    preloadFrames();
   }, []);
 
   useEffect(() => {
+    if (!isReady) return;
+    const mountTimer = setTimeout(() => setIsMounted(true), 100);
+    return () => clearTimeout(mountTimer);
+  }, [isReady]);
+
+  useEffect(() => {
     if (!containerRef.current || !isMounted) return;
+
+    // Force ScrollTrigger refresh after lazy loading
+    ScrollTrigger.refresh();
 
     let ctx = gsap.context(() => {
       gsap.set([layer2Ref.current, layer3Ref.current], { opacity: 0 });
@@ -38,6 +68,7 @@ const StorytellingSection: React.FC = () => {
           pinSpacing: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
+          refreshPriority: 1,
           onUpdate: (self) => {
             const progress = self.progress;
             
@@ -69,8 +100,54 @@ const StorytellingSection: React.FC = () => {
 
     }, containerRef);
 
-    return () => ctx.revert();
+    // Additional refresh after a short delay to ensure everything is ready
+    const refreshTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 200);
+
+    return () => {
+      clearTimeout(refreshTimer);
+      ctx.revert();
+    };
   }, [isMounted]);
+
+  // Preload upcoming frames based on current video
+  useEffect(() => {
+    if (!isReady) return;
+
+    const preloadUpcoming = () => {
+      const framesToPreload = 5;
+      let startFrame = 1;
+      
+      if (currentVideo === 1) startFrame = video1Frame;
+      else if (currentVideo === 2) startFrame = video2Frame;
+      else startFrame = video3Frame;
+
+      for (let i = 1; i <= framesToPreload; i++) {
+        const nextFrame = startFrame + i;
+        if (nextFrame <= FRAME_COUNT) {
+          const img = new Image();
+          img.src = `/whyrevive/frames/video${currentVideo}/frame_${String(nextFrame).padStart(4, '0')}.webp`;
+        }
+      }
+    };
+
+    preloadUpcoming();
+  }, [currentVideo, video1Frame, video2Frame, video3Frame, isReady]);
+
+  // Show loading state while preloading
+  if (!isReady) {
+    return (
+      <div className="relative w-full h-screen bg-black flex items-center justify-center">
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-16 h-16 border-2 border-[#ff6b1a] rounded-full animate-ping opacity-75" />
+          </div>
+          <div className="w-4 h-4 bg-[#ff6b1a] rounded-full shadow-[0_0_20px_rgba(255,107,26,0.8)]" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div id="why-revive" ref={containerRef} className="relative w-full h-[250vh] bg-black z-10">
