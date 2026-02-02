@@ -38,6 +38,9 @@ export default function ClassofPower() {
 
       <div
         className="relative w-full flex items-center justify-center mt-4 md:mt-10"
+        style={{
+          minHeight: '400px'
+        }}
       >
         <AnimatePresence mode="wait">
           {!showVideo ? (
