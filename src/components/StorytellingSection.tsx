@@ -150,7 +150,11 @@ const StorytellingSection: React.FC = () => {
   }
 
   return (
-    <div id="why-revive" ref={containerRef} className="relative w-full h-[250vh] bg-black z-10">
+    <div 
+      id="why-revive" 
+      ref={containerRef} 
+      className={`relative w-full h-[250vh] bg-black z-10 transition-opacity duration-300 ${isMounted ? 'opacity-100' : 'opacity-0'}`}
+    >
       {/* Fade to #0d0d0d at bottom */}
       <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-b from-transparent via-black/50 to-[#0d0d0d] pointer-events-none z-20" />
       <div className="w-full h-screen flex flex-col items-center justify-start pt-[10vh] md:pt-[15vh] overflow-hidden">
@@ -189,7 +193,7 @@ const StorytellingSection: React.FC = () => {
             </div>
           </div>
 
-          <div ref={layer2Ref} className="absolute inset-0 flex flex-col items-center text-center -mt-8 md:mt-0">
+          <div ref={layer2Ref} className="absolute inset-0 flex flex-col items-center text-center -mt-8 md:mt-0 opacity-0">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full px-4 pointer-events-auto max-w-6xl mb-4">
               <ProblemCard title="CO2 surges" subtitle="→ from nonstop mining and smelting" />
               <ProblemCard title="Mines expand" subtitle="→ when old material sits unused" />
@@ -201,7 +205,7 @@ const StorytellingSection: React.FC = () => {
             </div>
           </div>
 
-          <div ref={layer3Ref} className="absolute inset-0 flex flex-col items-center text-center">
+          <div ref={layer3Ref} className="absolute inset-0 flex flex-col items-center text-center opacity-0">
             <div className="flex flex-wrap justify-center items-center gap-x-2 md:gap-x-4 text-white/90 text-xs md:text-sm font-semibold mb-6 md:mb-10 uppercase pointer-events-auto px-4">
               <span>Zero-Liquid Discharge</span> <span className="text-white/40">•</span>
               <span>Serial-Linked Warranty</span> <span className="text-white/40 hidden sm:inline">•</span>

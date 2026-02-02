@@ -2,9 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useNavbar } from '../contexts/NavbarContext'
-
-// Import card components directly for better performance in scroll animations
-// Lazy loading cards causes lag during scroll-driven animations
 import VoltageCard from './cards/VoltageCard'
 import InternalResistanceCard from './cards/InternalResistanceCard'
 import HealthGaugeCard from './cards/HealthGaugeCard'
@@ -288,7 +285,6 @@ const sceneTimings = [
 export default function BatteryLifecycleScroll() {
   const containerRef = useRef<HTMLDivElement>(null)
   const stickyContainerRef = useRef<HTMLDivElement>(null)
-  const [isLoading, setIsLoading] = useState(true)
   const [activeSceneIndex, setActiveSceneIndex] = useState<number | null>(null)
   const [currentFrame, setCurrentFrame] = useState(1) // Current frame to display (1-based)
   const [currentSceneForFrame, setCurrentSceneForFrame] = useState(0) // Scene index for frame rendering (0-based)
@@ -593,27 +589,29 @@ export default function BatteryLifecycleScroll() {
 
     if (!container) return
     
-    // Create scroll sections for each scene
-    const scrollSections = sceneTimings.map((scene, index) => {
-      const isChargingPhase = index === 5 // Scene 6 (charging phase)
-      const isFinalScene = index === 6 // Scene 7 (final dashboard)
-      
-      return {
-        ...scene,
-        // Longer scroll distance for special scenes
-        scrollMultiplier: isChargingPhase ? 8 : isFinalScene ? 6 : 4
-      }
-    })
+    // Wait for component to be fully mounted and laid out
+    const initTimeout = setTimeout(() => {
+      // Create scroll sections for each scene
+      const scrollSections = sceneTimings.map((scene, index) => {
+        const isChargingPhase = index === 5 // Scene 6 (charging phase)
+        const isFinalScene = index === 6 // Scene 7 (final dashboard)
+        
+        return {
+          ...scene,
+          // Longer scroll distance for special scenes
+          scrollMultiplier: isChargingPhase ? 8 : isFinalScene ? 6 : 4
+        }
+      })
 
-    // Calculate total scroll height
-    const totalScrollMultiplier = scrollSections.reduce((sum, s) => sum + s.scrollMultiplier, 0)
-    const scrollHeight = window.innerHeight * totalScrollMultiplier
+      // Calculate total scroll height
+      const totalScrollMultiplier = scrollSections.reduce((sum, s) => sum + s.scrollMultiplier, 0)
+      const scrollHeight = window.innerHeight * totalScrollMultiplier
 
-    // Set container height to enable scrolling
-    gsap.set(container, { height: scrollHeight })
+      // Set container height to enable scrolling
+      gsap.set(container, { height: scrollHeight })
 
-    // Main ScrollTrigger for frame scrubbing
-    ScrollTrigger.create({
+      // Main ScrollTrigger for frame scrubbing
+      ScrollTrigger.create({
       trigger: container,
       start: 'top top',
       end: 'bottom bottom',
@@ -751,38 +749,71 @@ export default function BatteryLifecycleScroll() {
       }
     })
 
-    // Initial setup: hide all cards and reset their positions
-    sceneConfig.forEach((scene, sceneIndex) => {
-      scene.cards.forEach((_cardData, cardIndex) => {
-        const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
-        const card = cardRefs.current[cardKey]
-        if (card) {
-          // All cards start from the left
-          gsap.set(card, { x: -400, opacity: 0 })
-        }
+      // Initial setup: hide all cards and reset their positions
+      sceneConfig.forEach((scene, sceneIndex) => {
+        scene.cards.forEach((_cardData, cardIndex) => {
+          const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
+          const card = cardRefs.current[cardKey]
+          if (card) {
+            // All cards start from the left
+            gsap.set(card, { x: -400, opacity: 0 })
+          }
+        })
       })
-    })
+
+      // Refresh ScrollTrigger after everything is set up
+      ScrollTrigger.refresh()
+    }, 100) // Small delay to ensure layout is ready
 
     return () => {
+      clearTimeout(initTimeout)
       ScrollTrigger.getAll().forEach(trigger => trigger.kill())
       // Show navbar when component unmounts
       setNavbarVisible(true)
     }
-  }, [isLoading, setNavbarVisible])
+  }, [setNavbarVisible])
 
-  // Remove loading screen after frames are ready
+  // Preload first frame on mount to ensure immediate display
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsLoading(false)
-    }, 500) // Remove loading screen after brief delay
+    const firstFrame = new Image()
+    firstFrame.src = '/lifecycle/frames/scene-1/frame_0001.webp'
+    
+    // Refresh ScrollTrigger once first frame is loaded
+    firstFrame.onload = () => {
+      setTimeout(() => {
+        ScrollTrigger.refresh()
+      }, 50)
+    }
+  }, [])
 
-    return () => clearTimeout(timeout)
+  // Watch for when component enters viewport and refresh ScrollTrigger
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Component is visible, refresh ScrollTrigger
+            setTimeout(() => {
+              ScrollTrigger.refresh()
+            }, 100)
+          }
+        })
+      },
+      { threshold: 0.1 }
+    )
+
+    observer.observe(container)
+
+    return () => {
+      observer.disconnect()
+    }
   }, [])
 
   // Preload next frames for smooth scrolling
   useEffect(() => {
-    if (isLoading) return
-
     const preloadCount = 10 // Preload next 10 frames
     const frameCount = SCENE_FRAME_COUNTS[currentSceneForFrame]
     
@@ -803,20 +834,10 @@ export default function BatteryLifecycleScroll() {
         }
       }
     }
-  }, [currentFrame, currentSceneForFrame, isLoading])
+  }, [currentFrame, currentSceneForFrame])
 
   return (
     <div className="relative w-full bg-black">
-      {/* Loading Overlay */}
-      {/* {isLoading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
-          <div className="text-center">
-            <div className="w-16 h-16 border-4 border-[#ff6b1a] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-white text-lg font-['Arial',sans-serif]">Loading Battery Lifecycle...</p>
-          </div>
-        </div>
-      )} */}
-
       {/* Scroll Container */}
       <div ref={containerRef} className="relative w-full">
         {/* Sticky Frame Container */}
@@ -830,7 +851,7 @@ export default function BatteryLifecycleScroll() {
           />
 
           {/* Scene Progress Indicator - Separate Containers */}
-          {!isLoading && (currentSceneForFrame > 0 || (currentSceneForFrame === 0 && currentFrame >= 50)) && (
+          {(currentSceneForFrame > 0 || (currentSceneForFrame === 0 && currentFrame >= 50)) && (
             <>
               {/* Progress Boxes Container */}
               <div className="absolute top-8 left-[38rem] z-20">
@@ -916,7 +937,7 @@ export default function BatteryLifecycleScroll() {
           </div>
 
           {/* End of Life Warning - appears in Scene 7 from 59s to 61.2s */}
-          {!isLoading && activeSceneIndex === 6 && currentFrame >= 60 && currentFrame <= 93 && (
+          {activeSceneIndex === 6 && currentFrame >= 60 && currentFrame <= 93 && (
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30">
               <div
                 className="backdrop-blur-md animate-pulse"
@@ -950,8 +971,8 @@ export default function BatteryLifecycleScroll() {
             </div>
           )}
 
-          {/* Scroll Indicator (only visible when not loading and in active scene) */}
-          {!isLoading && activeSceneIndex !== null && activeSceneIndex < 6 && (
+          {/* Scroll Indicator (only visible in active scene) */}
+          {activeSceneIndex !== null && activeSceneIndex < 6 && (
             <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 animate-bounce">
               <p className="text-white/60 text-sm font-['Arial',sans-serif]">Scroll to explore</p>
               <svg className="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
