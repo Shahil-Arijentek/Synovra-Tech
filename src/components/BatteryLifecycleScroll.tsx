@@ -302,32 +302,32 @@ export default function BatteryLifecycleScroll() {
         // Scene 1 positions
         if (cardData.position === 'right') return 'left-[19em] top-12'
         if (cardData.position === 'left') return 'left-12 top-12'
-        if (cardData.position === 'bottom-left') return 'left-[4rem] top-[24rem]'
-        if (cardData.position === 'bottom-right') return 'left-[4rem] top-[45rem]'
+        if (cardData.position === 'bottom-left') return 'left-[4rem] top-[22rem]'
+        if (cardData.position === 'bottom-right') return 'left-[4rem] top-[41rem]'
       } else if (sceneIndex === 1) {
         // Scene 2 positions
         if (cardData.position === 'right') return 'left-[19em] top-12'
         if (cardData.position === 'left') return 'left-12 top-12'
-        if (cardData.position === 'bottom-left') return 'left-16 top-[24rem]'
-        if (cardData.position === 'bottom-right') return 'left-16 top-[44rem]'
+        if (cardData.position === 'bottom-left') return 'left-16 top-[23rem]'
+        if (cardData.position === 'bottom-right') return 'left-16 top-[41rem]'
       } else if (sceneIndex === 2) {
         // Scene 3 positions
-        if (cardData.position === 'right') return 'left-20 top-[48rem]'
+        if (cardData.position === 'right') return 'left-20 top-[43rem]'
         if (cardData.position === 'left') return 'left-20 top-14'
-        if (cardData.position === 'bottom-left') return 'left-20 top-[16rem]'
-        if (cardData.position === 'bottom-right') return 'left-20 top-[30rem]'
+        if (cardData.position === 'bottom-left') return 'left-20 top-[14rem]'
+        if (cardData.position === 'bottom-right') return 'left-20 top-[27rem]'
       } else if (sceneIndex === 3) {
         // Scene 4 positions
         if (cardData.position === 'right') return 'left-[19em] top-12'
         if (cardData.position === 'left') return 'left-12 top-12'
-        if (cardData.position === 'bottom-left') return 'left-16 top-[24rem]'
-        if (cardData.position === 'bottom-right') return 'left-16 top-[44rem]'
+        if (cardData.position === 'bottom-left') return 'left-16 top-[22rem]'
+        if (cardData.position === 'bottom-right') return 'left-16 top-[40rem]'
       } else if (sceneIndex === 4) {
         // Scene 5 positions
         if (cardData.position === 'right') return 'left-[19em] top-12'
         if (cardData.position === 'left') return 'left-12 top-12'
-        if (cardData.position === 'bottom-left') return 'left-16 top-[24rem]'
-        if (cardData.position === 'bottom-right') return 'left-16 top-[46rem]'
+        if (cardData.position === 'bottom-left') return 'left-16 top-[22rem]'
+        if (cardData.position === 'bottom-right') return 'left-16 top-[41.5rem]'
       } else if (sceneIndex === 5) {
         // Scene 6 positions
         if (cardData.position === 'top') return 'left-20 top-16'
@@ -695,10 +695,33 @@ export default function BatteryLifecycleScroll() {
               }
             })
 
+            // Hide cards from current scene if we're in scene 1 before frame 50
+            if (scene.sceneIndex === 0 && clampedFrameIndex < 50) {
+              const currentScene = sceneConfig[scene.sceneIndex]
+              currentScene.cards.forEach((_: CardData, cardIndex: number) => {
+                const cardKey = `scene-${scene.sceneIndex}-card-${cardIndex}`
+                const card = cardRefs.current[cardKey]
+                if (card) {
+                  gsap.to(card, {
+                    x: -400,
+                    opacity: 0,
+                    duration: 0.2,
+                    ease: 'power2.inOut',
+                    force3D: true,
+                    overwrite: 'auto'
+                  })
+                }
+              })
+            }
+
             // Animate cards in - smooth entrance
             // For the last scene, show cards earlier to ensure they're visible
             const showThreshold = isLastScene ? 0.05 : 0.15
-            if (sceneProgress > showThreshold) {
+            
+            // Only show cards after frame 50 in scene 1, or if we're past scene 1
+            const shouldShowCards = (scene.sceneIndex > 0) || (scene.sceneIndex === 0 && clampedFrameIndex >= 50)
+            
+            if (sceneProgress > showThreshold && shouldShowCards) {
               const currentScene = sceneConfig[scene.sceneIndex]
               currentScene.cards.forEach((_: CardData, cardIndex: number) => {
                 const cardKey = `scene-${scene.sceneIndex}-card-${cardIndex}`
@@ -806,7 +829,7 @@ export default function BatteryLifecycleScroll() {
           />
 
           {/* Scene Progress Indicator - Separate Containers */}
-          {!isLoading && (
+          {!isLoading && (currentSceneForFrame > 0 || (currentSceneForFrame === 0 && currentFrame >= 50)) && (
             <>
               {/* Progress Boxes Container */}
               <div className="absolute top-8 left-[38rem] z-20">
