@@ -4,6 +4,8 @@ import ClassOfPowerHeading from "./ClassOfPowerHeading";
 
 export default function ClassofPower() {
   const [showVideo, setShowVideo] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const sectionRef = useRef(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
@@ -12,11 +14,22 @@ export default function ClassofPower() {
     if (isInView) {
       const timer = setTimeout(() => {
         setShowVideo(true);
+        setIsLoading(true); // Start loading when video should appear
       }, 1000);
 
       return () => clearTimeout(timer);
     }
   }, [isInView]);
+
+  // Handle video loading
+  const handleVideoCanPlay = () => {
+    setVideoLoaded(true);
+    setIsLoading(false);
+  };
+
+  const handleVideoLoadStart = () => {
+    setIsLoading(true);
+  };
 
   useEffect(() => {
     return () => {
@@ -58,25 +71,53 @@ export default function ClassofPower() {
               transition={{ duration: 0.8 }}
             />
           ) : (
-            <motion.video
-              key="battery-video"
-              ref={videoRef}
-              src="/classofpower.webm"
-              className="block h-auto"
-              style={{
-                width: 'min(1024px, 92vw)',
-                objectFit: 'contain',
-                background: '#0d0d0d',
-                mixBlendMode: 'lighten'
-              }}
-              autoPlay
-              muted
-              loop
-              playsInline
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8 }}
-            />
+            <>
+              {/* Loading indicator while video buffers */}
+              {isLoading && !videoLoaded && (
+                <motion.div
+                  key="video-loading"
+                  className="absolute inset-0 flex items-center justify-center"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-16 h-16 border-2 border-[#ff6b1a] rounded-full animate-ping opacity-75" />
+                    </div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-12 h-12 border-2 border-[#ff6b1a] rounded-full animate-pulse" />
+                    </div>
+                    <div className="w-4 h-4 bg-[#ff6b1a] rounded-full shadow-[0_0_20px_rgba(255,107,26,0.8)]" />
+                  </div>
+                </motion.div>
+              )}
+              
+              {/* Video element */}
+              <motion.video
+                key="battery-video"
+                ref={videoRef}
+                src="/classofpower.webm"
+                className="block h-auto"
+                style={{
+                  width: 'min(1024px, 92vw)',
+                  objectFit: 'contain',
+                  background: '#0d0d0d',
+                  mixBlendMode: 'lighten',
+                  opacity: videoLoaded ? 1 : 0,
+                  transition: 'opacity 0.8s ease-in-out'
+                }}
+                autoPlay
+                muted
+                loop
+                playsInline
+                onLoadStart={handleVideoLoadStart}
+                onCanPlay={handleVideoCanPlay}
+                onLoadedData={handleVideoCanPlay}
+                preload="auto"
+              />
+            </>
           )}
         </AnimatePresence>
       </div>

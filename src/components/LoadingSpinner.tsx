@@ -1,6 +1,6 @@
 export default function LoadingSpinner() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-black">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black animate-fadeIn">
       <div className="relative">
         {/* Outer Rotating Ring */}
         <div className="relative w-32 h-32">
