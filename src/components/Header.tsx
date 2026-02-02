@@ -1,13 +1,26 @@
 import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
 
   const isActive = (path: string) => location.pathname === path
+
+  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+    
+    if (location.pathname === '/') {
+      // If already on home page, scroll to top smoothly
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else {
+      // If on another page, navigate to home page
+      navigate('/')
+    }
+  }
 
   return (
     <header className="fixed top-0 mt-5 left-0 right-0 z-[9999] w-full px-[21px] py-0">
@@ -15,7 +28,11 @@ export default function Header() {
         className="backdrop-blur-[10px] backdrop-filter border border-[rgba(255,255,255,0.1)] border-solid rounded-[10px] flex items-center justify-between px-[21px] py-px h-[84px] w-full max-w-[1376px] mx-auto bg-transparent relative"
       >
         {/* Logo - Stays on left */}
-        <Link to="/" className="cursor-pointer h-[38px] relative shrink-0 w-[150px] md:w-[175px] bg-transparent border-none p-0 flex items-center ml-4 md:ml-6">
+        <Link 
+          to="/" 
+          onClick={handleLogoClick}
+          className="cursor-pointer h-[38px] relative shrink-0 w-[150px] md:w-[175px] bg-transparent border-none p-0 flex items-center ml-4 md:ml-6"
+        >
           <div className="h-[13px] relative shrink-0 w-[122px]">
             <img
               src="/synovra.png"
