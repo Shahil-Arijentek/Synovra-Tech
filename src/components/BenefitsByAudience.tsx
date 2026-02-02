@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import BenefitsByAudienceHeading from './BenefitsByAudienceHeading'
 
 interface BenefitCard {
@@ -8,6 +9,12 @@ interface BenefitCard {
 }
 
 export default function BenefitsByAudience() {
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsMounted(true), 100)
+    return () => clearTimeout(timer)
+  }, [])
   const benefitCards: BenefitCard[] = [
     {
       iconPath: "/benefit/icon1.svg",
@@ -55,7 +62,7 @@ export default function BenefitsByAudience() {
   ]
 
   return (
-    <section className="relative flex w-full flex-col items-center justify-start bg-[#0d0d0d] overflow-hidden font-sans text-white z-[310] pt-8 pb-6 px-4 md:pt-12 md:pb-8 md:px-6">
+    <section className={`relative flex w-full flex-col items-center justify-start bg-[#0d0d0d] overflow-hidden font-sans text-white z-[310] pt-8 pb-6 px-4 md:pt-12 md:pb-8 md:px-6 transition-opacity duration-500 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
       <BenefitsByAudienceHeading />
       
       <div className="max-w-[1200px] mx-auto pb-3 md:pb-6">

@@ -103,7 +103,9 @@ const ScrollStaggeredText = ({
 export default function BatteryHero() {
   const [videoLoaded, setVideoLoaded] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   // Track scroll progress of the specific container
   const { scrollYProgress } = useScroll({
@@ -123,10 +125,55 @@ export default function BatteryHero() {
   const stage1ExitY = useTransform(scrollYProgress, [0.25, 0.35], [0, -50])
   const stage1ExitFilter = useTransform(scrollYProgress, [0.25, 0.35], ["blur(0px)", "blur(10px)"])
 
+  // Mount animation
   useEffect(() => {
     const timer = setTimeout(() => setMounted(true), 50)
     return () => clearTimeout(timer)
   }, [])
+
+  // Lazy load video when component enters viewport
+  useEffect(() => {
+    // Check network connection for better loading strategy
+    const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection
+    const slowConnection = connection?.effectiveType === 'slow-2g' || connection?.effectiveType === '2g'
+    
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    
+    // Skip video on slow connections or reduced motion
+    if (slowConnection || prefersReducedMotion) {
+      setVideoLoaded(true) // Just show the poster image
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !shouldLoadVideo) {
+            setShouldLoadVideo(true)
+            // Start loading the video
+            if (videoRef.current) {
+              videoRef.current.load()
+            }
+          }
+        })
+      },
+      {
+        rootMargin: '200px', // Start loading 200px before entering viewport (increased for smoother experience)
+        threshold: 0.1
+      }
+    )
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current)
+    }
+
+    return () => {
+      if (containerRef.current) {
+        observer.unobserve(containerRef.current)
+      }
+    }
+  }, [shouldLoadVideo])
 
   const mainHeading = "A system for extending battery life, restoring performance, and closing the materials loop."
   const words = mainHeading.split(' ')
@@ -164,15 +211,32 @@ export default function BatteryHero() {
 
         {/* Background Video (Persists through all stages) */}
         <div className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+          {/* Loading Placeholder */}
+          {!videoLoaded && (
+            <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-black to-zinc-900" />
+          )}
+          
           <video
+            ref={videoRef}
             autoPlay
             loop
             muted
             playsInline
+            preload="none"
             onLoadedData={() => setVideoLoaded(true)}
+            onError={(e) => {
+              console.error('Video failed to load:', e)
+              setVideoLoaded(true) // Show anyway even if error
+            }}
+            onCanPlay={() => setVideoLoaded(true)}
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
           >
-            <source src="/Comp 1_6.webm" type="video/webm" />
+            {shouldLoadVideo && (
+              <>
+                <source src="/Comp 1_6.webm" type="video/webm" />
+                <source src="/Comp 1_5.mp4" type="video/mp4" />
+              </>
+            )}
           </video>
 
           {/* Overlay */}

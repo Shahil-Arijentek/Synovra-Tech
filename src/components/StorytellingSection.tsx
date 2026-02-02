@@ -6,7 +6,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 const FRAME_COUNT = 59; // Each video has 59 frames at 10 FPS
 
-const StorytellingSection: React.FC = () => {
+interface StorytellingProps {
+  onReady?: () => void;
+}
+
+const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const layer1Ref = useRef<HTMLDivElement>(null);
   const layer2Ref = useRef<HTMLDivElement>(null);
@@ -45,9 +49,15 @@ const StorytellingSection: React.FC = () => {
 
   useEffect(() => {
     if (!isReady) return;
-    const mountTimer = setTimeout(() => setIsMounted(true), 100);
+    const mountTimer = setTimeout(() => {
+      setIsMounted(true);
+      // Notify parent that component is ready
+      if (onReady) {
+        onReady();
+      }
+    }, 100);
     return () => clearTimeout(mountTimer);
-  }, [isReady]);
+  }, [isReady, onReady]);
 
   useEffect(() => {
     if (!containerRef.current || !isMounted) return;
