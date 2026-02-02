@@ -4,15 +4,18 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const FRAME_COUNT = 59; // Each video has 59 frames at 10 FPS
+
 const StorytellingSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const video1Ref = useRef<HTMLVideoElement>(null);
-  const video2Ref = useRef<HTMLVideoElement>(null);
-  const video3Ref = useRef<HTMLVideoElement>(null);
   const layer1Ref = useRef<HTMLDivElement>(null);
   const layer2Ref = useRef<HTMLDivElement>(null);
   const layer3Ref = useRef<HTMLDivElement>(null);
   const [isMounted, setIsMounted] = React.useState(false);
+  const [currentVideo, setCurrentVideo] = React.useState(1);
+  const [video1Frame, setVideo1Frame] = React.useState(1);
+  const [video2Frame, setVideo2Frame] = React.useState(1);
+  const [video3Frame, setVideo3Frame] = React.useState(1);
 
   useEffect(() => {
     const mountTimer = setTimeout(() => setIsMounted(true), 50);
@@ -24,8 +27,6 @@ const StorytellingSection: React.FC = () => {
 
     let ctx = gsap.context(() => {
       gsap.set([layer2Ref.current, layer3Ref.current], { opacity: 0 });
-      gsap.set([video1Ref.current, video2Ref.current, video3Ref.current], { opacity: 1 });
-      gsap.set([video2Ref.current, video3Ref.current], { visibility: 'hidden' });
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -39,26 +40,22 @@ const StorytellingSection: React.FC = () => {
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             const progress = self.progress;
+            
             if (progress < 0.33) {
-              gsap.set(video1Ref.current, { visibility: 'visible' });
-              gsap.set([video2Ref.current, video3Ref.current], { visibility: 'hidden' });
-              if (video1Ref.current?.duration) {
-                video1Ref.current.currentTime = (progress / 0.33) * video1Ref.current.duration;
-              }
+              setCurrentVideo(1);
+              const frameProgress = progress / 0.33;
+              const frameIndex = Math.floor(frameProgress * (FRAME_COUNT - 1)) + 1;
+              setVideo1Frame(Math.max(1, Math.min(frameIndex, FRAME_COUNT)));
             } else if (progress >= 0.33 && progress < 0.66) {
-              gsap.set(video2Ref.current, { visibility: 'visible' });
-              gsap.set([video1Ref.current, video3Ref.current], { visibility: 'hidden' });
-              if (video2Ref.current?.duration) {
-                const p = (progress - 0.33) / 0.33;
-                video2Ref.current.currentTime = p * video2Ref.current.duration;
-              }
+              setCurrentVideo(2);
+              const frameProgress = (progress - 0.33) / 0.33;
+              const frameIndex = Math.floor(frameProgress * (FRAME_COUNT - 1)) + 1;
+              setVideo2Frame(Math.max(1, Math.min(frameIndex, FRAME_COUNT)));
             } else {
-              gsap.set(video3Ref.current, { visibility: 'visible' });
-              gsap.set([video1Ref.current, video2Ref.current], { visibility: 'hidden' });
-              if (video3Ref.current?.duration) {
-                const p = (progress - 0.66) / 0.34;
-                video3Ref.current.currentTime = p * video3Ref.current.duration;
-              }
+              setCurrentVideo(3);
+              const frameProgress = (progress - 0.66) / 0.34;
+              const frameIndex = Math.floor(frameProgress * (FRAME_COUNT - 1)) + 1;
+              setVideo3Frame(Math.max(1, Math.min(frameIndex, FRAME_COUNT)));
             }
           }
         },
@@ -81,9 +78,24 @@ const StorytellingSection: React.FC = () => {
       <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-b from-transparent via-black/50 to-[#0d0d0d] pointer-events-none z-20" />
       <div className="w-full h-screen flex flex-col items-center justify-start pt-[10vh] md:pt-[15vh] overflow-hidden">
         <div className="relative w-[70%] h-[38%] sm:w-[55%] sm:h-[43%] md:w-[45%] md:h-[50%] z-0 pointer-events-none bg-black">
-          <video ref={video1Ref} src="/whyrevive/video1.mp4" className="absolute inset-0 w-full h-full object-contain" style={{ mixBlendMode: 'screen' }} muted playsInline preload="auto" />
-          <video ref={video2Ref} src="/whyrevive/video2.mp4" className="absolute inset-0 w-full h-full object-contain" style={{ mixBlendMode: 'screen' }} muted playsInline preload="auto" />
-          <video ref={video3Ref} src="/whyrevive/video3.mp4" className="absolute inset-0 w-full h-full object-contain" style={{ mixBlendMode: 'screen' }} muted playsInline preload="auto" />
+          <img 
+            src={`/whyrevive/frames/video1/frame_${String(video1Frame).padStart(4, '0')}.webp`}
+            alt="Battery lifecycle visualization 1"
+            className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-200 ${currentVideo === 1 ? 'opacity-100' : 'opacity-0'}`}
+            style={{ mixBlendMode: 'screen' }}
+          />
+          <img 
+            src={`/whyrevive/frames/video2/frame_${String(video2Frame).padStart(4, '0')}.webp`}
+            alt="Battery lifecycle visualization 2"
+            className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-200 ${currentVideo === 2 ? 'opacity-100' : 'opacity-0'}`}
+            style={{ mixBlendMode: 'screen' }}
+          />
+          <img 
+            src={`/whyrevive/frames/video3/frame_${String(video3Frame).padStart(4, '0')}.webp`}
+            alt="Battery lifecycle visualization 3"
+            className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-200 ${currentVideo === 3 ? 'opacity-100' : 'opacity-0'}`}
+            style={{ mixBlendMode: 'screen' }}
+          />
         </div>
 
         <div className="relative flex-1 w-full max-w-6xl mt-4 pointer-events-none z-10 px-4">
