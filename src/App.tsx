@@ -86,6 +86,7 @@ function App() {
   const [isInitialLoading, setIsInitialLoading] = React.useState(true)
   const [showContent, setShowContent] = React.useState(false)
   const [isFadingOut, setIsFadingOut] = React.useState(false)
+  const [loadingProgress, setLoadingProgress] = React.useState(0)
 
   // Disable browser's scroll restoration
   useEffect(() => {
@@ -94,32 +95,70 @@ function App() {
     }
   }, [])
 
-  // Initial website loading
+  // Real asset loading with progress tracking
   useEffect(() => {
-    let loadingTimer: number
-    let fadeOutTimer: number
-    let contentTimer: number
-    
-    // Show loading for initial resources
-    loadingTimer = setTimeout(() => {
-      setIsFadingOut(true)
-      
-      // Wait for fade-out to complete before showing content
-      fadeOutTimer = setTimeout(() => {
-        setIsInitialLoading(false)
+    const loadAssets = async () => {
+      try {
+        console.log('🚀 Starting asset preload...')
+        const startTime = Date.now()
         
-        // Delay to ensure loading is completely gone
-        contentTimer = setTimeout(() => {
-          setShowContent(true)
-        }, 100)
-      }, 500) // Match fade-out animation duration
-    }, 1500) // Show loading for 1.5 seconds
+        // Dynamic import of preloader
+        const { AssetPreloader, getCriticalAssets } = await import('./utils/assetPreloader')
+        
+        const criticalAssets = getCriticalAssets()
+        console.log('📦 Critical assets to load:', criticalAssets.length)
+        
+        const preloader = new AssetPreloader(criticalAssets, (progress) => {
+          console.log('📈 App received progress:', progress.percentage + '%')
+          setLoadingProgress(progress.percentage)
+        })
 
-    return () => {
-      clearTimeout(loadingTimer)
-      clearTimeout(fadeOutTimer)
-      clearTimeout(contentTimer)
+        // Start loading assets
+        await preloader.load()
+
+        // Ensure minimum loading time of 1.5 seconds for smooth UX
+        const elapsed = Date.now() - startTime
+        const minLoadTime = 1500
+        const remainingTime = Math.max(0, minLoadTime - elapsed)
+        
+        if (remainingTime > 0) {
+          console.log(`⏱️ Waiting ${remainingTime}ms for smooth UX...`)
+          await new Promise(resolve => setTimeout(resolve, remainingTime))
+        }
+
+        // Ensure we show 100% briefly
+        setLoadingProgress(100)
+        console.log('✅ Loading complete at 100%!')
+        
+        // Small delay to show 100% completion
+        setTimeout(() => {
+          setIsFadingOut(true)
+          
+          // Wait for fade-out animation
+          setTimeout(() => {
+            setIsInitialLoading(false)
+            
+            // Show content
+            setTimeout(() => {
+              setShowContent(true)
+            }, 100)
+          }, 500)
+        }, 400)
+      } catch (error) {
+        console.error('❌ Asset loading error:', error)
+        // Fallback: show content anyway
+        setLoadingProgress(100)
+        setTimeout(() => {
+          setIsFadingOut(true)
+          setTimeout(() => {
+            setIsInitialLoading(false)
+            setTimeout(() => setShowContent(true), 100)
+          }, 500)
+        }, 500)
+      }
     }
+
+    loadAssets()
   }, [])
   
   return (
@@ -130,9 +169,9 @@ function App() {
           {/* Solid black background that stays during entire fade */}
           <div className={`fixed inset-0 z-[9998] bg-black transition-opacity duration-500 ${isFadingOut ? 'opacity-0' : 'opacity-100'}`} />
           
-          {/* Loading spinner with fade animation */}
+          {/* Loading spinner with real progress */}
           <div className={`fixed inset-0 z-[9999] ${isFadingOut ? 'animate-fadeOut' : ''}`}>
-            <LoadingSpinner />
+            <LoadingSpinner progress={loadingProgress} />
           </div>
         </>
       )}
