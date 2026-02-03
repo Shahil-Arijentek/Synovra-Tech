@@ -12,8 +12,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           'gsap-vendor': ['gsap', 'gsap/ScrollTrigger'],
-          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
-          'mui-vendor': ['@mui/material', '@mui/x-charts']
+          'mui-vendor': ['@mui/x-charts', '@emotion/react', '@emotion/styled']
         }
       },
       input: {
