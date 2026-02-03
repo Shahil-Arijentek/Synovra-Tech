@@ -38,7 +38,7 @@ const ProofInNumbersGSAP = () => {
       start: 'top top',
       end: () => (isAnimationFinished ? '+=0' : '+=100%'),
       pin: true,
-      pinSpacing: false,
+      pinSpacing: true,
       anticipatePin: 1,
       onEnter: () => {
         if (!isAnimationFinished) {
@@ -77,7 +77,7 @@ const ProofInNumbersGSAP = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen text-white py-20 px-6 md:px-12 lg:px-24 flex items-center justify-center"
+      className="relative min-h-[120vh] text-white pt-20 pb-60 px-6 md:px-12 lg:px-24 flex items-center justify-center z-10"
       style={{ backgroundColor: '#0d0d0d' }}
     >
       <div className="max-w-5xl w-full">
