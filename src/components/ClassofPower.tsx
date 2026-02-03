@@ -2,7 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import ClassOfPowerHeading from "./ClassOfPowerHeading";
 
-export default function ClassofPower() {
+interface ClassofPowerProps {
+  onReady?: () => void;
+}
+
+export default function ClassofPower({ onReady }: ClassofPowerProps = {}) {
   const [showVideo, setShowVideo] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +29,10 @@ export default function ClassofPower() {
   const handleVideoCanPlay = () => {
     setVideoLoaded(true);
     setIsLoading(false);
+    // Notify parent that video is ready
+    if (onReady) {
+      onReady();
+    }
   };
 
   const handleVideoLoadStart = () => {
@@ -72,7 +80,7 @@ export default function ClassofPower() {
             />
           ) : (
             <>
-              {/* Loading indicator while video buffers */}
+              {/* Loading indicator while video buffers - Dual rotating rings */}
               {isLoading && !videoLoaded && (
                 <motion.div
                   key="video-loading"
@@ -82,14 +90,11 @@ export default function ClassofPower() {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div className="relative">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-16 h-16 border-2 border-[#ff6b1a] rounded-full animate-ping opacity-75" />
-                    </div>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-12 h-12 border-2 border-[#ff6b1a] rounded-full animate-pulse" />
-                    </div>
-                    <div className="w-4 h-4 bg-[#ff6b1a] rounded-full shadow-[0_0_20px_rgba(255,107,26,0.8)]" />
+                  <div className="relative w-16 h-16">
+                    {/* Outer rotating ring */}
+                    <div className="absolute inset-0 border-4 border-transparent border-t-[#ff6b1a] border-r-[#ff6b1a] rounded-full animate-spin" />
+                    {/* Inner rotating ring (reverse) */}
+                    <div className="absolute inset-2 border-4 border-transparent border-b-[#ff8c42] border-l-[#ff8c42] rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }} />
                   </div>
                 </motion.div>
               )}
