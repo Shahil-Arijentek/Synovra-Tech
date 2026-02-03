@@ -283,12 +283,23 @@ const sceneTimings = [
   { start: 55, pause: 67, sceneIndex: 6 }     // Scene 7: 55-67s 
 ]
 
-// Preload helper function
+// Image cache to prevent black flicker
+const frameCache = new Map<string, HTMLImageElement>()
+
+// Preload helper function with caching
 const preloadImage = (src: string): Promise<void> => {
+  // Return immediately if already cached
+  if (frameCache.has(src)) {
+    return Promise.resolve()
+  }
+
   return new Promise((resolve, reject) => {
     const img = new Image()
     img.decoding = 'async'
-    img.onload = () => resolve()
+    img.onload = () => {
+      frameCache.set(src, img)
+      resolve()
+    }
     img.onerror = reject
     img.src = src
   })
@@ -305,6 +316,40 @@ export default function BatteryLifecycleScroll() {
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
   const { setNavbarVisible } = useNavbar()
   const hasPreloadedRef = useRef(false)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const currentCanvasFrameRef = useRef({ scene: 0, frame: 1 }) // Track what's on canvas
+  const rafRef = useRef<number | null>(null)
+
+  // Canvas frame rendering - ZERO BLINK guaranteed
+  const drawFrame = (sceneIndex: number, frameNumber: number) => {
+    // Skip if same frame already on canvas
+    if (currentCanvasFrameRef.current.scene === sceneIndex && 
+        currentCanvasFrameRef.current.frame === frameNumber) {
+      return
+    }
+
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const frameSrc = `/lifecycle/frames/scene-${sceneIndex + 1}/frame_${String(frameNumber).padStart(4, '0')}.webp`
+    const cachedImage = frameCache.get(frameSrc)
+
+    // CRITICAL: Only draw if image is cached and ready
+    // This ensures old frame stays visible until new frame is ready
+    if (cachedImage && cachedImage.complete && cachedImage.naturalWidth > 0) {
+      const ctx = canvas.getContext('2d', { 
+        alpha: false, // No transparency = faster
+        desynchronized: true // Better performance
+      })
+      
+      if (ctx) {
+        // Draw cached image directly to canvas - no blink!
+        ctx.drawImage(cachedImage, 0, 0, canvas.width, canvas.height)
+        currentCanvasFrameRef.current = { scene: sceneIndex, frame: frameNumber }
+      }
+    }
+    // If not cached: old frame remains visible (no black flash)
+  }
 
   // Function to render specific card type
   const renderCard = (cardType: string, cardData: CardData, sceneIndex: number, cardIndex: number) => {
@@ -604,23 +649,32 @@ export default function BatteryLifecycleScroll() {
     if (hasPreloadedRef.current) return
     hasPreloadedRef.current = true
 
+    const startTime = Date.now()
+
     const preloadCriticalFrames = async () => {
       try {
-        // Scene 1: Preload every 5th frame (12 frames total)
-        const scene1Frames = Array.from({ length: 12 }, (_, i) => (i * 5) + 1)
-        // Scene 2: Preload every 10th frame (6 frames)
-        const scene2Frames = Array.from({ length: 6 }, (_, i) => (i * 10) + 1)
+        // Extended preload strategy: Load enough frames to ensure smooth first scroll
+        // Scene 1: EVERY frame (60 frames)
+        const scene1Frames = Array.from({ length: 60 }, (_, i) => i + 1)
+        // Scene 2: EVERY frame (60 frames) - ensure full smooth playback
+        const scene2Frames = Array.from({ length: 60 }, (_, i) => i + 1)
+        // Scene 3: Every 5th frame (36 frames) - sample ahead
+        const scene3Frames = Array.from({ length: 36 }, (_, i) => (i * 5) + 1)
+        // Scene 4: Every 10th frame (16 frames) - sample ahead
+        const scene4Frames = Array.from({ length: 16 }, (_, i) => (i * 10) + 1)
         
         const criticalFrames = [
           ...scene1Frames.map(f => `/lifecycle/frames/scene-1/frame_${String(f).padStart(4, '0')}.webp`),
-          ...scene2Frames.map(f => `/lifecycle/frames/scene-2/frame_${String(f).padStart(4, '0')}.webp`)
+          ...scene2Frames.map(f => `/lifecycle/frames/scene-2/frame_${String(f).padStart(4, '0')}.webp`),
+          ...scene3Frames.map(f => `/lifecycle/frames/scene-3/frame_${String(f).padStart(4, '0')}.webp`),
+          ...scene4Frames.map(f => `/lifecycle/frames/scene-4/frame_${String(f).padStart(4, '0')}.webp`)
         ]
 
         let loaded = 0
         const total = criticalFrames.length
 
-        // Preload in batches for better performance
-        const batchSize = 4
+        // Preload in larger batches for faster loading
+        const batchSize = 8
         for (let i = 0; i < criticalFrames.length; i += batchSize) {
           const batch = criticalFrames.slice(i, i + batchSize)
           await Promise.all(
@@ -633,12 +687,20 @@ export default function BatteryLifecycleScroll() {
           )
         }
 
-        // Small delay to ensure smooth transition
-        await new Promise(resolve => setTimeout(resolve, 200))
+        // Ensure minimum loading time (2 seconds) so caching is complete
+        const elapsed = Date.now() - startTime
+        const minLoadTime = 2000 // 2 seconds minimum
+        const remainingTime = Math.max(0, minLoadTime - elapsed)
+        
+        await new Promise(resolve => setTimeout(resolve, remainingTime + 300))
         setIsPreloading(false)
       } catch (error) {
         console.error('Error preloading frames:', error)
-        // Still allow component to render even if preload fails
+        // Even on error, ensure minimum load time
+        const elapsed = Date.now() - startTime
+        const minLoadTime = 2000
+        const remainingTime = Math.max(0, minLoadTime - elapsed)
+        await new Promise(resolve => setTimeout(resolve, remainingTime))
         setIsPreloading(false)
       }
     }
@@ -651,15 +713,25 @@ export default function BatteryLifecycleScroll() {
     if (isPreloading) return
 
     const preloadRemainingFrames = async () => {
-      // Preload remaining scenes with lower priority
+      // Priority 1: Preload scene 7 first (to prevent flicker at the end)
+      const scene7Frames: string[] = []
+      for (let i = 1; i <= SCENE_FRAME_COUNTS[6]; i += 4) {
+        scene7Frames.push(`/lifecycle/frames/scene-7/frame_${String(i).padStart(4, '0')}.webp`)
+      }
+      
+      const batchSize = 4
+      for (let i = 0; i < scene7Frames.length; i += batchSize) {
+        const batch = scene7Frames.slice(i, i + batchSize)
+        await Promise.all(batch.map(src => preloadImage(src).catch(() => {})))
+        await new Promise(resolve => setTimeout(resolve, 50))
+      }
+      
+      // Priority 2: Fill in remaining frames for all scenes
       const scenes = [
-        { sceneIndex: 0, count: SCENE_FRAME_COUNTS[0], stride: 3 }, // Scene 1: every 3rd frame
-        { sceneIndex: 1, count: SCENE_FRAME_COUNTS[1], stride: 5 }, // Scene 2: every 5th frame
-        { sceneIndex: 2, count: SCENE_FRAME_COUNTS[2], stride: 10 }, // Scene 3: every 10th frame
-        { sceneIndex: 3, count: SCENE_FRAME_COUNTS[3], stride: 10 }, // Scene 4: every 10th frame
-        { sceneIndex: 4, count: SCENE_FRAME_COUNTS[4], stride: 3 }, // Scene 5: every 3rd frame
-        { sceneIndex: 5, count: SCENE_FRAME_COUNTS[5], stride: 5 }, // Scene 6: every 5th frame
-        { sceneIndex: 6, count: SCENE_FRAME_COUNTS[6], stride: 8 }  // Scene 7: every 8th frame
+        { sceneIndex: 2, count: SCENE_FRAME_COUNTS[2], stride: 1 }, // Scene 3: EVERY frame (fill gaps)
+        { sceneIndex: 3, count: SCENE_FRAME_COUNTS[3], stride: 1 }, // Scene 4: EVERY frame (fill gaps)
+        { sceneIndex: 4, count: SCENE_FRAME_COUNTS[4], stride: 1 }, // Scene 5: EVERY frame
+        { sceneIndex: 5, count: SCENE_FRAME_COUNTS[5], stride: 2 }, // Scene 6: every 2nd frame
       ]
 
       for (const scene of scenes) {
@@ -669,20 +741,18 @@ export default function BatteryLifecycleScroll() {
         }
 
         // Preload in small batches with delays to not block main thread
-        const batchSize = 3
         for (let i = 0; i < frames.length; i += batchSize) {
           const batch = frames.slice(i, i + batchSize)
           await Promise.all(batch.map(src => preloadImage(src).catch(() => {})))
-          // Small delay between batches
-          await new Promise(resolve => setTimeout(resolve, 100))
+          await new Promise(resolve => setTimeout(resolve, 60))
         }
       }
     }
 
-    // Start background preloading after a short delay
+    // Start background preloading immediately
     const timeoutId = setTimeout(() => {
       preloadRemainingFrames()
-    }, 500)
+    }, 100)
 
     return () => clearTimeout(timeoutId)
   }, [isPreloading])
@@ -874,20 +944,33 @@ export default function BatteryLifecycleScroll() {
       // Show navbar when component unmounts
       setNavbarVisible(true)
     }
-  }, [setNavbarVisible])
+  }, [setNavbarVisible, isPreloading])
 
-  // Preload first frame on mount to ensure immediate display
+  // Initialize canvas and draw first frame
   useEffect(() => {
-    const firstFrame = new Image()
-    firstFrame.src = '/lifecycle/frames/scene-1/frame_0001.webp'
-    
-    // Refresh ScrollTrigger once first frame is loaded
-    firstFrame.onload = () => {
-      setTimeout(() => {
+    const canvas = canvasRef.current
+    if (!canvas || isPreloading) return
+
+    // Set canvas to match frame resolution (1920x1080 or your frame size)
+    canvas.width = 1920
+    canvas.height = 1080
+
+    // Draw first frame when ready
+    const drawInitialFrame = () => {
+      const firstFrameSrc = '/lifecycle/frames/scene-1/frame_0001.webp'
+      const cachedImage = frameCache.get(firstFrameSrc)
+      
+      if (cachedImage && cachedImage.complete) {
+        drawFrame(0, 1)
         ScrollTrigger.refresh()
-      }, 50)
+      } else {
+        // Wait for first frame to be cached
+        setTimeout(drawInitialFrame, 50)
+      }
     }
-  }, [])
+
+    drawInitialFrame()
+  }, [isPreloading])
 
   // Watch for when component enters viewport and refresh ScrollTrigger
   useEffect(() => {
@@ -915,11 +998,39 @@ export default function BatteryLifecycleScroll() {
     }
   }, [])
 
+  // Cleanup RAF on unmount
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current)
+      }
+    }
+  }, [])
+
+  // Canvas frame update with RAF - smooth and blink-free
+  useEffect(() => {
+    // Cancel any pending RAF
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current)
+    }
+
+    // Use RAF for optimal performance
+    rafRef.current = requestAnimationFrame(() => {
+      drawFrame(currentSceneForFrame, currentFrame)
+    })
+
+    return () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current)
+      }
+    }
+  }, [currentFrame, currentSceneForFrame])
+
   // Preload next frames for smooth scrolling (only when not in initial preload)
   useEffect(() => {
     if (isPreloading) return
 
-    const preloadCount = 15 // Preload next 15 frames for smoother scrolling
+    const preloadCount = 35 // Aggressive preload to prevent first-scroll blink
     const frameCount = SCENE_FRAME_COUNTS[currentSceneForFrame]
     
     for (let i = 1; i <= preloadCount; i++) {
@@ -927,17 +1038,25 @@ export default function BatteryLifecycleScroll() {
       
       // Preload frames within current scene
       if (nextFrame <= frameCount) {
-        const img = new Image()
-        img.decoding = 'async'
-        img.src = `/lifecycle/frames/scene-${currentSceneForFrame + 1}/frame_${String(nextFrame).padStart(4, '0')}.webp`
+        const src = `/lifecycle/frames/scene-${currentSceneForFrame + 1}/frame_${String(nextFrame).padStart(4, '0')}.webp`
+        if (!frameCache.has(src)) {
+          const img = new Image()
+          img.decoding = 'async'
+          img.src = src
+          img.onload = () => frameCache.set(src, img)
+        }
       } else if (currentSceneForFrame < SCENE_FRAME_COUNTS.length - 1) {
         // Preload first frames of next scene
         const nextSceneIndex = currentSceneForFrame + 1
         const nextSceneFrame = nextFrame - frameCount
         if (nextSceneFrame <= SCENE_FRAME_COUNTS[nextSceneIndex]) {
-          const img = new Image()
-          img.decoding = 'async'
-          img.src = `/lifecycle/frames/scene-${nextSceneIndex + 1}/frame_${String(nextSceneFrame).padStart(4, '0')}.webp`
+          const src = `/lifecycle/frames/scene-${nextSceneIndex + 1}/frame_${String(nextSceneFrame).padStart(4, '0')}.webp`
+          if (!frameCache.has(src)) {
+            const img = new Image()
+            img.decoding = 'async'
+            img.src = src
+            img.onload = () => frameCache.set(src, img)
+          }
         }
       }
     }
@@ -949,18 +1068,40 @@ export default function BatteryLifecycleScroll() {
   }
 
   return (
-    <div className="relative w-full bg-black">
+    <section className="relative w-full bg-black">
       {/* Scroll Container */}
-      <div ref={containerRef} className="relative w-full">
+      <div ref={containerRef} className="relative w-full" style={{ position: 'relative' }}>
         {/* Sticky Frame Container */}
-        <div ref={stickyContainerRef} className="sticky top-0 left-0 w-full h-screen overflow-hidden" style={{ transform: 'translate3d(0, 0, 0)', contain: 'layout style paint' }}>
-          {/* Frame-by-frame renderer */}
-          <img
-            src={`/lifecycle/frames/scene-${currentSceneForFrame + 1}/frame_${String(currentFrame).padStart(4, '0')}.webp`}
-            alt="Battery lifecycle animation"
-            className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-            style={{ willChange: 'transform', imageRendering: 'crisp-edges' }}
-          />
+        <div 
+          ref={stickyContainerRef} 
+          className="sticky top-0 left-0 w-full h-screen overflow-hidden bg-black" 
+          style={{ 
+            position: 'sticky',
+            transform: 'translate3d(0, 0, 0)', 
+            contain: 'layout style paint',
+            backgroundColor: '#000'
+          }}
+        >
+          {/* Canvas renderer - ZERO BLINK, enterprise-grade */}
+          <div 
+            className="absolute inset-0 w-full h-full bg-black"
+            style={{ 
+              backfaceVisibility: 'hidden',
+              transform: 'translateZ(0)'
+            }}
+          >
+            <canvas
+              ref={canvasRef}
+              className="absolute inset-0 w-full h-full pointer-events-none"
+              style={{ 
+                objectFit: 'cover',
+                imageRendering: 'crisp-edges',
+                backfaceVisibility: 'hidden',
+                transform: 'translateZ(0)',
+                willChange: 'transform'
+              }}
+            />
+          </div>
 
           {/* Scene Progress Indicator - Separate Containers */}
           {(currentSceneForFrame > 0 || (currentSceneForFrame === 0 && currentFrame >= 50)) && (
@@ -1094,6 +1235,6 @@ export default function BatteryLifecycleScroll() {
           )}
         </div>
       </div>
-    </div>
+    </section>
   )
 }

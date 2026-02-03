@@ -56,7 +56,9 @@ export default function Home() {
       
       {/* Below-the-fold: Lazy load for better performance */}
       <Suspense fallback={<SectionLoader />}>
-        <BatteryLifecycleScroll/>
+        <div style={{ position: 'relative' }}>
+          <BatteryLifecycleScroll/>
+        </div>
       </Suspense>
       
       <Suspense fallback={<SectionLoader />}>
