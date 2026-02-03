@@ -23,6 +23,10 @@ import LeadCard from './cards/LeadCard'
 import PolymerCard from './cards/PolymerCard'
 import ComplianceRecordCard from './cards/ComplianceRecordCard'
 import RecoveryCertifiedCard from './cards/RecoveryCertifiedCard'
+import LoggedCard from './cards/LoggedCard'
+import ControlledCard from './cards/ControlledCard'
+import CertifiedCard from './cards/CertifiedCard'
+import VerifiedCard from './cards/VerifiedCard'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -143,6 +147,12 @@ const sceneConfig: SceneConfig[] = [
         value: 'SEALED & LOGGED',
         status: '',
         position: 'right'
+      },
+      {
+        cardType: 'logged',
+        value: '',
+        status: '',
+        position: 'right'
       }
     ]
   },
@@ -205,6 +215,12 @@ const sceneConfig: SceneConfig[] = [
         value: 'PLATE RESTORED',
         status: '',
         position: 'bottom-right'
+      },
+      {
+        cardType: 'controlled',
+        value: '',
+        status: '',
+        position: 'right'
       }
     ]
   },
@@ -236,6 +252,12 @@ const sceneConfig: SceneConfig[] = [
         value: 'DIAGNOSTIC',
         status: 'RECORD LOCKED',
         position: 'bottom'
+      },
+      {
+        cardType: 'certified',
+        value: '',
+        status: '',
+        position: 'right'
       }
     ]
   },
@@ -267,6 +289,12 @@ const sceneConfig: SceneConfig[] = [
         value: 'RECOVERY CERTIFIED',
         status: '',
         position: 'bottom-right'
+      },
+      {
+        cardType: 'verified',
+        value: '',
+        status: '',
+        position: 'right'
       }
     ]
   }
@@ -376,7 +404,10 @@ export default function BatteryLifecycleScroll() {
         if (cardData.position === 'bottom-right') return 'left-16 top-[41rem]'
       } else if (sceneIndex === 2) {
         // Scene 3 positions
-        if (cardData.position === 'right') return 'left-20 top-[43rem]'
+        if (cardData.position === 'right') {
+          if (cardData.cardType === 'logged') return 'right-16 bottom-16'
+          return 'left-20 top-[43rem]'
+        }
         if (cardData.position === 'left') return 'left-20 top-14'
         if (cardData.position === 'bottom-left') return 'left-20 top-[14rem]'
         if (cardData.position === 'bottom-right') return 'left-20 top-[27rem]'
@@ -388,7 +419,10 @@ export default function BatteryLifecycleScroll() {
         if (cardData.position === 'bottom-right') return 'left-16 top-[40rem]'
       } else if (sceneIndex === 4) {
         // Scene 5 positions
-        if (cardData.position === 'right') return 'left-[19em] top-12'
+        if (cardData.position === 'right') {
+          if (cardData.cardType === 'controlled') return 'right-16 bottom-16'
+          return 'left-[19em] top-12'
+        }
         if (cardData.position === 'left') return 'left-12 top-12'
         if (cardData.position === 'bottom-left') return 'left-16 top-[22rem]'
         if (cardData.position === 'bottom-right') return 'left-16 top-[41.5rem]'
@@ -396,12 +430,18 @@ export default function BatteryLifecycleScroll() {
         // Scene 6 positions
         if (cardData.position === 'top') return 'left-20 top-16'
         if (cardData.position === 'left') return 'left-16 top-[25rem]'
-        if (cardData.position === 'right') return 'left-[20rem] top-[25rem]'
+        if (cardData.position === 'right') {
+          if (cardData.cardType === 'certified') return 'right-16 bottom-16'
+          return 'left-[20rem] top-[25rem]'
+        }
         if (cardData.position === 'bottom') return 'left-20 top-[44em]'
       } else if (sceneIndex === 6) {
         // Scene 7 positions
         if (cardData.position === 'left') return 'left-12 top-16'
-        if (cardData.position === 'right') return 'left-[19em] top-16'
+        if (cardData.position === 'right') {
+          if (cardData.cardType === 'verified') return 'right-16 bottom-16'
+          return 'left-[19em] top-16'
+        }
         if (cardData.position === 'bottom-left') return 'left-16 top-[24rem]'
         if (cardData.position === 'bottom-right') return 'left-16 top-[40rem]'
       }
@@ -644,6 +684,50 @@ export default function BatteryLifecycleScroll() {
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <RecoveryCertifiedCard />
+          </div>
+        )
+      case 'logged':
+        return (
+          <div
+            key={cardKey}
+            ref={el => { cardRefs.current[cardKey] = el }}
+            className={`absolute ${getCardPosition()} z-10`}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+          >
+            <LoggedCard />
+          </div>
+        )
+      case 'controlled':
+        return (
+          <div
+            key={cardKey}
+            ref={el => { cardRefs.current[cardKey] = el }}
+            className={`absolute ${getCardPosition()} z-10`}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+          >
+            <ControlledCard />
+          </div>
+        )
+      case 'certified':
+        return (
+          <div
+            key={cardKey}
+            ref={el => { cardRefs.current[cardKey] = el }}
+            className={`absolute ${getCardPosition()} z-10`}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+          >
+            <CertifiedCard />
+          </div>
+        )
+      case 'verified':
+        return (
+          <div
+            key={cardKey}
+            ref={el => { cardRefs.current[cardKey] = el }}
+            className={`absolute ${getCardPosition()} z-10`}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+          >
+            <VerifiedCard />
           </div>
         )
       default:
