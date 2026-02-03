@@ -7,10 +7,30 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Gemunu+Libre:wght@400;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Preload critical battery lifecycle frames for instant first load -->
+    <link rel="preload" as="image" href="/lifecycle/frames/scene-1/frame_0001.webp" />
+    <link rel="preload" as="image" href="/lifecycle/frames/scene-1/frame_0010.webp" />
+    <link rel="preload" as="image" href="/lifecycle/frames/scene-1/frame_0020.webp" />
+    <link rel="preload" as="image" href="/lifecycle/frames/scene-1/frame_0030.webp" />
+    <link rel="preload" as="image" href="/lifecycle/frames/scene-1/frame_0040.webp" />
+    <link rel="preload" as="image" href="/lifecycle/frames/scene-1/frame_0050.webp" />
+    
     <title>synovra</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Register Service Worker for frame caching -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {
+            // Silently fail if service worker registration fails
+          })
+        })
+      }
+    </script>
   </body>
 </html>

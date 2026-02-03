@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useNavbar } from '../contexts/NavbarContext'
+import BatteryLifecycleLoader from './BatteryLifecycleLoader'
 import VoltageCard from './cards/VoltageCard'
 import InternalResistanceCard from './cards/InternalResistanceCard'
 import HealthGaugeCard from './cards/HealthGaugeCard'
@@ -282,14 +283,28 @@ const sceneTimings = [
   { start: 55, pause: 67, sceneIndex: 6 }     // Scene 7: 55-67s 
 ]
 
+// Preload helper function
+const preloadImage = (src: string): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.decoding = 'async'
+    img.onload = () => resolve()
+    img.onerror = reject
+    img.src = src
+  })
+}
+
 export default function BatteryLifecycleScroll() {
   const containerRef = useRef<HTMLDivElement>(null)
   const stickyContainerRef = useRef<HTMLDivElement>(null)
   const [activeSceneIndex, setActiveSceneIndex] = useState<number | null>(null)
   const [currentFrame, setCurrentFrame] = useState(1) // Current frame to display (1-based)
   const [currentSceneForFrame, setCurrentSceneForFrame] = useState(0) // Scene index for frame rendering (0-based)
+  const [isPreloading, setIsPreloading] = useState(true) // Track preload state
+  const [preloadProgress, setPreloadProgress] = useState(0) // Track preload progress
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
   const { setNavbarVisible } = useNavbar()
+  const hasPreloadedRef = useRef(false)
 
   // Function to render specific card type
   const renderCard = (cardType: string, cardData: CardData, sceneIndex: number, cardIndex: number) => {
@@ -584,10 +599,98 @@ export default function BatteryLifecycleScroll() {
     }
   }
 
+  // Preload critical frames before component becomes interactive
+  useEffect(() => {
+    if (hasPreloadedRef.current) return
+    hasPreloadedRef.current = true
+
+    const preloadCriticalFrames = async () => {
+      try {
+        // Scene 1: Preload every 5th frame (12 frames total)
+        const scene1Frames = Array.from({ length: 12 }, (_, i) => (i * 5) + 1)
+        // Scene 2: Preload every 10th frame (6 frames)
+        const scene2Frames = Array.from({ length: 6 }, (_, i) => (i * 10) + 1)
+        
+        const criticalFrames = [
+          ...scene1Frames.map(f => `/lifecycle/frames/scene-1/frame_${String(f).padStart(4, '0')}.webp`),
+          ...scene2Frames.map(f => `/lifecycle/frames/scene-2/frame_${String(f).padStart(4, '0')}.webp`)
+        ]
+
+        let loaded = 0
+        const total = criticalFrames.length
+
+        // Preload in batches for better performance
+        const batchSize = 4
+        for (let i = 0; i < criticalFrames.length; i += batchSize) {
+          const batch = criticalFrames.slice(i, i + batchSize)
+          await Promise.all(
+            batch.map(src => 
+              preloadImage(src).then(() => {
+                loaded++
+                setPreloadProgress(Math.round((loaded / total) * 100))
+              })
+            )
+          )
+        }
+
+        // Small delay to ensure smooth transition
+        await new Promise(resolve => setTimeout(resolve, 200))
+        setIsPreloading(false)
+      } catch (error) {
+        console.error('Error preloading frames:', error)
+        // Still allow component to render even if preload fails
+        setIsPreloading(false)
+      }
+    }
+
+    preloadCriticalFrames()
+  }, [])
+
+  // Background preload remaining frames after component is interactive
+  useEffect(() => {
+    if (isPreloading) return
+
+    const preloadRemainingFrames = async () => {
+      // Preload remaining scenes with lower priority
+      const scenes = [
+        { sceneIndex: 0, count: SCENE_FRAME_COUNTS[0], stride: 3 }, // Scene 1: every 3rd frame
+        { sceneIndex: 1, count: SCENE_FRAME_COUNTS[1], stride: 5 }, // Scene 2: every 5th frame
+        { sceneIndex: 2, count: SCENE_FRAME_COUNTS[2], stride: 10 }, // Scene 3: every 10th frame
+        { sceneIndex: 3, count: SCENE_FRAME_COUNTS[3], stride: 10 }, // Scene 4: every 10th frame
+        { sceneIndex: 4, count: SCENE_FRAME_COUNTS[4], stride: 3 }, // Scene 5: every 3rd frame
+        { sceneIndex: 5, count: SCENE_FRAME_COUNTS[5], stride: 5 }, // Scene 6: every 5th frame
+        { sceneIndex: 6, count: SCENE_FRAME_COUNTS[6], stride: 8 }  // Scene 7: every 8th frame
+      ]
+
+      for (const scene of scenes) {
+        const frames: string[] = []
+        for (let i = 1; i <= scene.count; i += scene.stride) {
+          frames.push(`/lifecycle/frames/scene-${scene.sceneIndex + 1}/frame_${String(i).padStart(4, '0')}.webp`)
+        }
+
+        // Preload in small batches with delays to not block main thread
+        const batchSize = 3
+        for (let i = 0; i < frames.length; i += batchSize) {
+          const batch = frames.slice(i, i + batchSize)
+          await Promise.all(batch.map(src => preloadImage(src).catch(() => {})))
+          // Small delay between batches
+          await new Promise(resolve => setTimeout(resolve, 100))
+        }
+      }
+    }
+
+    // Start background preloading after a short delay
+    const timeoutId = setTimeout(() => {
+      preloadRemainingFrames()
+    }, 500)
+
+    return () => clearTimeout(timeoutId)
+  }, [isPreloading])
+
   useEffect(() => {
     const container = containerRef.current
 
-    if (!container) return
+    if (!container || isPreloading) return
     
     // Wait for component to be fully mounted and laid out
     const initTimeout = setTimeout(() => {
@@ -812,9 +915,11 @@ export default function BatteryLifecycleScroll() {
     }
   }, [])
 
-  // Preload next frames for smooth scrolling
+  // Preload next frames for smooth scrolling (only when not in initial preload)
   useEffect(() => {
-    const preloadCount = 10 // Preload next 10 frames
+    if (isPreloading) return
+
+    const preloadCount = 15 // Preload next 15 frames for smoother scrolling
     const frameCount = SCENE_FRAME_COUNTS[currentSceneForFrame]
     
     for (let i = 1; i <= preloadCount; i++) {
@@ -823,6 +928,7 @@ export default function BatteryLifecycleScroll() {
       // Preload frames within current scene
       if (nextFrame <= frameCount) {
         const img = new Image()
+        img.decoding = 'async'
         img.src = `/lifecycle/frames/scene-${currentSceneForFrame + 1}/frame_${String(nextFrame).padStart(4, '0')}.webp`
       } else if (currentSceneForFrame < SCENE_FRAME_COUNTS.length - 1) {
         // Preload first frames of next scene
@@ -830,11 +936,17 @@ export default function BatteryLifecycleScroll() {
         const nextSceneFrame = nextFrame - frameCount
         if (nextSceneFrame <= SCENE_FRAME_COUNTS[nextSceneIndex]) {
           const img = new Image()
+          img.decoding = 'async'
           img.src = `/lifecycle/frames/scene-${nextSceneIndex + 1}/frame_${String(nextSceneFrame).padStart(4, '0')}.webp`
         }
       }
     }
-  }, [currentFrame, currentSceneForFrame])
+  }, [currentFrame, currentSceneForFrame, isPreloading])
+
+  // Show loading screen while preloading
+  if (isPreloading) {
+    return <BatteryLifecycleLoader progress={preloadProgress} />
+  }
 
   return (
     <div className="relative w-full bg-black">
