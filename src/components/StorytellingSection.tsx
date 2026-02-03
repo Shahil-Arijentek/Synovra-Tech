@@ -22,33 +22,9 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
   const [video2Frame, setVideo2Frame] = React.useState(1);
   const [video3Frame, setVideo3Frame] = React.useState(1);
 
-  // Preload first few frames of each video for smooth start
+  // Mount immediately without blocking
   useEffect(() => {
-    const preloadFrames = async () => {
-      const promises: Promise<void>[] = [];
-      
-      // Preload first 5 frames of each video
-      for (let video = 1; video <= 3; video++) {
-        for (let frame = 1; frame <= 5; frame++) {
-          const promise = new Promise<void>((resolve) => {
-            const img = new Image();
-            img.onload = () => resolve();
-            img.onerror = () => resolve(); // Continue even if image fails
-            img.src = `/whyrevive/frames/video${video}/frame_${String(frame).padStart(4, '0')}.webp`;
-          });
-          promises.push(promise);
-        }
-      }
-      
-      await Promise.all(promises);
-      setIsReady(true);
-    };
-    
-    preloadFrames();
-  }, []);
-
-  useEffect(() => {
-    if (!isReady) return;
+    setIsReady(true);
     const mountTimer = setTimeout(() => {
       setIsMounted(true);
       // Notify parent that component is ready
@@ -57,7 +33,22 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
       }
     }, 100);
     return () => clearTimeout(mountTimer);
-  }, [isReady, onReady]);
+  }, [onReady]);
+
+  // Preload first few frames in background (non-blocking)
+  useEffect(() => {
+    const preloadInBackground = () => {
+      // Preload first 3 frames of video 1 in background
+      for (let frame = 1; frame <= 3; frame++) {
+        const img = new Image();
+        img.src = `/whyrevive/frames/video1/frame_${String(frame).padStart(4, '0')}.webp`;
+      }
+    };
+    
+    // Start background preload after component mounts
+    const timer = setTimeout(preloadInBackground, 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (!containerRef.current || !isMounted) return;
@@ -121,12 +112,12 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
     };
   }, [isMounted]);
 
-  // Preload upcoming frames based on current video
+  // Aggressively preload upcoming frames based on current video
   useEffect(() => {
     if (!isReady) return;
 
     const preloadUpcoming = () => {
-      const framesToPreload = 5;
+      const framesToPreload = 10; // Increased for smoother experience
       let startFrame = 1;
       
       if (currentVideo === 1) startFrame = video1Frame;
@@ -144,20 +135,6 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
 
     preloadUpcoming();
   }, [currentVideo, video1Frame, video2Frame, video3Frame, isReady]);
-
-  // Show loading state while preloading
-  if (!isReady) {
-    return (
-      <div className="relative w-full h-screen bg-black flex items-center justify-center">
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-16 h-16 border-2 border-[#ff6b1a] rounded-full animate-ping opacity-75" />
-          </div>
-          <div className="w-4 h-4 bg-[#ff6b1a] rounded-full shadow-[0_0_20px_rgba(255,107,26,0.8)]" />
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div 
