@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useRef } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { cn } from "../lib/utils";
 
 interface PulseXItem {
@@ -68,6 +68,7 @@ export const BentoGridItem = ({
   description,
   image,
   imageClassName,
+  index = 0,
 }: {
   className?: string;
   title?: string | React.ReactNode;
@@ -75,11 +76,22 @@ export const BentoGridItem = ({
   description?: string | React.ReactNode;
   image?: string;
   imageClassName?: string;
+  index?: number;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const cardRef = useRef(null);
+  const isCardInView = useInView(cardRef, { once: true, amount: 0.3 });
 
   return (
     <motion.div
+      ref={cardRef}
+      initial={{ opacity: 0, y: 60, scale: 0.95 }}
+      animate={isCardInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 60, scale: 0.95 }}
+      transition={{ 
+        duration: 0.8, 
+        delay: index * 0.15,
+        ease: [0.19, 1, 0.22, 1]
+      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => setIsHovered(!isHovered)}
@@ -161,18 +173,24 @@ export const BentoGridItem = ({
   );
 };
 export const PulseX = () => {
+  const headingRef = useRef(null)
+  const isHeadingInView = useInView(headingRef, { once: true, amount: 0.8 })
+
   return (
     <section className="relative overflow-hidden pt-8 pb-12 px-6 md:px-12 lg:pt-12 lg:pb-16" style={{ backgroundColor: '#0d0d0d' }}>
       {/* Fade to black gradient at bottom */}
       <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-black pointer-events-none z-10" />
       <div className="relative mx-auto max-w-[1200px]">
-        <div className="mb-6 md:mb-10 space-y-4 text-center">
+        <div ref={headingRef} className="mb-6 md:mb-10 space-y-4 text-center">
 
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            initial={{ opacity: 0, y: 40 }}
+            animate={isHeadingInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+            transition={{ 
+              duration: 1.2, 
+              delay: 0.3,
+              ease: [0.19, 1, 0.22, 1]
+            }}
             className="text-white"
             style={{
               fontSize: 'clamp(28px, 8vw, 42px)',
@@ -186,10 +204,13 @@ export const PulseX = () => {
             Introducing Pulse <span style={{ color: '#FF6B1A' }}>X</span>
           </motion.h2>
           <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            initial={{ opacity: 0, y: 40 }}
+            animate={isHeadingInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+            transition={{ 
+              duration: 1.2, 
+              delay: 0.7,
+              ease: [0.19, 1, 0.22, 1]
+            }}
             className="mx-auto max-w-3xl text-[#FFF]"
             style={{
               fontFamily: 'Arial, sans-serif',
@@ -212,6 +233,7 @@ export const PulseX = () => {
             description={pulseXItems[0].description}
             image={pulseXItems[0].image}
             className="md:row-span-12 h-auto md:h-full"
+            index={0}
           />
 
           {/* Remaining 4 items in a 2x2 grid */}
@@ -221,6 +243,7 @@ export const PulseX = () => {
             description={pulseXItems[1].description}
             image={pulseXItems[1].image}
             className="md:row-span-6"
+            index={1}
           />
           <BentoGridItem
             title={pulseXItems[3].title}
@@ -228,6 +251,7 @@ export const PulseX = () => {
             description={pulseXItems[3].description}
             image={pulseXItems[3].image}
             className="md:row-span-7"
+            index={2}
           />
           <BentoGridItem
             title={pulseXItems[2].title}
@@ -235,6 +259,7 @@ export const PulseX = () => {
             description={pulseXItems[2].description}
             image={pulseXItems[2].image}
             className="md:row-span-6"
+            index={3}
           />
           <BentoGridItem
             title={pulseXItems[4].title}
@@ -242,6 +267,7 @@ export const PulseX = () => {
             description={pulseXItems[4].description}
             image={pulseXItems[4].image}
             className="md:row-span-5"
+            index={4}
           />
         </BentoGrid>
       </div>

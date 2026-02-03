@@ -111,6 +111,8 @@ const AnimatedGauge = ({ value, label, id, range }: { value: number; label: stri
 export default function SystemOutcomes() {
     const [activeTab, setActiveTab] = useState(0);
     const [isLoaded, setIsLoaded] = useState(false);
+    const titleRef = React.useRef(null);
+    const isTitleInView = useInView(titleRef, { once: true, amount: 0.8 });
     const tabs = [
         { id: 0, label: "System" },
         { id: 1, label: "Performance" },
@@ -125,8 +127,15 @@ export default function SystemOutcomes() {
         <div className="flex flex-col overflow-hidden bg-black" style={{ opacity: isLoaded ? 1 : 0, transition: 'opacity 0.3s ease-in' }}>
             <ContainerScroll
                 titleComponent={
-                    <>
-                        <h1
+                    <div ref={titleRef}>
+                        <motion.h1
+                            initial={{ opacity: 0, y: 40 }}
+                            animate={isTitleInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+                            transition={{ 
+                                duration: 1.2, 
+                                delay: 0.3,
+                                ease: [0.19, 1, 0.22, 1]
+                            }}
                             className="text-white mb-2 whitespace-nowrap"
                             style={{
                                 fontFamily: "Arial",
@@ -138,8 +147,15 @@ export default function SystemOutcomes() {
                             }}
                         >
                             Measured Impact
-                        </h1>
-                        <p
+                        </motion.h1>
+                        <motion.p
+                            initial={{ opacity: 0, y: 40 }}
+                            animate={isTitleInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+                            transition={{ 
+                                duration: 1.2, 
+                                delay: 0.7,
+                                ease: [0.19, 1, 0.22, 1]
+                            }}
                             className="mb-8"
                             style={{
                                 color: "#595959",
@@ -152,8 +168,8 @@ export default function SystemOutcomes() {
                             }}
                         >
                             What the system has already delivered
-                        </p>
-                    </>
+                        </motion.p>
+                    </div>
                 }
             >
                 <div className="w-full h-full bg-black p-3 md:p-6 flex flex-col overflow-hidden">

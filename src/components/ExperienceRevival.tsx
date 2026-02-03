@@ -1,7 +1,10 @@
 import { useRef, useEffect } from 'react'
+import { motion, useInView } from 'framer-motion'
 
 export default function ExperienceRevival() {
   const videoRef = useRef<HTMLVideoElement>(null)
+  const containerRef = useRef(null)
+  const isInView = useInView(containerRef, { once: true, amount: 0.8 })
 
   useEffect(() => {
     return () => {
@@ -34,14 +37,45 @@ export default function ExperienceRevival() {
       </div>
 
       {/* Content Container */}
-      <div className="relative z-10 mx-auto w-full max-w-full pointer-events-none px-4 sm:px-6">
+      <div ref={containerRef} className="relative z-10 mx-auto w-full max-w-full pointer-events-none px-4 sm:px-6">
         <h2 className="text-center font-['Arial'] font-black leading-[1.1] tracking-tight sm:tracking-tighter md:tracking-[-2.4px] text-white uppercase flex flex-col items-center gap-0" style={{ fontSize: 'clamp(1.25rem, 5vw, 3rem)' }}>
-          <span className="whitespace-nowrap">Experience Revival.</span>
-          <span className="whitespace-nowrap">Experience Performance.</span>
+          <motion.span
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+            transition={{ 
+              duration: 1.2, 
+              delay: 0.3,
+              ease: [0.19, 1, 0.22, 1]
+            }}
+            className="whitespace-nowrap"
+          >
+            Experience Revival.
+          </motion.span>
+          <motion.span
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+            transition={{ 
+              duration: 1.2, 
+              delay: 0.7,
+              ease: [0.19, 1, 0.22, 1]
+            }}
+            className="whitespace-nowrap"
+          >
+            Experience Performance.
+          </motion.span>
         </h2>
-        <p className="mt-4 sm:mt-6 text-[15px] sm:text-[16px] tracking-normal text-white/80 normal-case font-normal mx-auto px-2 whitespace-nowrap">
+        <motion.p 
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+          transition={{ 
+            duration: 1.2, 
+            delay: 1.1,
+            ease: [0.19, 1, 0.22, 1]
+          }}
+          className="mt-4 sm:mt-6 text-[15px] sm:text-[16px] tracking-normal text-white/80 normal-case font-normal mx-auto px-2 whitespace-nowrap"
+        >
           Redefining battery afterlife with premium, precision-engineered power built to last.
-        </p>
+        </motion.p>
       </div>
     </section>
   );

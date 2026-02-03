@@ -343,9 +343,16 @@ export default function BatteryLifecycleScroll() {
       })
       
       if (ctx) {
+        // Ensure canvas is fully opaque
+        ctx.globalAlpha = 1.0
         // Draw cached image directly to canvas - no blink!
         ctx.drawImage(cachedImage, 0, 0, canvas.width, canvas.height)
         currentCanvasFrameRef.current = { scene: sceneIndex, frame: frameNumber }
+        
+        // Force canvas visibility
+        if (canvas.style.opacity !== '1') {
+          canvas.style.opacity = '1'
+        }
       }
     }
     // If not cached: old frame remains visible (no black flash)
@@ -783,6 +790,15 @@ export default function BatteryLifecycleScroll() {
       // Set container height to enable scrolling
       gsap.set(container, { height: scrollHeight })
 
+      // Set initial state BEFORE ScrollTrigger starts
+      // This ensures frame 1 is visible immediately when section comes into view
+      setCurrentFrame(1)
+      setCurrentSceneForFrame(0)
+      setActiveSceneIndex(null) // Don't show cards initially, only frame
+      
+      // Force initial frame draw
+      drawFrame(0, 1)
+
       // Main ScrollTrigger for frame scrubbing
       ScrollTrigger.create({
       trigger: container,
@@ -798,6 +814,10 @@ export default function BatteryLifecycleScroll() {
       onEnter: () => {
         // Hide navbar when entering the section
         setNavbarVisible(false)
+        // Ensure first frame is visible
+        if (currentFrame === 1 && currentSceneForFrame === 0) {
+          drawFrame(0, 1)
+        }
       },
       onLeave: () => {
         // Show navbar when leaving the section (scrolling down past it)
@@ -810,6 +830,10 @@ export default function BatteryLifecycleScroll() {
       onLeaveBack: () => {
         // Show navbar when scrolling back up above the section
         setNavbarVisible(true)
+        // Reset to first frame when leaving upwards
+        setCurrentFrame(1)
+        setCurrentSceneForFrame(0)
+        drawFrame(0, 1)
       },
       onUpdate: (self) => {
         const progress = self.progress
@@ -946,7 +970,7 @@ export default function BatteryLifecycleScroll() {
     }
   }, [setNavbarVisible, isPreloading])
 
-  // Initialize canvas and draw first frame
+  // Initialize canvas and draw first frame IMMEDIATELY
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas || isPreloading) return
@@ -955,20 +979,47 @@ export default function BatteryLifecycleScroll() {
     canvas.width = 1920
     canvas.height = 1080
 
-    // Draw first frame when ready
+    // Fill canvas with black immediately to prevent white flash
+    const ctx = canvas.getContext('2d', { 
+      alpha: false,
+      desynchronized: true 
+    })
+    if (ctx) {
+      ctx.fillStyle = '#000000'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+    }
+
+    // Draw first frame when ready - CRITICAL for initial visibility
     const drawInitialFrame = () => {
       const firstFrameSrc = '/lifecycle/frames/scene-1/frame_0001.webp'
       const cachedImage = frameCache.get(firstFrameSrc)
       
-      if (cachedImage && cachedImage.complete) {
+      if (cachedImage && cachedImage.complete && cachedImage.naturalWidth > 0) {
+        // Set initial state
+        setCurrentFrame(1)
+        setCurrentSceneForFrame(0)
+        setActiveSceneIndex(null)
+        
+        // Draw frame immediately
         drawFrame(0, 1)
-        ScrollTrigger.refresh()
+        
+        // Force canvas visibility
+        if (canvas) {
+          canvas.style.opacity = '1'
+          canvas.style.visibility = 'visible'
+        }
+        
+        // Refresh after a moment
+        setTimeout(() => {
+          ScrollTrigger.refresh()
+        }, 100)
       } else {
-        // Wait for first frame to be cached
+        // Keep trying until first frame is cached
         setTimeout(drawInitialFrame, 50)
       }
     }
 
+    // Start drawing immediately
     drawInitialFrame()
   }, [isPreloading])
 
@@ -1087,18 +1138,21 @@ export default function BatteryLifecycleScroll() {
             className="absolute inset-0 w-full h-full bg-black"
             style={{ 
               backfaceVisibility: 'hidden',
-              transform: 'translateZ(0)'
+              transform: 'translateZ(0)',
+              opacity: 1
             }}
           >
             <canvas
               ref={canvasRef}
-              className="absolute inset-0 w-full h-full pointer-events-none"
+              className="absolute inset-0 w-full h-full pointer-events-none bg-black"
               style={{ 
                 objectFit: 'cover',
                 imageRendering: 'crisp-edges',
                 backfaceVisibility: 'hidden',
                 transform: 'translateZ(0)',
-                willChange: 'transform'
+                willChange: 'transform',
+                opacity: 1,
+                visibility: 'visible'
               }}
             />
           </div>

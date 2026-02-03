@@ -3,7 +3,9 @@ import { motion, useInView } from 'framer-motion'
 
 export default function ProofNotPromises() {
   const sectionRef = useRef(null)
+  const headingRef = useRef(null)
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 })
+  const isHeadingInView = useInView(headingRef, { once: true, amount: 0.3 })
   const [isMounted, setIsMounted] = React.useState(false)
 
   // Ensure scroll is always enabled
@@ -44,13 +46,31 @@ export default function ProofNotPromises() {
       <section ref={sectionRef} className="py-8 md:py-12 px-4 sm:px-6 md:px-8 pb-32 md:pb-12 font-sans text-white sticky top-0 z-[105] overflow-hidden md:overflow-visible" style={{ backgroundColor: '#0d0d0d' }}>
         <div className="max-w-[1400px] mx-auto overflow-hidden md:overflow-visible">
         {/* Header */}
-        <div className="text-center mb-6 md:mb-10">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6">
+        <div ref={headingRef} className="text-center mb-6 md:mb-10">
+          <motion.h2
+            initial={{ opacity: 0, y: 40 }}
+            animate={isHeadingInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+            transition={{
+              duration: 1.2,
+              delay: 0.3,
+              ease: [0.19, 1, 0.22, 1]
+            }}
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6"
+          >
             The Proof in Numbers
-          </h2>
-          <p className="text-sm sm:text-base md:text-base lg:text-lg text-white/70 max-w-3xl mx-auto px-4">
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 40 }}
+            animate={isHeadingInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+            transition={{
+              duration: 1.2,
+              delay: 0.7,
+              ease: [0.19, 1, 0.22, 1]
+            }}
+            className="text-sm sm:text-base md:text-base lg:text-lg text-white/70 max-w-3xl mx-auto px-4"
+          >
             Revival keeps capacity in service and delays smelting — reducing emissions by up to 90%.
-          </p>
+          </motion.p>
         </div>
 
         {/* Comparison Bars */}
