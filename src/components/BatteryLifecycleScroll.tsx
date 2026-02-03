@@ -769,6 +769,9 @@ export default function BatteryLifecycleScroll() {
 
     if (!container || isPreloading) return
     
+    // Set initial minimum height immediately to prevent black space
+    gsap.set(container, { minHeight: window.innerHeight * 30 })
+    
     // Wait for component to be fully mounted and laid out
     const initTimeout = setTimeout(() => {
       // Create scroll sections for each scene
@@ -814,9 +817,13 @@ export default function BatteryLifecycleScroll() {
       onEnter: () => {
         // Hide navbar when entering the section
         setNavbarVisible(false)
-        // Ensure first frame is visible
-        if (currentFrame === 1 && currentSceneForFrame === 0) {
-          drawFrame(0, 1)
+        // Ensure first frame is visible and canvas is shown
+        drawFrame(0, 1)
+        // Force canvas visibility when entering section
+        const canvas = canvasRef.current
+        if (canvas) {
+          canvas.style.opacity = '1'
+          canvas.style.visibility = 'visible'
         }
       },
       onLeave: () => {
@@ -989,21 +996,24 @@ export default function BatteryLifecycleScroll() {
       ctx.fillRect(0, 0, canvas.width, canvas.height)
     }
 
+    // Set initial state immediately
+    setCurrentFrame(1)
+    setCurrentSceneForFrame(0)
+    setActiveSceneIndex(null)
+
     // Draw first frame when ready - CRITICAL for initial visibility
+    let attempts = 0
+    const maxAttempts = 100
+    
     const drawInitialFrame = () => {
       const firstFrameSrc = '/lifecycle/frames/scene-1/frame_0001.webp'
       const cachedImage = frameCache.get(firstFrameSrc)
       
       if (cachedImage && cachedImage.complete && cachedImage.naturalWidth > 0) {
-        // Set initial state
-        setCurrentFrame(1)
-        setCurrentSceneForFrame(0)
-        setActiveSceneIndex(null)
-        
         // Draw frame immediately
         drawFrame(0, 1)
         
-        // Force canvas visibility
+        // Show canvas - frame is ready!
         if (canvas) {
           canvas.style.opacity = '1'
           canvas.style.visibility = 'visible'
@@ -1014,13 +1024,37 @@ export default function BatteryLifecycleScroll() {
           ScrollTrigger.refresh()
         }, 100)
       } else {
-        // Keep trying until first frame is cached
-        setTimeout(drawInitialFrame, 50)
+        attempts++
+        // Keep trying until first frame is cached, with fallback
+        if (attempts < maxAttempts) {
+          setTimeout(drawInitialFrame, 50)
+        } else {
+          // Fallback: show canvas anyway after reasonable wait
+          console.warn('First frame not cached, showing canvas anyway')
+          if (canvas) {
+            canvas.style.opacity = '1'
+            canvas.style.visibility = 'visible'
+          }
+        }
       }
     }
 
     // Start drawing immediately
     drawInitialFrame()
+
+    // Fallback timeout: ensure canvas is visible after 2 seconds
+    const fallbackTimeout = setTimeout(() => {
+      if (canvas && canvas.style.opacity === '0') {
+        console.warn('Fallback: forcing canvas visibility')
+        canvas.style.opacity = '1'
+        canvas.style.visibility = 'visible'
+        drawFrame(0, 1)
+      }
+    }, 2000)
+
+    return () => {
+      clearTimeout(fallbackTimeout)
+    }
   }, [isPreloading])
 
   // Watch for when component enters viewport and refresh ScrollTrigger
@@ -1119,9 +1153,9 @@ export default function BatteryLifecycleScroll() {
   }
 
   return (
-    <section className="relative w-full bg-black">
+    <section className="relative w-full bg-black" style={{ minHeight: '100vh' }}>
       {/* Scroll Container */}
-      <div ref={containerRef} className="relative w-full" style={{ position: 'relative' }}>
+      <div ref={containerRef} className="relative w-full bg-black" style={{ position: 'relative' }}>
         {/* Sticky Frame Container */}
         <div 
           ref={stickyContainerRef} 

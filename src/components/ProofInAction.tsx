@@ -86,39 +86,43 @@ export default function ProofInAction() {
 
   return (
     <section className="bg-black px-6 py-12 md:py-20 text-white">
-      <div ref={headingRef} className="mx-auto flex max-w-6xl flex-col items-center">
-        <motion.h2
-          initial={{ opacity: 0, y: 40 }}
-          animate={isHeadingInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-          transition={{ 
-            duration: 1.2, 
-            delay: 0.3,
-            ease: [0.19, 1, 0.22, 1]
-          }}
-          className="text-center text-[32px] md:text-5xl font-bold leading-tight"
-        >
-          Proven in Live Environments
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 40 }}
-          animate={isHeadingInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-          transition={{ 
-            duration: 1.2, 
-            delay: 0.7,
-            ease: [0.19, 1, 0.22, 1]
-          }}
-          className="mt-3 text-center text-sm sm:text-base md:text-base lg:text-lg text-white/70"
-        >
-          Operating where failure isn't an option
-        </motion.p>
-
-          <motion.div 
-            ref={carouselRef}
-            initial={{ opacity: 0, y: 60 }}
-            animate={isCarouselInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
-            className="mt-8 md:mt-12 flex w-full flex-col items-center"
+      <div className="mx-auto flex max-w-6xl flex-col items-center">
+        {/* Heading First - Animates Before Images */}
+        <div ref={headingRef} className="flex flex-col items-center">
+          <motion.h2
+            initial={{ opacity: 0, y: 40 }}
+            animate={isHeadingInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+            transition={{ 
+              duration: 1.2, 
+              delay: 0.3,
+              ease: [0.19, 1, 0.22, 1]
+            }}
+            className="text-center text-[32px] md:text-5xl font-bold leading-tight"
           >
+            Proven in Live Environments
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 40 }}
+            animate={isHeadingInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+            transition={{ 
+              duration: 1.2, 
+              delay: 0.7,
+              ease: [0.19, 1, 0.22, 1]
+            }}
+            className="mt-3 text-center text-sm sm:text-base md:text-base lg:text-lg text-white/70"
+          >
+            Operating where failure isn't an option
+          </motion.p>
+        </div>
+
+        {/* Images After Text - Delayed Animation */}
+        <motion.div 
+          ref={carouselRef}
+          initial={{ opacity: 0, y: 60 }}
+          animate={isCarouselInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
+          transition={{ duration: 1.2, delay: 1.3, ease: [0.19, 1, 0.22, 1] }}
+          className="mt-8 md:mt-12 w-full flex flex-col items-center"
+        >
             <div className="w-full overflow-hidden rounded-[20px] md:rounded-[24px] border border-white/5 bg-black shadow-[0_12px_32px_rgba(0,0,0,0.35)]">
               <AnimatePresence mode="wait" custom={direction}>
                 <motion.div
