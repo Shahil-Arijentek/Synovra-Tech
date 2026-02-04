@@ -12,20 +12,20 @@ export default function WarrantyCard({ status, coverage }: WarrantyCardProps) {
       </div>
 
       {/* Shield Icon with Clock */}
-      <div className="flex items-center justify-center mb-4 md:mb-6 mt-2 md:mt-4 flex-1">
+      <div className="flex items-center justify-center mb-2 md:mb-6 mt-2 md:mt-4 flex-1">
         <img
           src="/cards/warranty.png"
           alt="Warranty Shield"
-          className="w-[60px] h-[60px] sm:w-[70px] sm:h-[70px] md:w-[80px] md:h-[80px] object-contain"
+          className="w-[50px] h-[50px] sm:w-[60px] sm:h-[60px] md:w-[80px] md:h-[80px] object-contain"
         />
       </div>
 
       {/* Status Text */}
-      <div className="text-center space-y-0.5 mt-auto px-1">
-        <div className="text-white text-[8px] sm:text-[9px] md:text-[12px] font-['Arial',sans-serif] font-medium uppercase leading-tight">
+      <div className="text-center space-y-0.5 mt-auto px-1 pb-1">
+        <div className="text-white text-[7px] sm:text-[8px] md:text-[12px] font-['Arial',sans-serif] font-medium uppercase leading-tight break-words">
           {status}
         </div>
-        <div className="text-white text-[8px] sm:text-[9px] md:text-[12px] font-['Arial',sans-serif] font-medium uppercase leading-tight">
+        <div className="text-white text-[7px] sm:text-[8px] md:text-[12px] font-['Arial',sans-serif] font-medium uppercase leading-tight break-words">
           {coverage}
         </div>
       </div>
