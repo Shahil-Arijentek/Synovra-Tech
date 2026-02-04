@@ -21,11 +21,11 @@ export default function WarrantyCard({ status, coverage }: WarrantyCardProps) {
       </div>
 
       {/* Status Text */}
-      <div className="text-center space-y-1 mt-auto">
-        <div className="text-white text-[10px] sm:text-[11px] md:text-[12px] font-['Arial',sans-serif] font-medium uppercase">
+      <div className="text-center space-y-0.5 mt-auto px-1">
+        <div className="text-white text-[8px] sm:text-[9px] md:text-[12px] font-['Arial',sans-serif] font-medium uppercase leading-tight">
           {status}
         </div>
-        <div className="text-white text-[10px] sm:text-[11px] md:text-[12px] font-['Arial',sans-serif] font-medium uppercase">
+        <div className="text-white text-[8px] sm:text-[9px] md:text-[12px] font-['Arial',sans-serif] font-medium uppercase leading-tight">
           {coverage}
         </div>
       </div>
