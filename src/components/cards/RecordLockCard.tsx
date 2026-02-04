@@ -5,14 +5,14 @@ interface RecordLockCardProps {
 
 export default function RecordLockCard({ value, status }: RecordLockCardProps) {
   return (
-    <div className="backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 w-[300px] sm:w-[320px] md:w-[420px] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)]">
+    <div className="backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-2xl p-3 md:p-4 w-[280px] md:w-[420px] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)]">
       {/* Title */}
-      <div className="text-[#9CA3AF] text-[8px] md:text-[10px] font-['Arial',sans-serif] tracking-wider mb-2 md:mb-3">
+      <div className="text-[#9CA3AF] text-[10px] font-['Arial',sans-serif] tracking-wider mb-3">
         RECORD LOCK
       </div>
 
       {/* Metallic Plate with Text Overlay */}
-      <div className="relative w-full h-[140px] sm:h-[150px] md:h-[120px] flex items-center justify-center">
+      <div className="relative w-full h-[120px] flex items-center justify-center">
         <img
           src="/cards/decision.png"
           alt="Record Lock Plate"
@@ -22,12 +22,20 @@ export default function RecordLockCard({ value, status }: RecordLockCardProps) {
         {/* Text Overlay on Plate */}
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
           <div 
-            className="text-[#1a1a1a] font-['Arial',sans-serif] font-normal uppercase tracking-wide text-center text-base sm:text-lg md:text-xl"
+            className="text-[#1a1a1a] font-['Arial',sans-serif] font-normal uppercase tracking-wide text-center"
+            style={{
+              fontSize: '20px',
+              lineHeight: '24px'
+            }}
           >
             {value}
           </div>
           <div 
-            className="text-[#1a1a1a] font-['Arial',sans-serif] font-normal uppercase tracking-wide text-center text-xs sm:text-sm md:text-sm"
+            className="text-[#1a1a1a] font-['Arial',sans-serif] font-normal uppercase tracking-wide text-center px-4 sm:pr-6 md:pr-8"
+            style={{
+              fontSize: '12px',
+              lineHeight: '16px'
+            }}
           >
             {status}
           </div>
