@@ -392,10 +392,10 @@ export default function BatteryLifecycleScroll() {
       // Scene-specific positioning
       if (sceneIndex === 0) {
         // Scene 1 positions
-        if (cardData.position === 'right') return 'right-16 md:right-auto md:left-[19em] top-24 md:top-12'
-        if (cardData.position === 'left') return 'left-6 md:left-12 top-24 md:top-12'
-        if (cardData.position === 'bottom-left') return 'left-8 md:left-[4rem] top-[16.3rem] md:top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-8 md:left-[4rem] top-[28rem] md:top-[41rem]'
+        if (cardData.position === 'right') return 'right-4 sm:right-8 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-12'
+        if (cardData.position === 'left') return 'left-4 sm:left-6 md:left-12 top-20 sm:top-24 md:top-12'
+        if (cardData.position === 'bottom-left') return 'left-4 sm:left-6 md:left-[4rem] top-[42%] sm:top-[44%] md:top-[22rem]'
+        if (cardData.position === 'bottom-right') return 'left-4 sm:left-6 md:left-[4rem] top-[68%] sm:top-[70%] md:top-[41rem]'
       } else if (sceneIndex === 1) {
         // Scene 2 positions
         if (cardData.position === 'right') return 'right-16 md:right-auto md:left-[19em] top-24 md:top-12'
@@ -1276,7 +1276,7 @@ export default function BatteryLifecycleScroll() {
           {(currentSceneForFrame > 0 || (currentSceneForFrame === 0 && currentFrame >= 50)) && (
             <>
               {/* Progress Boxes Container */}
-              <div className="absolute top-2 md:top-8 left-4 md:left-[38rem] z-20">
+              <div className="absolute top-2 md:top-8 left-2 sm:left-4 md:left-[38rem] z-20">
                 <div 
                   className="flex items-center gap-0.5 md:gap-2 backdrop-blur-sm h-[30px] md:h-[75px] rounded-md md:rounded-2xl px-1.5 md:px-5"
                   style={{
@@ -1322,16 +1322,16 @@ export default function BatteryLifecycleScroll() {
 
               {/* Scene Title Label - Separate Container */}
               {activeSceneIndex !== null && (
-                <div className="absolute top-2 md:top-8 right-4 md:right-16 z-20">
+                <div className="absolute top-2 md:top-8 right-2 sm:right-4 md:right-16 z-20">
                   <div
-                    className="flex items-center justify-center backdrop-blur-sm h-[40px] md:h-[75px] rounded-lg md:rounded-2xl px-3 md:px-12 whitespace-nowrap"
+                    className="flex items-center justify-center backdrop-blur-sm h-[30px] sm:h-[35px] md:h-[75px] rounded-lg md:rounded-2xl px-2 sm:px-3 md:px-12 whitespace-nowrap"
                     style={{
                       border: '1px solid rgba(255, 255, 255, 0.10)',
                       background: 'rgba(0, 0, 0, 0.4)',
                       willChange: 'transform'
                     }}
                   >
-                    <p className="text-white/90 text-[9px] md:text-base font-['Arial',sans-serif] tracking-wide uppercase">
+                    <p className="text-white/90 text-[7px] xs:text-[8px] sm:text-[9px] md:text-base font-['Arial',sans-serif] tracking-wide uppercase">
                       {sceneConfig[activeSceneIndex]?.title}
                     </p>
                   </div>

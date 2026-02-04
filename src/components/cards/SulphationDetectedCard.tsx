@@ -4,9 +4,9 @@ interface SulphationDetectedCardProps {
 
 export default function SulphationDetectedCard({ value }: SulphationDetectedCardProps) {
   return (
-    <div className="backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 w-[240px] md:w-[420px] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)]">
+    <div className="backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 w-[240px] sm:w-[260px] md:w-[420px] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)]">
       {/* Container for overlapping image and text */}
-      <div className="relative w-full h-[140px] md:h-[180px] overflow-hidden">
+      <div className="relative w-full h-[140px] sm:h-[150px] md:h-[180px] overflow-hidden">
         {/* Title - Positioned at top left with gradient background */}
         <div className="absolute top-0 left-0 z-10 w-[60%]">
           <div className="bg-gradient-to-r from-black/95 via-black/60 via-30% to-transparent pl-2 md:pl-4 pr-6 md:pr-12 py-1 md:py-1.5 backdrop-blur-md">
