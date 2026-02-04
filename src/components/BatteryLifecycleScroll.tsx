@@ -406,11 +406,11 @@ export default function BatteryLifecycleScroll() {
         // Scene 3 positions
         if (cardData.position === 'right') {
           if (cardData.cardType === 'logged') return 'right-4 sm:right-6 md:right-16 bottom-16'
-          return 'left-8 sm:left-10 md:left-20 top-[67%] sm:top-[69%] md:top-[43rem]'
+          return 'left-12 sm:left-14 md:left-20 top-[67%] sm:top-[69%] md:top-[43rem]'
         }
-        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-20 top-14 sm:top-16 md:top-14'
-        if (cardData.position === 'bottom-left') return 'left-8 sm:left-10 md:left-20 top-[24%] sm:top-[26%] md:top-[14rem]'
-        if (cardData.position === 'bottom-right') return 'left-8 sm:left-10 md:left-20 top-[42%] sm:top-[44%] md:top-[27rem]'
+        if (cardData.position === 'left') return 'left-12 sm:left-14 md:left-20 top-14 sm:top-16 md:top-12'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-20 top-[22%] sm:top-[24%] md:top-[14rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-20 top-[42%] sm:top-[44%] md:top-[27rem]'
       } else if (sceneIndex === 3) {
         // Scene 4 positions
         if (cardData.position === 'right') return 'right-16 md:right-auto md:left-[19em] top-24 md:top-12'
