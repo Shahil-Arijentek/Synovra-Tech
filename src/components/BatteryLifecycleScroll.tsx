@@ -428,13 +428,13 @@ export default function BatteryLifecycleScroll() {
         if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[68%] sm:top-[70%] md:top-[41.5rem]'
       } else if (sceneIndex === 5) {
         // Scene 6 positions
-        if (cardData.position === 'top') return 'left-4 md:left-20 top-16'
-        if (cardData.position === 'left') return 'left-8 md:left-16 top-[13rem] md:top-[25rem]'
+        if (cardData.position === 'top') return 'left-8 sm:left-10 md:left-20 top-14 sm:top-16 md:top-16'
+        if (cardData.position === 'left') return 'left-12 sm:left-14 md:left-16 top-[28%] sm:top-[30%] md:top-[25rem]'
         if (cardData.position === 'right') {
-          if (cardData.cardType === 'certified') return 'right-4 md:right-16 bottom-16'
-          return 'right-16 md:right-auto md:left-[20rem] top-[26rem] md:top-[25rem]'
+          if (cardData.cardType === 'certified') return 'right-4 sm:right-6 md:right-16 bottom-16'
+          return 'right-12 sm:right-14 md:right-auto md:left-[20rem] top-[55%] sm:top-[57%] md:top-[25rem]'
         }
-        if (cardData.position === 'bottom') return 'left-4 md:left-20 top-[36rem] md:top-[44em]'
+        if (cardData.position === 'bottom') return 'left-12 sm:left-14 md:left-20 top-[75%] sm:top-[77%] md:top-[44em]'
       } else if (sceneIndex === 6) {
         // Scene 7 positions
         if (cardData.position === 'left') return 'left-6 md:left-12 top-16'
