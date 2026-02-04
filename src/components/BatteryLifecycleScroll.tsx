@@ -392,66 +392,66 @@ export default function BatteryLifecycleScroll() {
       // Scene-specific positioning
       if (sceneIndex === 0) {
         // Scene 1 positions
-        if (cardData.position === 'right') return 'left-[19em] top-12'
-        if (cardData.position === 'left') return 'left-12 top-12'
-        if (cardData.position === 'bottom-left') return 'left-[4rem] top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-[4rem] top-[41rem]'
+        if (cardData.position === 'right') return 'right-16 md:right-auto md:left-[19em] top-24 md:top-12'
+        if (cardData.position === 'left') return 'left-6 md:left-12 top-24 md:top-12'
+        if (cardData.position === 'bottom-left') return 'left-8 md:left-[4rem] top-[16.3rem] md:top-[22rem]'
+        if (cardData.position === 'bottom-right') return 'left-8 md:left-[4rem] top-[28rem] md:top-[41rem]'
       } else if (sceneIndex === 1) {
         // Scene 2 positions
-        if (cardData.position === 'right') return 'left-[19em] top-12'
-        if (cardData.position === 'left') return 'left-12 top-12'
-        if (cardData.position === 'bottom-left') return 'left-16 top-[23rem]'
-        if (cardData.position === 'bottom-right') return 'left-16 top-[41rem]'
+        if (cardData.position === 'right') return 'right-16 md:right-auto md:left-[19em] top-24 md:top-12'
+        if (cardData.position === 'left') return 'left-6 md:left-12 top-24 md:top-12'
+        if (cardData.position === 'bottom-left') return 'left-8 md:left-16 top-[23rem] md:top-[23rem]'
+        if (cardData.position === 'bottom-right') return 'left-4 md:left-16 top-[35rem] md:top-[41rem]'
       } else if (sceneIndex === 2) {
         // Scene 3 positions
         if (cardData.position === 'right') {
-          if (cardData.cardType === 'logged') return 'right-16 bottom-16'
-          return 'left-20 top-[43rem]'
+          if (cardData.cardType === 'logged') return 'right-4 md:right-16 bottom-16'
+          return 'left-4 md:left-20 top-[43rem] md:top-[43rem]'
         }
-        if (cardData.position === 'left') return 'left-20 top-14'
-        if (cardData.position === 'bottom-left') return 'left-20 top-[14rem]'
-        if (cardData.position === 'bottom-right') return 'left-20 top-[27rem]'
+        if (cardData.position === 'left') return 'left-4 md:left-20 top-14'
+        if (cardData.position === 'bottom-left') return 'left-4 md:left-20 top-[14rem]'
+        if (cardData.position === 'bottom-right') return 'left-4 md:left-20 top-[27rem]'
       } else if (sceneIndex === 3) {
         // Scene 4 positions
-        if (cardData.position === 'right') return 'left-[19em] top-12'
-        if (cardData.position === 'left') return 'left-12 top-12'
-        if (cardData.position === 'bottom-left') return 'left-16 top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-16 top-[40rem]'
+        if (cardData.position === 'right') return 'right-16 md:right-auto md:left-[19em] top-24 md:top-12'
+        if (cardData.position === 'left') return 'left-6 md:left-12 top-24 md:top-12'
+        if (cardData.position === 'bottom-left') return 'left-8 md:left-16 top-[22rem] md:top-[22rem]'
+        if (cardData.position === 'bottom-right') return 'left-4 md:left-16 top-[33rem] md:top-[40rem]'
       } else if (sceneIndex === 4) {
         // Scene 5 positions
         if (cardData.position === 'right') {
-          if (cardData.cardType === 'controlled') return 'right-16 bottom-16'
-          return 'left-[19em] top-12'
+          if (cardData.cardType === 'controlled') return 'right-4 md:right-16 bottom-16'
+          return 'right-16 md:right-auto md:left-[19em] top-24 md:top-12'
         }
-        if (cardData.position === 'left') return 'left-12 top-12'
-        if (cardData.position === 'bottom-left') return 'left-16 top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-16 top-[41.5rem]'
+        if (cardData.position === 'left') return 'left-6 md:left-12 top-24 md:top-12'
+        if (cardData.position === 'bottom-left') return 'left-4 md:left-16 top-[22rem]'
+        if (cardData.position === 'bottom-right') return 'left-4 md:left-16 top-[36rem] md:top-[41.5rem]'
       } else if (sceneIndex === 5) {
         // Scene 6 positions
-        if (cardData.position === 'top') return 'left-20 top-16'
-        if (cardData.position === 'left') return 'left-16 top-[25rem]'
+        if (cardData.position === 'top') return 'left-4 md:left-20 top-16'
+        if (cardData.position === 'left') return 'left-8 md:left-16 top-[13rem] md:top-[25rem]'
         if (cardData.position === 'right') {
-          if (cardData.cardType === 'certified') return 'right-16 bottom-16'
-          return 'left-[20rem] top-[25rem]'
+          if (cardData.cardType === 'certified') return 'right-4 md:right-16 bottom-16'
+          return 'right-16 md:right-auto md:left-[20rem] top-[26rem] md:top-[25rem]'
         }
-        if (cardData.position === 'bottom') return 'left-20 top-[44em]'
+        if (cardData.position === 'bottom') return 'left-4 md:left-20 top-[36rem] md:top-[44em]'
       } else if (sceneIndex === 6) {
         // Scene 7 positions
-        if (cardData.position === 'left') return 'left-12 top-16'
+        if (cardData.position === 'left') return 'left-6 md:left-12 top-16'
         if (cardData.position === 'right') {
-          if (cardData.cardType === 'verified') return 'right-16 bottom-16'
-          return 'left-[19em] top-16'
+          if (cardData.cardType === 'verified') return 'right-4 md:right-16 bottom-16'
+          return 'right-16 md:right-auto md:left-[19em] top-16'
         }
-        if (cardData.position === 'bottom-left') return 'left-16 top-[24rem]'
-        if (cardData.position === 'bottom-right') return 'left-16 top-[40rem]'
+        if (cardData.position === 'bottom-left') return 'left-4 md:left-16 top-[24rem]'
+        if (cardData.position === 'bottom-right') return 'left-4 md:left-16 top-[35rem] md:top-[40rem]'
       }
       // Default positions
-      if (cardData.position === 'right') return 'left-[16rem] top-20'
-      if (cardData.position === 'left') return 'left-8 top-20'
-      if (cardData.position === 'bottom-left') return 'left-8 top-[20rem]'
-      if (cardData.position === 'bottom-right') return 'left-[16rem] top-[22rem]'
+      if (cardData.position === 'right') return 'right-16 md:right-auto md:left-[16rem] top-24 md:top-20'
+      if (cardData.position === 'left') return 'left-6 md:left-8 top-24 md:top-20'
+      if (cardData.position === 'bottom-left') return 'left-4 md:left-8 top-[20rem]'
+      if (cardData.position === 'bottom-right') return 'left-4 md:left-[16rem] top-[22rem]'
       
-      return 'left-8 top-1/2 -translate-y-1/2'
+      return 'left-4 md:left-8 top-1/2 -translate-y-1/2'
     }
 
     const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
@@ -1276,15 +1276,12 @@ export default function BatteryLifecycleScroll() {
           {(currentSceneForFrame > 0 || (currentSceneForFrame === 0 && currentFrame >= 50)) && (
             <>
               {/* Progress Boxes Container */}
-              <div className="absolute top-8 left-[38rem] z-20">
+              <div className="absolute top-2 md:top-8 left-4 md:left-[38rem] z-20">
                 <div 
-                  className="flex items-center gap-2 backdrop-blur-sm"
+                  className="flex items-center gap-0.5 md:gap-2 backdrop-blur-sm h-[30px] md:h-[75px] rounded-md md:rounded-2xl px-1.5 md:px-5"
                   style={{
-                    height: '75px',
-                    borderRadius: '16px',
                     border: '1px solid rgba(255, 255, 255, 0.10)',
                     background: 'rgba(0, 0, 0, 0.4)',
-                    padding: '0 20px',
                     willChange: 'transform'
                     
                   }}
@@ -1293,7 +1290,7 @@ export default function BatteryLifecycleScroll() {
                     <div
                       key={index}
                       className={`relative transition-all duration-300 ${
-                        activeSceneIndex === index ? 'w-7 h-7' : 'w-6 h-6'
+                        activeSceneIndex === index ? 'w-3 h-3 md:w-7 md:h-7' : 'w-2.5 h-2.5 md:w-6 md:h-6'
                       }`}
                     >
                       {/* Box Background */}
@@ -1325,20 +1322,16 @@ export default function BatteryLifecycleScroll() {
 
               {/* Scene Title Label - Separate Container */}
               {activeSceneIndex !== null && (
-                <div className="absolute top-8 right-16 z-20">
+                <div className="absolute top-2 md:top-8 right-4 md:right-16 z-20">
                   <div
-                    className="flex items-center justify-center backdrop-blur-sm"
+                    className="flex items-center justify-center backdrop-blur-sm h-[40px] md:h-[75px] rounded-lg md:rounded-2xl px-3 md:px-12 whitespace-nowrap"
                     style={{
-                      height: '75px',
-                      borderRadius: '16px',
                       border: '1px solid rgba(255, 255, 255, 0.10)',
                       background: 'rgba(0, 0, 0, 0.4)',
-                      padding: '0 48px',
-                      width: '900px',
                       willChange: 'transform'
                     }}
                   >
-                    <p className="text-white/90 text-base font-['Arial',sans-serif] tracking-wide uppercase whitespace-nowrap">
+                    <p className="text-white/90 text-[9px] md:text-base font-['Arial',sans-serif] tracking-wide uppercase">
                       {sceneConfig[activeSceneIndex]?.title}
                     </p>
                   </div>
@@ -1360,31 +1353,29 @@ export default function BatteryLifecycleScroll() {
 
           {/* End of Life Warning - appears in Scene 7 from 59s to 61.2s */}
           {activeSceneIndex === 6 && currentFrame >= 60 && currentFrame <= 93 && (
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 px-4">
               <div
-                className="backdrop-blur-md animate-pulse"
+                className="backdrop-blur-md animate-pulse rounded-2xl md:rounded-3xl p-6 md:p-8"
                 style={{
-                  borderRadius: '20px',
                   border: '2px solid rgba(255, 107, 26, 0.8)',
                   background: 'rgba(255, 107, 26, 0.15)',
-                  padding: '32px 64px',
                   boxShadow: '0 0 40px rgba(255, 107, 26, 0.6), inset 0 0 20px rgba(255, 107, 26, 0.2)',
                 }}
               >
                 <div className="flex flex-col items-center gap-3">
                   {/* Warning Icon */}
-                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-[#ff6b1a]/30 border-2 border-[#ff6b1a]">
-                    <svg className="w-8 h-8 text-[#ff6b1a]" fill="currentColor" viewBox="0 0 20 20">
+                  <div className="flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#ff6b1a]/30 border-2 border-[#ff6b1a]">
+                    <svg className="w-6 h-6 md:w-8 md:h-8 text-[#ff6b1a]" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                     </svg>
                   </div>
                   
                   {/* Warning Text */}
                   <div className="text-center">
-                    <h2 className="text-3xl font-bold text-[#ff6b1a] font-['Arial',sans-serif] tracking-wider mb-2">
+                    <h2 className="text-xl md:text-3xl font-bold text-[#ff6b1a] font-['Arial',sans-serif] tracking-wider mb-1 md:mb-2">
                       END OF LIFE
                     </h2>
-                    <p className="text-xl text-white/90 font-['Arial',sans-serif] tracking-wide">
+                    <p className="text-sm md:text-xl text-white/90 font-['Arial',sans-serif] tracking-wide">
                       NEXT STAGE: RECYCLE
                     </p>
                   </div>
@@ -1395,9 +1386,9 @@ export default function BatteryLifecycleScroll() {
 
           {/* Scroll Indicator (only visible in active scene) */}
           {activeSceneIndex !== null && activeSceneIndex < 6 && (
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 animate-bounce">
-              <p className="text-white/60 text-sm font-['Arial',sans-serif]">Scroll to explore</p>
-              <svg className="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1 md:gap-2 animate-bounce">
+              <p className="text-white/60 text-xs md:text-sm font-['Arial',sans-serif]">Scroll to explore</p>
+              <svg className="w-5 h-5 md:w-6 md:h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
               </svg>
             </div>
