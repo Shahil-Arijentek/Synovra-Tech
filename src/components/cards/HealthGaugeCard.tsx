@@ -40,7 +40,7 @@ export default function HealthGaugeCard({ value, video = '99.mp4', width = '420p
   return (
     <div 
       ref={containerRef}
-      className={`backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 h-[160px] sm:h-[170px] md:h-[240px] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)] ${width === '420px' ? 'w-[260px] sm:w-[280px] md:w-[420px]' : 'w-[150px] sm:w-[160px] md:w-[200px]'}`}
+      className={`backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 h-[175px] sm:h-[185px] md:h-[240px] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)] ${width === '420px' ? 'w-[280px] sm:w-[300px] md:w-[420px]' : 'w-[160px] sm:w-[170px] md:w-[200px]'}`}
     >
       {/* Container for overlapping video and text */}
       <div className="relative w-full h-full overflow-hidden">
@@ -56,7 +56,7 @@ export default function HealthGaugeCard({ value, video = '99.mp4', width = '420p
           <video
             ref={videoRef}
             src={`/cards/${video}`}
-            className="w-full h-full object-contain scale-[1.1] md:scale-[1.2]"
+            className="w-full h-full object-contain scale-[1.15] sm:scale-[1.2] md:scale-[1.2]"
             muted
             playsInline
           />
