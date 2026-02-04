@@ -5,7 +5,7 @@ interface SulphationCardProps {
 
 export default function SulphationCard({ value }: SulphationCardProps) {
   return (
-    <div className="backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 w-[280px] sm:w-[300px] md:w-[420px] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)]">
+    <div className="backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 w-[300px] sm:w-[320px] md:w-[420px] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)]">
       {/* Container for overlapping image and text */}
       <div className="relative w-full h-[175px] sm:h-[185px] md:h-[180px] overflow-hidden">
         {/* Title - Positioned at top left with gradient background */}
