@@ -11,7 +11,7 @@ export default function WarrantyCard({ status, coverage }: WarrantyCardProps) {
         WARRANTY
       </div>
 
-      {/* Shield Icon with Clock */}
+      {/* Shield Icon with Clock */} 
       <div className="flex items-center justify-center mb-2 md:mb-6 mt-2 md:mt-4 flex-1">
         <img
           src="/cards/warranty.png"
