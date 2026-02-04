@@ -14,7 +14,6 @@ const Home = lazy(() => import('./pages/Home'))
 const WhyRevive = lazy(() => import('./pages/WhyRevive'))
 const AboutUs = lazy(() => import('./pages/AboutUs'))
 const GetStarted = lazy(() => import('./pages/GetStarted'))
-// const BatteryLifecycle = lazy(() => import('./pages/BatteryLifecycle'))
 
 function ScrollToTop() {
   const location = useLocation()
@@ -72,7 +71,6 @@ function AppContent({ showContent }: { showContent: boolean }) {
               <Route path="/why-revive" element={<WhyRevive />} />
               <Route path="/about-us" element={<AboutUs />} />
               <Route path="/get-started" element={<GetStarted />} />
-              {/* <Route path="/battery-lifecycle" element={<BatteryLifecycle />} /> */}
             </Routes>
           </Suspense>
         </main>
@@ -99,22 +97,29 @@ function App() {
   useEffect(() => {
     const loadAssets = async () => {
       try {
-        console.log('🚀 Starting asset preload...')
         const startTime = Date.now()
         
-        // Dynamic import of preloader
+        // Preload lazy components immediately (they're tiny and load fast)
+        const componentsPromise = Promise.all([
+          import('./pages/Home'),
+          import('./pages/WhyRevive'),
+          import('./pages/AboutUs'),
+          import('./pages/GetStarted'),
+        ])
+        
         const { AssetPreloader, getCriticalAssets } = await import('./utils/assetPreloader')
         
         const criticalAssets = getCriticalAssets()
-        console.log('📦 Critical assets to load:', criticalAssets.length)
         
         const preloader = new AssetPreloader(criticalAssets, (progress) => {
-          console.log('📈 App received progress:', progress.percentage + '%')
           setLoadingProgress(progress.percentage)
         })
 
-        // Start loading assets
-        await preloader.load()
+        // Load assets and components in parallel
+        await Promise.all([
+          preloader.load(),
+          componentsPromise
+        ])
 
         // Ensure minimum loading time of 1.5 seconds for smooth UX
         const elapsed = Date.now() - startTime
@@ -122,31 +127,21 @@ function App() {
         const remainingTime = Math.max(0, minLoadTime - elapsed)
         
         if (remainingTime > 0) {
-          console.log(`⏱️ Waiting ${remainingTime}ms for smooth UX...`)
           await new Promise(resolve => setTimeout(resolve, remainingTime))
         }
 
-        // Ensure we show 100% briefly
+        // Ensure we show 100% briefly before fading out
         setLoadingProgress(100)
-        console.log('✅ Loading complete at 100%!')
         
-        // Small delay to show 100% completion
         setTimeout(() => {
           setIsFadingOut(true)
           
-          // Wait for fade-out animation
           setTimeout(() => {
             setIsInitialLoading(false)
-            
-            // Show content
-            setTimeout(() => {
-              setShowContent(true)
-            }, 100)
+            setTimeout(() => setShowContent(true), 100)
           }, 500)
         }, 400)
       } catch (error) {
-        console.error('❌ Asset loading error:', error)
-        // Fallback: show content anyway
         setLoadingProgress(100)
         setTimeout(() => {
           setIsFadingOut(true)
@@ -169,18 +164,19 @@ function App() {
           {/* Solid black background that stays during entire fade */}
           <div className={`fixed inset-0 z-[9998] bg-black transition-opacity duration-500 ${isFadingOut ? 'opacity-0' : 'opacity-100'}`} />
           
-          {/* Loading spinner with real progress */}
+          {/* Loading spinner with real progress - keep at 100% during fade */}
           <div className={`fixed inset-0 z-[9999] ${isFadingOut ? 'animate-fadeOut' : ''}`}>
-            <LoadingSpinner progress={loadingProgress} />
+            <LoadingSpinner progress={isFadingOut ? 100 : loadingProgress} />
           </div>
         </>
       )}
       
-      {/* <LoadingProvider initialLoadingTime={1500}> */}
+      {/* Delay content mounting until after fade starts */}
+      {(showContent || isFadingOut) && (
         <NavbarProvider>
           <AppContent showContent={showContent} />
         </NavbarProvider>
-      {/* </LoadingProvider> */}
+      )}
     </Router>
   )
 }

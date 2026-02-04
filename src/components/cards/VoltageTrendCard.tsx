@@ -11,8 +11,8 @@ export default function VoltageTrendCard({ value, status }: VoltageTrendCardProp
   useEffect(() => {
     // Auto-play the video when component mounts
     if (videoRef.current) {
-      videoRef.current.play().catch(err => {
-        console.log('Video autoplay prevented:', err)
+      videoRef.current.play().catch(() => {
+        // Video autoplay prevented
       })
     }
   }, [])

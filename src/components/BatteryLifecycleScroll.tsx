@@ -786,7 +786,6 @@ export default function BatteryLifecycleScroll() {
         await new Promise(resolve => setTimeout(resolve, remainingTime + 300))
         setIsPreloading(false)
       } catch (error) {
-        console.error('Error preloading frames:', error)
         // Even on error, ensure minimum load time
         const elapsed = Date.now() - startTime
         const minLoadTime = 2000
@@ -1114,7 +1113,6 @@ export default function BatteryLifecycleScroll() {
           setTimeout(drawInitialFrame, 50)
         } else {
           // Fallback: show canvas anyway after reasonable wait
-          console.warn('First frame not cached, showing canvas anyway')
           if (canvas) {
             canvas.style.opacity = '1'
             canvas.style.visibility = 'visible'
@@ -1129,7 +1127,6 @@ export default function BatteryLifecycleScroll() {
     // Fallback timeout: ensure canvas is visible after 2 seconds
     const fallbackTimeout = setTimeout(() => {
       if (canvas && canvas.style.opacity === '0') {
-        console.warn('Fallback: forcing canvas visibility')
         canvas.style.opacity = '1'
         canvas.style.visibility = 'visible'
         drawFrame(0, 1)

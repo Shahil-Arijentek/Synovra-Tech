@@ -26,14 +26,12 @@ export interface FigmaDesignContext {
 export function extractPages(designContextJson: string): FigmaPage[] {
   try {
     if (!designContextJson || designContextJson.trim() === '') {
-      console.warn('No design context returned from Figma.');
       return [];
     }
 
     const designContext: FigmaDesignContext = JSON.parse(designContextJson);
 
     if (!designContext.document) {
-      console.warn("The 'document' key was not found in the design context.");
       return [];
     }
 
@@ -47,12 +45,6 @@ export function extractPages(designContextJson: string): FigmaPage[] {
 
     return pages;
   } catch (error) {
-    if (error instanceof SyntaxError) {
-      console.error('Failed to parse JSON from Figma:', error);
-      console.error('Raw output:', designContextJson);
-    } else {
-      console.error('An unexpected error occurred:', error);
-    }
     return [];
   }
 }

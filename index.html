@@ -4,30 +4,30 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Synovra - A system for extending battery life, restoring performance, and closing the materials loop." />
+    <meta name="keywords" content="battery, lifecycle, sustainability, battery revival, energy storage" />
+    <meta name="author" content="Synovra" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Security Meta Tags -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <!-- Font Preconnects for Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Gemunu+Libre:wght@400;700;800&display=swap" rel="stylesheet">
     
-    <!-- Preload critical battery lifecycle frames for instant first load -->
-    <link rel="preload" as="image" href="/lifecycle/frames/scene-1/frame_0001.webp" />
-    <link rel="preload" as="image" href="/lifecycle/frames/scene-1/frame_0010.webp" />
-    <link rel="preload" as="image" href="/lifecycle/frames/scene-1/frame_0020.webp" />
-    <link rel="preload" as="image" href="/lifecycle/frames/scene-1/frame_0030.webp" />
-    <link rel="preload" as="image" href="/lifecycle/frames/scene-1/frame_0040.webp" />
-    <link rel="preload" as="image" href="/lifecycle/frames/scene-1/frame_0050.webp" />
-    
-    <title>synovra</title>
+    <title>Synovra</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    
-    <!-- Register Service Worker for frame caching -->
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/sw.js').catch(() => {
-            // Silently fail if service worker registration fails
           })
         })
       }

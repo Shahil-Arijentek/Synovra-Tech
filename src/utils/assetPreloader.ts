@@ -27,8 +27,6 @@ export class AssetPreloader {
    * Start preloading all assets with progressive loading
    */
   async load(): Promise<void> {
-    console.log('🔄 Starting to load', this.totalCount, 'assets')
-    
     if (this.totalCount === 0) {
       this.updateProgress()
       return Promise.resolve()
@@ -44,7 +42,6 @@ export class AssetPreloader {
       try {
         await this.loadAsset(asset)
       } catch (error) {
-        console.warn('⚠️ Failed to load asset:', asset, error)
         this.loadedCount++
         this.updateProgress()
       }
@@ -54,8 +51,6 @@ export class AssetPreloader {
         await new Promise(resolve => setTimeout(resolve, 60))
       }
     }
-    
-    console.log('✅ All assets loaded successfully')
   }
 
   /**
@@ -72,15 +67,13 @@ export class AssetPreloader {
         
         const onLoaded = () => {
           this.loadedCount++
-          console.log(`✅ Loaded video: ${url} (${this.loadedCount}/${this.totalCount})`)
           this.updateProgress()
           cleanup()
           resolve()
         }
 
-        const onError = (e: Event) => {
+        const onError = () => {
           this.loadedCount++
-          console.warn(`❌ Failed to load video: ${url}`, e)
           this.updateProgress()
           cleanup()
           resolve() // Resolve anyway to not block
@@ -100,15 +93,13 @@ export class AssetPreloader {
         
         const onLoaded = () => {
           this.loadedCount++
-          console.log(`✅ Loaded image: ${url} (${this.loadedCount}/${this.totalCount})`)
           this.updateProgress()
           cleanup()
           resolve()
         }
 
-        const onError = (e: Event | string) => {
+        const onError = () => {
           this.loadedCount++
-          console.warn(`❌ Failed to load image: ${url}`, e)
           this.updateProgress()
           cleanup()
           resolve() // Resolve anyway to not block
@@ -139,8 +130,6 @@ export class AssetPreloader {
       total: this.totalCount,
       percentage,
     }
-
-    console.log(`📊 Progress: ${percentage}% (${this.loadedCount}/${this.totalCount})`)
 
     if (this.onProgress) {
       this.onProgress(progress)

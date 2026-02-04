@@ -16,8 +16,8 @@ export default function HealthGaugeCard({ value, video = '99.mp4', width = '420p
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && !hasPlayed && videoRef.current) {
-            videoRef.current.play().catch(err => {
-              console.log('Video autoplay prevented:', err)
+            videoRef.current.play().catch(() => {
+              // Video autoplay prevented
             })
             setHasPlayed(true)
           }

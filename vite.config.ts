@@ -3,9 +3,11 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/", // 🔥 MUST be "/" for Vercel
+  base: "/",
   
   build: {
+    sourcemap: false,
+    
     // Optimize chunk sizes
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
