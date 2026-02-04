@@ -4,21 +4,17 @@ interface PlateConditionCardProps {
 
 export default function PlateConditionCard({ value }: PlateConditionCardProps) {
   return (
-    <div className="backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-2xl p-3 md:p-4 w-[280px] md:w-[420px] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)]">
+    <div className="backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 w-[300px] sm:w-[320px] md:w-[420px] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)]">
       {/* Title */}
-      <div className="text-[#9CA3AF] text-[10px] font-['Arial',sans-serif] tracking-wider mb-3">
+      <div className="text-[#9CA3AF] text-[8px] md:text-[10px] font-['Arial',sans-serif] tracking-wider mb-2 md:mb-3">
         PLATE CONDITION
       </div>
 
       {/* Content - Text and Plate Image */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2">
         {/* Plate Restored Text */}
         <div 
-          className="text-white font-['Gemunu_Libre',sans-serif] font-normal uppercase tracking-wide"
-          style={{
-            fontSize: '40px',
-            lineHeight: '44px'
-          }}
+          className="text-white font-['Gemunu_Libre',sans-serif] font-normal uppercase tracking-wide text-2xl sm:text-3xl md:text-4xl"
         >
           {value}
         </div>
@@ -28,7 +24,7 @@ export default function PlateConditionCard({ value }: PlateConditionCardProps) {
           <img
             src="/cards/platecondition.png"
             alt="Plate Condition"
-            className="w-[180px] h-[120px] object-contain"
+            className="w-[120px] h-[80px] sm:w-[140px] sm:h-[100px] md:w-[180px] md:h-[120px] object-contain"
           />
         </div>
       </div>
