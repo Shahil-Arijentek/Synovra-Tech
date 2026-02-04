@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
 import BenefitsByAudienceHeading from './BenefitsByAudienceHeading'
 
 interface BenefitCard {
@@ -10,6 +11,8 @@ interface BenefitCard {
 
 export default function BenefitsByAudience() {
   const [isMounted, setIsMounted] = useState(false)
+  const gridRef = useRef(null)
+  const isGridInView = useInView(gridRef, { once: true, amount: 0.2 })
 
   useEffect(() => {
     const timer = setTimeout(() => setIsMounted(true), 100)
@@ -68,10 +71,17 @@ export default function BenefitsByAudience() {
       <div className="max-w-[1200px] mx-auto pb-3 md:pb-6">
 
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mx-auto max-w-[1300px]">
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mx-auto max-w-[1300px]">
           {benefitCards.map((card, index) => (
-            <div
+            <motion.div
               key={index}
+              initial={{ opacity: 0, y: 40 }}
+              animate={isGridInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+              transition={{
+                duration: 1.2,
+                delay: index * 0.15,
+                ease: [0.19, 1, 0.22, 1]
+              }}
               className="bg-[#0d0d0d] border border-[#2A2A2A] rounded-xl relative overflow-hidden group transition-all duration-300 py-8 px-10 md:py-10 md:px-12"
             >
               {/* Animated Orange Border */}
@@ -106,7 +116,7 @@ export default function BenefitsByAudience() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

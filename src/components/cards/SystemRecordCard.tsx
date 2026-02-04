@@ -4,9 +4,9 @@ interface SystemRecordCardProps {
 
 export default function SystemRecordCard({ value }: SystemRecordCardProps) {
   return (
-    <div className="backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-2xl p-4 w-[420px] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)]">
+    <div className="backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 w-[300px] sm:w-[320px] md:w-[420px] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)]">
       {/* Title */}
-      <div className="text-[#9CA3AF] text-[10px] font-['Arial',sans-serif] tracking-wider mb-3">
+      <div className="text-[#9CA3AF] text-[8px] md:text-[10px] font-['Arial',sans-serif] tracking-wider mb-2 md:mb-3">
         SYSTEM RECORD
       </div>
 
@@ -21,11 +21,7 @@ export default function SystemRecordCard({ value }: SystemRecordCardProps) {
         {/* Text Overlay on Plate */}
         <div className="absolute inset-0 flex items-center justify-center" style={{ marginTop: '-8px' }}>
           <div 
-            className="text-[#FF6B1A] font-['Arial',sans-serif] font-bold uppercase tracking-wide text-center"
-            style={{
-              fontSize: '16px',
-              lineHeight: '20px'
-            }}
+            className="text-[#FF6B1A] font-['Arial',sans-serif] font-bold uppercase tracking-wide text-center text-xs sm:text-sm md:text-base"
           >
             {value}
           </div>

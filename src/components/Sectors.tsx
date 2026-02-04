@@ -158,6 +158,7 @@ export default function Sectors() {
         <div
           ref={containerRef}
           className="relative lg:h-auto h-[250vh]"
+          style={{ position: 'relative' }}
         >
           {/* Sticky wrapper for visible content on mobile */}
           <div className="sticky top-0 h-screen lg:h-auto lg:relative flex w-full max-w-[1680px] flex-col lg:flex-row lg:items-start lg:gap-16 px-6 mx-auto overflow-hidden lg:overflow-visible">

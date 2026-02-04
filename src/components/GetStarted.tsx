@@ -25,10 +25,51 @@ export default function GetStarted() {
     })
   }
 
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
+
+  const validatePhone = (phone: string): boolean => {
+    const phoneRegex = /^[0-9+\-\s()]{7,20}$/
+    return phoneRegex.test(phone)
+  }
+
+  const sanitizeInput = (input: string): string => {
+    return input.trim().replace(/[<>]/g, '')
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission here
-    console.log('Form submitted:', formData)
+
+    if (!formData.fullName || !formData.email || !formData.companyName) {
+      alert('Please fill in all required fields (Name, Email, Company)')
+      return
+    }
+
+    if (!validateEmail(formData.email)) {
+      alert('Please enter a valid email address')
+      return
+    }
+
+    if (formData.phone && !validatePhone(formData.phone)) {
+      alert('Please enter a valid phone number')
+      return
+    }
+
+    const sanitizedData = {
+      fullName: sanitizeInput(formData.fullName),
+      companyName: sanitizeInput(formData.companyName),
+      role: sanitizeInput(formData.role),
+      email: sanitizeInput(formData.email),
+      phone: sanitizeInput(formData.phone),
+      message: sanitizeInput(formData.message),
+    }
+
+    // TODO: Connect to backend API
+    // await fetch('/api/contact', { method: 'POST', body: JSON.stringify(sanitizedData) })
+    
+    alert(`Form submitted successfully!\n\nData ready to send:\n${JSON.stringify(sanitizedData, null, 2)}`)
   }
 
   return (

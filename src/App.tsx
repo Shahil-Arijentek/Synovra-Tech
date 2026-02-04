@@ -14,7 +14,6 @@ const Home = lazy(() => import('./pages/Home'))
 const WhyRevive = lazy(() => import('./pages/WhyRevive'))
 const AboutUs = lazy(() => import('./pages/AboutUs'))
 const GetStarted = lazy(() => import('./pages/GetStarted'))
-// const BatteryLifecycle = lazy(() => import('./pages/BatteryLifecycle'))
 
 function ScrollToTop() {
   const location = useLocation()
@@ -72,7 +71,6 @@ function AppContent({ showContent }: { showContent: boolean }) {
               <Route path="/why-revive" element={<WhyRevive />} />
               <Route path="/about-us" element={<AboutUs />} />
               <Route path="/get-started" element={<GetStarted />} />
-              {/* <Route path="/battery-lifecycle" element={<BatteryLifecycle />} /> */}
             </Routes>
           </Suspense>
         </main>
@@ -86,6 +84,7 @@ function App() {
   const [isInitialLoading, setIsInitialLoading] = React.useState(true)
   const [showContent, setShowContent] = React.useState(false)
   const [isFadingOut, setIsFadingOut] = React.useState(false)
+  const [loadingProgress, setLoadingProgress] = React.useState(0)
 
   // Disable browser's scroll restoration
   useEffect(() => {
@@ -94,32 +93,67 @@ function App() {
     }
   }, [])
 
-  // Initial website loading
+  // Real asset loading with progress tracking
   useEffect(() => {
-    let loadingTimer: number
-    let fadeOutTimer: number
-    let contentTimer: number
-    
-    // Show loading for initial resources
-    loadingTimer = setTimeout(() => {
-      setIsFadingOut(true)
-      
-      // Wait for fade-out to complete before showing content
-      fadeOutTimer = setTimeout(() => {
-        setIsInitialLoading(false)
+    const loadAssets = async () => {
+      try {
+        const startTime = Date.now()
         
-        // Delay to ensure loading is completely gone
-        contentTimer = setTimeout(() => {
-          setShowContent(true)
-        }, 100)
-      }, 500) // Match fade-out animation duration
-    }, 1500) // Show loading for 1.5 seconds
+        // Preload lazy components immediately (they're tiny and load fast)
+        const componentsPromise = Promise.all([
+          import('./pages/Home'),
+          import('./pages/WhyRevive'),
+          import('./pages/AboutUs'),
+          import('./pages/GetStarted'),
+        ])
+        
+        const { AssetPreloader, getCriticalAssets } = await import('./utils/assetPreloader')
+        
+        const criticalAssets = getCriticalAssets()
+        
+        const preloader = new AssetPreloader(criticalAssets, (progress) => {
+          setLoadingProgress(progress.percentage)
+        })
 
-    return () => {
-      clearTimeout(loadingTimer)
-      clearTimeout(fadeOutTimer)
-      clearTimeout(contentTimer)
+        // Load assets and components in parallel
+        await Promise.all([
+          preloader.load(),
+          componentsPromise
+        ])
+
+        // Ensure minimum loading time of 1.5 seconds for smooth UX
+        const elapsed = Date.now() - startTime
+        const minLoadTime = 1500
+        const remainingTime = Math.max(0, minLoadTime - elapsed)
+        
+        if (remainingTime > 0) {
+          await new Promise(resolve => setTimeout(resolve, remainingTime))
+        }
+
+        // Ensure we show 100% briefly before fading out
+        setLoadingProgress(100)
+        
+        setTimeout(() => {
+          setIsFadingOut(true)
+          
+          setTimeout(() => {
+            setIsInitialLoading(false)
+            setTimeout(() => setShowContent(true), 100)
+          }, 500)
+        }, 400)
+      } catch (error) {
+        setLoadingProgress(100)
+        setTimeout(() => {
+          setIsFadingOut(true)
+          setTimeout(() => {
+            setIsInitialLoading(false)
+            setTimeout(() => setShowContent(true), 100)
+          }, 500)
+        }, 500)
+      }
     }
+
+    loadAssets()
   }, [])
   
   return (
@@ -130,18 +164,19 @@ function App() {
           {/* Solid black background that stays during entire fade */}
           <div className={`fixed inset-0 z-[9998] bg-black transition-opacity duration-500 ${isFadingOut ? 'opacity-0' : 'opacity-100'}`} />
           
-          {/* Loading spinner with fade animation */}
+          {/* Loading spinner with real progress - keep at 100% during fade */}
           <div className={`fixed inset-0 z-[9999] ${isFadingOut ? 'animate-fadeOut' : ''}`}>
-            <LoadingSpinner />
+            <LoadingSpinner progress={isFadingOut ? 100 : loadingProgress} />
           </div>
         </>
       )}
       
-      {/* <LoadingProvider initialLoadingTime={1500}> */}
+      {/* Delay content mounting until after fade starts */}
+      {(showContent || isFadingOut) && (
         <NavbarProvider>
           <AppContent showContent={showContent} />
         </NavbarProvider>
-      {/* </LoadingProvider> */}
+      )}
     </Router>
   )
 }

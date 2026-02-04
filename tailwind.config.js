@@ -6,6 +6,10 @@ export default {
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '375px',
+        'sm': '640px',
+      },
       colors: {
         orange: {
           DEFAULT: '#ff6b35',

@@ -205,6 +205,7 @@ export default function BatteryHero() {
     <div
       ref={containerRef}
       className="relative w-full h-[300vh] bg-black"
+      style={{ position: 'relative' }}
     >
       {/* Sticky Inner Container - The visible viewport */}
       <div className="sticky top-0 left-0 w-full h-screen overflow-hidden flex items-center justify-center">
@@ -224,8 +225,7 @@ export default function BatteryHero() {
             playsInline
             preload="none"
             onLoadedData={() => setVideoLoaded(true)}
-            onError={(e) => {
-              console.error('Video failed to load:', e)
+            onError={() => {
               setVideoLoaded(true) // Show anyway even if error
             }}
             onCanPlay={() => setVideoLoaded(true)}

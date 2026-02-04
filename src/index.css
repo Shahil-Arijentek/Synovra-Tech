@@ -197,23 +197,6 @@
   }
 }
 
-.ripple-grid {
-  background-image: linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
-  background-size: var(--grid-size) var(--grid-size);
-  opacity: 0.5;
-}
-
-  .ripple-grid-ripple {
-    background-image: repeating-radial-gradient(
-      circle at center,
-      var(--ripple-color) 0 1px,
-      transparent 1px var(--grid-size)
-    );
-    mix-blend-mode: screen;
-    animation: ripple-grid-pulse 6s ease-out infinite;
-  }
-
   .custom-scrollbar::-webkit-scrollbar {
     width: 4px;
   }
@@ -231,19 +214,3 @@
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 107, 26, 0.2) transparent;
   }
-
-@keyframes ripple-grid-pulse {
-  0% {
-    transform: scale(0.6);
-    opacity: 0;
-  }
-
-  35% {
-    opacity: 0.4;
-  }
-
-  100% {
-    transform: scale(1.5);
-    opacity: 0;
-  }
-}

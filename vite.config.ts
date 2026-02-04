@@ -3,17 +3,18 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/", // 🔥 MUST be "/" for Vercel
+  base: "/",
   
   build: {
+    sourcemap: false,
+    
     // Optimize chunk sizes
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
         manualChunks: {
           'gsap-vendor': ['gsap', 'gsap/ScrollTrigger'],
-          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
-          'mui-vendor': ['@mui/material', '@mui/x-charts']
+          'mui-vendor': ['@mui/x-charts', '@emotion/react', '@emotion/styled']
         }
       },
       input: {

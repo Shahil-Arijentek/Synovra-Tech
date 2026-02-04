@@ -16,7 +16,7 @@ const Challenges = lazy(() => import('../components/Challenges'))
 const ProofInAction = lazy(() => import('../components/ProofInAction'))
 const Sectors = lazy(() => import('../components/Sectors'))
 const BuyBatteries = lazy(() => import('../components/BuyBatteries'))
-const FeaturesSectionWithHoverEffects = lazy(() => import('../components/FeaturesSectionWithHoverEffects').then(module => ({ default: module.FeaturesSectionWithHoverEffects })))
+const DecisionJustification = lazy(() => import('../components/DecisionJustification').then(module => ({ default: module.FeaturesSectionWithHoverEffects })))
 
 // Loading fallback component - Simple dual ring pattern
 const SectionLoader = () => (
@@ -50,14 +50,13 @@ export default function Home() {
       className="transition-opacity duration-200"
       style={{ opacity: isReady ? 1 : 0 }}
     >
-      {/* Above-the-fold: Load immediately */}
       <Hero />
       <BatteryHero/>
-      
-      {/* Below-the-fold: Lazy load for better performance */}
       <Suspense fallback={<SectionLoader />}>
-        <BatteryLifecycleScroll/>
-      </Suspense>
+        <div style={{ position: 'relative' }}>
+          <BatteryLifecycleScroll/>
+        </div>
+      </Suspense> 
       
       <Suspense fallback={<SectionLoader />}>
         <ExperienceRevival />
@@ -100,7 +99,7 @@ export default function Home() {
       </Suspense>
       
       <Suspense fallback={<SectionLoader />}>
-        <FeaturesSectionWithHoverEffects />
+        <DecisionJustification />
       </Suspense>
     </div>
   )

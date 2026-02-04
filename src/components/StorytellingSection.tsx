@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -15,6 +16,8 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
   const layer1Ref = useRef<HTMLDivElement>(null);
   const layer2Ref = useRef<HTMLDivElement>(null);
   const layer3Ref = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const isHeadingInView = useInView(headingRef, { once: true, amount: 0.3 });
   const [isMounted, setIsMounted] = React.useState(false);
   const [isReady, setIsReady] = React.useState(false);
   const [currentVideo, setCurrentVideo] = React.useState(1);
@@ -168,9 +171,19 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
 
         <div className="relative flex-1 w-full max-w-6xl mt-4 pointer-events-none z-10 px-4">
           <div ref={layer1Ref} className="absolute inset-0 flex flex-col items-center text-center">
-            <h2 className="text-white mb-8 md:mb-12 px-4 text-sm sm:text-base md:text-base lg:text-lg leading-relaxed md:leading-[39px] max-w-[680px]">
+            <motion.h2
+              ref={headingRef}
+              initial={{ opacity: 0, y: 40 }}
+              animate={isHeadingInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+              transition={{
+                duration: 1.2,
+                delay: 0.3,
+                ease: [0.19, 1, 0.22, 1]
+              }}
+              className="text-white mb-8 md:mb-12 px-4 text-sm sm:text-base md:text-base lg:text-lg leading-relaxed md:leading-[39px] max-w-[680px]"
+            >
               A global shift to a greener future is underway — the kind where the impossible is becoming everyday life.
-            </h2>
+            </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full px-4 pointer-events-auto max-w-5xl">
               {['Electric mobility.', 'Renewable energy.', 'Regulated recycling.'].map((text, i) => (
                 <div key={i} className="bg-black/60 backdrop-blur-sm border border-white/5 rounded-2xl py-6 md:py-10 px-4 md:px-6">

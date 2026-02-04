@@ -23,6 +23,10 @@ import LeadCard from './cards/LeadCard'
 import PolymerCard from './cards/PolymerCard'
 import ComplianceRecordCard from './cards/ComplianceRecordCard'
 import RecoveryCertifiedCard from './cards/RecoveryCertifiedCard'
+import LoggedCard from './cards/LoggedCard'
+import ControlledCard from './cards/ControlledCard'
+import CertifiedCard from './cards/CertifiedCard'
+import VerifiedCard from './cards/VerifiedCard'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -143,6 +147,12 @@ const sceneConfig: SceneConfig[] = [
         value: 'SEALED & LOGGED',
         status: '',
         position: 'right'
+      },
+      {
+        cardType: 'logged',
+        value: '',
+        status: '',
+        position: 'right'
       }
     ]
   },
@@ -205,6 +215,12 @@ const sceneConfig: SceneConfig[] = [
         value: 'PLATE RESTORED',
         status: '',
         position: 'bottom-right'
+      },
+      {
+        cardType: 'controlled',
+        value: '',
+        status: '',
+        position: 'right'
       }
     ]
   },
@@ -236,6 +252,12 @@ const sceneConfig: SceneConfig[] = [
         value: 'DIAGNOSTIC',
         status: 'RECORD LOCKED',
         position: 'bottom'
+      },
+      {
+        cardType: 'certified',
+        value: '',
+        status: '',
+        position: 'right'
       }
     ]
   },
@@ -267,6 +289,12 @@ const sceneConfig: SceneConfig[] = [
         value: 'RECOVERY CERTIFIED',
         status: '',
         position: 'bottom-right'
+      },
+      {
+        cardType: 'verified',
+        value: '',
+        status: '',
+        position: 'right'
       }
     ]
   }
@@ -283,12 +311,23 @@ const sceneTimings = [
   { start: 55, pause: 67, sceneIndex: 6 }     // Scene 7: 55-67s 
 ]
 
-// Preload helper function
+// Image cache to prevent black flicker
+const frameCache = new Map<string, HTMLImageElement>()
+
+// Preload helper function with caching
 const preloadImage = (src: string): Promise<void> => {
+  // Return immediately if already cached
+  if (frameCache.has(src)) {
+    return Promise.resolve()
+  }
+
   return new Promise((resolve, reject) => {
     const img = new Image()
     img.decoding = 'async'
-    img.onload = () => resolve()
+    img.onload = () => {
+      frameCache.set(src, img)
+      resolve()
+    }
     img.onerror = reject
     img.src = src
   })
@@ -305,6 +344,47 @@ export default function BatteryLifecycleScroll() {
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
   const { setNavbarVisible } = useNavbar()
   const hasPreloadedRef = useRef(false)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const currentCanvasFrameRef = useRef({ scene: 0, frame: 1 }) // Track what's on canvas
+  const rafRef = useRef<number | null>(null)
+
+  // Canvas frame rendering - ZERO BLINK guaranteed
+  const drawFrame = (sceneIndex: number, frameNumber: number) => {
+    // Skip if same frame already on canvas
+    if (currentCanvasFrameRef.current.scene === sceneIndex && 
+        currentCanvasFrameRef.current.frame === frameNumber) {
+      return
+    }
+
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const frameSrc = `/lifecycle/frames/scene-${sceneIndex + 1}/frame_${String(frameNumber).padStart(4, '0')}.webp`
+    const cachedImage = frameCache.get(frameSrc)
+
+    // CRITICAL: Only draw if image is cached and ready
+    // This ensures old frame stays visible until new frame is ready
+    if (cachedImage && cachedImage.complete && cachedImage.naturalWidth > 0) {
+      const ctx = canvas.getContext('2d', { 
+        alpha: false, // No transparency = faster
+        desynchronized: true // Better performance
+      })
+      
+      if (ctx) {
+        // Ensure canvas is fully opaque
+        ctx.globalAlpha = 1.0
+        // Draw cached image directly to canvas - no blink!
+        ctx.drawImage(cachedImage, 0, 0, canvas.width, canvas.height)
+        currentCanvasFrameRef.current = { scene: sceneIndex, frame: frameNumber }
+        
+        // Force canvas visibility
+        if (canvas.style.opacity !== '1') {
+          canvas.style.opacity = '1'
+        }
+      }
+    }
+    // If not cached: old frame remains visible (no black flash)
+  }
 
   // Function to render specific card type
   const renderCard = (cardType: string, cardData: CardData, sceneIndex: number, cardIndex: number) => {
@@ -312,54 +392,66 @@ export default function BatteryLifecycleScroll() {
       // Scene-specific positioning
       if (sceneIndex === 0) {
         // Scene 1 positions
-        if (cardData.position === 'right') return 'left-[19em] top-12'
-        if (cardData.position === 'left') return 'left-12 top-12'
-        if (cardData.position === 'bottom-left') return 'left-[4rem] top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-[4rem] top-[41rem]'
+        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-12'
+        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-12'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-[4rem] top-[38%] sm:top-[40%] md:top-[22rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-[4rem] top-[68%] sm:top-[70%] md:top-[41rem]'
       } else if (sceneIndex === 1) {
         // Scene 2 positions
-        if (cardData.position === 'right') return 'left-[19em] top-12'
-        if (cardData.position === 'left') return 'left-12 top-12'
-        if (cardData.position === 'bottom-left') return 'left-16 top-[23rem]'
-        if (cardData.position === 'bottom-right') return 'left-16 top-[41rem]'
+        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-12'
+        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-12'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[34%] sm:top-[36%] md:top-[23rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[65%] sm:top-[67%] md:top-[41rem]'
       } else if (sceneIndex === 2) {
         // Scene 3 positions
-        if (cardData.position === 'right') return 'left-20 top-[43rem]'
-        if (cardData.position === 'left') return 'left-20 top-14'
-        if (cardData.position === 'bottom-left') return 'left-20 top-[14rem]'
-        if (cardData.position === 'bottom-right') return 'left-20 top-[27rem]'
+        if (cardData.position === 'right') {
+          if (cardData.cardType === 'logged') return 'right-4 sm:right-6 md:right-16 bottom-16'
+          return 'left-12 sm:left-14 md:left-20 top-[67%] sm:top-[69%] md:top-[43rem]'
+        }
+        if (cardData.position === 'left') return 'left-12 sm:left-14 md:left-20 top-14 sm:top-16 md:top-12'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-20 top-[22%] sm:top-[24%] md:top-[14rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-20 top-[41%] sm:top-[42%] md:top-[27rem]'
       } else if (sceneIndex === 3) {
         // Scene 4 positions
-        if (cardData.position === 'right') return 'left-[19em] top-12'
-        if (cardData.position === 'left') return 'left-12 top-12'
-        if (cardData.position === 'bottom-left') return 'left-16 top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-16 top-[40rem]'
+        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-12'
+        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-12'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[34%] sm:top-[36%] md:top-[22rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[64%] sm:top-[66%] md:top-[40rem]'
       } else if (sceneIndex === 4) {
         // Scene 5 positions
-        if (cardData.position === 'right') return 'left-[19em] top-12'
-        if (cardData.position === 'left') return 'left-12 top-12'
-        if (cardData.position === 'bottom-left') return 'left-16 top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-16 top-[41.5rem]'
+        if (cardData.position === 'right') {
+          if (cardData.cardType === 'controlled') return 'right-4 sm:right-6 md:right-16 bottom-16'
+          return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-12'
+        }
+        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-12'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[38%] sm:top-[40%] md:top-[22rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[68%] sm:top-[70%] md:top-[41.5rem]'
       } else if (sceneIndex === 5) {
         // Scene 6 positions
-        if (cardData.position === 'top') return 'left-20 top-16'
-        if (cardData.position === 'left') return 'left-16 top-[25rem]'
-        if (cardData.position === 'right') return 'left-[20rem] top-[25rem]'
-        if (cardData.position === 'bottom') return 'left-20 top-[44em]'
+        if (cardData.position === 'top') return 'left-12 sm:left-14 md:left-20 top-20 sm:top-22 md:top-16'
+        if (cardData.position === 'left') return 'left-12 sm:left-14 md:left-16 top-[28%] sm:top-[30%] md:top-[25rem]'
+        if (cardData.position === 'right') {
+          if (cardData.cardType === 'certified') return 'right-4 sm:right-6 md:right-16 bottom-16'
+          return 'right-12 sm:right-14 md:right-auto md:left-[20rem] top-[28%] sm:top-[30%] md:top-[25rem]'
+        }
+        if (cardData.position === 'bottom') return 'left-12 sm:left-14 md:left-20 top-[75%] sm:top-[77%] md:top-[44em]'
       } else if (sceneIndex === 6) {
         // Scene 7 positions
-        if (cardData.position === 'left') return 'left-12 top-16'
-        if (cardData.position === 'right') return 'left-[19em] top-16'
-        if (cardData.position === 'bottom-left') return 'left-16 top-[24rem]'
-        if (cardData.position === 'bottom-right') return 'left-16 top-[40rem]'
+        if (cardData.position === 'left') return 'left-6 md:left-12 top-16'
+        if (cardData.position === 'right') {
+          if (cardData.cardType === 'verified') return 'right-4 md:right-16 bottom-16'
+          return 'right-16 md:right-auto md:left-[19em] top-16'
+        }
+        if (cardData.position === 'bottom-left') return 'left-4 md:left-16 top-[24rem]'
+        if (cardData.position === 'bottom-right') return 'left-4 md:left-16 top-[35rem] md:top-[40rem]'
       }
       // Default positions
-      if (cardData.position === 'right') return 'left-[16rem] top-20'
-      if (cardData.position === 'left') return 'left-8 top-20'
-      if (cardData.position === 'bottom-left') return 'left-8 top-[20rem]'
-      if (cardData.position === 'bottom-right') return 'left-[16rem] top-[22rem]'
+      if (cardData.position === 'right') return 'right-16 md:right-auto md:left-[16rem] top-24 md:top-20'
+      if (cardData.position === 'left') return 'left-6 md:left-8 top-24 md:top-20'
+      if (cardData.position === 'bottom-left') return 'left-4 md:left-8 top-[20rem]'
+      if (cardData.position === 'bottom-right') return 'left-4 md:left-[16rem] top-[22rem]'
       
-      return 'left-8 top-1/2 -translate-y-1/2'
+      return 'left-4 md:left-8 top-1/2 -translate-y-1/2'
     }
 
     const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
@@ -594,6 +686,50 @@ export default function BatteryLifecycleScroll() {
             <RecoveryCertifiedCard />
           </div>
         )
+      case 'logged':
+        return (
+          <div
+            key={cardKey}
+            ref={el => { cardRefs.current[cardKey] = el }}
+            className={`absolute ${getCardPosition()} z-10`}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+          >
+            <LoggedCard />
+          </div>
+        )
+      case 'controlled':
+        return (
+          <div
+            key={cardKey}
+            ref={el => { cardRefs.current[cardKey] = el }}
+            className={`absolute ${getCardPosition()} z-10`}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+          >
+            <ControlledCard />
+          </div>
+        )
+      case 'certified':
+        return (
+          <div
+            key={cardKey}
+            ref={el => { cardRefs.current[cardKey] = el }}
+            className={`absolute ${getCardPosition()} z-10`}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+          >
+            <CertifiedCard />
+          </div>
+        )
+      case 'verified':
+        return (
+          <div
+            key={cardKey}
+            ref={el => { cardRefs.current[cardKey] = el }}
+            className={`absolute ${getCardPosition()} z-10`}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+          >
+            <VerifiedCard />
+          </div>
+        )
       default:
         return null
     }
@@ -604,23 +740,32 @@ export default function BatteryLifecycleScroll() {
     if (hasPreloadedRef.current) return
     hasPreloadedRef.current = true
 
+    const startTime = Date.now()
+
     const preloadCriticalFrames = async () => {
       try {
-        // Scene 1: Preload every 5th frame (12 frames total)
-        const scene1Frames = Array.from({ length: 12 }, (_, i) => (i * 5) + 1)
-        // Scene 2: Preload every 10th frame (6 frames)
-        const scene2Frames = Array.from({ length: 6 }, (_, i) => (i * 10) + 1)
+        // Extended preload strategy: Load enough frames to ensure smooth first scroll
+        // Scene 1: EVERY frame (60 frames)
+        const scene1Frames = Array.from({ length: 60 }, (_, i) => i + 1)
+        // Scene 2: EVERY frame (60 frames) - ensure full smooth playback
+        const scene2Frames = Array.from({ length: 60 }, (_, i) => i + 1)
+        // Scene 3: Every 5th frame (36 frames) - sample ahead
+        const scene3Frames = Array.from({ length: 36 }, (_, i) => (i * 5) + 1)
+        // Scene 4: Every 10th frame (16 frames) - sample ahead
+        const scene4Frames = Array.from({ length: 16 }, (_, i) => (i * 10) + 1)
         
         const criticalFrames = [
           ...scene1Frames.map(f => `/lifecycle/frames/scene-1/frame_${String(f).padStart(4, '0')}.webp`),
-          ...scene2Frames.map(f => `/lifecycle/frames/scene-2/frame_${String(f).padStart(4, '0')}.webp`)
+          ...scene2Frames.map(f => `/lifecycle/frames/scene-2/frame_${String(f).padStart(4, '0')}.webp`),
+          ...scene3Frames.map(f => `/lifecycle/frames/scene-3/frame_${String(f).padStart(4, '0')}.webp`),
+          ...scene4Frames.map(f => `/lifecycle/frames/scene-4/frame_${String(f).padStart(4, '0')}.webp`)
         ]
 
         let loaded = 0
         const total = criticalFrames.length
 
-        // Preload in batches for better performance
-        const batchSize = 4
+        // Preload in larger batches for faster loading
+        const batchSize = 8
         for (let i = 0; i < criticalFrames.length; i += batchSize) {
           const batch = criticalFrames.slice(i, i + batchSize)
           await Promise.all(
@@ -633,12 +778,19 @@ export default function BatteryLifecycleScroll() {
           )
         }
 
-        // Small delay to ensure smooth transition
-        await new Promise(resolve => setTimeout(resolve, 200))
+        // Ensure minimum loading time (2 seconds) so caching is complete
+        const elapsed = Date.now() - startTime
+        const minLoadTime = 2000 // 2 seconds minimum
+        const remainingTime = Math.max(0, minLoadTime - elapsed)
+        
+        await new Promise(resolve => setTimeout(resolve, remainingTime + 300))
         setIsPreloading(false)
       } catch (error) {
-        console.error('Error preloading frames:', error)
-        // Still allow component to render even if preload fails
+        // Even on error, ensure minimum load time
+        const elapsed = Date.now() - startTime
+        const minLoadTime = 2000
+        const remainingTime = Math.max(0, minLoadTime - elapsed)
+        await new Promise(resolve => setTimeout(resolve, remainingTime))
         setIsPreloading(false)
       }
     }
@@ -651,15 +803,25 @@ export default function BatteryLifecycleScroll() {
     if (isPreloading) return
 
     const preloadRemainingFrames = async () => {
-      // Preload remaining scenes with lower priority
+      // Priority 1: Preload scene 7 first (to prevent flicker at the end)
+      const scene7Frames: string[] = []
+      for (let i = 1; i <= SCENE_FRAME_COUNTS[6]; i += 4) {
+        scene7Frames.push(`/lifecycle/frames/scene-7/frame_${String(i).padStart(4, '0')}.webp`)
+      }
+      
+      const batchSize = 4
+      for (let i = 0; i < scene7Frames.length; i += batchSize) {
+        const batch = scene7Frames.slice(i, i + batchSize)
+        await Promise.all(batch.map(src => preloadImage(src).catch(() => {})))
+        await new Promise(resolve => setTimeout(resolve, 50))
+      }
+      
+      // Priority 2: Fill in remaining frames for all scenes
       const scenes = [
-        { sceneIndex: 0, count: SCENE_FRAME_COUNTS[0], stride: 3 }, // Scene 1: every 3rd frame
-        { sceneIndex: 1, count: SCENE_FRAME_COUNTS[1], stride: 5 }, // Scene 2: every 5th frame
-        { sceneIndex: 2, count: SCENE_FRAME_COUNTS[2], stride: 10 }, // Scene 3: every 10th frame
-        { sceneIndex: 3, count: SCENE_FRAME_COUNTS[3], stride: 10 }, // Scene 4: every 10th frame
-        { sceneIndex: 4, count: SCENE_FRAME_COUNTS[4], stride: 3 }, // Scene 5: every 3rd frame
-        { sceneIndex: 5, count: SCENE_FRAME_COUNTS[5], stride: 5 }, // Scene 6: every 5th frame
-        { sceneIndex: 6, count: SCENE_FRAME_COUNTS[6], stride: 8 }  // Scene 7: every 8th frame
+        { sceneIndex: 2, count: SCENE_FRAME_COUNTS[2], stride: 1 }, // Scene 3: EVERY frame (fill gaps)
+        { sceneIndex: 3, count: SCENE_FRAME_COUNTS[3], stride: 1 }, // Scene 4: EVERY frame (fill gaps)
+        { sceneIndex: 4, count: SCENE_FRAME_COUNTS[4], stride: 1 }, // Scene 5: EVERY frame
+        { sceneIndex: 5, count: SCENE_FRAME_COUNTS[5], stride: 2 }, // Scene 6: every 2nd frame
       ]
 
       for (const scene of scenes) {
@@ -669,20 +831,18 @@ export default function BatteryLifecycleScroll() {
         }
 
         // Preload in small batches with delays to not block main thread
-        const batchSize = 3
         for (let i = 0; i < frames.length; i += batchSize) {
           const batch = frames.slice(i, i + batchSize)
           await Promise.all(batch.map(src => preloadImage(src).catch(() => {})))
-          // Small delay between batches
-          await new Promise(resolve => setTimeout(resolve, 100))
+          await new Promise(resolve => setTimeout(resolve, 60))
         }
       }
     }
 
-    // Start background preloading after a short delay
+    // Start background preloading immediately
     const timeoutId = setTimeout(() => {
       preloadRemainingFrames()
-    }, 500)
+    }, 100)
 
     return () => clearTimeout(timeoutId)
   }, [isPreloading])
@@ -691,6 +851,9 @@ export default function BatteryLifecycleScroll() {
     const container = containerRef.current
 
     if (!container || isPreloading) return
+    
+    // Set initial minimum height immediately to prevent black space
+    gsap.set(container, { minHeight: window.innerHeight * 30 })
     
     // Wait for component to be fully mounted and laid out
     const initTimeout = setTimeout(() => {
@@ -713,6 +876,15 @@ export default function BatteryLifecycleScroll() {
       // Set container height to enable scrolling
       gsap.set(container, { height: scrollHeight })
 
+      // Set initial state BEFORE ScrollTrigger starts
+      // This ensures frame 1 is visible immediately when section comes into view
+      setCurrentFrame(1)
+      setCurrentSceneForFrame(0)
+      setActiveSceneIndex(null) // Don't show cards initially, only frame
+      
+      // Force initial frame draw
+      drawFrame(0, 1)
+
       // Main ScrollTrigger for frame scrubbing
       ScrollTrigger.create({
       trigger: container,
@@ -728,6 +900,14 @@ export default function BatteryLifecycleScroll() {
       onEnter: () => {
         // Hide navbar when entering the section
         setNavbarVisible(false)
+        // Ensure first frame is visible and canvas is shown
+        drawFrame(0, 1)
+        // Force canvas visibility when entering section
+        const canvas = canvasRef.current
+        if (canvas) {
+          canvas.style.opacity = '1'
+          canvas.style.visibility = 'visible'
+        }
       },
       onLeave: () => {
         // Show navbar when leaving the section (scrolling down past it)
@@ -740,6 +920,10 @@ export default function BatteryLifecycleScroll() {
       onLeaveBack: () => {
         // Show navbar when scrolling back up above the section
         setNavbarVisible(true)
+        // Reset to first frame when leaving upwards
+        setCurrentFrame(1)
+        setCurrentSceneForFrame(0)
+        drawFrame(0, 1)
       },
       onUpdate: (self) => {
         const progress = self.progress
@@ -874,20 +1058,85 @@ export default function BatteryLifecycleScroll() {
       // Show navbar when component unmounts
       setNavbarVisible(true)
     }
-  }, [setNavbarVisible])
+  }, [setNavbarVisible, isPreloading])
 
-  // Preload first frame on mount to ensure immediate display
+  // Initialize canvas and draw first frame IMMEDIATELY
   useEffect(() => {
-    const firstFrame = new Image()
-    firstFrame.src = '/lifecycle/frames/scene-1/frame_0001.webp'
-    
-    // Refresh ScrollTrigger once first frame is loaded
-    firstFrame.onload = () => {
-      setTimeout(() => {
-        ScrollTrigger.refresh()
-      }, 50)
+    const canvas = canvasRef.current
+    if (!canvas || isPreloading) return
+
+    // Set canvas to match frame resolution (1920x1080 or your frame size)
+    canvas.width = 1920
+    canvas.height = 1080
+
+    // Fill canvas with black immediately to prevent white flash
+    const ctx = canvas.getContext('2d', { 
+      alpha: false,
+      desynchronized: true 
+    })
+    if (ctx) {
+      ctx.fillStyle = '#000000'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
     }
-  }, [])
+
+    // Set initial state immediately
+    setCurrentFrame(1)
+    setCurrentSceneForFrame(0)
+    setActiveSceneIndex(null)
+
+    // Draw first frame when ready - CRITICAL for initial visibility
+    let attempts = 0
+    const maxAttempts = 100
+    
+    const drawInitialFrame = () => {
+      const firstFrameSrc = '/lifecycle/frames/scene-1/frame_0001.webp'
+      const cachedImage = frameCache.get(firstFrameSrc)
+      
+      if (cachedImage && cachedImage.complete && cachedImage.naturalWidth > 0) {
+        // Draw frame immediately
+        drawFrame(0, 1)
+        
+        // Show canvas - frame is ready!
+        if (canvas) {
+          canvas.style.opacity = '1'
+          canvas.style.visibility = 'visible'
+        }
+        
+        // Refresh after a moment
+        setTimeout(() => {
+          ScrollTrigger.refresh()
+        }, 100)
+      } else {
+        attempts++
+        // Keep trying until first frame is cached, with fallback
+        if (attempts < maxAttempts) {
+          setTimeout(drawInitialFrame, 50)
+        } else {
+          // Fallback: show canvas anyway after reasonable wait
+          if (canvas) {
+            canvas.style.opacity = '1'
+            canvas.style.visibility = 'visible'
+          }
+        }
+      }
+    }
+
+    // Start drawing immediately
+    drawInitialFrame()
+
+    // Fallback timeout: ensure canvas is visible after 2 seconds
+    const fallbackTimeout = setTimeout(() => {
+      if (canvas && canvas.style.opacity === '0') {
+        canvas.style.opacity = '1'
+        canvas.style.visibility = 'visible'
+        drawFrame(0, 1)
+      }
+    }, 2000)
+
+    return () => {
+      clearTimeout(fallbackTimeout)
+    }
+  }, [isPreloading])
 
   // Watch for when component enters viewport and refresh ScrollTrigger
   useEffect(() => {
@@ -915,11 +1164,39 @@ export default function BatteryLifecycleScroll() {
     }
   }, [])
 
+  // Cleanup RAF on unmount
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current)
+      }
+    }
+  }, [])
+
+  // Canvas frame update with RAF - smooth and blink-free
+  useEffect(() => {
+    // Cancel any pending RAF
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current)
+    }
+
+    // Use RAF for optimal performance
+    rafRef.current = requestAnimationFrame(() => {
+      drawFrame(currentSceneForFrame, currentFrame)
+    })
+
+    return () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current)
+      }
+    }
+  }, [currentFrame, currentSceneForFrame])
+
   // Preload next frames for smooth scrolling (only when not in initial preload)
   useEffect(() => {
     if (isPreloading) return
 
-    const preloadCount = 15 // Preload next 15 frames for smoother scrolling
+    const preloadCount = 35 // Aggressive preload to prevent first-scroll blink
     const frameCount = SCENE_FRAME_COUNTS[currentSceneForFrame]
     
     for (let i = 1; i <= preloadCount; i++) {
@@ -927,17 +1204,25 @@ export default function BatteryLifecycleScroll() {
       
       // Preload frames within current scene
       if (nextFrame <= frameCount) {
-        const img = new Image()
-        img.decoding = 'async'
-        img.src = `/lifecycle/frames/scene-${currentSceneForFrame + 1}/frame_${String(nextFrame).padStart(4, '0')}.webp`
+        const src = `/lifecycle/frames/scene-${currentSceneForFrame + 1}/frame_${String(nextFrame).padStart(4, '0')}.webp`
+        if (!frameCache.has(src)) {
+          const img = new Image()
+          img.decoding = 'async'
+          img.src = src
+          img.onload = () => frameCache.set(src, img)
+        }
       } else if (currentSceneForFrame < SCENE_FRAME_COUNTS.length - 1) {
         // Preload first frames of next scene
         const nextSceneIndex = currentSceneForFrame + 1
         const nextSceneFrame = nextFrame - frameCount
         if (nextSceneFrame <= SCENE_FRAME_COUNTS[nextSceneIndex]) {
-          const img = new Image()
-          img.decoding = 'async'
-          img.src = `/lifecycle/frames/scene-${nextSceneIndex + 1}/frame_${String(nextSceneFrame).padStart(4, '0')}.webp`
+          const src = `/lifecycle/frames/scene-${nextSceneIndex + 1}/frame_${String(nextSceneFrame).padStart(4, '0')}.webp`
+          if (!frameCache.has(src)) {
+            const img = new Image()
+            img.decoding = 'async'
+            img.src = src
+            img.onload = () => frameCache.set(src, img)
+          }
         }
       }
     }
@@ -949,32 +1234,54 @@ export default function BatteryLifecycleScroll() {
   }
 
   return (
-    <div className="relative w-full bg-black">
+    <section className="relative w-full bg-black" style={{ minHeight: '100vh' }}>
       {/* Scroll Container */}
-      <div ref={containerRef} className="relative w-full">
+      <div ref={containerRef} className="relative w-full bg-black" style={{ position: 'relative' }}>
         {/* Sticky Frame Container */}
-        <div ref={stickyContainerRef} className="sticky top-0 left-0 w-full h-screen overflow-hidden" style={{ transform: 'translate3d(0, 0, 0)', contain: 'layout style paint' }}>
-          {/* Frame-by-frame renderer */}
-          <img
-            src={`/lifecycle/frames/scene-${currentSceneForFrame + 1}/frame_${String(currentFrame).padStart(4, '0')}.webp`}
-            alt="Battery lifecycle animation"
-            className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-            style={{ willChange: 'transform', imageRendering: 'crisp-edges' }}
-          />
+        <div 
+          ref={stickyContainerRef} 
+          className="sticky top-0 left-0 w-full h-screen overflow-hidden bg-black" 
+          style={{ 
+            position: 'sticky',
+            transform: 'translate3d(0, 0, 0)', 
+            contain: 'layout style paint',
+            backgroundColor: '#000'
+          }}
+        >
+          {/* Canvas renderer - ZERO BLINK, enterprise-grade */}
+          <div 
+            className="absolute inset-0 w-full h-full bg-black"
+            style={{ 
+              backfaceVisibility: 'hidden',
+              transform: 'translateZ(0)',
+              opacity: 1
+            }}
+          >
+            <canvas
+              ref={canvasRef}
+              className="absolute inset-0 w-full h-full pointer-events-none bg-black"
+              style={{ 
+                objectFit: 'cover',
+                imageRendering: 'crisp-edges',
+                backfaceVisibility: 'hidden',
+                transform: 'translateZ(0)',
+                willChange: 'transform',
+                opacity: 1,
+                visibility: 'visible'
+              }}
+            />
+          </div>
 
           {/* Scene Progress Indicator - Separate Containers */}
           {(currentSceneForFrame > 0 || (currentSceneForFrame === 0 && currentFrame >= 50)) && (
             <>
               {/* Progress Boxes Container */}
-              <div className="absolute top-8 left-[38rem] z-20">
+              <div className="absolute top-2 md:top-8 left-2 sm:left-4 md:left-[38rem] z-20">
                 <div 
-                  className="flex items-center gap-2 backdrop-blur-sm"
+                  className="flex items-center gap-0.5 md:gap-2 backdrop-blur-sm h-[30px] md:h-[75px] rounded-md md:rounded-2xl px-1.5 md:px-5"
                   style={{
-                    height: '75px',
-                    borderRadius: '16px',
                     border: '1px solid rgba(255, 255, 255, 0.10)',
                     background: 'rgba(0, 0, 0, 0.4)',
-                    padding: '0 20px',
                     willChange: 'transform'
                     
                   }}
@@ -983,7 +1290,7 @@ export default function BatteryLifecycleScroll() {
                     <div
                       key={index}
                       className={`relative transition-all duration-300 ${
-                        activeSceneIndex === index ? 'w-7 h-7' : 'w-6 h-6'
+                        activeSceneIndex === index ? 'w-3 h-3 md:w-7 md:h-7' : 'w-2.5 h-2.5 md:w-6 md:h-6'
                       }`}
                     >
                       {/* Box Background */}
@@ -1015,20 +1322,16 @@ export default function BatteryLifecycleScroll() {
 
               {/* Scene Title Label - Separate Container */}
               {activeSceneIndex !== null && (
-                <div className="absolute top-8 right-16 z-20">
+                <div className="absolute top-2 md:top-8 right-2 sm:right-4 md:right-16 z-20">
                   <div
-                    className="flex items-center justify-center backdrop-blur-sm"
+                    className="flex items-center justify-center backdrop-blur-sm h-[30px] sm:h-[35px] md:h-[75px] rounded-lg md:rounded-2xl px-2 sm:px-3 md:px-12 whitespace-nowrap"
                     style={{
-                      height: '75px',
-                      borderRadius: '16px',
                       border: '1px solid rgba(255, 255, 255, 0.10)',
                       background: 'rgba(0, 0, 0, 0.4)',
-                      padding: '0 48px',
-                      width: '900px',
                       willChange: 'transform'
                     }}
                   >
-                    <p className="text-white/90 text-base font-['Arial',sans-serif] tracking-wide uppercase whitespace-nowrap">
+                    <p className="text-white/90 text-[7px] xs:text-[8px] sm:text-[9px] md:text-base font-['Arial',sans-serif] tracking-wide uppercase">
                       {sceneConfig[activeSceneIndex]?.title}
                     </p>
                   </div>
@@ -1050,31 +1353,29 @@ export default function BatteryLifecycleScroll() {
 
           {/* End of Life Warning - appears in Scene 7 from 59s to 61.2s */}
           {activeSceneIndex === 6 && currentFrame >= 60 && currentFrame <= 93 && (
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 px-4">
               <div
-                className="backdrop-blur-md animate-pulse"
+                className="backdrop-blur-md animate-pulse rounded-2xl md:rounded-3xl p-6 md:p-8"
                 style={{
-                  borderRadius: '20px',
                   border: '2px solid rgba(255, 107, 26, 0.8)',
                   background: 'rgba(255, 107, 26, 0.15)',
-                  padding: '32px 64px',
                   boxShadow: '0 0 40px rgba(255, 107, 26, 0.6), inset 0 0 20px rgba(255, 107, 26, 0.2)',
                 }}
               >
                 <div className="flex flex-col items-center gap-3">
                   {/* Warning Icon */}
-                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-[#ff6b1a]/30 border-2 border-[#ff6b1a]">
-                    <svg className="w-8 h-8 text-[#ff6b1a]" fill="currentColor" viewBox="0 0 20 20">
+                  <div className="flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#ff6b1a]/30 border-2 border-[#ff6b1a]">
+                    <svg className="w-6 h-6 md:w-8 md:h-8 text-[#ff6b1a]" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                     </svg>
                   </div>
                   
                   {/* Warning Text */}
                   <div className="text-center">
-                    <h2 className="text-3xl font-bold text-[#ff6b1a] font-['Arial',sans-serif] tracking-wider mb-2">
+                    <h2 className="text-xl md:text-3xl font-bold text-[#ff6b1a] font-['Arial',sans-serif] tracking-wider mb-1 md:mb-2">
                       END OF LIFE
                     </h2>
-                    <p className="text-xl text-white/90 font-['Arial',sans-serif] tracking-wide">
+                    <p className="text-sm md:text-xl text-white/90 font-['Arial',sans-serif] tracking-wide">
                       NEXT STAGE: RECYCLE
                     </p>
                   </div>
@@ -1085,15 +1386,15 @@ export default function BatteryLifecycleScroll() {
 
           {/* Scroll Indicator (only visible in active scene) */}
           {activeSceneIndex !== null && activeSceneIndex < 6 && (
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 animate-bounce">
-              <p className="text-white/60 text-sm font-['Arial',sans-serif]">Scroll to explore</p>
-              <svg className="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1 md:gap-2 animate-bounce">
+              <p className="text-white/60 text-xs md:text-sm font-['Arial',sans-serif]">Scroll to explore</p>
+              <svg className="w-5 h-5 md:w-6 md:h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
               </svg>
             </div>
           )}
         </div>
       </div>
-    </div>
+    </section>
   )
 }

@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { useState, useRef } from 'react'
+import { AnimatePresence, motion, useInView } from 'framer-motion'
 
 interface ProofSlide {
   image: string
@@ -9,15 +9,47 @@ interface ProofSlide {
 }
 
 export default function ProofInAction() {
+  const headingRef = useRef(null)
+  const carouselRef = useRef(null)
+  const isHeadingInView = useInView(headingRef, { once: true, amount: 0.8 })
+  const isCarouselInView = useInView(carouselRef, { once: true, amount: 0.3 })
+  
   const slideVariants = {
-    enter: (dir: number) => ({ x: dir > 0 ? 80 : -80, opacity: 0 }),
-    center: { x: 0, opacity: 1 },
-    exit: (dir: number) => ({ x: dir > 0 ? -80 : 80, opacity: 0 })
+    enter: (dir: number) => ({ 
+      x: dir > 0 ? 100 : -100, 
+      opacity: 0,
+      scale: 0.95,
+      filter: 'blur(4px)'
+    }),
+    center: { 
+      x: 0, 
+      opacity: 1,
+      scale: 1,
+      filter: 'blur(0px)'
+    },
+    exit: (dir: number) => ({ 
+      x: dir > 0 ? -60 : 60, 
+      opacity: 0,
+      scale: 0.98,
+      filter: 'blur(2px)'
+    })
   }
   const textVariants = {
-    enter: (dir: number) => ({ y: dir > 0 ? 18 : -18, opacity: 0 }),
-    center: { y: 0, opacity: 1 },
-    exit: (dir: number) => ({ y: dir > 0 ? -18 : 18, opacity: 0 })
+    enter: (dir: number) => ({ 
+      y: dir > 0 ? 30 : -30, 
+      opacity: 0,
+      scale: 0.95
+    }),
+    center: { 
+      y: 0, 
+      opacity: 1,
+      scale: 1
+    },
+    exit: (dir: number) => ({ 
+      y: dir > 0 ? -20 : 20, 
+      opacity: 0,
+      scale: 0.98
+    })
   }
 
   const slides: ProofSlide[] = [
@@ -55,14 +87,42 @@ export default function ProofInAction() {
   return (
     <section className="bg-black px-6 py-12 md:py-20 text-white">
       <div className="mx-auto flex max-w-6xl flex-col items-center">
-        <h2 className="text-center text-[32px] md:text-5xl font-bold leading-tight">
-          Proven in Live Environments
-        </h2>
-        <p className="mt-3 text-center text-sm sm:text-base md:text-base lg:text-lg text-white/70">
-          Operating where failure isn't an option
-        </p>
+        {/* Heading First - Animates Before Images */}
+        <div ref={headingRef} className="flex flex-col items-center">
+          <motion.h2
+            initial={{ opacity: 0, y: 40 }}
+            animate={isHeadingInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+            transition={{ 
+              duration: 1.2, 
+              delay: 0.3,
+              ease: [0.19, 1, 0.22, 1]
+            }}
+            className="text-center text-[32px] md:text-5xl font-bold leading-tight"
+          >
+            Proven in Live Environments
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 40 }}
+            animate={isHeadingInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+            transition={{ 
+              duration: 1.2, 
+              delay: 0.7,
+              ease: [0.19, 1, 0.22, 1]
+            }}
+            className="mt-3 text-center text-sm sm:text-base md:text-base lg:text-lg text-white/70"
+          >
+            Operating where failure isn't an option
+          </motion.p>
+        </div>
 
-          <div className="mt-8 md:mt-12 flex w-full flex-col items-center">
+        {/* Images After Text - Delayed Animation */}
+        <motion.div 
+          ref={carouselRef}
+          initial={{ opacity: 0, y: 60 }}
+          animate={isCarouselInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
+          transition={{ duration: 1.2, delay: 1.3, ease: [0.19, 1, 0.22, 1] }}
+          className="mt-8 md:mt-12 w-full flex flex-col items-center"
+        >
             <div className="w-full overflow-hidden rounded-[20px] md:rounded-[24px] border border-white/5 bg-black shadow-[0_12px_32px_rgba(0,0,0,0.35)]">
               <AnimatePresence mode="wait" custom={direction}>
                 <motion.div
@@ -72,7 +132,10 @@ export default function ProofInAction() {
                   initial="enter"
                   animate="center"
                   exit="exit"
-                  transition={{ duration: 0.55, ease: 'easeOut' }}
+                  transition={{ 
+                    duration: 0.7, 
+                    ease: [0.19, 1, 0.22, 1]
+                  }}
                   className="overflow-hidden rounded-[20px] md:rounded-[24px]"
                 >
                   <img
@@ -93,14 +156,27 @@ export default function ProofInAction() {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                transition={{ duration: 0.5, ease: 'easeOut' }}
+                transition={{ 
+                  duration: 0.6, 
+                  ease: [0.19, 1, 0.22, 1]
+                }}
               >
-                <h3 className="text-xl md:text-3xl font-semibold leading-tight">
+                <motion.h3 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.1 }}
+                  className="text-xl md:text-3xl font-semibold leading-tight"
+                >
                   {currentSlide.headline}
-                </h3>
-                <p className="mt-2 md:mt-3 text-sm sm:text-base md:text-base lg:text-lg text-white/70">
+                </motion.h3>
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.2 }}
+                  className="mt-2 md:mt-3 text-sm sm:text-base md:text-base lg:text-lg text-white/70"
+                >
                   {currentSlide.subhead}
-                </p>
+                </motion.p>
               </motion.div>
             </AnimatePresence>
           </div>
@@ -126,7 +202,7 @@ export default function ProofInAction() {
               </svg>
             </button>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   )
