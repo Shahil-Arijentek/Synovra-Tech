@@ -40,7 +40,7 @@ export default function HealthGaugeCard({ value, video = '99.mp4', width = '420p
   return (
     <div 
       ref={containerRef}
-      className={`backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 h-[175px] sm:h-[185px] md:h-[240px] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)] ${width === '420px' ? 'w-[300px] sm:w-[320px] md:w-[420px]' : 'w-[170px] sm:w-[180px] md:w-[200px]'}`}
+      className={`backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 ${width === '420px' ? 'h-[175px] sm:h-[185px] md:h-[240px] w-[300px] sm:w-[320px] md:w-[420px]' : 'h-[150px] sm:h-[160px] md:h-[240px] w-[150px] sm:w-[160px] md:w-[200px]'} shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)]`}
     >
       {/* Container for overlapping video and text */}
       <div className="relative w-full h-full overflow-hidden">

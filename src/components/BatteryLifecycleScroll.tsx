@@ -429,10 +429,10 @@ export default function BatteryLifecycleScroll() {
       } else if (sceneIndex === 5) {
         // Scene 6 positions
         if (cardData.position === 'top') return 'left-12 sm:left-14 md:left-20 top-20 sm:top-22 md:top-16'
-        if (cardData.position === 'left') return 'left-12 sm:left-14 md:left-16 top-[28%] sm:top-[30%] md:top-[25rem]'
+        if (cardData.position === 'left') return 'left-12 sm:left-14 md:left-16 top-[35%] sm:top-[37%] md:top-[25rem]'
         if (cardData.position === 'right') {
           if (cardData.cardType === 'certified') return 'right-4 sm:right-6 md:right-16 bottom-16'
-          return 'right-12 sm:right-14 md:right-auto md:left-[20rem] top-[28%] sm:top-[30%] md:top-[25rem]'
+          return 'right-12 sm:right-14 md:right-auto md:left-[20rem] top-[35%] sm:top-[37%] md:top-[25rem]'
         }
         if (cardData.position === 'bottom') return 'left-12 sm:left-14 md:left-20 top-[75%] sm:top-[77%] md:top-[44em]'
       } else if (sceneIndex === 6) {
