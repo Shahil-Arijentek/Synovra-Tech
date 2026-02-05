@@ -259,13 +259,13 @@ export default function SystemOutcomes() {
                                 {/* Gauge 1 */}
                                 <div className="flex flex-col items-center justify-center">
                                     <AnimatedGauge id="soh" value={100} range={{ min: 95, max: 100 }} label="SOH Recovery" />
-                                    <p className="text-white/60 text-center text-[10px] md:text-xs mt-[-10px] md:mt-[-20px] px-4 max-w-[180px] md:max-w-[200px] leading-tight">Near-new operating health restored</p>
+                                    <p className="text-white/60 text-center text-[10px] md:text-xs mt-[-10px] md:mt-[-20px] px-2 sm:px-4 max-w-[220px] sm:max-w-[240px] md:max-w-[200px] leading-tight break-words">Near-new operating health restored</p>
                                 </div>
 
                                 {/* Gauge 2 */}
                                 <div className="flex flex-col items-center justify-center">
                                     <AnimatedGauge id="capacity" value={100} range={{ min: 95, max: 100 }} label="Capacity Recovery" />
-                                    <p className="text-white/60 text-center text-[10px] md:text-xs mt-[-10px] md:mt-[-20px] px-4 max-w-[180px] md:max-w-[200px] leading-tight">Usable charge capacity restored</p>
+                                    <p className="text-white/60 text-center text-[10px] md:text-xs mt-[-10px] md:mt-[-20px] px-2 sm:px-4 max-w-[220px] sm:max-w-[240px] md:max-w-[200px] leading-tight break-words">Usable charge capacity restored</p>
                                 </div>
                             </div>
 
