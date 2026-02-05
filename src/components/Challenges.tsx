@@ -81,7 +81,7 @@ export default function Challenges() {
         initial={{ opacity: 0, y: 60 }}
         animate={isCardsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
         transition={{ duration: 0.8, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
-        className="relative flex flex-col items-center px-4 sm:px-6 md:px-8"
+        className="relative flex flex-col items-center px-4 sm:px-6 md:px-8 overflow-hidden"
       >
         <div className="w-full max-w-[1200px]">
           <AnimatePresence mode="wait" initial={false}>
@@ -91,11 +91,11 @@ export default function Challenges() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="flex flex-col md:flex-row w-full gap-3 sm:gap-6 md:gap-12 items-center md:items-start"
+              className="flex flex-col md:flex-row w-full gap-4 sm:gap-6 md:gap-12 items-center md:items-start"
             >
               {/* Image with border */}
               <motion.div 
-                className="w-full md:w-1/2 -mt-2 sm:mt-0"
+                className="w-full md:w-1/2 -mt-3 sm:mt-0"
                 initial={{ opacity: 0, x: -40, scale: 0.95 }}
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 exit={{ opacity: 0, x: -20, scale: 0.98 }}
@@ -112,7 +112,7 @@ export default function Challenges() {
               </motion.div>
 
               {/* Text content without box */}
-              <div className="flex w-full md:w-1/2 flex-col justify-center items-center md:items-start text-center md:text-left px-4 md:px-0 min-h-[250px] sm:min-h-[350px] md:h-[400px] -mt-1 sm:mt-0">
+              <div className="flex w-full md:w-1/2 flex-col justify-center items-center md:items-start text-center md:text-left px-4 md:px-0 min-h-[250px] sm:min-h-[350px] md:h-[400px] overflow-hidden -mt-2 sm:mt-0">
                 <motion.h3 
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -152,7 +152,7 @@ export default function Challenges() {
         </div>
         
         {/* Navigation Buttons */}
-        <div className="relative mt-0 sm:mt-6 flex items-center justify-center gap-4">
+        <div className="relative mt-1 sm:mt-6 flex items-center justify-center gap-4">
           <button
             type="button"
             onClick={handlePrev}
