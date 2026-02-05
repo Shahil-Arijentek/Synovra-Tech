@@ -112,18 +112,18 @@ export default function Challenges() {
               </motion.div>
 
               {/* Text content without box */}
-              <div className="flex w-full md:w-1/2 flex-col justify-center items-center md:items-start text-center md:text-left px-4 md:px-0 h-[300px] sm:h-[350px] md:h-[400px]">
+              <div className="flex w-full md:w-1/2 flex-col justify-center items-center md:items-start text-center md:text-left px-4 md:px-0 min-h-[250px] sm:min-h-[350px] md:h-[400px]">
                 <motion.h3 
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.5, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
-                  className="mb-4 sm:mb-6 text-[16px] sm:text-[28px] md:text-[32px] font-bold text-white leading-tight"
+                  className="mb-3 sm:mb-6 text-[15px] sm:text-[28px] md:text-[32px] font-bold text-white leading-tight"
                 >
                   {currentChallenge.title}
                 </motion.h3>
                 <motion.div 
-                  className="mb-4 sm:mb-6"
+                  className="mb-3 sm:mb-6"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
