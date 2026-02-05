@@ -91,11 +91,11 @@ export default function Challenges() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="flex flex-col md:flex-row w-full gap-8 md:gap-12 items-center md:items-start"
+              className="flex flex-col md:flex-row w-full gap-3 sm:gap-6 md:gap-12 items-center md:items-start"
             >
               {/* Image with border */}
               <motion.div 
-                className="w-full md:w-1/2"
+                className="w-full md:w-1/2 -mt-2 sm:mt-0"
                 initial={{ opacity: 0, x: -40, scale: 0.95 }}
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 exit={{ opacity: 0, x: -20, scale: 0.98 }}
@@ -112,27 +112,27 @@ export default function Challenges() {
               </motion.div>
 
               {/* Text content without box */}
-              <div className="flex w-full md:w-1/2 flex-col justify-center items-center md:items-start text-center md:text-left px-4 md:px-0 h-[300px] sm:h-[350px] md:h-[400px]">
+              <div className="flex w-full md:w-1/2 flex-col justify-center items-center md:items-start text-center md:text-left px-4 md:px-0 min-h-[250px] sm:min-h-[350px] md:h-[400px] -mt-1 sm:mt-0">
                 <motion.h3 
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.5, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
-                  className="mb-6 text-[24px] sm:text-[28px] md:text-[32px] font-bold text-white leading-tight"
+                  className="mb-3 sm:mb-6 text-[15px] sm:text-[28px] md:text-[32px] font-bold text-white leading-tight"
                 >
                   {currentChallenge.title}
                 </motion.h3>
                 <motion.div 
-                  className="mb-6"
+                  className="mb-3 sm:mb-6"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.5, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
                 >
-                  <p className="text-[13px] sm:text-[14px] md:text-[15px] font-bold uppercase text-red-500 mb-2">
+                  <p className="text-[11px] sm:text-[14px] md:text-[15px] font-bold uppercase text-red-500 mb-1 sm:mb-2">
                     The Challenge
                   </p>
-                  <p className="text-base sm:text-lg md:text-lg lg:text-xl text-gray-200 leading-relaxed">{currentChallenge.problem}</p>
+                  <p className="text-xs sm:text-lg md:text-lg lg:text-xl text-gray-200 leading-relaxed">{currentChallenge.problem}</p>
                 </motion.div>
                 <motion.div 
                   className="mb-0"
@@ -141,10 +141,10 @@ export default function Challenges() {
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.5, delay: 0.3, ease: [0.19, 1, 0.22, 1] }}
                 >
-                  <p className="text-[13px] sm:text-[14px] md:text-[15px] font-bold uppercase text-emerald-500 mb-2">
+                  <p className="text-[11px] sm:text-[14px] md:text-[15px] font-bold uppercase text-emerald-500 mb-1 sm:mb-2">
                     How Synovra Solves It
                   </p>
-                  <p className="text-base sm:text-lg md:text-lg lg:text-xl text-gray-200 leading-relaxed">{currentChallenge.solution}</p>
+                  <p className="text-xs sm:text-lg md:text-lg lg:text-xl text-gray-200 leading-relaxed">{currentChallenge.solution}</p>
                 </motion.div>
               </div>
             </motion.div>
@@ -152,7 +152,7 @@ export default function Challenges() {
         </div>
         
         {/* Navigation Buttons */}
-        <div className="relative mt-6 flex items-center justify-center gap-4">
+        <div className="relative mt-0 sm:mt-6 flex items-center justify-center gap-4">
           <button
             type="button"
             onClick={handlePrev}

@@ -72,7 +72,7 @@ export default function ExperienceRevival() {
             delay: 1.1,
             ease: [0.19, 1, 0.22, 1]
           }}
-          className="mt-4 sm:mt-6 text-[12px] sm:text-[14px] md:text-[16px] tracking-normal text-white/80 normal-case font-normal mx-auto px-2 whitespace-nowrap"
+          className="mt-4 sm:mt-6 text-[12px] sm:text-[14px] md:text-[16px] tracking-normal text-white/80 normal-case font-normal mx-auto px-2 sm:whitespace-nowrap max-w-full"
         >
           Redefining battery afterlife with premium, precision-engineered power built to last.
         </motion.p>

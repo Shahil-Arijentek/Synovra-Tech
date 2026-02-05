@@ -178,7 +178,7 @@ export default function Sectors() {
                     className="absolute inset-0 h-full w-full object-cover"
                   />
                 </AnimatePresence>
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d]/60 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/60 via-transparent to-transparent pointer-events-none" />
               </div>
             </div>
 
@@ -192,7 +192,7 @@ export default function Sectors() {
                   return (
                     <button
                       key={sector.title}
-                      className={`group flex w-full flex-col items-start gap-3 border-b border-[#0d0d0d] pb-6 text-left transition-opacity duration-500 ${isActive ? "opacity-100" : "opacity-40"
+                      className={`group flex w-full flex-col items-start gap-3 border-b border-[#000000] pb-6 text-left transition-opacity duration-500 ${isActive ? "opacity-100" : "opacity-40"
                         }`}
                       onClick={() => setActiveIndex(index)}
                       type="button"
@@ -264,8 +264,8 @@ export default function Sectors() {
                 </motion.div>
 
                 {/* Gradient Fades for the window edges - smoother transitions */}
-                <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-[#0d0d0d] via-[#0d0d0d]/40 to-transparent pointer-events-none z-10" />
-                <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#0d0d0d] via-[#0d0d0d]/60 to-transparent pointer-events-none z-10" />
+                <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-[#000000] via-[#000000]/40 to-transparent pointer-events-none z-10" />
+                <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#000000] via-[#000000]/60 to-transparent pointer-events-none z-10" />
               </div>
 
             </div>
