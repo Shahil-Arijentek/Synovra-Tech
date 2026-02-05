@@ -1276,7 +1276,7 @@ export default function BatteryLifecycleScroll() {
           {(currentSceneForFrame > 0 || (currentSceneForFrame === 0 && currentFrame >= 50)) && (
             <>
               {/* Progress Boxes Container */}
-              <div className="absolute top-2 md:top-8 left-3 sm:left-4 md:left-[38rem] z-20">
+              <div className="absolute top-2 md:top-8 left-4 sm:left-4 md:left-[38rem] z-20">
                 <div 
                   className="flex items-center gap-0.5 md:gap-2 backdrop-blur-sm h-[30px] md:h-[75px] rounded-md md:rounded-2xl px-1.5 md:px-5"
                   style={{
