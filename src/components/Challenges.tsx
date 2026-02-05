@@ -91,7 +91,7 @@ export default function Challenges() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="flex flex-col md:flex-row w-full gap-8 md:gap-12 items-center md:items-start"
+              className="flex flex-col md:flex-row w-full gap-4 sm:gap-6 md:gap-12 items-center md:items-start"
             >
               {/* Image with border */}
               <motion.div 
@@ -152,7 +152,7 @@ export default function Challenges() {
         </div>
         
         {/* Navigation Buttons */}
-        <div className="relative mt-6 flex items-center justify-center gap-4">
+        <div className="relative mt-3 sm:mt-6 flex items-center justify-center gap-4">
           <button
             type="button"
             onClick={handlePrev}
