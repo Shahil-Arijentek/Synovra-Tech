@@ -62,7 +62,7 @@ const AnimatedGauge = ({ value, label, id, range }: { value: number; label: stri
                 </defs>
             </svg>
 
-            <div className="w-56 h-40 md:w-64 md:h-48 relative flex items-center justify-center overflow-visible">
+            <div className="w-56 h-36 md:w-64 md:h-48 relative flex items-center justify-center overflow-visible">
                 <Gauge
                     value={currentPos}
                     startAngle={-110}
@@ -218,54 +218,54 @@ export default function SystemOutcomes() {
                                 <h3 className="text-white font-bold text-center mb-1 md:mb-2 uppercase tracking-wide text-[10px] md:text-sm h-4 md:h-5">System Outcomes</h3>
 
                                 {/* Batteries Revived Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-32 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-4 md:p-6 flex flex-col justify-center gap-1 md:gap-1.5 shadow-lg h-[100px] md:h-36 w-full">
                                     <div className="flex items-center gap-1">
-                                        <span className="text-2xl md:text-3xl font-black text-white">
+                                        <span className="text-3xl md:text-4xl font-black text-white">
                                             <Counter value={20000} />
                                         </span>
-                                        <span className="text-2xl md:text-3xl font-black text-[#ff6b1a]"> +</span>
+                                        <span className="text-3xl md:text-4xl font-black text-[#ff6b1a]"> +</span>
                                     </div>
-                                    <span className="text-[#ff6b1a] font-bold text-[11px] md:text-sm">Batteries Revived</span>
-                                    <p className="text-white/50 text-[9px] md:text-xs leading-tight">Across critical applications and operating conditions</p>
+                                    <span className="text-[#ff6b1a] font-bold text-[12px] md:text-base">Batteries Revived</span>
+                                    <p className="text-white/50 text-[10px] md:text-sm leading-tight">Across critical applications and operating conditions</p>
                                 </div>
 
                                 {/* Warranty Months Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-32 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-4 md:p-6 flex flex-col justify-center gap-1 md:gap-1.5 shadow-lg h-[100px] md:h-36 w-full">
                                     <div className="flex items-center gap-1">
-                                        <span className="text-2xl md:text-3xl font-black text-white">
+                                        <span className="text-3xl md:text-4xl font-black text-white">
                                             <Counter value={300000} />
                                         </span>
                                         {/* <span className="text-2xl md:text-3xl font-black text-[#ff6b1a]"> k+</span> */}
                                     </div>
-                                    <span className="text-[#ff6b1a] font-bold text-[11px] md:text-sm">Warranty Months</span>
-                                    <p className="text-white/50 text-[9px] md:text-xs leading-tight">12–36 month warranty-backed revival performance</p>
+                                    <span className="text-[#ff6b1a] font-bold text-[12px] md:text-base">Warranty Months</span>
+                                    <p className="text-white/50 text-[10px] md:text-sm leading-tight">12–36 month warranty-backed revival performance</p>
                                 </div>
 
                                 {/* Client Savings Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-32 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-4 md:p-6 flex flex-col justify-center gap-1 md:gap-1.5 shadow-lg h-[100px] md:h-36 w-full">
                                     <div className="flex items-center gap-1">
-                                        <span className="text-2xl md:text-3xl font-black text-white">$<Counter value={1.5} decimals={1} /></span>
-                                        <span className="text-2xl md:text-3xl font-black text-[#ff6b1a]"> M</span>
+                                        <span className="text-3xl md:text-4xl font-black text-white">$<Counter value={1.5} decimals={1} /></span>
+                                        <span className="text-3xl md:text-4xl font-black text-[#ff6b1a]"> M</span>
                                     </div>
-                                    <span className="text-[#ff6b1a] font-bold text-[11px] md:text-sm">Client Savings</span>
-                                    <p className="text-white/50 text-[9px] md:text-xs leading-tight">Through predictable lifecycle decisions</p>
+                                    <span className="text-[#ff6b1a] font-bold text-[12px] md:text-base">Client Savings</span>
+                                    <p className="text-white/50 text-[10px] md:text-sm leading-tight">Through predictable lifecycle decisions</p>
                                 </div>
                             </div>
 
                             {/* Center Column - Gauges */}
-                            <div className={`${activeTab === 1 ? "flex" : "hidden"} md:flex flex-col gap-2 md:gap-8 items-center justify-start pt-2 md:pt-8`}>
+                            <div className={`${activeTab === 1 ? "flex" : "hidden"} md:flex flex-col gap-4 md:gap-8 items-center justify-start pt-2 md:pt-8`}>
                                 <h3 className="text-white font-bold text-center mb-1 md:mb-2 uppercase tracking-wide text-[10px] md:text-sm h-4 md:h-5">Performance Restoration</h3>
 
                                 {/* Gauge 1 */}
                                 <div className="flex flex-col items-center justify-center">
                                     <AnimatedGauge id="soh" value={100} range={{ min: 95, max: 100 }} label="SOH Recovery" />
-                                    <p className="text-white/60 text-center text-[10px] md:text-xs mt-[-15px] md:mt-[-20px] px-4 max-w-[180px] md:max-w-[200px]">Near-new operating health restored</p>
+                                    <p className="text-white/60 text-center text-[10px] md:text-xs mt-[-10px] md:mt-[-20px] px-4 max-w-[180px] md:max-w-[200px] leading-tight">Near-new operating health restored</p>
                                 </div>
 
                                 {/* Gauge 2 */}
                                 <div className="flex flex-col items-center justify-center">
                                     <AnimatedGauge id="capacity" value={100} range={{ min: 95, max: 100 }} label="Capacity Recovery" />
-                                    <p className="text-white/60 text-center text-[10px] md:text-xs mt-[-15px] md:mt-[-20px] px-4 max-w-[180px] md:max-w-[200px]">Usable charge capacity restored</p>
+                                    <p className="text-white/60 text-center text-[10px] md:text-xs mt-[-10px] md:mt-[-20px] px-4 max-w-[180px] md:max-w-[200px] leading-tight">Usable charge capacity restored</p>
                                 </div>
                             </div>
 
@@ -274,38 +274,38 @@ export default function SystemOutcomes() {
                                 <h3 className="text-white font-bold text-center mb-1 md:mb-2 uppercase tracking-wide text-[10px] md:text-sm h-4 md:h-5">Environmental & Compliance</h3>
 
                                 {/* CO2 Avoided Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-32 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-4 md:p-6 flex flex-col justify-center gap-1 md:gap-1.5 shadow-lg h-[100px] md:h-36 w-full">
                                     <div className="flex items-center gap-1">
-                                        <span className="text-2xl md:text-3xl font-black text-white">
+                                        <span className="text-3xl md:text-4xl font-black text-white">
                                             <Counter value={1.23} decimals={2} />M
                                         </span>
-                                        <span className="text-2xl md:text-3xl font-black text-[#ff6b1a]"> kg</span>
+                                        <span className="text-3xl md:text-4xl font-black text-[#ff6b1a]"> kg</span>
                                     </div>
-                                    <span className="text-[#ff6b1a] font-bold text-[11px] md:text-sm">CO₂ Avoided</span>
-                                    <p className="text-white/50 text-[9px] md:text-xs leading-tight">By extending life before recycling</p>
+                                    <span className="text-[#ff6b1a] font-bold text-[12px] md:text-base">CO₂ Avoided</span>
+                                    <p className="text-white/50 text-[10px] md:text-sm leading-tight">By extending life before recycling</p>
                                 </div>
 
                                 {/* Waste Prevented Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-32 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-4 md:p-6 flex flex-col justify-center gap-1 md:gap-1.5 shadow-lg h-[100px] md:h-36 w-full">
                                     <div className="flex items-center gap-1">
-                                        <span className="text-2xl md:text-3xl font-black text-white">
+                                        <span className="text-3xl md:text-4xl font-black text-white">
                                             <Counter value={500} /> tonne
                                         </span>
                                     </div>
-                                    <span className="text-[#ff6b1a] font-bold text-[11px] md:text-sm">Waste Prevented</span>
-                                    <p className="text-white/50 text-[9px] md:text-xs leading-tight">Batteries retained in active use</p>
+                                    <span className="text-[#ff6b1a] font-bold text-[12px] md:text-base">Waste Prevented</span>
+                                    <p className="text-white/50 text-[10px] md:text-sm leading-tight">Batteries retained in active use</p>
                                 </div>
 
                                 {/* Liquid Discharge Card */}
-                                <div className="bg-[#111] border border-white/10 rounded-xl p-3 md:p-5 flex flex-col justify-center gap-0.5 md:gap-1 shadow-lg h-[90px] md:h-32 w-full">
+                                <div className="bg-[#111] border border-white/10 rounded-xl p-4 md:p-6 flex flex-col justify-center gap-1 md:gap-1.5 shadow-lg h-[100px] md:h-36 w-full">
                                     <div className="flex items-center gap-1">
-                                        <span className="text-2xl md:text-3xl font-black text-white">
+                                        <span className="text-3xl md:text-4xl font-black text-white">
                                             <Counter value={0} />
                                         </span>
-                                        <span className="text-2xl md:text-3xl font-black text-[#ff6b1a]"> %</span>
+                                        <span className="text-3xl md:text-4xl font-black text-[#ff6b1a]"> %</span>
                                     </div>
-                                    <span className="text-[#ff6b1a] font-bold text-[11px] md:text-sm">Liquid Discharge</span>
-                                    <p className="text-white/50 text-[9px] md:text-xs leading-tight">All electrolyte filtered and reused</p>
+                                    <span className="text-[#ff6b1a] font-bold text-[12px] md:text-base">Liquid Discharge</span>
+                                    <p className="text-white/50 text-[10px] md:text-sm leading-tight">All electrolyte filtered and reused</p>
                                 </div>
 
                             </div>
