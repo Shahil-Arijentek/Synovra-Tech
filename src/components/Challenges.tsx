@@ -152,7 +152,7 @@ export default function Challenges() {
         </div>
         
         {/* Navigation Buttons */}
-        <div className="relative mt-4 sm:mt-6 flex items-center justify-center gap-4">
+        <div className="relative mt-2 sm:mt-6 flex items-center justify-center gap-4">
           <button
             type="button"
             onClick={handlePrev}
