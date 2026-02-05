@@ -147,8 +147,8 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
     >
       {/* Fade to #000000 at bottom */}
       <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-b from-transparent via-black/50 to-[#000000] pointer-events-none z-20" />
-      <div className="w-full h-screen flex flex-col items-center justify-start pt-[6vh] sm:pt-[8vh] md:pt-[15vh] overflow-hidden">
-        <div className="relative w-[70%] h-[28%] sm:w-[55%] sm:h-[35%] md:w-[45%] md:h-[50%] z-0 pointer-events-none bg-black">
+      <div className="w-full h-screen flex flex-col items-center justify-start pt-[8vh] sm:pt-[10vh] md:pt-[15vh] overflow-hidden">
+        <div className="relative w-[70%] h-[28%] sm:w-[55%] sm:h-[35%] md:w-[45%] md:h-[50%] z-0 pointer-events-none bg-black mt-2 sm:mt-0">
           <img 
             src={`/whyrevive/frames/video1/frame_${String(video1Frame).padStart(4, '0')}.webp`}
             alt="Battery lifecycle visualization 1"
@@ -169,7 +169,7 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
           />
         </div>
 
-        <div className="relative flex-1 w-full max-w-6xl mt-4 sm:mt-4 md:mt-4 pointer-events-none z-10 px-4 overflow-hidden">
+        <div className="relative flex-1 w-full max-w-6xl mt-6 sm:mt-6 md:mt-4 pointer-events-none z-10 px-4 overflow-hidden">
           <div ref={layer1Ref} className="absolute inset-0 flex flex-col items-center text-center">
             <motion.h2
               ref={headingRef}
