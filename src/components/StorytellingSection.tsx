@@ -145,10 +145,10 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
       ref={containerRef} 
       className={`relative w-full h-[250vh] bg-black z-10 transition-opacity duration-300 ${isMounted ? 'opacity-100' : 'opacity-0'}`}
     >
-      {/* Fade to #0d0d0d at bottom */}
-      <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-b from-transparent via-black/50 to-[#0d0d0d] pointer-events-none z-20" />
-      <div className="w-full h-screen flex flex-col items-center justify-start pt-[10vh] md:pt-[15vh] overflow-hidden">
-        <div className="relative w-[70%] h-[38%] sm:w-[55%] sm:h-[43%] md:w-[45%] md:h-[50%] z-0 pointer-events-none bg-black">
+      {/* Fade to #000000 at bottom */}
+      <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-b from-transparent via-black/50 to-[#000000] pointer-events-none z-20" />
+      <div className="w-full h-screen flex flex-col items-center justify-start pt-[6vh] sm:pt-[8vh] md:pt-[15vh] overflow-hidden">
+        <div className="relative w-[70%] h-[28%] sm:w-[55%] sm:h-[35%] md:w-[45%] md:h-[50%] z-0 pointer-events-none bg-black">
           <img 
             src={`/whyrevive/frames/video1/frame_${String(video1Frame).padStart(4, '0')}.webp`}
             alt="Battery lifecycle visualization 1"
@@ -169,7 +169,7 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
           />
         </div>
 
-        <div className="relative flex-1 w-full max-w-6xl mt-4 pointer-events-none z-10 px-4">
+        <div className="relative flex-1 w-full max-w-6xl mt-2 sm:mt-4 pointer-events-none z-10 px-4">
           <div ref={layer1Ref} className="absolute inset-0 flex flex-col items-center text-center">
             <motion.h2
               ref={headingRef}
@@ -180,46 +180,46 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
                 delay: 0.3,
                 ease: [0.19, 1, 0.22, 1]
               }}
-              className="text-white mb-8 md:mb-12 px-4 text-sm sm:text-base md:text-base lg:text-lg leading-relaxed md:leading-[39px] max-w-[680px]"
+              className="text-white mb-4 sm:mb-6 md:mb-12 px-4 text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed md:leading-[39px] max-w-[680px]"
             >
               A global shift to a greener future is underway — the kind where the impossible is becoming everyday life.
             </motion.h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full px-4 pointer-events-auto max-w-5xl">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 w-full px-4 pointer-events-auto max-w-5xl">
               {['Electric mobility.', 'Renewable energy.', 'Regulated recycling.'].map((text, i) => (
-                <div key={i} className="bg-black/60 backdrop-blur-sm border border-white/5 rounded-2xl py-6 md:py-10 px-4 md:px-6">
-                  <p className="text-white/80 text-sm sm:text-base md:text-base lg:text-lg font-light">{text}</p>
+                <div key={i} className="bg-black/60 backdrop-blur-sm border border-white/5 rounded-2xl py-4 sm:py-5 md:py-10 px-3 sm:px-4 md:px-6">
+                  <p className="text-white/80 text-xs sm:text-sm md:text-base lg:text-lg font-light">{text}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div ref={layer2Ref} className="absolute inset-0 flex flex-col items-center text-center -mt-8 md:mt-0 opacity-0">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full px-4 pointer-events-auto max-w-6xl mb-4">
+          <div ref={layer2Ref} className="absolute inset-0 flex flex-col items-center text-center -mt-12 sm:-mt-8 md:mt-0 opacity-0">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-3 md:gap-6 w-full px-4 pointer-events-auto max-w-6xl mb-2 sm:mb-3 md:mb-4">
               <ProblemCard title="CO2 surges" subtitle="→ from nonstop mining and smelting" />
               <ProblemCard title="Mines expand" subtitle="→ when old material sits unused" />
               <ProblemCard title="Batteries scrapped" subtitle="→ years early" />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full px-4 pointer-events-auto max-w-4xl mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3 md:gap-6 w-full px-4 pointer-events-auto max-w-4xl mb-4 sm:mb-6 md:mb-8">
               <ProblemCard title="No health data" subtitle="→ capacity disappears without trace" />
               <ProblemCard title="Systems broken" subtitle="→ collection, revival, recycling never meet" />
             </div>
           </div>
 
-          <div ref={layer3Ref} className="absolute inset-0 flex flex-col items-center text-center opacity-0">
-            <div className="flex flex-wrap justify-center items-center gap-x-2 md:gap-x-4 text-white/90 text-xs md:text-sm font-semibold mb-6 md:mb-10 uppercase pointer-events-auto px-4">
+          <div ref={layer3Ref} className="absolute inset-0 flex flex-col items-center text-center opacity-0 -mt-4 sm:mt-0">
+            <div className="flex flex-wrap justify-center items-center gap-x-2 md:gap-x-4 text-white/90 text-[10px] sm:text-xs md:text-sm font-semibold mb-4 sm:mb-6 md:mb-10 uppercase pointer-events-auto px-4">
               <span>Zero-Liquid Discharge</span> <span className="text-white/40">•</span>
               <span>Serial-Linked Warranty</span> <span className="text-white/40 hidden sm:inline">•</span>
               <span className="hidden sm:inline">Chain-of-Custody</span> <span className="text-white/40 hidden md:inline">•</span>
               <span className="hidden md:inline">Audit-Ready Reporting</span>
             </div>
-            <div className="flex flex-wrap justify-center gap-2 md:gap-4 max-w-5xl pointer-events-auto mb-6 md:mb-8 px-4">
+            <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2 md:gap-4 max-w-5xl pointer-events-auto mb-4 sm:mb-6 md:mb-8 px-4">
               {['One loop', 'Revival-first', 'Zero-Liquid-Discharge', '90% less CO₂', 'Material recovery', 'Recycle at end'].map((text, i) => (
-                <button key={i} className="px-4 md:px-8 py-2 md:py-3 bg-black/70 backdrop-blur-sm border border-white/20 rounded-full text-white text-xs md:text-base font-semibold">
+                <button key={i} className="px-3 sm:px-4 md:px-8 py-1.5 sm:py-2 md:py-3 bg-black/70 backdrop-blur-sm border border-white/20 rounded-full text-white text-[10px] sm:text-xs md:text-base font-semibold">
                   {text}
                 </button>
               ))}
             </div>
-            <p className="text-white/70 font-light text-sm sm:text-base md:text-base lg:text-lg max-w-3xl px-4">We are not anti-recycling — we are anti-waste.</p>
+            <p className="text-white/70 font-light text-xs sm:text-sm md:text-base lg:text-lg max-w-3xl px-4">We are not anti-recycling — we are anti-waste.</p>
           </div>
         </div>
       </div>
@@ -228,9 +228,9 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
 };
 
 const ProblemCard: React.FC<{ title: string; subtitle: string }> = ({ title, subtitle }) => (
-  <div className="text-left p-4 md:p-6 border border-red-500/30 bg-red-950/20 rounded-[14px] shadow-2xl w-full max-w-[380px] min-h-[95px] md:min-h-[115px] mx-auto">
-    <h3 className="text-[#FF6467] text-base md:text-2xl font-bold mb-1 md:mb-1.5">{title}</h3>
-    <p className="text-white/60 text-sm sm:text-base md:text-base lg:text-lg leading-snug">{subtitle}</p>
+  <div className="text-left p-3 sm:p-4 md:p-6 border border-red-500/30 bg-red-950/20 rounded-[14px] shadow-2xl w-full max-w-[380px] min-h-[75px] sm:min-h-[85px] md:min-h-[115px] mx-auto">
+    <h3 className="text-[#FF6467] text-sm sm:text-base md:text-2xl font-bold mb-0.5 sm:mb-1 md:mb-1.5">{title}</h3>
+    <p className="text-white/60 text-xs sm:text-sm md:text-base lg:text-lg leading-snug">{subtitle}</p>
   </div>
 );
 
