@@ -205,7 +205,7 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
             </div>
           </div>
 
-          <div ref={layer3Ref} className="absolute inset-0 flex flex-col items-center text-center opacity-0 -mt-2 sm:mt-0">
+          <div ref={layer3Ref} className="absolute inset-0 flex flex-col items-center text-center opacity-0 mt-4 sm:mt-0">
             <div className="flex flex-wrap justify-center items-center gap-x-2 md:gap-x-4 text-white/90 text-[10px] sm:text-xs md:text-sm font-semibold mb-4 sm:mb-6 md:mb-10 uppercase pointer-events-auto px-4 break-words">
               <span>Zero-Liquid Discharge</span> <span className="text-white/40">•</span>
               <span>Serial-Linked Warranty</span> <span className="text-white/40 hidden sm:inline">•</span>
