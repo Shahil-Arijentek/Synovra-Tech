@@ -25,29 +25,31 @@
   .text-orange-glow {
     text-shadow: 0 0 10px rgba(255, 107, 53, 0.8);
   }
-  
+
   @keyframes fadeIn {
     from {
       opacity: 0;
     }
+
     to {
       opacity: 1;
     }
   }
-  
+
   @keyframes fadeOut {
     from {
       opacity: 1;
     }
+
     to {
       opacity: 0;
     }
   }
-  
+
   .animate-fadeIn {
     animation: fadeIn 0.3s ease-in;
   }
-  
+
   .animate-fadeOut {
     animation: fadeOut 0.5s ease-out forwards;
   }
@@ -59,25 +61,65 @@
   color: #ffffff;
   display: block;
   margin: 0 auto;
-  line-height: 1;
+  line-height: 1.2;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
+/* Extra small mobile (up to 375px) */
+@media (max-width: 375px) {
+  .hero-top-text {
+    font-size: clamp(12px, 4vw, 18px);
+    /* Reduced min size */
+    letter-spacing: 0.02em;
+    /* Tighter spacing */
+    white-space: nowrap;
+  }
+}
+
+/* Small mobile (376px - 479px) */
+@media (min-width: 376px) and (max-width: 479px) {
+  .hero-top-text {
+    font-size: clamp(14px, 4.5vw, 22px);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+}
+
+/* Mobile (480px - 639px) */
+@media (min-width: 480px) and (max-width: 639px) {
+  .hero-top-text {
+    font-size: clamp(18px, 5.5vw, 32px);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+}
+
+/* Small tablet (640px - 767px) */
+@media (min-width: 640px) and (max-width: 767px) {
+  .hero-top-text {
+    font-size: clamp(24px, 5.5vw, 44px);
+    letter-spacing: 0.09em;
+  }
+}
+
+/* Tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-top-text {
+    font-size: clamp(32px, 4.5vw, 48px);
+    letter-spacing: 0.08em;
+  }
+}
+
+/* Desktop (1024px and up) */
 @media (min-width: 1024px) {
   .hero-top-text {
-    width: 1400px !important;
-    font-size: 54px !important;
-    line-height: 74.192px !important;
-    font-weight: 900 !important;
-    font-family: 'Arial', sans-serif !important;
-    text-align: center !important;
-    display: block !important;
-    margin: 0 auto !important;
-    margin-left: calc(50% + 10px) !important;
+    font-size: 54px;
+    line-height: 74.192px;
+    letter-spacing: 2px;
+    width: 1400px;
+    margin-left: calc(50% + 10px);
     transform: translateX(-50%);
-    white-space: nowrap;
-    text-transform: uppercase;
-    color: #FFFFFF !important;
-    letter-spacing: 2px !important;
   }
 }
 
@@ -86,18 +128,43 @@
   transform: scaleY(1.4);
   transform-origin: center;
   margin: 0 auto;
+  width: 100%;
+  overflow: visible;
 }
 
+/* Mobile (up to 639px) */
+@media (max-width: 639px) {
+  .afterlife-scale-wrapper {
+    transform: scaleY(1.5);
+  }
+}
+
+/* Small tablet (640px - 767px) */
+@media (min-width: 640px) and (max-width: 767px) {
+  .afterlife-scale-wrapper {
+    transform: scaleY(1.48);
+  }
+}
+
+/* Tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .afterlife-scale-wrapper {
+    transform: scaleY(1.46);
+  }
+}
+
+/* Desktop (1024px and up) */
 @media (min-width: 1024px) {
   .afterlife-scale-wrapper {
-    transform: scaleY(1.432) !important;
+    transform: scaleY(1.432);
   }
 }
 
 .afterlife-animation {
   position: relative;
   display: block;
-  width: fit-content;
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
   font-family: 'Anton', sans-serif;
   font-weight: 400;
@@ -106,6 +173,10 @@
   text-stroke: 1.5px #ff5f00;
   letter-spacing: -0.02em;
   line-height: 1;
+  white-space: nowrap;
+  overflow: visible;
+  text-align: center;
+  font-size: clamp(60px, 15vw, 220px);
 }
 
 .afterlife-animation::after {
@@ -139,45 +210,49 @@
   }
 }
 
-@media (min-width: 1024px) {
+/* Mobile (up to 639px) */
+@media (max-width: 639px) {
   .afterlife-animation {
-    width: 1400px !important;
-    height: 250px !important;
-    font-size: 190px !important;
-    line-height: 250px !important; /* Force line-height to match box height */
-    display: block !important;
-    letter-spacing: -0.01em !important;
-    margin: 0 auto !important;
-    white-space: nowrap;
-    text-align: center;
-    overflow: visible;
+    font-size: clamp(40px, 13vw, 90px);
+    letter-spacing: 0.01em;
   }
 }
 
-@media (max-width: 1023px) {
-  .hero-top-text {
-    font-size: clamp(28px, 6vw, 50px);
-    width: auto !important;
-    text-align: center !important;
-    letter-spacing: 0.1em !important;
-    margin-bottom: 0.5rem;
-  }
-
-  .afterlife-scale-wrapper {
-    transform: scaleY(1.5) !important;
-  }
-
+/* Small tablet (640px - 767px) */
+@media (min-width: 640px) and (max-width: 767px) {
   .afterlife-animation {
-    font-size: clamp(50px, 14vw, 120px) !important;
-    width: 100% !important;
-    text-align: center !important;
-    letter-spacing: 0.01em !important;
+    font-size: clamp(90px, 13vw, 130px);
+    letter-spacing: 0.01em;
   }
 }
 
-@media (max-width: 768px) {
+/* Tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
   .afterlife-animation {
-    transform: none !important; /* Managed by wrapper scale now */
+    font-size: clamp(120px, 12vw, 160px);
+    letter-spacing: 0.005em;
+  }
+}
+
+/* Desktop (1024px - 1279px) */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .afterlife-animation {
+    font-size: clamp(160px, 11vw, 190px);
+    letter-spacing: -0.005em;
+    width: 100%;
+    max-width: 1400px;
+  }
+}
+
+/* Large desktop (1280px and up) */
+@media (min-width: 1280px) {
+  .afterlife-animation {
+    width: 1400px;
+    height: 250px;
+    font-size: 190px;
+    line-height: 250px;
+    letter-spacing: -0.01em;
+    max-width: 1400px;
   }
 }
 
@@ -197,20 +272,24 @@
   }
 }
 
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 4px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(255, 107, 26, 0.2);
-    border-radius: 10px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 107, 26, 0.4);
-  }
-  .custom-scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 107, 26, 0.2) transparent;
-  }
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 107, 26, 0.2);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 107, 26, 0.4);
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 107, 26, 0.2) transparent;
+}
