@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// Register GSAP plugin
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Sectors() {
   const sectors = [
@@ -38,85 +43,101 @@ export default function Sectors() {
     "/sector/image6.webp",
   ];
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isDesktop, setIsDesktop] = useState(() => typeof window !== "undefined" && window.innerWidth >= 1024);
   const sectionRef = useRef<HTMLElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const isInViewRef = useRef(false);
-  const scrollLockRef = useRef(0);
+  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
-  // useScroll for the whole container on mobile
+  // Mobile: Framer Motion useScroll
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   });
 
-  // Calculate active index based on scroll progress
-  useEffect(() => {
-    return scrollYProgress.on("change", (latest) => {
-      if (window.innerWidth < 1024) {
-        const index = Math.min(
-          Math.floor(latest * sectors.length),
-          sectors.length - 1
-        );
-        setActiveIndex(index);
-      }
-    });
-  }, [scrollYProgress, sectors.length]);
-
-  // Text conveyor belt Y offset
-  // We want the active item to stay at the top of the window
-  // Each item is exactly 120px tall for a consistent 3-item window
+  // Mobile: Text conveyor belt Y offset
   const textTranslateY = useTransform(
     scrollYProgress,
     [0, 1],
     [0, -(sectors.length - 1) * 120]
   );
 
-  // Desktop: GSAP ScrollTrigger for auto-pin
+  // Mobile: Calculate active index from scroll progress
+  useEffect(() => {
+    // Only run on mobile
+    if (isDesktop) return;
+
+    const unsubscribe = scrollYProgress.on("change", (latest) => {
+      const index = Math.min(
+        Math.floor(latest * sectors.length),
+        sectors.length - 1
+      );
+      setActiveIndex(index);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [scrollYProgress, sectors.length, isDesktop]);
+
+  // Handle window resize to update breakpoint state
+  useEffect(() => {
+    const handleResize = () => {
+      const newIsDesktop = window.innerWidth >= 1024;
+      setIsDesktop(newIsDesktop);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Desktop: GSAP ScrollTrigger setup
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
-    // Intersection observer for the whole section (for wheel locking)
-    const sectionObserver = new IntersectionObserver(
-      ([entry]) => {
-        isInViewRef.current = entry.isIntersecting;
-      },
-      { threshold: 0.1 }
-    );
-    sectionObserver.observe(section);
-
-    const onWheel = (event: WheelEvent) => {
-      if (window.innerWidth < 1024) return;
-      if (!isInViewRef.current) return;
-
-      const now = Date.now();
-      if (now - scrollLockRef.current < 500) {
-        event.preventDefault();
-        return;
+    // Only set up GSAP ScrollTrigger on desktop
+    if (!isDesktop) {
+      // Clean up if we're on mobile
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+        scrollTriggerRef.current = null;
       }
+      return;
+    }
 
-      setActiveIndex((prev) => {
-        if (event.deltaY > 0 && prev < sectors.length - 1) {
-          scrollLockRef.current = now;
-          event.preventDefault();
-          return prev + 1;
-        }
-        if (event.deltaY < 0 && prev > 0) {
-          scrollLockRef.current = now;
-          event.preventDefault();
-          return prev - 1;
-        }
-        return prev;
-      });
-    };
+    // Kill any existing ScrollTrigger
+    if (scrollTriggerRef.current) {
+      scrollTriggerRef.current.kill();
+    }
 
-    section.addEventListener("wheel", onWheel, { passive: false });
+    // Create ScrollTrigger with pinning
+    scrollTriggerRef.current = ScrollTrigger.create({
+      trigger: section,
+      start: "top top",
+      end: `+=${(sectors.length - 1) * 100}%`,
+      pin: true,
+      pinSpacing: true,
+      anticipatePin: 1,
+      scrub: 1,
+      onUpdate: (self) => {
+        // Drive activeIndex purely from ScrollTrigger progress
+        const progress = self.progress;
+        const index = Math.min(
+          Math.floor(progress * sectors.length),
+          sectors.length - 1
+        );
+        setActiveIndex(index);
+      },
+    });
 
+    // Cleanup
     return () => {
-      sectionObserver.disconnect();
-      section.removeEventListener("wheel", onWheel);
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+        scrollTriggerRef.current = null;
+      }
     };
-  }, [activeIndex, sectors.length]);
+  }, [sectors.length, isDesktop]);
 
   return (
     <>
@@ -178,7 +199,7 @@ export default function Sectors() {
                     className="absolute inset-0 h-full w-full object-cover"
                   />
                 </AnimatePresence>
-                <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/60 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d]/60 via-transparent to-transparent pointer-events-none" />
               </div>
             </div>
 
@@ -192,9 +213,30 @@ export default function Sectors() {
                   return (
                     <button
                       key={sector.title}
-                      className={`group flex w-full flex-col items-start gap-3 border-b border-[#000000] pb-6 text-left transition-opacity duration-500 ${isActive ? "opacity-100" : "opacity-40"
+                      className={`group flex w-full flex-col items-start gap-3 border-b border-[#0d0d0d] pb-6 text-left transition-opacity duration-500 ${isActive ? "opacity-100" : "opacity-40"
                         }`}
-                      onClick={() => setActiveIndex(index)}
+                      onClick={() => {
+                        // On desktop, scroll ScrollTrigger to the target progress
+                        // This lets ScrollTrigger drive activeIndex naturally
+                        if (scrollTriggerRef.current && window.innerWidth >= 1024) {
+                          const targetProgress = index / (sectors.length - 1);
+                          const trigger = scrollTriggerRef.current;
+                          
+                          // Use ScrollTrigger's calculated start/end values
+                          // Wait for next frame to ensure values are calculated
+                          requestAnimationFrame(() => {
+                            if (trigger.start !== undefined && trigger.end !== undefined) {
+                              const scrollDistance = trigger.end - trigger.start;
+                              const targetScroll = trigger.start + scrollDistance * targetProgress;
+                              
+                              window.scrollTo({
+                                top: targetScroll,
+                                behavior: "smooth",
+                              });
+                            }
+                          });
+                        }
+                      }}
                       type="button"
                     >
                       <div className="flex items-center">
@@ -264,8 +306,8 @@ export default function Sectors() {
                 </motion.div>
 
                 {/* Gradient Fades for the window edges - smoother transitions */}
-                <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-[#000000] via-[#000000]/40 to-transparent pointer-events-none z-10" />
-                <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#000000] via-[#000000]/60 to-transparent pointer-events-none z-10" />
+                <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-[#0d0d0d] via-[#0d0d0d]/40 to-transparent pointer-events-none z-10" />
+                <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#0d0d0d] via-[#0d0d0d]/60 to-transparent pointer-events-none z-10" />
               </div>
 
             </div>
