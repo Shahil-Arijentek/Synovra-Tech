@@ -147,8 +147,8 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
     >
       {/* Fade to #000000 at bottom */}
       <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-b from-transparent via-black/50 to-[#000000] pointer-events-none z-20" />
-      <div className="w-full h-screen flex flex-col items-center justify-start pt-[8vh] sm:pt-[10vh] md:pt-[15vh] overflow-hidden">
-        <div className="relative w-[70%] h-[28%] sm:w-[55%] sm:h-[35%] md:w-[45%] md:h-[50%] z-0 pointer-events-none bg-black mt-2 sm:mt-0">
+      <div className="w-full h-screen flex flex-col items-center justify-start pt-[10vh] sm:pt-[12vh] md:pt-[15vh] overflow-hidden">
+        <div className="relative w-[70%] h-[28%] sm:w-[55%] sm:h-[35%] md:w-[45%] md:h-[50%] z-0 pointer-events-none bg-black mt-4 sm:mt-0">
           <img 
             src={`/whyrevive/frames/video1/frame_${String(video1Frame).padStart(4, '0')}.webp`}
             alt="Battery lifecycle visualization 1"
@@ -169,7 +169,7 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
           />
         </div>
 
-        <div className="relative flex-1 w-full max-w-6xl mt-6 sm:mt-6 md:mt-4 pointer-events-none z-10 px-4 overflow-hidden">
+        <div className="relative flex-1 w-full max-w-6xl mt-8 sm:mt-8 md:mt-4 pointer-events-none z-10 px-4 overflow-hidden">
           <div ref={layer1Ref} className="absolute inset-0 flex flex-col items-center text-center">
             <motion.h2
               ref={headingRef}
@@ -193,13 +193,13 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
             </div>
           </div>
 
-          <div ref={layer2Ref} className="absolute inset-0 flex flex-col items-center text-center -mt-10 sm:-mt-8 md:mt-0 opacity-0">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-3 md:gap-6 w-full px-4 pointer-events-auto max-w-6xl mb-3 sm:mb-3 md:mb-4">
+          <div ref={layer2Ref} className="absolute inset-0 flex flex-col items-center text-center mt-2 sm:-mt-8 md:mt-0 opacity-0">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-3 md:gap-6 w-full px-4 pointer-events-auto max-w-6xl mb-2 sm:mb-3 md:mb-4">
               <ProblemCard title="CO2 surges" subtitle="→ from nonstop mining and smelting" />
               <ProblemCard title="Mines expand" subtitle="→ when old material sits unused" />
               <ProblemCard title="Batteries scrapped" subtitle="→ years early" />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-3 md:gap-6 w-full px-4 pointer-events-auto max-w-4xl mb-4 sm:mb-6 md:mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3 md:gap-6 w-full px-4 pointer-events-auto max-w-4xl mb-3 sm:mb-6 md:mb-8">
               <ProblemCard title="No health data" subtitle="→ capacity disappears without trace" />
               <ProblemCard title="Systems broken" subtitle="→ collection, revival, recycling never meet" />
             </div>
@@ -228,9 +228,9 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
 };
 
 const ProblemCard: React.FC<{ title: string; subtitle: string }> = ({ title, subtitle }) => (
-  <div className="text-left p-3 sm:p-4 md:p-6 border border-red-500/30 bg-red-950/20 rounded-[14px] shadow-2xl w-full max-w-[380px] min-h-[75px] sm:min-h-[85px] md:min-h-[115px] mx-auto overflow-hidden">
-    <h3 className="text-[#FF6467] text-sm sm:text-base md:text-2xl font-bold mb-0.5 sm:mb-1 md:mb-1.5 break-words">{title}</h3>
-    <p className="text-white/60 text-xs sm:text-sm md:text-base lg:text-lg leading-snug break-words">{subtitle}</p>
+  <div className="text-left p-1.5 sm:p-4 md:p-6 border border-red-500/30 bg-red-950/20 rounded-[10px] sm:rounded-[14px] shadow-2xl w-full max-w-[280px] sm:max-w-[380px] min-h-[55px] sm:min-h-[85px] md:min-h-[115px] mx-auto overflow-hidden">
+    <h3 className="text-[#FF6467] text-[10px] sm:text-base md:text-2xl font-bold mb-0.5 sm:mb-1 md:mb-1.5 break-words">{title}</h3>
+    <p className="text-white/60 text-[9px] sm:text-sm md:text-base lg:text-lg leading-snug break-words">{subtitle}</p>
   </div>
 );
 
