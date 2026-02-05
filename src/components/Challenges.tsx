@@ -118,7 +118,7 @@ export default function Challenges() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.5, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
-                  className="mb-6 text-[24px] sm:text-[28px] md:text-[32px] font-bold text-white leading-tight"
+                  className="mb-6 text-[18px] sm:text-[28px] md:text-[32px] font-bold text-white leading-tight"
                 >
                   {currentChallenge.title}
                 </motion.h3>
@@ -132,7 +132,7 @@ export default function Challenges() {
                   <p className="text-[13px] sm:text-[14px] md:text-[15px] font-bold uppercase text-red-500 mb-2">
                     The Challenge
                   </p>
-                  <p className="text-base sm:text-lg md:text-lg lg:text-xl text-gray-200 leading-relaxed">{currentChallenge.problem}</p>
+                  <p className="text-sm sm:text-lg md:text-lg lg:text-xl text-gray-200 leading-relaxed">{currentChallenge.problem}</p>
                 </motion.div>
                 <motion.div 
                   className="mb-0"
@@ -144,7 +144,7 @@ export default function Challenges() {
                   <p className="text-[13px] sm:text-[14px] md:text-[15px] font-bold uppercase text-emerald-500 mb-2">
                     How Synovra Solves It
                   </p>
-                  <p className="text-base sm:text-lg md:text-lg lg:text-xl text-gray-200 leading-relaxed">{currentChallenge.solution}</p>
+                  <p className="text-sm sm:text-lg md:text-lg lg:text-xl text-gray-200 leading-relaxed">{currentChallenge.solution}</p>
                 </motion.div>
               </div>
             </motion.div>
