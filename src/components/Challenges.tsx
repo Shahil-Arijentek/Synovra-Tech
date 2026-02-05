@@ -95,7 +95,7 @@ export default function Challenges() {
             >
               {/* Image with border */}
               <motion.div 
-                className="w-full md:w-1/2 -mt-1 sm:mt-0"
+                className="w-full md:w-1/2 -mt-3 sm:mt-0"
                 initial={{ opacity: 0, x: -40, scale: 0.95 }}
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 exit={{ opacity: 0, x: -20, scale: 0.98 }}
@@ -112,7 +112,7 @@ export default function Challenges() {
               </motion.div>
 
               {/* Text content without box */}
-              <div className="flex w-full md:w-1/2 flex-col justify-center items-center md:items-start text-center md:text-left px-4 md:px-0 min-h-[250px] sm:min-h-[350px] md:h-[400px] overflow-hidden">
+              <div className="flex w-full md:w-1/2 flex-col justify-center items-center md:items-start text-center md:text-left px-4 md:px-0 min-h-[250px] sm:min-h-[350px] md:h-[400px] overflow-hidden -mt-2 sm:mt-0">
                 <motion.h3 
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -152,7 +152,7 @@ export default function Challenges() {
         </div>
         
         {/* Navigation Buttons */}
-        <div className="relative mt-2 sm:mt-6 flex items-center justify-center gap-4">
+        <div className="relative mt-1 sm:mt-6 flex items-center justify-center gap-4">
           <button
             type="button"
             onClick={handlePrev}
