@@ -1322,7 +1322,7 @@ export default function BatteryLifecycleScroll() {
 
               {/* Scene Title Label - Separate Container */}
               {activeSceneIndex !== null && (
-                <div className="absolute top-2 md:top-8 left-2 sm:left-4 md:right-16 z-20">
+                <div className="absolute top-2 md:top-8 right-2 sm:right-5 md:right-16 z-20">
                   <div
                     className="flex items-center justify-center backdrop-blur-sm h-[30px] sm:h-[35px] md:h-[75px] rounded-lg md:rounded-2xl px-2 sm:px-3 md:px-24 md:w-[750px] whitespace-nowrap"
                     style={{
