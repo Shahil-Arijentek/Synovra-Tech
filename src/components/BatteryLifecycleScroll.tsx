@@ -1276,7 +1276,7 @@ export default function BatteryLifecycleScroll() {
           {(currentSceneForFrame > 0 || (currentSceneForFrame === 0 && currentFrame >= 50)) && (
             <>
               {/* Progress Boxes Container */}
-              <div className="absolute top-2 md:top-8 left-4 sm:left-4 md:left-[38rem] z-20">
+              <div className="absolute top-2 md:top-8 left-5 sm:left-4 md:left-[38rem] z-20">
                 <div 
                   className="flex items-center gap-0.5 md:gap-2 backdrop-blur-sm h-[30px] md:h-[75px] rounded-md md:rounded-2xl px-1.5 md:px-5"
                   style={{
@@ -1322,7 +1322,7 @@ export default function BatteryLifecycleScroll() {
 
               {/* Scene Title Label - Separate Container */}
               {activeSceneIndex !== null && (
-                <div className="absolute top-2 md:top-8 right-3 sm:right-4 md:right-16 z-20">
+                <div className="absolute top-2 md:top-8 right-2 sm:right-4 md:right-16 z-20">
                   <div
                     className="flex items-center justify-center backdrop-blur-sm h-[30px] sm:h-[35px] md:h-[75px] rounded-lg md:rounded-2xl px-2 sm:px-3 md:px-24 md:w-[750px] whitespace-nowrap"
                     style={{
