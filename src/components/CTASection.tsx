@@ -6,7 +6,7 @@ export default function CTASection() {
   const isInView = useInView(contentRef, { once: true, amount: 0.3 })
 
   return (
-    <section className="relative w-full h-[450px] sm:h-[600px] md:h-[700px] overflow-hidden flex items-center justify-center">
+    <section className="relative w-full h-[450px] sm:h-[600px] md:h-[700px] overflow-hidden flex items-center justify-center bg-black">
       {/* Video Background */}
       <video
         autoPlay
@@ -17,9 +17,6 @@ export default function CTASection() {
       >
         <source src="/beforeyourecycle.webm" type="video/webm" />
       </video>
-
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/40" />
 
       {/* Content */}
       <div ref={contentRef} className="relative z-10 text-center px-4 sm:px-6 max-w-4xl mx-auto">
