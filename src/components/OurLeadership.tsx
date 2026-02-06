@@ -51,13 +51,13 @@ export default function OurLeadership() {
   return (
     <section className="relative w-full bg-black py-12 sm:py-16 md:py-20 px-4 sm:px-6">
       {/* Subtle grid background */}
-      <div className="absolute inset-0 opacity-10" 
-           style={{
-             backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',
-             backgroundSize: '30px 30px'
-           }}
+      <div className="absolute inset-0 opacity-10"
+        style={{
+          backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',
+          backgroundSize: '30px 30px'
+        }}
       />
-      
+
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Heading */}
         <motion.h2
@@ -102,8 +102,8 @@ export default function OurLeadership() {
         >
           <div className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden w-full max-w-[280px] sm:max-w-[320px] md:max-w-[350px] transform transition-transform hover:scale-105 duration-300">
             <div className="aspect-[3/4] bg-gradient-to-br from-gray-600 to-gray-800 relative">
-              <img 
-                src={ceo.image} 
+              <img
+                src={ceo.image}
                 alt={ceo.name}
                 className="w-full h-full object-cover"
                 onError={(e) => {
@@ -133,8 +133,8 @@ export default function OurLeadership() {
               className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden transform transition-transform hover:scale-105 duration-300 max-w-[280px] sm:max-w-[320px] md:max-w-[350px] mx-auto w-full"
             >
               <div className="aspect-[3/4] bg-gradient-to-br from-gray-600 to-gray-800 relative">
-                <img 
-                  src={leader.image} 
+                <img
+                  src={leader.image}
                   alt={leader.name}
                   className="w-full h-full object-cover"
                   onError={(e) => {
@@ -165,8 +165,8 @@ export default function OurLeadership() {
               className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden transform transition-transform hover:scale-105 duration-300 max-w-[280px] sm:max-w-[320px] md:max-w-[350px] mx-auto w-full"
             >
               <div className="aspect-[3/4] bg-gradient-to-br from-gray-600 to-gray-800 relative">
-                <img 
-                  src={leader.image} 
+                <img
+                  src={leader.image}
                   alt={leader.name}
                   className="w-full h-full object-cover"
                   onError={(e) => {
@@ -182,6 +182,9 @@ export default function OurLeadership() {
           ))}
         </div>
       </div>
+
+      {/* Bottom Fade Gradient */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#0d0d0d] to-transparent pointer-events-none z-20" />
     </section>
   )
 }
