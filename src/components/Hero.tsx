@@ -51,7 +51,7 @@ export default function Hero() {
         <p className="hero-top-text mb-6 sm:mb-8 md:mb-4">
           EVERY BATTERY DESERVES
         </p>
-        <div className="w-full mx-auto px-2 sm:px-4 md:px-6 lg:px-0 mt-3 sm:mt-0">
+        <div className="w-full mx-auto px-2 sm:px-4 md:px-6 lg:px-4 xl:px-0 mt-3 sm:mt-0">
           <div className="afterlife-scale-wrapper">
             <p
               className="afterlife-animation font-normal tracking-[0.02em] leading-none uppercase relative z-0"
@@ -62,7 +62,7 @@ export default function Hero() {
           </div>
 
           <div className="relative -mt-4 sm:-mt-[20px] md:-mt-[40px] lg:-mt-[80px] xl:-mt-[130px] flex justify-center items-center z-10 pointer-events-none">
-            <div className="w-full sm:w-[92%] md:w-[88%] lg:w-[82%] xl:w-[1400px] max-w-full scale-[1.1] sm:scale-[1.2] md:scale-[1.2] lg:scale-[1.05] xl:scale-100 origin-center flex justify-center items-center">
+            <div className="w-full sm:w-[92%] md:w-[88%] lg:w-[90%] xl:w-[1400px] max-w-full scale-[1.1] sm:scale-[1.2] md:scale-[1.2] lg:scale-[1.05] xl:scale-100 origin-center flex justify-center items-center">
               <video
                 ref={videoRef}
                 className="w-full h-auto object-contain mix-blend-screen"

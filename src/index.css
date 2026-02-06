@@ -111,8 +111,23 @@
   }
 }
 
-/* Desktop (1024px and up) */
-@media (min-width: 1024px) {
+/* Laptop (1024px - 1439px) */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .hero-top-text {
+    font-size: clamp(42px, 4.5vw, 54px);
+    line-height: 1.37;
+    letter-spacing: 1.5px;
+    width: 100%;
+    max-width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    transform: none;
+    padding: 0 20px;
+  }
+}
+
+/* Desktop (1440px and up) */
+@media (min-width: 1440px) {
   .hero-top-text {
     font-size: 54px;
     line-height: 74.192px;
@@ -153,8 +168,15 @@
   }
 }
 
-/* Desktop (1024px and up) */
-@media (min-width: 1024px) {
+/* Laptop (1024px - 1439px) */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .afterlife-scale-wrapper {
+    transform: scaleY(1.44);
+  }
+}
+
+/* Desktop (1440px and up) */
+@media (min-width: 1440px) {
   .afterlife-scale-wrapper {
     transform: scaleY(1.432);
   }
@@ -234,18 +256,19 @@
   }
 }
 
-/* Desktop (1024px - 1279px) */
-@media (min-width: 1024px) and (max-width: 1279px) {
+/* Laptop (1024px - 1439px) */
+@media (min-width: 1024px) and (max-width: 1439px) {
   .afterlife-animation {
-    font-size: clamp(160px, 11vw, 190px);
+    font-size: clamp(150px, 10vw, 180px);
     letter-spacing: -0.005em;
     width: 100%;
-    max-width: 1400px;
+    max-width: 95%;
+    padding: 0 20px;
   }
 }
 
-/* Large desktop (1280px and up) */
-@media (min-width: 1280px) {
+/* Desktop (1440px and up) */
+@media (min-width: 1440px) {
   .afterlife-animation {
     width: 1400px;
     height: 250px;
