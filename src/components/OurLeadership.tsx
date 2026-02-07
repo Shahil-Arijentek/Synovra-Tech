@@ -67,7 +67,7 @@ export default function OurLeadership() {
           transition={{
             duration: 1.2,
             delay: 0.3,
-            ease: [0.19, 1, 0.22, 1]
+            ease: [0.25, 0.1, 0.25, 1]
           }}
           className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-4 sm:mb-6"
         >
@@ -79,9 +79,9 @@ export default function OurLeadership() {
           initial={{ opacity: 0, y: 40 }}
           animate={isHeadingInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
           transition={{
-            duration: 1.2,
-            delay: 0.7,
-            ease: [0.19, 1, 0.22, 1]
+            duration: 1.5,
+            delay: 0.9,
+            ease: [0.25, 0.1, 0.25, 1]
           }}
           className="text-sm sm:text-base md:text-lg text-gray-400 text-center mb-10 sm:mb-12 md:mb-16 max-w-3xl mx-auto px-2"
         >
@@ -94,23 +94,31 @@ export default function OurLeadership() {
           initial={{ opacity: 0, y: 40 }}
           animate={isCeoInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
           transition={{
-            duration: 1.2,
-            delay: 0.3,
-            ease: [0.19, 1, 0.22, 1]
+            duration: 1.5,
+            delay: 0.5,
+            ease: [0.25, 0.1, 0.25, 1]
           }}
           className="flex justify-center mb-8 sm:mb-10 md:mb-12"
         >
-          <div className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden w-full max-w-[17.5rem] sm:max-w-[20rem] md:max-w-[21.88rem] transform transition-transform hover:scale-105 duration-300">
-            <div className="aspect-[3/4] bg-gradient-to-br from-gray-600 to-gray-800 relative">
-              <img
+          <div className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden w-full max-w-[20rem] sm:max-w-[22rem] md:max-w-[24rem] transform transition-transform hover:scale-105 duration-300">
+            <motion.div
+              className="aspect-[3/4] bg-gradient-to-br from-gray-600 to-gray-800 relative overflow-hidden"
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={isCeoInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.97 }}
+              transition={{ duration: 1.2, delay: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+            >
+              <motion.img
                 src={ceo.image}
                 alt={ceo.name}
                 className="w-full h-full object-cover"
+                initial={{ opacity: 0, scale: 1.03 }}
+                animate={isCeoInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.03 }}
+                transition={{ duration: 1.1, delay: 0.9, ease: [0.25, 0.1, 0.25, 1] }}
                 onError={(e) => {
                   e.currentTarget.style.display = 'none'
                 }}
               />
-            </div>
+            </motion.div>
             <div className="p-4 sm:p-5 text-center">
               <h3 className="text-lg sm:text-xl font-semibold text-white mb-1 sm:mb-2">{ceo.name}</h3>
               <p className="text-xs sm:text-sm text-[#FF6B35] font-medium uppercase">{ceo.title}</p>
@@ -119,29 +127,37 @@ export default function OurLeadership() {
         </motion.div>
 
         {/* Leadership Grid - Responsive columns */}
-        <div ref={teamRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 mb-4 sm:mb-5 md:mb-6 max-w-6xl mx-auto">
+        <div ref={teamRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 mb-4 sm:mb-5 md:mb-6 max-w-7xl mx-auto">
           {leadership.slice(0, 3).map((leader, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 40 }}
               animate={isTeamInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
               transition={{
-                duration: 1.2,
-                delay: index * 0.15,
-                ease: [0.19, 1, 0.22, 1]
+                duration: 1.5,
+                delay: index * 0.22,
+                ease: [0.25, 0.1, 0.25, 1]
               }}
-              className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden transform transition-transform hover:scale-105 duration-300 max-w-[17.5rem] sm:max-w-[20rem] md:max-w-[21.88rem] mx-auto w-full"
+              className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden transform transition-transform hover:scale-105 duration-300 max-w-[20rem] sm:max-w-[22rem] md:max-w-[24rem] mx-auto w-full"
             >
-              <div className="aspect-[3/4] bg-gradient-to-br from-gray-600 to-gray-800 relative">
-                <img
+              <motion.div
+                className="aspect-[3/4] bg-gradient-to-br from-gray-600 to-gray-800 relative overflow-hidden"
+                initial={{ opacity: 0, scale: 0.97 }}
+                animate={isTeamInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.97 }}
+                transition={{ duration: 1.1, delay: index * 0.22 + 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+              >
+                <motion.img
                   src={leader.image}
                   alt={leader.name}
                   className="w-full h-full object-cover"
+                  initial={{ opacity: 0, scale: 1.03 }}
+                  animate={isTeamInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.03 }}
+                  transition={{ duration: 1, delay: index * 0.22 + 0.5, ease: [0.25, 0.1, 0.25, 1] }}
                   onError={(e) => {
                     e.currentTarget.style.display = 'none'
                   }}
                 />
-              </div>
+              </motion.div>
               <div className="p-3 sm:p-4 text-center">
                 <h3 className="text-base sm:text-lg font-semibold text-white mb-1">{leader.name}</h3>
                 <p className="text-xs text-[#FF6B35] font-medium uppercase leading-tight">{leader.title}</p>
@@ -151,29 +167,37 @@ export default function OurLeadership() {
         </div>
 
         {/* Second Row - Responsive columns */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 max-w-7xl mx-auto">
           {leadership.slice(3, 6).map((leader, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 40 }}
               animate={isTeamInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
               transition={{
-                duration: 1.2,
-                delay: (index + 3) * 0.15,
-                ease: [0.19, 1, 0.22, 1]
+                duration: 1.5,
+                delay: (index + 3) * 0.22,
+                ease: [0.25, 0.1, 0.25, 1]
               }}
-              className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden transform transition-transform hover:scale-105 duration-300 max-w-[17.5rem] sm:max-w-[20rem] md:max-w-[21.88rem] mx-auto w-full"
+              className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden transform transition-transform hover:scale-105 duration-300 max-w-[20rem] sm:max-w-[22rem] md:max-w-[24rem] mx-auto w-full"
             >
-              <div className="aspect-[3/4] bg-gradient-to-br from-gray-600 to-gray-800 relative">
-                <img
+              <motion.div
+                className="aspect-[3/4] bg-gradient-to-br from-gray-600 to-gray-800 relative overflow-hidden"
+                initial={{ opacity: 0, scale: 0.97 }}
+                animate={isTeamInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.97 }}
+                transition={{ duration: 1.1, delay: (index + 3) * 0.22 + 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+              >
+                <motion.img
                   src={leader.image}
                   alt={leader.name}
                   className="w-full h-full object-cover"
+                  initial={{ opacity: 0, scale: 1.03 }}
+                  animate={isTeamInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.03 }}
+                  transition={{ duration: 1, delay: (index + 3) * 0.22 + 0.5, ease: [0.25, 0.1, 0.25, 1] }}
                   onError={(e) => {
                     e.currentTarget.style.display = 'none'
                   }}
                 />
-              </div>
+              </motion.div>
               <div className="p-3 sm:p-4 text-center">
                 <h3 className="text-base sm:text-lg font-semibold text-white mb-1">{leader.name}</h3>
                 <p className="text-xs text-[#FF6B35] font-medium uppercase leading-tight">{leader.title}</p>

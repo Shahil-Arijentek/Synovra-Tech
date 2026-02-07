@@ -5,6 +5,8 @@ import AboutUsHero from '../components/AboutUsHero'
 
 // Below-the-fold components - lazy load
 const WhatWeStandFor = lazy(() => import('../components/WhatWeStandFor'))
+const WhatSynovraIsBuilding = lazy(() => import('../components/WhatSynovraIsBuilding'))
+const GlobalPresence = lazy(() => import('../components/GlobalPresence'))
 const OurLeadership = lazy(() => import('../components/OurLeadership'))
 const CTASection = lazy(() => import('../components/CTASection'))
 
@@ -46,6 +48,14 @@ export default function AboutUs() {
       {/* Below-the-fold: Lazy load */}
       <Suspense fallback={<SectionLoader />}>
         <WhatWeStandFor />
+      </Suspense>
+      
+      <Suspense fallback={<SectionLoader />}>
+        <WhatSynovraIsBuilding />
+      </Suspense>
+      
+      <Suspense fallback={<SectionLoader />}>
+        <GlobalPresence />
       </Suspense>
       
       <Suspense fallback={<SectionLoader />}>
