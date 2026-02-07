@@ -211,7 +211,7 @@ export default function SystemOutcomes() {
 
                     <div className="flex-1 overflow-hidden">
                         {/* Main Grid Layout */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 max-w-7xl mx-auto h-full">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 max-w-7xl lg:max-w-6xl 2xl:max-w-7xl mx-auto h-full">
 
                             {/* Left Column */}
                             <div className={`${activeTab === 0 ? "flex" : "hidden"} md:flex flex-col gap-3 md:gap-6 justify-start pt-1 md:pt-8`}>

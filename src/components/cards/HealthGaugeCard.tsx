@@ -4,9 +4,10 @@ interface HealthGaugeCardProps {
   value: string
   video?: string
   width?: string
+  compactLaptop?: boolean
 }
 
-export default function HealthGaugeCard({ value, video = '99.mp4', width = '420px' }: HealthGaugeCardProps) {
+export default function HealthGaugeCard({ value, video = '99.mp4', width = '420px', compactLaptop }: HealthGaugeCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [hasPlayed, setHasPlayed] = useState(false)
@@ -40,7 +41,7 @@ export default function HealthGaugeCard({ value, video = '99.mp4', width = '420p
   return (
     <div 
       ref={containerRef}
-      className={`backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 ${width === '420px' ? 'h-[10.94rem] sm:h-[11.56rem] md:h-[15rem] w-[18.75rem] sm:w-[20rem] md:w-[26.25rem]' : 'h-[9.375rem] sm:h-[10rem] md:h-[15rem] w-[9.375rem] sm:w-[10rem] md:w-[12.5rem]'} shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)]`}
+      className={`backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 ${width === '420px' ? `h-[10.94rem] sm:h-[11.56rem] md:h-[15rem] w-[18.75rem] sm:w-[20rem] md:w-[26.25rem] ${compactLaptop ? 'lg:h-[12.5rem]' : ''}` : 'h-[9.375rem] sm:h-[10rem] md:h-[15rem] w-[9.375rem] sm:w-[10rem] md:w-[12.5rem]'} shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)]`}
     >
       {/* Container for overlapping video and text */}
       <div className="relative w-full h-full overflow-hidden">
