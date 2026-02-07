@@ -44,7 +44,7 @@ export default function ProofNotPromises() {
   return (
     <div className={`relative overflow-hidden md:overflow-visible transition-opacity duration-500 ${isMounted ? 'opacity-100' : 'opacity-0'}`} style={{ marginTop: '-3200px' }}>
       <section ref={sectionRef} className="py-8 md:py-12 px-4 sm:px-6 md:px-8 pb-32 md:pb-12 font-sans text-white sticky top-0 z-[105] overflow-hidden md:overflow-visible" style={{ backgroundColor: '#0d0d0d' }}>
-        <div className="max-w-[1400px] mx-auto overflow-hidden md:overflow-visible">
+        <div className="max-w-[87.5rem] mx-auto overflow-hidden md:overflow-visible">
         {/* Header */}
         <div ref={headingRef} className="text-center mb-6 md:mb-10">
           <motion.h2
@@ -78,9 +78,9 @@ export default function ProofNotPromises() {
           {/* Recycling Only */}
           <div>
             <h3 className="text-base md:text-lg font-semibold mb-3 md:mb-4 px-2">Recycling Only</h3>
-            <div className="w-full bg-[#0d0d0d] rounded-[12px] overflow-hidden p-[2px]">
+            <div className="w-full bg-[#0d0d0d] rounded-[0.75rem] overflow-hidden p-[0.125rem]">
               <motion.div
-                className="bg-[#FF6B1A] rounded-[10px] p-4 md:p-6 h-full flex items-center"
+                className="bg-[#FF6B1A] rounded-[0.625rem] p-4 md:p-6 h-full flex items-center"
                 initial="initial"
                 animate={isInView ? "animate" : "initial"}
                 variants={barVariants}
@@ -95,9 +95,9 @@ export default function ProofNotPromises() {
           {/* Revival First, Then Recycle */}
           <div>
             <h3 className="text-base md:text-lg font-semibold mb-3 md:mb-4 px-2">Revival First, Then Recycle</h3>
-            <div className="w-full bg-[#0d0d0d] rounded-[12px] overflow-hidden p-[2px]">
+            <div className="w-full bg-[#0d0d0d] rounded-[0.75rem] overflow-hidden p-[0.125rem]">
               <motion.div
-                className="bg-[#FF6B1A] rounded-[10px] p-4 md:p-6 h-full flex items-center"
+                className="bg-[#FF6B1A] rounded-[0.625rem] p-4 md:p-6 h-full flex items-center"
                 initial="initial"
                 animate={isInView ? "animate" : "initial"}
                 variants={shortBarVariants}

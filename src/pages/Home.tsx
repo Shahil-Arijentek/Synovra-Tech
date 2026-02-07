@@ -20,7 +20,7 @@ const DecisionJustification = lazy(() => import('../components/DecisionJustifica
 
 // Loading fallback component - Simple dual ring pattern
 const SectionLoader = () => (
-  <div className="min-h-[400px] flex items-center justify-center bg-black">
+  <div className="min-h-[25rem] flex items-center justify-center bg-black">
     <div className="relative w-16 h-16">
       {/* Outer rotating ring */}
       <div className="absolute inset-0 border-4 border-transparent border-t-[#ff6b1a] border-r-[#ff6b1a] rounded-full animate-spin" />

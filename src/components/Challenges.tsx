@@ -69,7 +69,7 @@ export default function Challenges() {
             delay: 0.7,
             ease: [0.19, 1, 0.22, 1]
           }}
-          className="max-w-[781px] mx-auto font-['Arial'] text-[#9CA3AF] text-sm sm:text-base md:text-base lg:text-lg"
+          className="max-w-[48.81rem] mx-auto font-['Arial'] text-[#9CA3AF] text-sm sm:text-base md:text-base lg:text-lg"
         >
           We eliminate the cost, risk, and unpredictability from your battery afterlife.
         </motion.p>
@@ -83,7 +83,7 @@ export default function Challenges() {
         transition={{ duration: 0.8, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
         className="relative flex flex-col items-center px-4 sm:px-6 md:px-8 overflow-hidden"
       >
-        <div className="w-full max-w-[1200px]">
+        <div className="w-full max-w-[75rem]">
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={currentIndex}
@@ -102,7 +102,7 @@ export default function Challenges() {
                 transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
               >
                 <div
-                  className="w-full h-[300px] sm:h-[350px] md:h-[400px] rounded-[20px] border-2 border-black overflow-hidden shadow-2xl"
+                  className="w-full h-[18.75rem] sm:h-[21.88rem] md:h-[25rem] rounded-[1.25rem] border-2 border-black overflow-hidden shadow-2xl"
                   style={{
                     backgroundImage: `url(${currentChallenge.image})`,
                     backgroundSize: 'cover',
@@ -112,13 +112,13 @@ export default function Challenges() {
               </motion.div>
 
               {/* Text content without box */}
-              <div className="flex w-full md:w-1/2 flex-col justify-center items-center md:items-start text-center md:text-left px-4 md:px-0 min-h-[250px] sm:min-h-[350px] md:h-[400px] overflow-hidden -mt-2 sm:mt-0">
+              <div className="flex w-full md:w-1/2 flex-col justify-center items-center md:items-start text-center md:text-left px-4 md:px-0 min-h-[15.63rem] sm:min-h-[21.88rem] md:h-[25rem] overflow-hidden -mt-2 sm:mt-0">
                 <motion.h3 
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.5, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
-                  className="mb-3 sm:mb-6 text-[15px] sm:text-[28px] md:text-[32px] font-bold text-white leading-tight"
+                  className="mb-3 sm:mb-6 text-[0.9375rem] sm:text-[1.75rem] md:text-[2rem] font-bold text-white leading-tight"
                 >
                   {currentChallenge.title}
                 </motion.h3>
@@ -129,7 +129,7 @@ export default function Challenges() {
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.5, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
                 >
-                  <p className="text-[11px] sm:text-[14px] md:text-[15px] font-bold uppercase text-red-500 mb-1 sm:mb-2">
+                  <p className="text-[0.6875rem] sm:text-[0.875rem] md:text-[0.9375rem] font-bold uppercase text-red-500 mb-1 sm:mb-2">
                     The Challenge
                   </p>
                   <p className="text-xs sm:text-lg md:text-lg lg:text-xl text-gray-200 leading-relaxed">{currentChallenge.problem}</p>
@@ -141,7 +141,7 @@ export default function Challenges() {
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.5, delay: 0.3, ease: [0.19, 1, 0.22, 1] }}
                 >
-                  <p className="text-[11px] sm:text-[14px] md:text-[15px] font-bold uppercase text-emerald-500 mb-1 sm:mb-2">
+                  <p className="text-[0.6875rem] sm:text-[0.875rem] md:text-[0.9375rem] font-bold uppercase text-emerald-500 mb-1 sm:mb-2">
                     How Synovra Solves It
                   </p>
                   <p className="text-xs sm:text-lg md:text-lg lg:text-xl text-gray-200 leading-relaxed">{currentChallenge.solution}</p>

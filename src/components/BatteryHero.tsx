@@ -258,12 +258,11 @@ export default function BatteryHero() {
           style={{ opacity: stage1ExitOpacity, scale: stage1ExitScale, y: stage1ExitY, filter: stage1ExitFilter }}
           className="absolute inset-0 flex items-center justify-center z-10 px-4"
         >
-          <div className="max-w-[1400px] mx-auto text-center">
+          <div className="max-w-[87.5rem] mx-auto text-center">
             <h1
-              className="text-white text-center max-w-[1000px] mx-auto"
+              className="text-white text-center max-w-[62.5rem] mx-auto text-[clamp(1.75rem,4vw,2.75rem)] lg:text-[clamp(1.75rem,3.25vw,2.25rem)]"
               style={{
                 fontFamily: 'Arial, sans-serif',
-                fontSize: 'clamp(32px, 5vw, 62px)',
                 fontWeight: 900,
                 lineHeight: '120%',
                 letterSpacing: '-2.4px'

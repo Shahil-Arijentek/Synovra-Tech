@@ -395,7 +395,7 @@ export default function BatteryLifecycleScroll() {
         if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-12'
         if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-12'
         if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-[4rem] top-[38%] sm:top-[40%] md:top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-[4rem] top-[68%] sm:top-[70%] md:top-[41rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-[4rem] top-[68%] sm:top-[70%] md:top-[41rem] lg:top-[27rem] 2xl:top-[41rem]'
       } else if (sceneIndex === 1) {
         // Scene 2 positions
         if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-12'
@@ -491,6 +491,7 @@ export default function BatteryLifecycleScroll() {
               value={cardData.value} 
               video={sceneIndex === 5 ? '98.mp4' : '99.mp4'}
               width={sceneIndex === 5 ? '200px' : '420px'}
+              compactLaptop={sceneIndex === 0}
             />
           </div>
         )
@@ -502,7 +503,7 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <SulphationCard value={cardData.value} status={cardData.status} />
+            <SulphationCard value={cardData.value} status={cardData.status} compactLaptop={sceneIndex === 0} />
           </div>
         )
       case 'sulphation-detected':
@@ -1278,7 +1279,7 @@ export default function BatteryLifecycleScroll() {
               {/* Progress Boxes Container */}
               <div className="absolute top-2 md:top-8 left-5 sm:left-4 md:left-[38rem] z-20">
                 <div 
-                  className="flex items-center gap-0.5 md:gap-2 backdrop-blur-sm h-[30px] md:h-[75px] rounded-md md:rounded-2xl px-1.5 md:px-5"
+                  className="flex items-center gap-0.5 md:gap-2 backdrop-blur-sm h-[1.875rem] md:h-[4.688rem] rounded-md md:rounded-2xl px-1.5 md:px-5"
                   style={{
                     border: '1px solid rgba(255, 255, 255, 0.10)',
                     background: 'rgba(0, 0, 0, 0.4)',
@@ -1324,14 +1325,14 @@ export default function BatteryLifecycleScroll() {
               {activeSceneIndex !== null && (
                 <div className="absolute top-2 md:top-8 right-3 sm:right-6 md:right-16 z-20">
                   <div
-                    className="flex items-center justify-center backdrop-blur-sm h-[30px] sm:h-[35px] md:h-[75px] rounded-lg md:rounded-2xl px-2 sm:px-3 md:px-24 md:w-[750px] whitespace-nowrap"
+                    className="flex items-center justify-center backdrop-blur-sm h-[1.875rem] sm:h-[2.188rem] md:h-[4.688rem] rounded-lg md:rounded-2xl px-2 sm:px-3 md:px-24 md:w-[46.88rem] whitespace-nowrap"
                     style={{
                       border: '1px solid rgba(255, 255, 255, 0.10)',
                       background: 'rgba(0, 0, 0, 0.4)',
                       willChange: 'transform'
                     }}
                   >
-                    <p className="text-white/90 text-[7px] xs:text-[8px] sm:text-[9px] md:text-base font-['Arial',sans-serif] tracking-wide uppercase">
+                    <p className="text-white/90 text-[0.4375rem] xs:text-[0.5rem] sm:text-[0.5625rem] md:text-base lg:!text-[1.125rem] xl:!text-[1.25rem] font-['Arial',sans-serif] tracking-wide uppercase">
                       {sceneConfig[activeSceneIndex]?.title}
                     </p>
                   </div>

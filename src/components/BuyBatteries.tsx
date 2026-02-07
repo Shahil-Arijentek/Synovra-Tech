@@ -136,10 +136,10 @@ export default function BuyBatteries() {
         className="relative overflow-hidden bg-black px-6 py-12 md:py-20 text-center text-white"
       >
       <div
-        className="pointer-events-none absolute inset-x-0 top-12 mx-auto h-[620px] max-w-[1119px] bg-[linear-gradient(270deg,rgba(0,0,0,0)_0%,#000000_20.192%,#000000_76.923%,rgba(0,0,0,0)_100%)]"
+        className="pointer-events-none absolute inset-x-0 top-12 mx-auto h-[38.75rem] max-w-[69.94rem] bg-[linear-gradient(270deg,rgba(0,0,0,0)_0%,#000000_20.192%,#000000_76.923%,rgba(0,0,0,0)_100%)]"
         aria-hidden="true"
       />
-      <div className="relative mx-auto flex w-full max-w-[1119px] flex-col items-center gap-4 md:gap-6">
+      <div className="relative mx-auto flex w-full max-w-[69.94rem] flex-col items-center gap-4 md:gap-6">
         <div ref={headingRef} className="text-center">
           <motion.h2
             initial={{ opacity: 0, y: 40 }}
@@ -149,7 +149,7 @@ export default function BuyBatteries() {
               delay: 0.3,
               ease: [0.19, 1, 0.22, 1]
             }}
-            className="text-[32px] md:text-5xl lg:text-[60px] font-bold tracking-[-1px] md:tracking-[-1.5px] text-white leading-tight"
+            className="text-[2rem] md:text-5xl lg:text-[3.75rem] font-bold tracking-[-1px] md:tracking-[-1.5px] text-white leading-tight"
           >
             We Buy Batteries at Any Stage
           </motion.h2>
@@ -161,7 +161,7 @@ export default function BuyBatteries() {
               delay: 0.7,
               ease: [0.19, 1, 0.22, 1]
             }}
-            className="mt-3 text-[14px] md:text-[18px] font-bold leading-relaxed text-white/70"
+            className="mt-3 text-[0.875rem] md:text-[1.125rem] font-bold leading-relaxed text-white/70"
           >
             From pristine to scrap — all chemistries, all conditions, all ages.
           </motion.p>
@@ -173,7 +173,7 @@ export default function BuyBatteries() {
               delay: 1.1,
               ease: [0.19, 1, 0.22, 1]
             }}
-            className="text-[14px] md:text-[18px] font-bold leading-relaxed text-white/70"
+            className="text-[0.875rem] md:text-[1.125rem] font-bold leading-relaxed text-white/70"
           >
             One pickup. One fair payout. No sorting.
           </motion.p>
@@ -203,7 +203,7 @@ export default function BuyBatteries() {
                 activeStage === stage
                   ? 'text-[#ff6b1a] drop-shadow-[0_0_8px_rgba(255,107,26,0.6)]'
                   : 'text-[#595959] hover:text-[#888]'
-              } ${stage === 'new' ? 'text-[18px] md:text-[20px] font-bold' : 'text-[14px] md:text-[16px] font-bold'}`}
+              } ${stage === 'new' ? 'text-[1.125rem] md:text-[1.25rem] font-bold' : 'text-[0.875rem] md:text-[1rem] font-bold'}`}
               type="button"
               onClick={() => handleStageChange(stage)}
             >
@@ -217,7 +217,7 @@ export default function BuyBatteries() {
           initial={{ opacity: 0, y: 40 }}
           animate={isBatteryInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
           transition={{ duration: 1, delay: 0.3, ease: [0.19, 1, 0.22, 1] }}
-          className="pointer-events-none relative -mt-8 md:-mt-16 flex h-[300px] md:h-[560px] w-full items-center justify-center"
+          className="pointer-events-none relative -mt-8 md:-mt-16 flex h-[18.75rem] md:h-[35rem] w-full items-center justify-center"
         >
           <div className="relative h-full w-full">
             <motion.img
@@ -241,19 +241,19 @@ export default function BuyBatteries() {
         </motion.div>
       </div>
 
-        <div className="pointer-events-none absolute bottom-0 left-1/2 h-[200px] w-full md:w-[1460px] -translate-x-1/2 bg-gradient-to-t from-black from-[65%] to-transparent" />
+        <div className="pointer-events-none absolute bottom-0 left-1/2 h-[12.5rem] w-full md:w-[91.25rem] -translate-x-1/2 bg-gradient-to-t from-black from-[65%] to-transparent" />
         <motion.div 
           ref={bottomCardRef}
           initial={{ opacity: 0, y: 30 }}
           animate={isBottomCardInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
-          className="relative mx-auto mt-6 md:mt-10 flex w-full max-w-[649px] flex-col items-center gap-1 rounded-[10px] bg-black/60 backdrop-blur-sm border border-white/5 px-6 py-4 md:py-6 text-center"
+          className="relative mx-auto mt-6 md:mt-10 flex w-full max-w-[40.56rem] flex-col items-center gap-1 px-6 py-4 md:py-6 text-center"
         >
           <motion.p 
             initial={{ opacity: 0, y: 10 }}
             animate={isBottomCardInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
             transition={{ duration: 0.6, delay: 0.4, ease: [0.19, 1, 0.22, 1] }}
-            className="text-[18px] md:text-[20px] font-bold leading-tight text-white"
+            className="text-[1.125rem] md:text-[1.25rem] font-bold leading-tight text-white"
           >
             Healthy / Near New
           </motion.p>
@@ -261,26 +261,26 @@ export default function BuyBatteries() {
             initial={{ opacity: 0, y: 10 }}
             animate={isBottomCardInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
             transition={{ duration: 0.6, delay: 0.5, ease: [0.19, 1, 0.22, 1] }}
-            className="text-[13px] md:text-[14px] leading-relaxed text-white/60"
+            className="text-[0.8125rem] md:text-[0.875rem] leading-relaxed text-white/60"
           >
             High-performance batteries — we buy them too. No need to hold for resale.
           </motion.p>
         </motion.div>
       </section>
       <section className="bg-black px-6 pb-16 md:pb-20 text-white">
-        <div className="mx-auto flex w-full max-w-[1320px] justify-center">
+        <div className="mx-auto flex w-full max-w-[82.5rem] justify-center">
           <motion.div 
             ref={ctaSectionRef}
             initial={{ opacity: 0, y: 60 }}
             animate={isCtaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
             transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-            className="flex w-full max-w-[1180px] flex-col items-center gap-6 md:gap-8 rounded-[24px] border border-white/10 bg-black/80 backdrop-blur-sm px-6 py-10 md:px-12 md:py-[49px] text-center"
+            className="flex w-full max-w-[73.75rem] flex-col items-center gap-6 md:gap-8 rounded-[1.5rem] border border-white/10 bg-black/80 backdrop-blur-sm px-6 py-10 md:px-12 md:py-[3.063rem] text-center"
           >
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               animate={isCtaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.6, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
-              className="text-[18px] md:text-[20px] font-bold leading-tight text-white"
+              className="text-[1.125rem] md:text-[1.25rem] font-bold leading-tight text-white"
             >
               No Sorting. No Guesswork. No Missed Value.
             </motion.p>
@@ -288,7 +288,7 @@ export default function BuyBatteries() {
               initial={{ opacity: 0, y: 20 }}
               animate={isCtaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.6, delay: 0.3, ease: [0.19, 1, 0.22, 1] }}
-              className="max-w-[720px] text-[14px] md:text-[16px] font-medium md:font-bold leading-relaxed text-white/70"
+              className="max-w-[45rem] text-[0.875rem] md:text-[1rem] font-medium md:font-bold leading-relaxed text-white/70"
             >
               We collect mixed loads — any chemistry, age, or condition — so your team never spends
               time testing, grading, or preparing units.
@@ -302,14 +302,14 @@ export default function BuyBatteries() {
               <motion.button 
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="h-[52px] md:h-[58px] w-full sm:w-auto rounded-[4px] bg-[#ff6b1a] px-8 text-[15px] md:text-[16px] font-bold text-[#0d0d0d] transition-all duration-300 will-change-[box-shadow] hover:bg-[#ff6b1a]/90 shadow-[0_0_15px_rgba(255,107,26,0.4),0_0_30px_rgba(255,107,26,0.2)] hover:shadow-[0_0_20px_rgba(255,107,26,0.5),0_0_40px_rgba(255,107,26,0.25)]"
+                className="h-[3.25rem] md:h-[3.625rem] w-full sm:w-auto rounded-[0.25rem] bg-[#ff6b1a] px-8 text-[0.9375rem] md:text-[1rem] font-bold text-[#0d0d0d] transition-all duration-300 will-change-[box-shadow] hover:bg-[#ff6b1a]/90 shadow-[0_0_15px_rgba(255,107,26,0.4),0_0_30px_rgba(255,107,26,0.2)] hover:shadow-[0_0_20px_rgba(255,107,26,0.5),0_0_40px_rgba(255,107,26,0.25)]"
               >
                 Partner With Us
               </motion.button>
               <motion.button 
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="h-[52px] md:h-[58px] w-full sm:w-auto rounded-[4px] border border-white/20 bg-[#191919] px-8 text-[15px] md:text-[16px] font-bold text-white transition-colors hover:bg-white hover:text-black"
+                className="h-[3.25rem] md:h-[3.625rem] w-full sm:w-auto rounded-[0.25rem] border border-white/20 bg-[#191919] px-8 text-[0.9375rem] md:text-[1rem] font-bold text-white transition-colors hover:bg-white hover:text-black"
               >
                 Book a Pickup
               </motion.button>

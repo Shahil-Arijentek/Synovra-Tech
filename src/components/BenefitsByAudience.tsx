@@ -68,10 +68,10 @@ export default function BenefitsByAudience() {
     <section className={`relative flex w-full flex-col items-center justify-start bg-[#0d0d0d] overflow-hidden font-sans text-white z-[310] pt-8 pb-6 px-4 md:pt-12 md:pb-8 md:px-6 transition-opacity duration-500 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
       <BenefitsByAudienceHeading />
       
-      <div className="max-w-[1200px] mx-auto pb-3 md:pb-6">
+      <div className="max-w-[75rem] mx-auto pb-3 md:pb-6">
 
         {/* Cards Grid */}
-        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mx-auto max-w-[1300px]">
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mx-auto max-w-[81.25rem]">
           {benefitCards.map((card, index) => (
             <motion.div
               key={index}

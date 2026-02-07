@@ -52,7 +52,7 @@ export const BentoGrid = ({
   return (
     <div
       className={cn(
-        "grid grid-cols-1 md:grid-cols-3 gap-3 max-w-[1200px] mx-auto",
+        "grid grid-cols-1 md:grid-cols-3 gap-3 max-w-[75rem] mx-auto",
         className
       )}
     >
@@ -96,7 +96,7 @@ export const BentoGridItem = ({
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => setIsHovered(!isHovered)}
       className={cn(
-        "group/bento relative flex flex-col justify-end overflow-hidden rounded-3xl border border-white/10 bg-black min-h-[320px] md:min-h-[200px]",
+        "group/bento relative flex flex-col justify-end overflow-hidden rounded-3xl border border-white/10 bg-black min-h-[20rem] md:min-h-[12.5rem]",
         "will-change-transform transform-gpu cursor-pointer md:cursor-default",
         className
       )}
@@ -114,7 +114,7 @@ export const BentoGridItem = ({
 
       {/* The Transparent Glass Box - Custom Styled Box */}
       <motion.div
-        className="absolute bottom-4 left-4 right-4 z-10 p-4 md:p-5 overflow-hidden rounded-[12px] border border-[#262626]/60"
+        className="absolute bottom-4 left-4 right-4 z-10 p-4 md:p-5 overflow-hidden rounded-[0.75rem] border border-[#262626]/60"
         style={{
           background: "rgba(0, 0, 0, 0.7)",
           backdropFilter: "blur(5.2px)",
@@ -158,7 +158,7 @@ export const BentoGridItem = ({
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3, ease: "circOut" }}
               >
-                <p className="pt-2 text-[13px] md:text-[14px] leading-snug text-zinc-300 font-normal">
+                <p className="pt-2 text-[0.8125rem] md:text-[0.875rem] leading-snug text-zinc-300 font-normal">
                   {description}
                 </p>
               </motion.div>
@@ -180,7 +180,7 @@ export const PulseX = () => {
     <section className="relative overflow-hidden pt-8 pb-12 px-6 md:px-12 lg:pt-12 lg:pb-16" style={{ backgroundColor: '#0d0d0d' }}>
       {/* Fade to black gradient at bottom */}
       <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-black pointer-events-none z-10" />
-      <div className="relative mx-auto max-w-[1200px]">
+      <div className="relative mx-auto max-w-[75rem]">
         <div ref={headingRef} className="mb-6 md:mb-10 space-y-4 text-center">
 
           <motion.h2
@@ -225,7 +225,7 @@ export const PulseX = () => {
           </motion.p>
         </div>
 
-        <BentoGrid className="md:grid-rows-12 h-auto md:h-[650px] gap-4 md:gap-3">
+        <BentoGrid className="md:grid-rows-12 h-auto md:h-[40.63rem] gap-4 md:gap-3">
           {/* Item 0: Tall vertical card (Left) */}
           <BentoGridItem
             title={pulseXItems[0].title}

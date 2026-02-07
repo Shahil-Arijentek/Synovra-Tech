@@ -59,7 +59,7 @@ export default function WhatWeStandFor() {
                 delay: 1.1 + index * 0.15,
                 ease: [0.19, 1, 0.22, 1]
               }}
-              className="flex items-center justify-center gap-3 bg-black/80 border border-white/10 rounded-full px-6 py-3 sm:py-4 w-full sm:w-auto sm:flex-1 sm:min-w-[200px] md:min-w-[240px] hover:bg-black transition-colors"
+              className="flex items-center justify-center gap-3 bg-black/80 border border-white/10 rounded-full px-6 py-3 sm:py-4 w-full sm:w-auto sm:flex-1 sm:min-w-[12.5rem] md:min-w-[15rem] hover:bg-black transition-colors"
             >
               <div className="w-2 h-2 bg-[#FF6B35] rounded-full flex-shrink-0" />
               <span className="text-sm sm:text-base text-white/90 text-center whitespace-nowrap">{principle}</span>

@@ -100,7 +100,7 @@ export default function OurLeadership() {
           }}
           className="flex justify-center mb-8 sm:mb-10 md:mb-12"
         >
-          <div className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden w-full max-w-[280px] sm:max-w-[320px] md:max-w-[350px] transform transition-transform hover:scale-105 duration-300">
+          <div className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden w-full max-w-[17.5rem] sm:max-w-[20rem] md:max-w-[21.88rem] transform transition-transform hover:scale-105 duration-300">
             <div className="aspect-[3/4] bg-gradient-to-br from-gray-600 to-gray-800 relative">
               <img
                 src={ceo.image}
@@ -130,7 +130,7 @@ export default function OurLeadership() {
                 delay: index * 0.15,
                 ease: [0.19, 1, 0.22, 1]
               }}
-              className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden transform transition-transform hover:scale-105 duration-300 max-w-[280px] sm:max-w-[320px] md:max-w-[350px] mx-auto w-full"
+              className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden transform transition-transform hover:scale-105 duration-300 max-w-[17.5rem] sm:max-w-[20rem] md:max-w-[21.88rem] mx-auto w-full"
             >
               <div className="aspect-[3/4] bg-gradient-to-br from-gray-600 to-gray-800 relative">
                 <img
@@ -162,7 +162,7 @@ export default function OurLeadership() {
                 delay: (index + 3) * 0.15,
                 ease: [0.19, 1, 0.22, 1]
               }}
-              className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden transform transition-transform hover:scale-105 duration-300 max-w-[280px] sm:max-w-[320px] md:max-w-[350px] mx-auto w-full"
+              className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden transform transition-transform hover:scale-105 duration-300 max-w-[17.5rem] sm:max-w-[20rem] md:max-w-[21.88rem] mx-auto w-full"
             >
               <div className="aspect-[3/4] bg-gradient-to-br from-gray-600 to-gray-800 relative">
                 <img

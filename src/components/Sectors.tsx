@@ -143,7 +143,7 @@ export default function Sectors() {
     <>
       <section className="bg-black py-12 md:py-24 overflow-hidden relative font-['Poppins'] group">
         <div className="flex items-center justify-center">
-          <h2 className="relative text-[7vw] sm:text-[8vw] md:text-[100px] lg:text-[150px] font-black uppercase tracking-tighter leading-none text-center text-[#1a1a1a] opacity-60 whitespace-nowrap">
+          <h2 className="relative text-[7vw] sm:text-[8vw] md:text-[6.25rem] lg:text-[9.375rem] font-black uppercase tracking-tighter leading-none text-center text-[#1a1a1a] opacity-60 whitespace-nowrap">
             <span className="block">SECTORS WE SERVE</span>
             <span className="reveal-text absolute inset-0 block">
               SECTORS WE SERVE
@@ -182,11 +182,11 @@ export default function Sectors() {
           style={{ position: 'relative' }}
         >
           {/* Sticky wrapper for visible content on mobile */}
-          <div className="sticky top-0 h-screen lg:h-auto lg:relative flex w-full max-w-[1680px] flex-col lg:flex-row lg:items-start lg:gap-16 px-6 mx-auto overflow-hidden lg:overflow-visible">
+          <div className="sticky top-0 h-screen lg:h-auto lg:relative flex w-full max-w-[105rem] flex-col lg:flex-row lg:items-start lg:gap-16 px-6 mx-auto overflow-hidden lg:overflow-visible">
 
             {/* Image - Perfect sticky at top on mobile */}
             <div className="w-full lg:flex-[3.0] z-40 mb-2 lg:mb-0 order-1 lg:order-2 mt-28 lg:mt-0">
-              <div className="relative h-[250px] sm:h-[400px] lg:h-[760px] overflow-hidden rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/5 bg-black">
+              <div className="relative h-[15.63rem] sm:h-[25rem] lg:h-[47.5rem] overflow-hidden rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/5 bg-black">
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={images[activeIndex]}
@@ -204,7 +204,7 @@ export default function Sectors() {
             </div>
 
             {/* Text Content Area */}
-            <div className="w-full lg:flex-1 lg:max-w-[360px] order-2 lg:order-1 flex flex-col">
+            <div className="w-full lg:flex-1 lg:max-w-[22.5rem] order-2 lg:order-1 flex flex-col">
 
               {/* Desktop View: Static List */}
               <div className="hidden lg:flex flex-col space-y-6">
@@ -241,7 +241,7 @@ export default function Sectors() {
                     >
                       <div className="flex items-center">
                         <h3
-                          className={`text-[18px] md:text-[22px] font-black leading-tight tracking-tight md:tracking-[-1.5px] transition-colors duration-500 ${isActive ? "text-white" : "text-white/60"
+                          className={`text-[1.125rem] md:text-[1.375rem] font-black leading-tight tracking-tight md:tracking-[-1.5px] transition-colors duration-500 ${isActive ? "text-white" : "text-white/60"
                             }`}
                         >
                           {sector.title}
@@ -263,7 +263,7 @@ export default function Sectors() {
               </div>
 
               {/* Mobile View: Vertical Conveyor Belt Transition */}
-              <div className="block lg:hidden h-[360px] relative overflow-hidden mt-8">
+              <div className="block lg:hidden h-[22.5rem] relative overflow-hidden mt-8">
                 <motion.div
                   style={{ y: textTranslateY }}
                   className="flex flex-col gap-0"
@@ -276,24 +276,24 @@ export default function Sectors() {
                     return (
                       <div
                         key={index}
-                        className={`h-[120px] flex flex-col justify-start transition-all duration-700 ease-out py-4 ${isActive
+                        className={`h-[7.5rem] flex flex-col justify-start transition-all duration-700 ease-out py-4 ${isActive
                           ? "opacity-100 scale-100"
                           : isComingUp
                             ? "opacity-30 scale-95 origin-left"
                             : "opacity-0 scale-90"
                           }`}
                       >
-                        <h3 className="text-[20px] font-black leading-tight text-white tracking-tight">
+                        <h3 className="text-[1.25rem] font-black leading-tight text-white tracking-tight">
                           {sector.title}
                         </h3>
                         <p className="text-sm sm:text-base md:text-base lg:text-lg text-white/70 leading-relaxed mt-2 max-w-[90%]">
                           {sector.subtitle}
                         </p>
                         <div className="relative mt-2">
-                          <div className="absolute h-[1px] w-full bg-white/5" />
+                          <div className="absolute h-[0.0625rem] w-full bg-white/5" />
                           {isActive && (
                             <motion.div
-                              className="absolute h-[2px] w-[120px] bg-[linear-gradient(90deg,#ff5e00_0%,rgba(255,94,0,0.6)_55%,rgba(255,94,0,0)_100%)] z-10"
+                              className="absolute h-[0.125rem] w-[7.5rem] bg-[linear-gradient(90deg,#ff5e00_0%,rgba(255,94,0,0.6)_55%,rgba(255,94,0,0)_100%)] z-10"
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                               transition={{ duration: 0.3 }}

@@ -97,7 +97,7 @@ export default function ProofInAction() {
               delay: 0.3,
               ease: [0.19, 1, 0.22, 1]
             }}
-            className="text-center text-[32px] md:text-5xl font-bold leading-tight"
+            className="text-center text-[2rem] md:text-5xl font-bold leading-tight"
           >
             Proven in Live Environments
           </motion.h2>
@@ -123,7 +123,7 @@ export default function ProofInAction() {
           transition={{ duration: 1.2, delay: 1.3, ease: [0.19, 1, 0.22, 1] }}
           className="mt-8 md:mt-12 w-full flex flex-col items-center"
         >
-            <div className="w-full overflow-hidden rounded-[20px] md:rounded-[24px] border border-white/5 bg-black shadow-[0_12px_32px_rgba(0,0,0,0.35)]">
+            <div className="w-full lg:max-w-5xl lg:mx-auto overflow-hidden rounded-[1.25rem] md:rounded-[1.5rem] border border-white/5 bg-black shadow-[0_12px_32px_rgba(0,0,0,0.35)]">
               <AnimatePresence mode="wait" custom={direction}>
                 <motion.div
                   key={currentIndex}
@@ -136,12 +136,12 @@ export default function ProofInAction() {
                     duration: 0.7, 
                     ease: [0.19, 1, 0.22, 1]
                   }}
-                  className="overflow-hidden rounded-[20px] md:rounded-[24px]"
+                  className="overflow-hidden rounded-[1.25rem] md:rounded-[1.5rem]"
                 >
                   <img
                     src={currentSlide.image}
                     alt={currentSlide.alt}
-                    className="block aspect-[4/3] md:aspect-[16/8] lg:aspect-[16/7] w-full rounded-[20px] md:rounded-[24px] object-cover"
+                    className="block aspect-[4/3] md:aspect-[16/8] lg:aspect-[16/7] w-full rounded-[1.25rem] md:rounded-[1.5rem] object-cover"
                   />
                 </motion.div>
               </AnimatePresence>

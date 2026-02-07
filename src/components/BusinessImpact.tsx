@@ -34,7 +34,7 @@ export default function BusinessImpact() {
 
   return (
     <section className={`bg-[#0d0d0d] py-12 md:py-20 px-4 sm:px-6 md:px-8 font-sans text-white relative z-[310] transition-opacity duration-500 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
-      <div className="max-w-[1400px] mx-auto">
+      <div className="max-w-[87.5rem] mx-auto">
         {/* Header */}
         <motion.h2
           ref={headingRef}

@@ -180,7 +180,7 @@ export default function LoadingSpinner({ progress: externalProgress }: LoadingSp
             </defs>
           </svg>
           
-          <span className="text-[10px] text-white/30 font-mono uppercase tracking-wider">
+          <span className="text-[0.625rem] text-white/30 font-mono uppercase tracking-wider">
             Synovra
           </span>
         </div>
