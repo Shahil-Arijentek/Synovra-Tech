@@ -61,7 +61,7 @@ function LocationCard({
   bullets,
   address,
   imageFirst,
-  index,
+  index: _index,
 }: {
   image: string
   label: string
@@ -80,7 +80,7 @@ function LocationCard({
       className="relative aspect-[4/3] min-h-[240px] rounded-xl overflow-hidden bg-neutral-900"
       initial={{ opacity: 0, scale: 0.96 }}
       animate={isCardInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.96 }}
-      transition={{ duration: 1.1, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
+      transition={{ duration: 1.1, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] as const }}
     >
       <motion.img
         src={image}
@@ -88,13 +88,13 @@ function LocationCard({
         className="absolute inset-0 w-full h-full object-cover"
         initial={{ opacity: 0, scale: 1.05 }}
         animate={isCardInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.05 }}
-        transition={{ duration: 1.2, delay: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+        transition={{ duration: 1.2, delay: 0.25, ease: [0.25, 0.1, 0.25, 1] as const }}
       />
       <motion.div
         className="absolute bottom-3 left-3 flex items-center gap-2 rounded-full bg-black/70 px-3 py-2"
         initial={{ opacity: 0, x: -8 }}
         animate={isCardInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -8 }}
-        transition={{ duration: 0.9, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+        transition={{ duration: 0.9, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] as const }}
       >
         <img src="/aboutus/location.svg" alt="" className="w-5 h-5 shrink-0" aria-hidden />
         <span className="text-white text-base sm:text-lg font-medium whitespace-nowrap">{label}</span>
@@ -107,7 +107,7 @@ function LocationCard({
     visible: (i: number) => ({
       opacity: 1,
       x: 0,
-      transition: { duration: 0.9, delay: 0.2 + i * 0.1, ease: [0.25, 0.1, 0.25, 1] },
+      transition: { duration: 0.9, delay: 0.2 + i * 0.1, ease: [0.25, 0.1, 0.25, 1] as const },
     }),
   }
 
@@ -140,7 +140,7 @@ function LocationCard({
         {bullets.map((bullet, i) => (
           <motion.li
             key={bullet}
-            variants={{ hidden: { opacity: 0, x: 12 }, visible: { opacity: 1, x: 0, transition: { duration: 0.8, delay: 0.35 + i * 0.08, ease: [0.25, 0.1, 0.25, 1] } } }}
+            variants={{ hidden: { opacity: 0, x: 12 }, visible: { opacity: 1, x: 0, transition: { duration: 0.8, delay: 0.35 + i * 0.08, ease: [0.25, 0.1, 0.25, 1] as const } } }}
             className="text-white text-base sm:text-lg md:text-xl flex gap-2"
           >
             <span className="text-white shrink-0 mt-2 w-2 h-2 rounded-full bg-white" aria-hidden />
@@ -157,7 +157,7 @@ function LocationCard({
       </motion.p>
       <motion.div
         className="text-white text-base sm:text-lg md:text-xl leading-relaxed space-y-0.5"
-        variants={{ hidden: { opacity: 0, y: 8 }, visible: { opacity: 1, y: 0, transition: { duration: 0.9, delay: 0.75, ease: [0.25, 0.1, 0.25, 1] } } }}
+        variants={{ hidden: { opacity: 0, y: 8 }, visible: { opacity: 1, y: 0, transition: { duration: 0.9, delay: 0.75, ease: [0.25, 0.1, 0.25, 1] as const } } }}
       >
         {address.map((line) => (
           <p key={line}>{line}</p>
@@ -171,7 +171,7 @@ function LocationCard({
       ref={cardRef}
       initial={{ opacity: 0, y: 32 }}
       animate={isCardInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 32 }}
-      transition={{ duration: 1.1, ease: [0.25, 0.1, 0.25, 1] }}
+      transition={{ duration: 1.1, ease: [0.25, 0.1, 0.25, 1] as const }}
       className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center"
     >
       <div className={imageFirst ? '' : 'lg:order-2'}>{imageBlock}</div>
@@ -194,7 +194,7 @@ export default function GlobalPresence() {
         <motion.h2
           initial={{ opacity: 0, y: 24, scale: 0.98 }}
           animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 24, scale: 0.98 }}
-          transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] as const }}
           className="text-center text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 md:mb-6"
           style={{ fontFamily: 'Arial, sans-serif', lineHeight: 1.2, fontWeight: 700 }}
         >
@@ -204,7 +204,7 @@ export default function GlobalPresence() {
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-          transition={{ duration: 1.1, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{ duration: 1.1, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] as const }}
           className="text-center mx-auto mb-12 md:mb-16 text-base sm:text-lg max-w-2xl"
           style={{ color: SUBTITLE_COLOR }}
         >
