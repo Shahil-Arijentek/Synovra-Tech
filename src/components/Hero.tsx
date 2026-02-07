@@ -53,7 +53,7 @@ export default function Hero() {
             EVERY BATTERY DESERVES
           </p>
         </div>
-        <div className="w-full mx-auto px-3 sm:px-4 md:px-6 lg:px-4 xl:px-0 mt-3 sm:mt-0 lg:-mt-4 xl:-mt-10">
+        <div className="w-full mx-auto px-3 sm:px-4 md:px-6 lg:px-4 xl:px-0 mt-3 sm:mt-0 lg:-mt-4 xl:-mt-6">
           <div className="afterlife-scale-wrapper">
             <p
               className="afterlife-animation font-normal tracking-[0.02em] leading-none uppercase relative z-0 text-[clamp(2.5rem,11vw,4rem)] sm:text-[clamp(3.5rem,12vw,6rem)] md:text-[clamp(4.5rem,13vw,8.5rem)] lg:text-[clamp(5rem,13.75vw,11.75rem)]"
@@ -63,7 +63,7 @@ export default function Hero() {
             </p>
           </div>
 
-          <div className="relative -mt-4 max-[479px]:mt-0 sm:mt-0 sm:-mt-12 md:-mt-16 lg:-mt-[18rem] xl:-mt-[10rem] flex justify-center items-center z-10 pointer-events-none">
+          <div className="relative -mt-4 max-[479px]:mt-0 sm:mt-0 sm:-mt-12 md:-mt-16 lg:-mt-[18rem] xl:-mt-[11rem] flex justify-center items-center z-10 pointer-events-none">
             <div className="w-full sm:w-[92%] md:w-[88%] lg:w-[90%] xl:w-[87.5rem] max-w-full scale-[1.1] sm:scale-[1.2] md:scale-[1.2] lg:scale-[1.05] xl:scale-100 origin-center flex justify-center items-center">
               <video
                 ref={videoRef}
