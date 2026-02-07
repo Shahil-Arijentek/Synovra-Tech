@@ -1278,7 +1278,7 @@ export default function BatteryLifecycleScroll() {
               {/* Progress Boxes Container */}
               <div className="absolute top-2 md:top-8 left-5 sm:left-4 md:left-[38rem] z-20">
                 <div 
-                  className="flex items-center gap-0.5 md:gap-2 backdrop-blur-sm h-[30px] md:h-[75px] rounded-md md:rounded-2xl px-1.5 md:px-5"
+                  className="flex items-center gap-0.5 md:gap-2 backdrop-blur-sm h-[1.875rem] md:h-[4.688rem] rounded-md md:rounded-2xl px-1.5 md:px-5"
                   style={{
                     border: '1px solid rgba(255, 255, 255, 0.10)',
                     background: 'rgba(0, 0, 0, 0.4)',
@@ -1324,14 +1324,14 @@ export default function BatteryLifecycleScroll() {
               {activeSceneIndex !== null && (
                 <div className="absolute top-2 md:top-8 right-3 sm:right-6 md:right-16 z-20">
                   <div
-                    className="flex items-center justify-center backdrop-blur-sm h-[30px] sm:h-[35px] md:h-[75px] rounded-lg md:rounded-2xl px-2 sm:px-3 md:px-24 md:w-[750px] whitespace-nowrap"
+                    className="flex items-center justify-center backdrop-blur-sm h-[1.875rem] sm:h-[2.188rem] md:h-[4.688rem] rounded-lg md:rounded-2xl px-2 sm:px-3 md:px-24 md:w-[46.88rem] whitespace-nowrap"
                     style={{
                       border: '1px solid rgba(255, 255, 255, 0.10)',
                       background: 'rgba(0, 0, 0, 0.4)',
                       willChange: 'transform'
                     }}
                   >
-                    <p className="text-white/90 text-[7px] xs:text-[8px] sm:text-[9px] md:text-base font-['Arial',sans-serif] tracking-wide uppercase">
+                    <p className="text-white/90 text-[0.4375rem] xs:text-[0.5rem] sm:text-[0.5625rem] md:text-base font-['Arial',sans-serif] tracking-wide uppercase">
                       {sceneConfig[activeSceneIndex]?.title}
                     </p>
                   </div>

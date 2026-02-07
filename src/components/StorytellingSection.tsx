@@ -180,7 +180,7 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
                 delay: 0.3,
                 ease: [0.19, 1, 0.22, 1]
               }}
-              className="text-white mb-4 sm:mb-6 md:mb-12 px-4 text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed md:leading-[39px] max-w-[680px] break-words"
+              className="text-white mb-4 sm:mb-6 md:mb-12 px-4 text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed md:leading-[2.438rem] max-w-[42.5rem] break-words"
             >
               A global shift to a greener future is underway — the kind where the impossible is becoming everyday life.
             </motion.h2>
@@ -206,7 +206,7 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
           </div>
 
           <div ref={layer3Ref} className="absolute inset-0 flex flex-col items-center text-center opacity-0 mt-4 sm:mt-0">
-            <div className="flex flex-wrap justify-center items-center gap-x-2 md:gap-x-4 text-white/90 text-[10px] sm:text-xs md:text-sm font-semibold mb-4 sm:mb-6 md:mb-10 uppercase pointer-events-auto px-4 break-words">
+            <div className="flex flex-wrap justify-center items-center gap-x-2 md:gap-x-4 text-white/90 text-[0.625rem] sm:text-xs md:text-sm font-semibold mb-4 sm:mb-6 md:mb-10 uppercase pointer-events-auto px-4 break-words">
               <span>Zero-Liquid Discharge</span> <span className="text-white/40">•</span>
               <span>Serial-Linked Warranty</span> <span className="text-white/40 hidden sm:inline">•</span>
               <span className="hidden sm:inline">Chain-of-Custody</span> <span className="text-white/40 hidden md:inline">•</span>
@@ -214,7 +214,7 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
             </div>
             <div className="flex flex-wrap justify-center gap-2 sm:gap-2 md:gap-4 max-w-5xl pointer-events-auto mb-4 sm:mb-6 md:mb-8 px-4">
               {['One loop', 'Revival-first', 'Zero-Liquid-Discharge', '90% less CO₂', 'Material recovery', 'Recycle at end'].map((text, i) => (
-                <button key={i} className="px-3 sm:px-4 md:px-8 py-1.5 sm:py-2 md:py-3 bg-black/70 backdrop-blur-sm border border-white/20 rounded-full text-white text-[10px] sm:text-xs md:text-base font-semibold break-words">
+                <button key={i} className="px-3 sm:px-4 md:px-8 py-1.5 sm:py-2 md:py-3 bg-black/70 backdrop-blur-sm border border-white/20 rounded-full text-white text-[0.625rem] sm:text-xs md:text-base font-semibold break-words">
                   {text}
                 </button>
               ))}
@@ -228,9 +228,9 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
 };
 
 const ProblemCard: React.FC<{ title: string; subtitle: string }> = ({ title, subtitle }) => (
-  <div className="text-left p-1.5 sm:p-4 md:p-6 border border-red-500/30 bg-red-950/20 rounded-[10px] sm:rounded-[14px] shadow-2xl w-full max-w-[280px] sm:max-w-[380px] min-h-[55px] sm:min-h-[85px] md:min-h-[115px] mx-auto overflow-hidden">
-    <h3 className="text-[#FF6467] text-[10px] sm:text-base md:text-2xl font-bold mb-0.5 sm:mb-1 md:mb-1.5 break-words">{title}</h3>
-    <p className="text-white/60 text-[9px] sm:text-sm md:text-base lg:text-lg leading-snug break-words">{subtitle}</p>
+  <div className="text-left p-1.5 sm:p-4 md:p-6 border border-red-500/30 bg-red-950/20 rounded-[0.625rem] sm:rounded-[0.875rem] shadow-2xl w-full max-w-[17.5rem] sm:max-w-[23.75rem] min-h-[3.438rem] sm:min-h-[5.313rem] md:min-h-[7.188rem] mx-auto overflow-hidden">
+    <h3 className="text-[#FF6467] text-[0.625rem] sm:text-base md:text-2xl font-bold mb-0.5 sm:mb-1 md:mb-1.5 break-words">{title}</h3>
+    <p className="text-white/60 text-[0.5625rem] sm:text-sm md:text-base lg:text-lg leading-snug break-words">{subtitle}</p>
   </div>
 );
 

@@ -4,9 +4,9 @@ interface SealCardProps {
 
 export default function SealCard({ value }: SealCardProps) {
   return (
-    <div className="backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 w-[300px] sm:w-[320px] md:w-[420px] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)]">
+    <div className="backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 w-[18.75rem] sm:w-[20rem] md:w-[26.25rem] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)]">
       {/* Title */}
-      <div className="text-[#9CA3AF] text-[8px] md:text-[10px] font-['Arial',sans-serif] tracking-wider mb-3 md:mb-4">
+      <div className="text-[#9CA3AF] text-[0.5rem] md:text-[0.625rem] font-['Arial',sans-serif] tracking-wider mb-3 md:mb-4">
         SEAL
       </div>
 
@@ -24,7 +24,7 @@ export default function SealCard({ value }: SealCardProps) {
           <img
             src="/cards/seal.png"
             alt="Security Seal"
-            className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] object-contain"
+            className="w-[5rem] h-[5rem] md:w-[7.5rem] md:h-[7.5rem] object-contain"
           />
         </div>
       </div>

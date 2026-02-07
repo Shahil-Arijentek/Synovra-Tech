@@ -9,7 +9,7 @@ export default {
       screens: {
         'xs': '375px',
         'sm': '640px',
-        'laptop': {'min': '1024px', 'max': '1439px'},
+        'laptop': { 'min': '1024px', 'max': '1536px' },
       },
       colors: {
         orange: {

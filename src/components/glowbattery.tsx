@@ -119,7 +119,7 @@ export default function GlowBattery() {
         {/* Card Animation Area */}
         <div className="absolute inset-0 z-20 flex items-center justify-center px-4 md:px-6 -translate-y-24 md:translate-y-20">
           {/* Centered container for the stack */}
-          <div className="relative w-full max-w-[320px] md:max-w-[620px] h-[140px] md:h-[240px]">
+          <div className="relative w-full max-w-[20rem] md:max-w-[38.75rem] h-[8.75rem] md:h-[15rem]">
             {CARDS.map((card, index) => {
               const isEven = (index + 1) % 2 === 0
               const distance = progress - index
@@ -141,7 +141,7 @@ export default function GlowBattery() {
                   }}
                 >
                   {/* Fixed dimensions for uniform look */}
-                  <div className={`flex flex-row items-center gap-4 md:gap-10 rounded-[20px] md:rounded-[28px] border px-4 md:px-12 py-3 md:py-8 shadow-2xl backdrop-blur-xl w-full h-full ${isEven
+                  <div className={`flex flex-row items-center gap-4 md:gap-10 rounded-[1.25rem] md:rounded-[1.75rem] border px-4 md:px-12 py-3 md:py-8 shadow-2xl backdrop-blur-xl w-full h-full ${isEven
                     ? 'border-orange-500/50 bg-gradient-to-r from-[#ff3b00] to-[#ff6a00] text-black'
                     : 'border-white/10 bg-white/10 text-white shadow-white/5'
                     }`}>
@@ -160,7 +160,7 @@ export default function GlowBattery() {
 
                     <div className="flex flex-col flex-1 text-left">
                       <h3
-                        className="text-[18px] md:text-[40px] font-black leading-tight tracking-tight md:tracking-[-2.4px]"
+                        className="text-[1.125rem] md:text-[2.5rem] font-black leading-tight tracking-tight md:tracking-[-2.4px]"
                         style={{
                           fontFamily: 'Arial',
                         }}
@@ -168,7 +168,7 @@ export default function GlowBattery() {
                         {card.title}
                       </h3>
                       <p
-                        className={`mt-0.5 font-medium text-[11px] md:text-[22px] leading-tight md:leading-[131%] tracking-tight md:tracking-[-1px] ${isEven ? 'text-black/90' : 'text-white/80'}`}
+                        className={`mt-0.5 font-medium text-[0.6875rem] md:text-[1.375rem] leading-tight md:leading-[131%] tracking-tight md:tracking-[-1px] ${isEven ? 'text-black/90' : 'text-white/80'}`}
                         style={{
                           fontFamily: 'Arial',
                         }}

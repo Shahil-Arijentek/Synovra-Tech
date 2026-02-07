@@ -8,7 +8,7 @@ interface GenericCardProps {
 
 export default function GenericCard({ title, value, status, index, total }: GenericCardProps) {
   return (
-    <div className="relative backdrop-blur-xl bg-black/40 border border-white/5 rounded-2xl p-8 min-w-[420px] overflow-hidden">
+    <div className="relative backdrop-blur-xl bg-black/40 border border-white/5 rounded-2xl p-8 min-w-[26.25rem] overflow-hidden">
       {/* Bottom Accent Glow */}
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#ff6b1a]/50 to-transparent"></div>
       

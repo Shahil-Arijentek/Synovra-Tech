@@ -5,9 +5,9 @@ interface InternalResistanceCardProps {
 
 export default function InternalResistanceCard({ value, status }: InternalResistanceCardProps) {
   return (
-    <div className="backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 w-[140px] sm:w-[150px] md:w-[210px] h-[150px] sm:h-[160px] md:h-[235px] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)] flex flex-col">
+    <div className="backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 w-[8.75rem] sm:w-[9.375rem] md:w-[13.13rem] h-[9.375rem] sm:h-[10rem] md:h-[14.69rem] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)] flex flex-col">
       {/* Title */}
-      <div className="text-[#9CA3AF] text-[8px] md:text-[10px] font-['Arial',sans-serif] tracking-wider mb-1 md:mb-2">
+      <div className="text-[#9CA3AF] text-[0.5rem] md:text-[0.625rem] font-['Arial',sans-serif] tracking-wider mb-1 md:mb-2">
         INTERNAL RESISTANCE
       </div>
 
@@ -28,7 +28,7 @@ export default function InternalResistanceCard({ value, status }: InternalResist
         </div>
 
         {/* Status */}
-        <div className="text-[#9CA3AF] text-[8px] md:text-[10px] font-['Arial',sans-serif] uppercase tracking-wide">
+        <div className="text-[#9CA3AF] text-[0.5rem] md:text-[0.625rem] font-['Arial',sans-serif] uppercase tracking-wide">
           {status}
         </div>
       </div>

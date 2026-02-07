@@ -90,7 +90,7 @@ export default function GetStarted() {
       <div className="absolute inset-0 bg-black/70" />
 
       {/* Content */}
-      <div className="relative z-10 w-full max-w-[1396px] mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-12 sm:pt-36 sm:pb-16 md:pt-28 md:pb-20 lg:py-32">
+      <div className="relative z-10 w-full max-w-[87.25rem] mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-12 sm:pt-36 sm:pb-16 md:pt-28 md:pb-20 lg:py-32">
         {/* Header */}
         <div className="text-center mb-6 sm:mb-8 md:mb-10">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4">
@@ -102,12 +102,12 @@ export default function GetStarted() {
         </div>
 
         {/* Form Container */}
-        <div className="flex flex-col items-start w-full min-h-[632px] md:h-auto bg-black/80 border border-[rgba(255,255,255,0.05)] rounded-[14px] pt-[24px] sm:pt-[33px] px-[20px] sm:px-[33px] pb-[24px] sm:pb-px">
-          <form onSubmit={handleSubmit} className="flex flex-col gap-[20px] sm:gap-[24px] w-full">
+        <div className="flex flex-col items-start w-full min-h-[39.5rem] md:h-auto bg-black/80 border border-[rgba(255,255,255,0.05)] rounded-[0.875rem] pt-[1.5rem] sm:pt-[2.063rem] px-[1.25rem] sm:px-[2.063rem] pb-[1.5rem] sm:pb-px">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-[1.25rem] sm:gap-[1.5rem] w-full">
             {/* Row 1: Full Name and Company Name */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px] sm:gap-[24px]">
-              <div className="flex flex-col gap-[6px] sm:gap-[8px]">
-                <label htmlFor="fullName" className="font-['Arial',sans-serif] text-[13px] sm:text-[14px] leading-[20px] text-[rgba(255,255,255,0.7)]">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-[1rem] sm:gap-[1.5rem]">
+              <div className="flex flex-col gap-[0.375rem] sm:gap-[0.5rem]">
+                <label htmlFor="fullName" className="font-['Arial',sans-serif] text-[0.8125rem] sm:text-[0.875rem] leading-[1.25rem] text-[rgba(255,255,255,0.7)]">
                   Full Name *
                 </label>
                 <input
@@ -118,11 +118,11 @@ export default function GetStarted() {
                   value={formData.fullName}
                   onChange={handleChange}
                   placeholder="Enter your full name"
-                  className="flex items-center self-stretch bg-black/60 border border-[rgba(255,255,255,0.16)] rounded-[8px] sm:rounded-[10px] h-[45px] sm:h-[50px] px-[14px] sm:px-[16px] py-[10px] sm:py-[12px] font-['Arial',sans-serif] text-[15px] sm:text-[16px] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors"
+                  className="flex items-center self-stretch bg-black/60 border border-[rgba(255,255,255,0.16)] rounded-[0.5rem] sm:rounded-[0.625rem] h-[2.813rem] sm:h-[3.125rem] px-[0.875rem] sm:px-[1rem] py-[0.625rem] sm:py-[0.75rem] font-['Arial',sans-serif] text-[0.9375rem] sm:text-[1rem] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors"
                 />
               </div>
-              <div className="flex flex-col gap-[6px] sm:gap-[8px]">
-                <label htmlFor="companyName" className="font-['Arial',sans-serif] text-[13px] sm:text-[14px] leading-[20px] text-[rgba(255,255,255,0.7)]">
+              <div className="flex flex-col gap-[0.375rem] sm:gap-[0.5rem]">
+                <label htmlFor="companyName" className="font-['Arial',sans-serif] text-[0.8125rem] sm:text-[0.875rem] leading-[1.25rem] text-[rgba(255,255,255,0.7)]">
                   Company Name *
                 </label>
                 <input
@@ -133,14 +133,14 @@ export default function GetStarted() {
                   value={formData.companyName}
                   onChange={handleChange}
                   placeholder="Enter company name"
-                  className="flex items-center self-stretch bg-black/60 border border-[rgba(255,255,255,0.16)] rounded-[8px] sm:rounded-[10px] h-[45px] sm:h-[50px] px-[14px] sm:px-[16px] py-[10px] sm:py-[12px] font-['Arial',sans-serif] text-[15px] sm:text-[16px] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors"
+                  className="flex items-center self-stretch bg-black/60 border border-[rgba(255,255,255,0.16)] rounded-[0.5rem] sm:rounded-[0.625rem] h-[2.813rem] sm:h-[3.125rem] px-[0.875rem] sm:px-[1rem] py-[0.625rem] sm:py-[0.75rem] font-['Arial',sans-serif] text-[0.9375rem] sm:text-[1rem] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors"
                 />
               </div>
             </div>
 
             {/* Row 2: Role/Designation */}
-            <div className="flex flex-col gap-[6px] sm:gap-[8px]">
-              <label htmlFor="role" className="font-['Arial',sans-serif] text-[13px] sm:text-[14px] leading-[20px] text-[rgba(255,255,255,0.7)]">
+            <div className="flex flex-col gap-[0.375rem] sm:gap-[0.5rem]">
+              <label htmlFor="role" className="font-['Arial',sans-serif] text-[0.8125rem] sm:text-[0.875rem] leading-[1.25rem] text-[rgba(255,255,255,0.7)]">
                 Role / Designation *
               </label>
               <input
@@ -151,14 +151,14 @@ export default function GetStarted() {
                 value={formData.role}
                 onChange={handleChange}
                 placeholder="Enter your role"
-                className="flex items-center self-stretch bg-black/60 border border-[rgba(255,255,255,0.16)] rounded-[8px] sm:rounded-[10px] h-[45px] sm:h-[50px] px-[14px] sm:px-[16px] py-[10px] sm:py-[12px] font-['Arial',sans-serif] text-[15px] sm:text-[16px] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors"
+                className="flex items-center self-stretch bg-black/60 border border-[rgba(255,255,255,0.16)] rounded-[0.5rem] sm:rounded-[0.625rem] h-[2.813rem] sm:h-[3.125rem] px-[0.875rem] sm:px-[1rem] py-[0.625rem] sm:py-[0.75rem] font-['Arial',sans-serif] text-[0.9375rem] sm:text-[1rem] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors"
               />
             </div>
 
             {/* Row 3: Email and Phone */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px] sm:gap-[24px]">
-              <div className="flex flex-col gap-[6px] sm:gap-[8px]">
-                <label htmlFor="email" className="font-['Arial',sans-serif] text-[13px] sm:text-[14px] leading-[20px] text-[rgba(255,255,255,0.7)]">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-[1rem] sm:gap-[1.5rem]">
+              <div className="flex flex-col gap-[0.375rem] sm:gap-[0.5rem]">
+                <label htmlFor="email" className="font-['Arial',sans-serif] text-[0.8125rem] sm:text-[0.875rem] leading-[1.25rem] text-[rgba(255,255,255,0.7)]">
                   Email Address *
                 </label>
                 <input
@@ -169,11 +169,11 @@ export default function GetStarted() {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="you@company.com"
-                  className="flex items-center self-stretch bg-black/60 border border-[rgba(255,255,255,0.16)] rounded-[8px] sm:rounded-[10px] h-[45px] sm:h-[50px] px-[14px] sm:px-[16px] py-[10px] sm:py-[12px] font-['Arial',sans-serif] text-[15px] sm:text-[16px] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors"
+                  className="flex items-center self-stretch bg-black/60 border border-[rgba(255,255,255,0.16)] rounded-[0.5rem] sm:rounded-[0.625rem] h-[2.813rem] sm:h-[3.125rem] px-[0.875rem] sm:px-[1rem] py-[0.625rem] sm:py-[0.75rem] font-['Arial',sans-serif] text-[0.9375rem] sm:text-[1rem] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors"
                 />
               </div>
-              <div className="flex flex-col gap-[6px] sm:gap-[8px]">
-                <label htmlFor="phone" className="font-['Arial',sans-serif] text-[13px] sm:text-[14px] leading-[20px] text-[rgba(255,255,255,0.7)]">
+              <div className="flex flex-col gap-[0.375rem] sm:gap-[0.5rem]">
+                <label htmlFor="phone" className="font-['Arial',sans-serif] text-[0.8125rem] sm:text-[0.875rem] leading-[1.25rem] text-[rgba(255,255,255,0.7)]">
                   Phone (optional)
                 </label>
                 <input
@@ -183,14 +183,14 @@ export default function GetStarted() {
                   value={formData.phone}
                   onChange={handleChange}
                   placeholder="+1 (555) 000-0000"
-                  className="flex items-center self-stretch bg-black/60 border border-[rgba(255,255,255,0.16)] rounded-[8px] sm:rounded-[10px] h-[45px] sm:h-[50px] px-[14px] sm:px-[16px] py-[10px] sm:py-[12px] font-['Arial',sans-serif] text-[15px] sm:text-[16px] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors"
+                  className="flex items-center self-stretch bg-black/60 border border-[rgba(255,255,255,0.16)] rounded-[0.5rem] sm:rounded-[0.625rem] h-[2.813rem] sm:h-[3.125rem] px-[0.875rem] sm:px-[1rem] py-[0.625rem] sm:py-[0.75rem] font-['Arial',sans-serif] text-[0.9375rem] sm:text-[1rem] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors"
                 />
               </div>
             </div>
 
             {/* Row 4: Message */}
-            <div className="flex flex-col gap-[6px] sm:gap-[8px]">
-              <label htmlFor="message" className="font-['Arial',sans-serif] text-[13px] sm:text-[14px] leading-[20px] text-[rgba(255,255,255,0.7)]">
+            <div className="flex flex-col gap-[0.375rem] sm:gap-[0.5rem]">
+              <label htmlFor="message" className="font-['Arial',sans-serif] text-[0.8125rem] sm:text-[0.875rem] leading-[1.25rem] text-[rgba(255,255,255,0.7)]">
                 Message *
               </label>
               <textarea
@@ -201,14 +201,14 @@ export default function GetStarted() {
                 onChange={handleChange}
                 placeholder="Tell us about your battery revival needs..."
                 rows={5}
-                className="bg-black/60 border border-[rgba(255,255,255,0.16)] rounded-[8px] sm:rounded-[10px] h-[120px] sm:h-[146px] px-[14px] sm:px-[16px] py-[10px] sm:py-[12px] font-['Arial',sans-serif] text-[15px] sm:text-[16px] leading-[22px] sm:leading-[24px] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors resize-none"
+                className="bg-black/60 border border-[rgba(255,255,255,0.16)] rounded-[0.5rem] sm:rounded-[0.625rem] h-[7.5rem] sm:h-[9.125rem] px-[0.875rem] sm:px-[1rem] py-[0.625rem] sm:py-[0.75rem] font-['Arial',sans-serif] text-[0.9375rem] sm:text-[1rem] leading-[1.375rem] sm:leading-[1.5rem] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none focus:border-[#ff6b1a] transition-colors resize-none"
               />
             </div>
 
             {/* Submit Button */}
             <button
               type="submit"
-              className="bg-[#ff6b1a] hover:bg-[#ff6b1a]/90 rounded-[4px] h-[50px] sm:h-[56px] font-['Arial',sans-serif] text-[15px] sm:text-[16px] leading-[24px] text-white text-center transition-all duration-300 will-change-[box-shadow] shadow-[0_0_15px_rgba(255,107,26,0.4),0_0_30px_rgba(255,107,26,0.2)] hover:shadow-[0_0_20px_rgba(255,107,26,0.5),0_0_40px_rgba(255,107,26,0.25)] w-full"
+              className="bg-[#ff6b1a] hover:bg-[#ff6b1a]/90 rounded-[0.25rem] h-[3.125rem] sm:h-[3.5rem] font-['Arial',sans-serif] text-[0.9375rem] sm:text-[1rem] leading-[1.5rem] text-white text-center transition-all duration-300 will-change-[box-shadow] shadow-[0_0_15px_rgba(255,107,26,0.4),0_0_30px_rgba(255,107,26,0.2)] hover:shadow-[0_0_20px_rgba(255,107,26,0.5),0_0_40px_rgba(255,107,26,0.25)] w-full"
             >
               Get Started
             </button>
@@ -216,22 +216,22 @@ export default function GetStarted() {
         </div>
 
         {/* Contact Information Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mt-8 sm:mt-10 md:mt-12 max-w-[1100px] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mt-8 sm:mt-10 md:mt-12 max-w-[68.75rem] mx-auto">
           {/* Email Card */}
-          <div className="bg-black/80 border border-[rgba(255,255,255,0.05)] rounded-[14px] p-5 sm:p-6 flex flex-col items-center justify-center text-center min-h-[120px] sm:min-h-[130px]">
+          <div className="bg-black/80 border border-[rgba(255,255,255,0.05)] rounded-[0.875rem] p-5 sm:p-6 flex flex-col items-center justify-center text-center min-h-[7.5rem] sm:min-h-[8.125rem]">
             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[rgba(255,255,255,0.05)] flex items-center justify-center mb-3">
               <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             </div>
             <p className="text-white/60 text-xs sm:text-sm mb-2 font-['Arial',sans-serif]">Email</p>
-            <a href="mailto:yjdoshi@synovratech.com" className="text-white text-xs sm:text-sm font-['Arial',sans-serif] hover:text-[#ff6b1a] transition-colors">
-              yjdoshi@synovratech.com
+            <a href="mailto:shahil@arijentek.com" className="text-white text-xs sm:text-sm font-['Arial',sans-serif] hover:text-[#ff6b1a] transition-colors">
+              shahil@arijentek.com
             </a>
           </div>
 
           {/* Phone Card */}
-          <div className="bg-black/80 border border-[rgba(255,255,255,0.05)] rounded-[14px] p-5 sm:p-6 flex flex-col items-center justify-center text-center min-h-[120px] sm:min-h-[130px]">
+          <div className="bg-black/80 border border-[rgba(255,255,255,0.05)] rounded-[0.875rem] p-5 sm:p-6 flex flex-col items-center justify-center text-center min-h-[7.5rem] sm:min-h-[8.125rem]">
             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[rgba(255,255,255,0.05)] flex items-center justify-center mb-3">
               <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -244,7 +244,7 @@ export default function GetStarted() {
           </div>
 
           {/* Address Card */}
-          <div className="bg-black/80 border border-[rgba(255,255,255,0.05)] rounded-[14px] p-5 sm:p-6 flex flex-col items-center justify-center text-center min-h-[120px] sm:min-h-[130px]">
+          <div className="bg-black/80 border border-[rgba(255,255,255,0.05)] rounded-[0.875rem] p-5 sm:p-6 flex flex-col items-center justify-center text-center min-h-[7.5rem] sm:min-h-[8.125rem]">
             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[rgba(255,255,255,0.05)] flex items-center justify-center mb-3">
               <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />

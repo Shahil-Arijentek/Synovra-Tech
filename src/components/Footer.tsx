@@ -13,7 +13,7 @@ export default function Footer() {
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0d0d0d]/30 via-transparent to-[#0d0d0d]/30 md:z-20" />
       </div>
 
-      <div className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 md:px-8 lg:px-20 pb-8 sm:pb-10 pt-0 sm:pt-4 md:pt-8 lg:pt-12">
+      <div className="mx-auto w-full max-w-[100rem] px-4 sm:px-6 md:px-8 lg:px-20 pb-8 sm:pb-10 pt-0 sm:pt-4 md:pt-8 lg:pt-12">
         <div className="grid gap-6 sm:gap-8 md:gap-12 grid-cols-1 md:grid-cols-[1.3fr_1fr_1fr]">
           <div className="space-y-3 sm:space-y-4 text-center md:text-left">
             <div className="flex items-center justify-center md:justify-start gap-2 sm:gap-3 uppercase tracking-[0.2em] sm:tracking-[0.3em] text-[#f59d0f]">
@@ -59,9 +59,9 @@ export default function Footer() {
             <div className="space-y-2 sm:space-y-2 md:space-y-3 text-sm sm:text-base md:text-base lg:text-lg text-white/70">
               <a
                 className="block transition hover:text-white hover:translate-x-1 duration-200 break-all"
-                href="mailto:yjdoshi@synovratech.com"
+                href="mailto:shahil@arijentek.com"
               >
-               yjdoshi@synovratech.com
+               shahil@arijentek.com
               </a>
               <a className="block transition hover:text-white hover:translate-x-1 duration-200" href="#">
                 LinkedIn
@@ -73,7 +73,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 sm:mt-10 md:mt-12 flex flex-col gap-3 sm:gap-4 border-t border-white/10 pt-5 sm:pt-6 text-center md:text-left text-[10px] sm:text-[11px] md:text-sm text-white/50 md:flex-row md:items-center md:justify-between">
+        <div className="mt-8 sm:mt-10 md:mt-12 flex flex-col gap-3 sm:gap-4 border-t border-white/10 pt-5 sm:pt-6 text-center md:text-left text-[0.625rem] sm:text-[0.6875rem] md:text-sm text-white/50 md:flex-row md:items-center md:justify-between">
           <p>© 2026 Synovra Technologies</p>
           <p>Made by <a href="https://www.arijentek.com/" target="_blank" rel="noopener noreferrer" className="font-bold hover:text-white transition-colors duration-200 underline">Arijentek Solution</a></p>
         </div>

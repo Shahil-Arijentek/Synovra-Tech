@@ -41,28 +41,28 @@ export default function Hero() {
     }
   }, [])
   return (
-    <section className="relative bg-black overflow-hidden min-h-[500px] sm:min-h-[550px] md:min-h-[650px] lg:min-h-[800px] xl:min-h-[900px] text-white">
+    <section className="relative bg-black overflow-hidden min-h-[31.25rem] sm:min-h-[34.38rem] md:min-h-[40.63rem] lg:min-h-[50rem] xl:min-h-[56.25rem] text-white">
       {/* Bottom Gradient Fade to black */}
       <div className="absolute bottom-0 left-0 right-0 h-[30%] pointer-events-none z-20" style={{
         background: 'linear-gradient(to bottom, transparent 0%, #000000 100%)'
       }} />
 
-      <div className="relative z-10 mx-auto max-w-[1600px] pt-[150px] xs:pt-[170px] sm:pt-[160px] md:pt-[110px] lg:pt-[100px] xl:pt-[110px] pb-[20px] sm:pb-[30px] md:pb-[50px] lg:pb-[80px] xl:pb-[120px] px-4 sm:px-5 md:px-6 text-center">
-        <p className="hero-top-text mb-6 sm:mb-8 md:mb-4">
+      <div className="relative z-10 mx-auto max-w-[100rem] pt-[9.375rem] xs:pt-[10.63rem] sm:pt-[10rem] md:pt-[6.875rem] lg:pt-0 lg:-mt-4 xl:pt-[2rem] pb-[1.25rem] sm:pb-[1.875rem] md:pb-[3.125rem] lg:pb-[5rem] xl:pb-[7.5rem] px-4 sm:px-5 md:px-6 text-center overflow-x-hidden">
+        <p className="hero-top-text mb-6 sm:mb-8 md:mb-4 lg:mb-4 lg:-mt-4 xl:mb-0 xl:-mt-8 lg:tracking-[0.3em] text-[clamp(0.8125rem,2.75vw,1.25rem)] sm:text-[clamp(1.25rem,4vw,2.5rem)]">
           EVERY BATTERY DESERVES
         </p>
-        <div className="w-full mx-auto px-2 sm:px-4 md:px-6 lg:px-4 xl:px-0 mt-3 sm:mt-0">
+        <div className="w-full mx-auto px-3 sm:px-4 md:px-6 lg:px-4 xl:px-0 mt-3 sm:mt-0 lg:-mt-4 xl:-mt-10">
           <div className="afterlife-scale-wrapper">
             <p
-              className="afterlife-animation font-normal tracking-[0.02em] leading-none uppercase relative z-0"
+              className="afterlife-animation font-normal tracking-[0.02em] leading-none uppercase relative z-0 text-[clamp(1.75rem,9vw,3.25rem)] sm:text-[clamp(3rem,11vw,5.5rem)] md:text-[clamp(4rem,12vw,7.5rem)] lg:text-[clamp(5rem,13.75vw,11.75rem)]"
               data-text="AN AFTERLIFE"
             >
               AN AFTERLIFE
             </p>
           </div>
 
-          <div className="relative -mt-4 sm:-mt-[20px] md:-mt-[40px] lg:-mt-[80px] xl:-mt-[130px] flex justify-center items-center z-10 pointer-events-none">
-            <div className="w-full sm:w-[92%] md:w-[88%] lg:w-[90%] xl:w-[1400px] max-w-full scale-[1.1] sm:scale-[1.2] md:scale-[1.2] lg:scale-[1.05] xl:scale-100 origin-center flex justify-center items-center">
+          <div className="relative mt-6 sm:mt-0 sm:-mt-12 md:-mt-16 lg:-mt-[18rem] xl:-mt-[10rem] flex justify-center items-center z-10 pointer-events-none">
+            <div className="w-full sm:w-[92%] md:w-[88%] lg:w-[90%] xl:w-[87.5rem] max-w-full scale-[1.1] sm:scale-[1.2] md:scale-[1.2] lg:scale-[1.05] xl:scale-100 origin-center flex justify-center items-center">
               <video
                 ref={videoRef}
                 className="w-full h-auto object-contain mix-blend-screen"

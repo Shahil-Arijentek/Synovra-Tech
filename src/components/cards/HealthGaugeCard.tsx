@@ -40,13 +40,13 @@ export default function HealthGaugeCard({ value, video = '99.mp4', width = '420p
   return (
     <div 
       ref={containerRef}
-      className={`backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 ${width === '420px' ? 'h-[175px] sm:h-[185px] md:h-[240px] w-[300px] sm:w-[320px] md:w-[420px]' : 'h-[150px] sm:h-[160px] md:h-[240px] w-[150px] sm:w-[160px] md:w-[200px]'} shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)]`}
+      className={`backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 ${width === '420px' ? 'h-[10.94rem] sm:h-[11.56rem] md:h-[15rem] w-[18.75rem] sm:w-[20rem] md:w-[26.25rem]' : 'h-[9.375rem] sm:h-[10rem] md:h-[15rem] w-[9.375rem] sm:w-[10rem] md:w-[12.5rem]'} shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)]`}
     >
       {/* Container for overlapping video and text */}
       <div className="relative w-full h-full overflow-hidden">
         {/* Title - Positioned at top left */}
         <div className="absolute top-0 left-0 z-10">
-          <div className="text-[#9CA3AF] text-[8px] md:text-[10px] font-['Arial',sans-serif] tracking-wider">
+          <div className="text-[#9CA3AF] text-[0.5rem] md:text-[0.625rem] font-['Arial',sans-serif] tracking-wider">
             HEALTH %
           </div>
         </div>
