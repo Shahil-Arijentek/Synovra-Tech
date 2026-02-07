@@ -19,9 +19,9 @@ export default function SystemRecordCard({ value }: SystemRecordCardProps) {
         />
         
         {/* Text Overlay on Plate */}
-        <div className="absolute inset-0 flex items-center justify-center" style={{ marginTop: '-8px' }}>
+        <div className="absolute inset-0 flex items-center justify-center" style={{ marginTop: '-5px' }}>
           <div 
-            className="text-[#FF6B1A] font-['Arial',sans-serif] font-bold uppercase tracking-wide text-center text-xs sm:text-sm md:text-base"
+            className="text-[#FF6B1A] font-['Arial',sans-serif] font-normal uppercase tracking-wide text-center text-xs sm:text-sm md:text-base"
           >
             {value}
           </div>

@@ -394,7 +394,11 @@ export default function BatteryLifecycleScroll() {
         // Scene 1 positions
         if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-12'
         if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-12'
+        // HEALTH % card: same as bottom-left but moved down on laptop only
+        if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return 'left-12 sm:left-14 md:left-[4rem] top-[38%] sm:top-[40%] md:top-[22rem] lg:top-[23rem] 2xl:top-[24rem]'
         if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-[4rem] top-[38%] sm:top-[40%] md:top-[22rem]'
+        // SULPHATION card (scene 1): same as bottom-right but moved up on laptop only
+        if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return 'left-12 sm:left-14 md:left-[4rem] top-[68%] sm:top-[70%] md:top-[41rem] lg:top-[27.5rem] 2xl:top-[42rem]'
         if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-[4rem] top-[68%] sm:top-[70%] md:top-[41rem] lg:top-[27rem] 2xl:top-[41rem]'
       } else if (sceneIndex === 1) {
         // Scene 2 positions
@@ -511,7 +515,7 @@ export default function BatteryLifecycleScroll() {
           <div
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
+            className={`absolute ${getCardPosition()} z-10 ${sceneIndex === 1 ? 'w-full lg:w-[26.25rem] lg:h-[13rem] [&>*]:lg:w-full [&>*]:lg:max-w-full [&>*]:lg:h-full [&>*]:lg:min-h-0' : ''}`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <SulphationDetectedCard value={cardData.value} />
@@ -522,7 +526,7 @@ export default function BatteryLifecycleScroll() {
           <div
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
+            className={`absolute ${getCardPosition()} z-10 ${sceneIndex === 1 ? 'w-full lg:w-[26.25rem] lg:h-[13rem] [&>*]:lg:w-full [&>*]:lg:max-w-full [&>*]:lg:h-full [&>*]:lg:min-h-0' : ''}`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <DecisionCard value={cardData.value} status={cardData.status} />

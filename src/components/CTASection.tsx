@@ -2,32 +2,41 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 
 export default function CTASection() {
+  const sectionRef = useRef(null)
   const contentRef = useRef(null)
-  const isInView = useInView(contentRef, { once: true, amount: 0.3 })
+  const isSectionInView = useInView(sectionRef, { once: true, amount: 0.1 })
+  const isContentInView = useInView(contentRef, { once: true, amount: 0.3 })
 
   return (
-    <section className="relative w-full h-[28.13rem] sm:h-[37.5rem] md:h-[43.75rem] overflow-hidden flex items-center justify-center bg-black">
-      {/* Video Background */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover"
+    <section ref={sectionRef} className="relative w-full h-[28.13rem] sm:h-[37.5rem] md:h-[43.75rem] overflow-hidden flex items-center justify-center bg-black">
+      {/* Video Background - fade in on scroll */}
+      <motion.div
+        className="absolute inset-0"
+        initial={{ opacity: 0 }}
+        animate={isSectionInView ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 1.8, ease: [0.25, 0.1, 0.25, 1] }}
       >
-        <source src="/beforeyourecycle.webm" type="video/webm" />
-      </video>
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+        >
+          <source src="/beforeyourecycle.webm" type="video/webm" />
+        </video>
+      </motion.div>
 
       {/* Content */}
       <div ref={contentRef} className="relative z-10 text-center px-4 sm:px-6 max-w-4xl mx-auto">
         {/* Heading */}
         <motion.h2
           initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+          animate={isContentInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
           transition={{
-            duration: 1.2,
-            delay: 0.3,
-            ease: [0.19, 1, 0.22, 1]
+            duration: 1.5,
+            delay: 0.5,
+            ease: [0.25, 0.1, 0.25, 1]
           }}
           className="text-white text-center mb-6 sm:mb-10 md:mb-12 text-xl sm:text-3xl md:text-4xl lg:text-5xl font-normal leading-tight sm:leading-snug px-2"
         >
@@ -37,11 +46,11 @@ export default function CTASection() {
         {/* Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+          animate={isContentInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
           transition={{
-            duration: 1.2,
-            delay: 0.7,
-            ease: [0.19, 1, 0.22, 1]
+            duration: 1.5,
+            delay: 1,
+            ease: [0.25, 0.1, 0.25, 1]
           }}
           className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6"
         >
