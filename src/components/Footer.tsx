@@ -59,9 +59,9 @@ export default function Footer() {
             <div className="space-y-2 sm:space-y-2 md:space-y-3 text-sm sm:text-base md:text-base lg:text-lg text-white/70">
               <a
                 className="block transition hover:text-white hover:translate-x-1 duration-200 break-all"
-                href="mailto:shahil@arijentek.com"
+                href="mailto:yjdoshi@synovratech.com"
               >
-               shahil@arijentek.com
+               yjdoshi@synovratech.com
               </a>
               <a className="block transition hover:text-white hover:translate-x-1 duration-200" href="#">
                 LinkedIn

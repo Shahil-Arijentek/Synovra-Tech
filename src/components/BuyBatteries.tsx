@@ -247,7 +247,7 @@ export default function BuyBatteries() {
           initial={{ opacity: 0, y: 30 }}
           animate={isBottomCardInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
-          className="relative mx-auto mt-6 md:mt-10 flex w-full max-w-[40.56rem] flex-col items-center gap-1 rounded-[0.625rem] bg-black/60 backdrop-blur-sm border border-white/5 px-6 py-4 md:py-6 text-center"
+          className="relative mx-auto mt-6 md:mt-10 flex w-full max-w-[40.56rem] flex-col items-center gap-1 px-6 py-4 md:py-6 text-center"
         >
           <motion.p 
             initial={{ opacity: 0, y: 10 }}

@@ -37,11 +37,11 @@ export function FeaturesSectionWithHoverEffects() {
   ]
 
   return (
-    <section className="relative overflow-hidden bg-black px-6 py-20 text-white sm:px-10">
+    <section className="relative overflow-hidden bg-black px-4 py-20 pb-48 text-white sm:px-6 md:px-8">
       <div className="pointer-events-none absolute inset-0 bg-black" />
       {/* Fade to #0d0d0d at bottom */}
       <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[#0d0d0d] pointer-events-none z-10" />
-      <div className="relative mx-auto max-w-6xl">
+      <div className="relative mx-auto w-full" style={{ maxWidth: '56rem' }}>
         <div ref={headingRef} className="text-center">
           <motion.h2
             initial={{ opacity: 0, y: 40 }}
@@ -68,7 +68,7 @@ export function FeaturesSectionWithHoverEffects() {
             (Why Partner Now)
           </motion.p>
         </div>
-        <div className="mt-12 grid grid-cols-1 gap-0 border border-white/10 md:grid-cols-2">
+        <div className="mt-8 grid grid-cols-1 gap-0 border border-white/10 md:grid-cols-2">
           {features.map((feature, index) => (
             <Feature key={feature.title} {...feature} index={index} />
           ))}
@@ -105,21 +105,21 @@ function Feature({
         delay: index * 0.15,
         ease: [0.33, 1, 0.68, 1]
       }}
-      className="group relative border border-white/10 px-10 py-12 transition"
+      className="group relative border border-white/10 px-5 py-9 md:px-6 md:py-12 transition"
     >
       <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
         <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent" />
       </div>
       <div className="absolute left-0 top-10 h-10 w-1 origin-center rounded-r-full bg-orange-500/60 transition-all duration-300 group-hover:h-14 group-hover:bg-orange-500" />
-      <div className="relative z-10 flex flex-col gap-5">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full border border-orange-500/40 text-orange-500 transition-all duration-300 group-hover:border-orange-500 group-hover:shadow-[0_0_20px_rgba(255,107,26,0.3)]">
+      <div className="relative z-10 flex flex-col gap-4 md:gap-6">
+        <div className="flex h-9 w-9 md:h-10 md:w-10 items-center justify-center rounded-full border border-orange-500/40 text-orange-500 transition-all duration-300 group-hover:border-orange-500 group-hover:shadow-[0_0_20px_rgba(255,107,26,0.3)]">
           {icon}
         </div>
         <div>
-          <h3 className="text-2xl font-semibold transition-transform duration-300 group-hover:translate-x-2">
+          <h3 className="text-lg md:text-xl font-semibold transition-transform duration-300 group-hover:translate-x-2">
             {title}
           </h3>
-          <p className="mt-3 max-w-md text-sm sm:text-base md:text-base lg:text-lg text-white/70">
+          <p className="mt-1.5 max-w-md text-xs md:text-sm text-white/70">
             {description}
           </p>
         </div>
