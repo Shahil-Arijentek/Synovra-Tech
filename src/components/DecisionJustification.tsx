@@ -17,22 +17,22 @@ export function FeaturesSectionWithHoverEffects() {
     {   
       title: 'Higher Payouts',
       description: 'Value recovered twice — through revival today and materials tomorrow.',
-      icon: <IconCoin className="h-6 w-6" />
+      icon: <IconCoin className="h-7 w-7 md:h-8 md:w-8" />
     },
     {
       title: 'Faster Cash Flow',
       description: 'Predictable payouts issued days after pickup, not weeks later.',
-      icon: <IconGauge className="h-6 w-6" />
+      icon: <IconGauge className="h-7 w-7 md:h-8 md:w-8" />
     },
     {
       title: 'Zero Operational Burden',
       description: 'No testing, sorting, or storage. We handle the entire afterlife.',
-      icon: <IconClipboardCheck className="h-6 w-6" />
+      icon: <IconClipboardCheck className="h-7 w-7 md:h-8 md:w-8" />
     },
     {
       title: 'ESG Advantage',
       description: 'Lower emissions, full traceability, and audit-ready reporting — built in.',
-      icon: <IconShieldCheck className="h-6 w-6" />
+      icon: <IconShieldCheck className="h-7 w-7 md:h-8 md:w-8" />
     }
   ]
 
@@ -41,7 +41,7 @@ export function FeaturesSectionWithHoverEffects() {
       <div className="pointer-events-none absolute inset-0 bg-black" />
       {/* Fade to #0d0d0d at bottom */}
       <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[#0d0d0d] pointer-events-none z-10" />
-      <div className="relative mx-auto w-full" style={{ maxWidth: '56rem' }}>
+      <div className="relative mx-auto w-full" style={{ maxWidth: '64rem' }}>
         <div ref={headingRef} className="text-center">
           <motion.h2
             initial={{ opacity: 0, y: 40 }}
@@ -51,7 +51,7 @@ export function FeaturesSectionWithHoverEffects() {
               delay: 0.3,
               ease: [0.19, 1, 0.22, 1]
             }}
-            className="text-4xl font-bold tracking-tight sm:text-5xl"
+            className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl"
           >
             Decision Justification
           </motion.h2>
@@ -63,12 +63,12 @@ export function FeaturesSectionWithHoverEffects() {
               delay: 0.7,
               ease: [0.19, 1, 0.22, 1]
             }}
-            className="mt-3 text-lg font-bold text-white/60"
+            className="mt-4 text-xl md:text-2xl font-bold text-white/60"
           >
             (Why Partner Now)
           </motion.p>
         </div>
-        <div className="mt-8 grid grid-cols-1 gap-0 border border-white/10 md:grid-cols-2">
+        <div className="mt-10 md:mt-12 grid grid-cols-1 gap-0 border border-white/10 md:grid-cols-2">
           {features.map((feature, index) => (
             <Feature key={feature.title} {...feature} index={index} />
           ))}
@@ -105,21 +105,21 @@ function Feature({
         delay: index * 0.15,
         ease: [0.33, 1, 0.68, 1]
       }}
-      className="group relative border border-white/10 px-5 py-9 md:px-6 md:py-12 transition"
+      className="group relative border border-white/10 px-7 py-11 md:px-9 md:py-16 transition"
     >
       <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
         <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent" />
       </div>
-      <div className="absolute left-0 top-10 h-10 w-1 origin-center rounded-r-full bg-orange-500/60 transition-all duration-300 group-hover:h-14 group-hover:bg-orange-500" />
-      <div className="relative z-10 flex flex-col gap-4 md:gap-6">
-        <div className="flex h-9 w-9 md:h-10 md:w-10 items-center justify-center rounded-full border border-orange-500/40 text-orange-500 transition-all duration-300 group-hover:border-orange-500 group-hover:shadow-[0_0_20px_rgba(255,107,26,0.3)]">
+      <div className="absolute left-0 top-14 h-10 w-1 origin-center rounded-r-full bg-orange-500/60 transition-all duration-300 group-hover:h-14 group-hover:bg-orange-500" />
+      <div className="relative z-10 flex flex-col gap-6 md:gap-8">
+        <div className="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-full border border-orange-500/40 text-orange-500 transition-all duration-300 group-hover:border-orange-500 group-hover:shadow-[0_0_20px_rgba(255,107,26,0.3)]">
           {icon}
         </div>
         <div>
-          <h3 className="text-lg md:text-xl font-semibold transition-transform duration-300 group-hover:translate-x-2">
+          <h3 className="text-xl md:text-2xl font-semibold transition-transform duration-300 group-hover:translate-x-2">
             {title}
           </h3>
-          <p className="mt-1.5 max-w-md text-xs md:text-sm text-white/70">
+          <p className="mt-2 max-w-md text-sm md:text-base text-white/70 leading-relaxed">
             {description}
           </p>
         </div>
