@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { motion, useScroll, useTransform, MotionValue } from 'framer-motion'
+import { motion, useScroll, useTransform, useSpring, MotionValue } from 'framer-motion'
 
 // Helper component for individual scroll-driven words
 const ScrollWord = ({
@@ -18,7 +18,8 @@ const ScrollWord = ({
   isLast: boolean
 }) => {
   // Stagger calculation: Shift the start/end times slightly based on index
-  const staggerDelay = index * 0.015
+  // Reduced stagger for tighter, more premium feel
+  const staggerDelay = index * 0.01
 
   // Enter transforms
   const enterStart = enterRange[0] + staggerDelay
@@ -36,21 +37,21 @@ const ScrollWord = ({
     ? [0, 1, 1, 0]
     : [0, 1]
 
-  // Map Y position: 50 -> 0 (Enter) ... 0 -> -50 (Exit)
+  // Map Y position: 30 -> 0 (Enter) ... 0 -> -30 (Exit) - reduced for smoother feel
   const yInput = exitRange
     ? [enterStart, enterEnd, exitStart, exitEnd]
     : [enterStart, enterEnd]
   const yOutput = exitRange
-    ? [50, 0, 0, -50]
-    : [50, 0]
+    ? [30, 0, 0, -30]
+    : [30, 0]
 
-  // Map Blur: 10px -> 0px (Enter) ... 0px -> 10px (Exit)
+  // Map Blur: 8px -> 0px (Enter) ... 0px -> 8px (Exit) - reduced for smoother feel
   const blurInput = exitRange
     ? [enterStart, enterEnd, exitStart, exitEnd]
     : [enterStart, enterEnd]
   const blurOutput = exitRange
-    ? ["blur(10px)", "blur(0px)", "blur(0px)", "blur(10px)"]
-    : ["blur(10px)", "blur(0px)"]
+    ? ["blur(8px)", "blur(0px)", "blur(0px)", "blur(8px)"]
+    : ["blur(8px)", "blur(0px)"]
 
   const opacity = useTransform(progress, opacityInput, opacityOutput)
   const y = useTransform(progress, yInput, yOutput)
@@ -113,17 +114,32 @@ export default function BatteryHero() {
     offset: ["start start", "end end"]
   })
 
+  // Smooth scroll progress with spring physics for premium feel
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    mass: 0.5
+  })
+
   // ---- RANGES ----
-  // Stage 1 (Intro): 0.0 - 0.3
-  // Stage 2 (Deliver): 0.35 - 0.65
-  // Stage 3 (Trace): 0.7 - 1.0
+  // Stage 1 (Intro): 0.0 - 0.25
+  // Stage 2 (Deliver): 0.22 - 0.58
+  // Stage 3 (Trace): 0.55 - 1.0
 
   // --- STAGE 1 (Intro) ---
-  // Managed by variants (load) + scroll exit
-  const stage1ExitOpacity = useTransform(scrollYProgress, [0.25, 0.35], [1, 0])
-  const stage1ExitScale = useTransform(scrollYProgress, [0.25, 0.35], [1, 0.9])
-  const stage1ExitY = useTransform(scrollYProgress, [0.25, 0.35], [0, -50])
-  const stage1ExitFilter = useTransform(scrollYProgress, [0.25, 0.35], ["blur(0px)", "blur(10px)"])
+  // Managed by variants (load) + scroll exit with smoother transitions
+  const stage1ExitOpacity = useTransform(smoothProgress, [0.12, 0.28], [1, 0], {
+    clamp: false
+  })
+  const stage1ExitScale = useTransform(smoothProgress, [0.12, 0.28], [1, 0.92], {
+    clamp: false
+  })
+  const stage1ExitY = useTransform(smoothProgress, [0.12, 0.28], [0, -30], {
+    clamp: false
+  })
+  const stage1ExitFilter = useTransform(smoothProgress, [0.12, 0.28], ["blur(0px)", "blur(8px)"], {
+    clamp: false
+  })
 
   // Mount animation
   useEffect(() => {
@@ -201,10 +217,10 @@ export default function BatteryHero() {
 
   return (
     // Outer scroll track - defines the total scroll distance (time)
-    // 300vh = 3 screens worth of scrolling time
+    // 200vh = 2 screens worth of scrolling time for smoother, more responsive feel
     <div
       ref={containerRef}
-      className="relative w-full h-[300vh] bg-black"
+      className="relative w-full h-[200vh] bg-black"
       style={{ position: 'relative' }}
     >
       {/* Sticky Inner Container - The visible viewport */}
@@ -307,9 +323,9 @@ export default function BatteryHero() {
         <div className="absolute inset-0 flex items-center justify-center z-20 px-4 pointer-events-none">
           <ScrollStaggeredText
             text="BUILT TO DELIVER IT."
-            progress={scrollYProgress}
-            enterRange={[0.32, 0.42]}
-            exitRange={[0.58, 0.68]}
+            progress={smoothProgress}
+            enterRange={[0.20, 0.35]}
+            exitRange={[0.45, 0.60]}
             className="text-center"
             style={{
               color: '#71717B',
@@ -328,8 +344,8 @@ export default function BatteryHero() {
           <div className="text-center">
             <ScrollStaggeredText
               text="Trace the Battery Afterlife"
-              progress={scrollYProgress}
-              enterRange={[0.65, 0.75]}
+              progress={smoothProgress}
+              enterRange={[0.52, 0.68]}
               className="text-white mb-4 block"
               style={{
                 fontFamily: 'Arial, sans-serif',
@@ -340,8 +356,8 @@ export default function BatteryHero() {
             />
             <ScrollStaggeredText
               text="Witness the full journey from degradation to certified revival and recycle"
-              progress={scrollYProgress}
-              enterRange={[0.68, 0.78]} // Slight delay after title
+              progress={smoothProgress}
+              enterRange={[0.60, 0.75]} // Slight delay after title
               className="text-gray-400 max-w-2xl mx-auto text-lg sm:text-xl block"
             />
           </div>

@@ -177,7 +177,7 @@ export const PulseX = () => {
   const isHeadingInView = useInView(headingRef, { once: true, amount: 0.8 })
 
   return (
-    <section className="relative overflow-hidden pt-8 pb-12 px-6 md:px-12 lg:pt-12 lg:pb-16" style={{ backgroundColor: '#0d0d0d' }}>
+    <section className="relative overflow-hidden pt-12 pb-12 px-6 md:px-12 lg:pt-20 lg:pb-16" style={{ backgroundColor: '#0d0d0d' }}>
       {/* Fade to black gradient at bottom */}
       <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-black pointer-events-none z-10" />
       <div className="relative mx-auto max-w-[75rem]">

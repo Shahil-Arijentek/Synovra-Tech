@@ -54,13 +54,13 @@ export default function ClassofPower({ onReady }: ClassofPowerProps = {}) {
   return (
     <section
       ref={sectionRef}
-      className="relative flex w-full flex-col items-center justify-start overflow-hidden pt-12 pb-8 px-6 md:pt-16 md:pb-12 md:px-8"
+      className="relative flex w-full flex-col items-center justify-start overflow-hidden pt-12 pb-16 px-6 md:pt-16 md:pb-20 md:px-8"
       style={{ backgroundColor: "#0d0d0d" }}
     >
       <ClassOfPowerHeading />
 
       <div
-        className="relative w-full flex items-center justify-center mt-4 md:mt-10"
+        className="relative w-full flex items-center justify-center -mt-12 md:-mt-10"
         style={{ minHeight: "400px" }}
       >
         <div
