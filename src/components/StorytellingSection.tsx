@@ -186,8 +186,8 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
             </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-4 md:gap-6 w-full px-4 pointer-events-auto max-w-5xl">
               {['Electric mobility.', 'Renewable energy.', 'Regulated recycling.'].map((text, i) => (
-                <div key={i} className="bg-black/60 backdrop-blur-sm border border-white/5 rounded-2xl py-4 sm:py-5 md:py-10 px-3 sm:px-4 md:px-6">
-                  <p className="text-white/80 text-xs sm:text-sm md:text-base lg:text-lg font-light">{text}</p>
+                <div key={i} className="bg-black/60 backdrop-blur-sm border border-white/20 rounded-2xl py-4 sm:py-5 md:py-10 px-3 sm:px-4 md:px-6">
+                  <p className="text-white/80 text-xs sm:text-sm md:text-base lg:text-lg font-bold">{text}</p>
                 </div>
               ))}
             </div>
@@ -228,9 +228,9 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
 };
 
 const ProblemCard: React.FC<{ title: string; subtitle: string }> = ({ title, subtitle }) => (
-  <div className="text-left p-1.5 sm:p-4 md:p-6 border border-red-500/30 bg-red-950/20 rounded-[0.625rem] sm:rounded-[0.875rem] shadow-2xl w-full max-w-[17.5rem] sm:max-w-[23.75rem] min-h-[3.438rem] sm:min-h-[5.313rem] md:min-h-[7.188rem] mx-auto overflow-hidden">
-    <h3 className="text-[#FF6467] text-[0.625rem] sm:text-base md:text-2xl font-bold mb-0.5 sm:mb-1 md:mb-1.5 break-words">{title}</h3>
-    <p className="text-white/60 text-[0.5625rem] sm:text-sm md:text-base lg:text-lg leading-snug break-words">{subtitle}</p>
+  <div className="p-1.5 sm:p-4 md:p-6 border border-red-500/30 bg-red-950/20 rounded-[0.625rem] sm:rounded-[0.875rem] shadow-2xl w-full max-w-[17.5rem] sm:max-w-[23.75rem] min-h-[3.438rem] sm:min-h-[5.313rem] md:min-h-[7.188rem] mx-auto overflow-hidden">
+    <h3 className="text-[#FF6467] text-[0.625rem] sm:text-base md:text-2xl font-bold mb-0.5 sm:mb-1 md:mb-1.5 break-words text-center">{title}</h3>
+    <p className="text-white/60 text-[0.5625rem] sm:text-sm md:text-base lg:text-lg leading-snug whitespace-nowrap text-center">{subtitle}</p>
   </div>
 );
 
