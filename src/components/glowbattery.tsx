@@ -100,7 +100,7 @@ export default function GlowBattery() {
           </div>
 
           <div
-            className="absolute bottom-0 -right-16 md:-right-24 h-[30vh] md:h-[90%] w-1/2 md:w-auto transition-opacity duration-150 flex items-end justify-end"
+            className="absolute bottom-2 md:bottom-0 -right-16 md:-right-24 h-[30vh] md:h-[90%] w-1/2 md:w-auto transition-opacity duration-150 flex items-end justify-end"
           >
             {/* Soft Radial Glow behind the Right Battery */}
             <div
