@@ -5,7 +5,6 @@ import ClassOfPowerHeading from "./ClassOfPowerHeading";
 interface ClassofPowerProps {
   onReady?: () => void;
 }
-
 export default function ClassofPower({ onReady }: ClassofPowerProps = {}) {
   const [showVideo, setShowVideo] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
