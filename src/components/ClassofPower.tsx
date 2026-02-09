@@ -13,9 +13,6 @@ export default function ClassofPower({ onReady }: ClassofPowerProps = {}) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
 
-  // Preload: video is in DOM from mount (hidden) so it starts loading as soon as user lands on the page
-  // Only switch to video when BOTH in-view + delay AND video is ready → no loading state, smooth transition
-
   useEffect(() => {
     if (isInView) {
       const timer = setTimeout(() => setShowVideo(true), 1000);
