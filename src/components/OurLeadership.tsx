@@ -22,8 +22,8 @@ export default function OurLeadership() {
       image: "/leadership/cfo.png"
     },
     {
-      name: "Chandrashekar Diwaakaran",
-      title: "Head of Battery Intelligence",
+      name: "Chandrashekar Diwakaran",
+      title: "Chief Technology Officer",
       image: "/leadership/hbi.png"
     },
     {
@@ -43,7 +43,7 @@ export default function OurLeadership() {
     },
     {
       name: "Harinder Mohan Singh",
-      title: "Technology Advisor",
+      title: "Head of Battery Intelligence",
       image: "/leadership/ta.png"
     }
   ]
