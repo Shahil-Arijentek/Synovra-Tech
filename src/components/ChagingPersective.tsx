@@ -1,6 +1,6 @@
 export default function ChagingPersective() {
   return (
-    <section className="bg-black pt-28 pb-0 md:py-24 overflow-hidden relative font-['Poppins'] group">
+    <section className="bg-black pt-20 pb-16 md:pt-24 md:pb-20 overflow-hidden relative font-['Poppins'] group">
       <div className="flex items-center justify-center">
         <h2 className="relative text-[10vw] md:text-[8.75rem] lg:text-[11.25rem] font-black uppercase tracking-tighter leading-none text-center text-[#1a1a1a] opacity-60">
           <span className="block">CHANGING THE PERSECTIVE</span>

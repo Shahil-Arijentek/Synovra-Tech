@@ -46,7 +46,7 @@ export default function Challenges() {
     setCurrentIndex((prev) => (prev - 1 + challenges.length) % challenges.length)
 
   return (
-    <section className="relative w-full bg-black py-16 md:py-24">
+    <section className="relative w-full bg-black py-20 md:py-28 px-6 md:px-8">
       {/* Heading Section */}
       <div ref={headingRef} className="text-center px-6 md:px-8 mb-12 md:mb-16">
         <motion.h2

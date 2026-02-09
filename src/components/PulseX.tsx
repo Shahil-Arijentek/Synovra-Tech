@@ -177,11 +177,17 @@ export const PulseX = () => {
   const isHeadingInView = useInView(headingRef, { once: true, amount: 0.8 })
 
   return (
-    <section className="relative overflow-hidden pt-12 pb-12 px-6 md:px-12 lg:pt-20 lg:pb-16" style={{ backgroundColor: '#0d0d0d' }}>
+    <section 
+      className="relative overflow-hidden pt-32 pb-12 px-6 md:px-12 lg:pt-40 lg:pb-16 scroll-mt-28 md:scroll-mt-36" 
+      style={{ backgroundColor: '#0d0d0d' }}
+      id="pulse-x-section"
+    >
+      {/* Fade to black gradient at top to prevent bleed-through from previous section */}
+      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black via-black to-transparent pointer-events-none z-0" />
       {/* Fade to black gradient at bottom */}
       <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-black pointer-events-none z-10" />
-      <div className="relative mx-auto max-w-[75rem]">
-        <div ref={headingRef} className="mb-6 md:mb-10 space-y-4 text-center">
+      <div className="relative mx-auto max-w-[75rem] z-10">
+        <div ref={headingRef} className="mb-8 md:mb-12 space-y-4 text-center">
 
           <motion.h2
             initial={{ opacity: 0, y: 40 }}

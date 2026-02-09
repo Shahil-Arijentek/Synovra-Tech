@@ -33,7 +33,7 @@ export default function BusinessImpact() {
   ]
 
   return (
-    <section className={`bg-[#0d0d0d] py-12 md:py-20 px-4 sm:px-6 md:px-8 font-sans text-white relative z-[310] transition-opacity duration-500 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
+    <section className={`bg-[#0d0d0d] py-20 md:py-28 px-4 sm:px-6 md:px-8 font-sans text-white relative z-[310] transition-opacity duration-500 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
       <div className="max-w-[87.5rem] mx-auto">
         {/* Header */}
         <motion.h2
@@ -45,7 +45,7 @@ export default function BusinessImpact() {
             delay: 0.3,
             ease: [0.19, 1, 0.22, 1]
           }}
-          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-10 md:mb-16"
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mt-8 md:mt-12 mb-10 md:mb-16"
         >
           Business Impact
         </motion.h2>

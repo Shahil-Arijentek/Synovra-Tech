@@ -141,7 +141,7 @@ export default function Sectors() {
 
   return (
     <>
-      <section className="bg-black py-12 md:py-24 overflow-hidden relative font-['Poppins'] group">
+      <section className="bg-black py-20 md:py-28 overflow-hidden relative font-['Poppins'] group">
         <div className="flex items-center justify-center">
           <h2 className="relative text-[7vw] sm:text-[8vw] md:text-[6.25rem] lg:text-[9.375rem] font-black uppercase tracking-tighter leading-none text-center text-[#1a1a1a] opacity-60 whitespace-nowrap">
             <span className="block">SECTORS WE SERVE</span>
@@ -173,7 +173,7 @@ export default function Sectors() {
 
       <section
         ref={sectionRef}
-        className="bg-black pt-12 pb-0 md:pt-24 md:pb-24 text-white -mt-16 md:-mt-24"
+        className="bg-black pt-16 pb-16 md:pt-24 md:pb-24 text-white"
       >
         {/* Container with extra height for mobile scroll interaction */}
         <div

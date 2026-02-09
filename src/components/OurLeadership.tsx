@@ -49,7 +49,7 @@ export default function OurLeadership() {
   ]
 
   return (
-    <section className="relative w-full bg-black py-12 sm:py-16 md:py-20 px-4 sm:px-6">
+    <section className="relative w-full bg-black py-20 md:py-28 px-4 sm:px-6">
       {/* Subtle grid background */}
       <div className="absolute inset-0 opacity-10"
         style={{

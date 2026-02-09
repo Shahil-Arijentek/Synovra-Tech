@@ -54,9 +54,11 @@ export default function ClassofPower({ onReady }: ClassofPowerProps = {}) {
   return (
     <section
       ref={sectionRef}
-      className="relative flex w-full flex-col items-center justify-start overflow-hidden pt-12 pb-16 px-6 md:pt-16 md:pb-20 md:px-8"
+      className="relative flex w-full flex-col items-center justify-start overflow-hidden pt-12 pb-24 px-6 md:pt-16 md:pb-32 md:px-8"
       style={{ backgroundColor: "#0d0d0d" }}
     >
+      {/* Fade to black gradient at bottom to prevent video bleed-through */}
+      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent via-black to-black pointer-events-none z-20" />
       <ClassOfPowerHeading />
 
       <div
