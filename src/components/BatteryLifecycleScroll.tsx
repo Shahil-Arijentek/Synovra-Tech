@@ -50,17 +50,17 @@ interface CardData {
 
 interface SceneConfig {
   id: number
-  title: string
+  headline: string
+  subline: string
   cards: CardData[]
 }
 
 const sceneConfig: SceneConfig[] = [
   // Scene 1: Initial Diagnostics
   {
-
-    
     id: 1,
-    title: 'OPERATING WITHIN OPTIMAL RANGE',
+    headline: 'DIAGNOSTIC TRACE — BASELINE RECORDED',
+    subline: 'In-service electrical signature logged',
     cards: [
       {
         cardType: 'voltage',
@@ -91,7 +91,8 @@ const sceneConfig: SceneConfig[] = [
   // Scene 2: Sulphation Detection
   {
     id: 2,
-    title: 'EARLY PERFORMANCE DRIFT DETECTED',
+    headline: 'DIAGNOSTIC TRACE — DECLINE DETECTED',
+    subline: 'Sulphation onset identified',
     cards: [
       {
         cardType: 'voltage',
@@ -122,7 +123,8 @@ const sceneConfig: SceneConfig[] = [
   // Scene 3: Logistics & Tracking
   {
     id: 3,
-    title: 'EARLY PERFORMANCE DRIFT DETECTED',
+    headline: 'DIAGNOSTIC TRACE — CHAIN OF CUSTODY',
+    subline: 'Pickup logged • Route verified',
     cards: [
       {
         cardType: 'barcode',
@@ -159,7 +161,8 @@ const sceneConfig: SceneConfig[] = [
   // Scene 4: Diagnostic Lock
   {
     id: 4,
-    title: 'REVIVAL ELIGIBLE',
+    headline: 'DIAGNOSTIC TRACE — ELIGIBILITY CONFIRMED',
+    subline: 'Cell-level health profile generated',
     cards: [
       {
         cardType: 'voltage',
@@ -190,7 +193,8 @@ const sceneConfig: SceneConfig[] = [
   // Scene 5: Recovery Process
   {
     id: 5,
-    title: 'REVIVAL PROCESS IN PROGRESS',
+    headline: 'DIAGNOSTIC TRACE — CONTROLLED RESTORATION',
+    subline: 'Electrochemical correction in progress',
     cards: [
       {
         cardType: 'voltage-trend',
@@ -227,7 +231,8 @@ const sceneConfig: SceneConfig[] = [
   // Scene 6: Performance Verification
   {
     id: 6,
-    title: 'PERFORMANCE RESTORED FOR EXTENDED USE',
+    headline: 'PATH AHEAD — SECOND LIFE ENABLED',
+    subline: 'Performance restored • Track continues',
     cards: [
       {
         cardType: 'performance-restored',
@@ -264,7 +269,8 @@ const sceneConfig: SceneConfig[] = [
   // Scene 7: Final Summary
   {
     id: 7,
-    title: 'MATERIAL RECOVERY INITIATED',
+    headline: 'PATH AHEAD — MATERIAL RECOVERY',
+    subline: 'Recycling initiated after verified service life',
     cards: [
       {
         cardType: 'lead',
@@ -1327,17 +1333,20 @@ export default function BatteryLifecycleScroll() {
 
               {/* Scene Title Label - Separate Container */}
               {activeSceneIndex !== null && (
-                <div className="absolute top-2 md:top-8 right-3 sm:right-6 md:right-16 z-20">
+                <div className="absolute top-2 md:top-8 right-2 sm:right-4 md:right-16 z-20 max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-2rem)] md:max-w-none">
                   <div
-                    className="flex items-center justify-center backdrop-blur-sm h-[1.875rem] sm:h-[2.188rem] md:h-[4.688rem] rounded-lg md:rounded-2xl px-2 sm:px-3 md:px-24 md:w-[46.88rem] whitespace-nowrap"
+                    className="flex flex-col items-center justify-center backdrop-blur-sm min-h-[1.875rem] sm:min-h-[2.188rem] md:min-h-[4.688rem] rounded-lg md:rounded-2xl px-3 sm:px-4 md:px-6 lg:px-12 xl:px-24 w-auto md:w-[46.88rem] py-1 sm:py-1.5 md:py-3"
                     style={{
                       border: '1px solid rgba(255, 255, 255, 0.10)',
                       background: 'rgba(0, 0, 0, 0.4)',
                       willChange: 'transform'
                     }}
                   >
-                    <p className="text-white/90 text-[0.4375rem] xs:text-[0.5rem] sm:text-[0.5625rem] md:text-base lg:!text-[1.125rem] xl:!text-[1.25rem] font-['Arial',sans-serif] tracking-wide uppercase">
-                      {sceneConfig[activeSceneIndex]?.title}
+                    <p className="text-[0.375rem] xs:text-[0.4375rem] sm:text-[0.5rem] md:text-sm lg:!text-base xl:!text-lg font-['Arial',sans-serif] tracking-wide uppercase text-center px-1" style={{ color: '#9F9F9F', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                      {sceneConfig[activeSceneIndex]?.headline}
+                    </p>
+                    <p className="text-[0.3125rem] xs:text-[0.375rem] sm:text-[0.4375rem] md:text-xs lg:!text-sm xl:!text-base font-['Arial',sans-serif] tracking-normal normal-case text-center px-1 mt-0.5 sm:mt-1" style={{ color: '#9F9F9F', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                      {sceneConfig[activeSceneIndex]?.subline}
                     </p>
                   </div>
                 </div>
