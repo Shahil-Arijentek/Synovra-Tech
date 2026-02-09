@@ -185,8 +185,8 @@ export const PulseX = () => {
     >
       {/* Fade to #0d0d0d gradient at top to prevent bleed-through from previous section */}
       <div className="absolute inset-x-0 top-0 h-32 pointer-events-none z-0" style={{ background: 'linear-gradient(to bottom, #0d0d0d, #0d0d0d, transparent)' }} />
-      {/* Fade to #0d0d0d gradient at bottom */}
-      <div className="absolute inset-x-0 bottom-0 h-32 pointer-events-none z-10" style={{ background: 'linear-gradient(to bottom, transparent, #0d0d0d)' }} />
+      {/* Fade to black gradient at bottom */}
+      <div className="absolute inset-x-0 bottom-0 h-32 pointer-events-none z-10" style={{ background: 'linear-gradient(to bottom, transparent, #000000)' }} />
       <div className="relative mx-auto max-w-[75rem] z-10">
         <div ref={headingRef} className="mb-8 md:mb-12 space-y-4 text-center">
 
