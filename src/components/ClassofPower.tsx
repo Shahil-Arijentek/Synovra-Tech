@@ -57,12 +57,12 @@ export default function ClassofPower({ onReady }: ClassofPowerProps = {}) {
       className="relative flex w-full flex-col items-center justify-start overflow-hidden pt-12 pb-24 px-6 md:pt-16 md:pb-32 md:px-8"
       style={{ backgroundColor: "#0d0d0d" }}
     >
-      {/* Fade to black gradient at bottom to prevent video bleed-through */}
-      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent via-black to-black pointer-events-none z-20" />
+      {/* Fade to #0d0d0d gradient at bottom to prevent video bleed-through */}
+      <div className="absolute inset-x-0 bottom-0 h-32 pointer-events-none z-20" style={{ background: 'linear-gradient(to bottom, transparent, #0d0d0d, #0d0d0d)' }} />
       <ClassOfPowerHeading />
 
       <div
-        className="relative w-full flex items-center justify-center -mt-12 md:-mt-10"
+        className="relative w-full flex items-center justify-center -mt-16 md:-mt-14 lg:-mt-12"
         style={{ minHeight: "400px" }}
       >
         <div
