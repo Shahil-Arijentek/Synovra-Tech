@@ -111,9 +111,10 @@ export default function Sectors() {
     }
 
     // Create ScrollTrigger with pinning
+    // Navbar height: mt-5 (1.25rem) + h-[5.25rem] = 6.5rem (104px)
     scrollTriggerRef.current = ScrollTrigger.create({
       trigger: section,
-      start: "top top",
+      start: "top top+=104",
       end: `+=${(sectors.length - 1) * 100}%`,
       pin: true,
       pinSpacing: true,
@@ -141,9 +142,9 @@ export default function Sectors() {
 
   return (
     <>
-      <section className="bg-black py-20 md:py-28 overflow-hidden relative font-['Poppins'] group">
+      <section className="bg-black pt-20 pb-8 md:py-28 overflow-hidden relative font-['Poppins'] group">
         <div className="flex items-center justify-center">
-          <h2 className="relative text-[7vw] sm:text-[8vw] md:text-[6.25rem] lg:text-[9.375rem] font-black uppercase tracking-tighter leading-none text-center text-[#1a1a1a] opacity-60 whitespace-nowrap">
+          <h2 className="relative text-[8vw] sm:text-[9vw] md:text-[7rem] lg:text-[10.5rem] font-black uppercase tracking-tighter leading-none text-center text-[#1a1a1a] opacity-60 whitespace-nowrap">
             <span className="block">SECTORS WE SERVE</span>
             <span className="reveal-text absolute inset-0 block">
               SECTORS WE SERVE
@@ -180,7 +181,7 @@ export default function Sectors() {
 
       <section
         ref={sectionRef}
-        className="bg-black pt-16 pb-16 md:pt-24 md:pb-24 text-white"
+        className="bg-black pt-8 pb-16 md:pt-24 md:pb-24 text-white"
       >
         {/* Container with extra height for mobile scroll interaction */}
         <div
@@ -189,10 +190,10 @@ export default function Sectors() {
           style={{ position: 'relative' }}
         >
           {/* Sticky wrapper for visible content on mobile */}
-          <div className="sticky top-0 h-screen lg:h-auto lg:relative flex w-full max-w-[105rem] flex-col lg:flex-row lg:items-start lg:gap-16 px-6 mx-auto overflow-hidden lg:overflow-visible">
+          <div className="sticky top-[6.5rem] lg:top-0 h-[calc(100vh-6.5rem)] lg:h-auto lg:relative flex w-full max-w-[105rem] flex-col lg:flex-row lg:items-start lg:gap-16 px-6 mx-auto overflow-hidden lg:overflow-visible">
 
             {/* Image - Perfect sticky at top on mobile */}
-            <div className="w-full lg:flex-[3.0] z-40 mb-2 lg:mb-0 order-1 lg:order-2 mt-28 lg:mt-0">
+            <div className="w-full lg:flex-[3.0] z-40 mb-2 lg:mb-0 order-1 lg:order-2 mt-8 lg:mt-0">
               <div className="relative h-[15.63rem] sm:h-[25rem] lg:h-[47.5rem] overflow-hidden rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/5 bg-black">
                 <AnimatePresence mode="wait">
                   <motion.img
