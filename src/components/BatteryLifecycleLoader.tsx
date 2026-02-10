@@ -15,7 +15,7 @@ export default function BatteryLifecycleLoader({ progress }: { progress: number 
               style={{ height: `${progress}%` }}
             >
               {/* Shimmer effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+              {/* <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div> */}
             </div>
           </div>
           

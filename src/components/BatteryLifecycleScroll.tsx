@@ -398,70 +398,70 @@ export default function BatteryLifecycleScroll() {
       // Scene-specific positioning
       if (sceneIndex === 0) {
         // Scene 1 positions
-        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-12'
-        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-12'
+        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12'
+        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12'
         // HEALTH % card: same as bottom-left but moved down on laptop only
-        if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return 'left-12 sm:left-14 md:left-[4rem] top-[38%] sm:top-[40%] md:top-[22rem] lg:top-[23rem] 2xl:top-[24rem]'
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-[4rem] top-[38%] sm:top-[40%] md:top-[22rem]'
+        if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return 'left-12 sm:left-14 md:left-[4rem] top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem] xl:top-[23rem] 2xl:top-[24rem]'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-[4rem] top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem]'
         // SULPHATION card (scene 1): same as bottom-right but moved up on laptop only
-        if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return 'left-12 sm:left-14 md:left-[4rem] top-[68%] sm:top-[70%] md:top-[41rem] lg:top-[27.5rem] 2xl:top-[42rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-[4rem] top-[68%] sm:top-[70%] md:top-[41rem] lg:top-[27rem] 2xl:top-[41rem]'
+        if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return 'left-12 sm:left-14 md:left-[4rem] top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41rem] xl:top-[27.5rem] 2xl:top-[42rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-[4rem] top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41rem] xl:top-[27rem] 2xl:top-[41rem]'
       } else if (sceneIndex === 1) {
         // Scene 2 positions
-        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-12'
-        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-12'
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[34%] sm:top-[36%] md:top-[23rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[65%] sm:top-[67%] md:top-[41rem]'
+        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12'
+        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-28 lg:left-16 top-[34%] sm:top-[36%] md:top-[40%] lg:top-[23rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-28 lg:left-16 top-[65%] sm:top-[67%] md:top-[71%] lg:top-[41rem]'
       } else if (sceneIndex === 2) {
         // Scene 3 positions
         if (cardData.position === 'right') {
-          if (cardData.cardType === 'logged') return 'right-10 sm:right-12 md:right-16 bottom-16'
-          return 'left-12 sm:left-14 md:left-20 top-[67%] sm:top-[69%] md:top-[43rem]'
+          if (cardData.cardType === 'logged') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20'
+          return 'left-12 sm:left-14 md:left-20 top-[67%] sm:top-[69%] md:top-[73%] lg:top-[43rem]'
         }
-        if (cardData.position === 'left') return 'left-12 sm:left-14 md:left-20 top-14 sm:top-16 md:top-12'
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-20 top-[22%] sm:top-[24%] md:top-[14rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-20 top-[41%] sm:top-[42%] md:top-[27rem]'
+        if (cardData.position === 'left') return 'left-12 sm:left-14 md:left-20 top-14 sm:top-16 md:top-20 lg:top-12'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-20 top-[22%] sm:top-[24%] md:top-[28%] lg:top-[14rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-20 top-[41%] sm:top-[42%] md:top-[46%] lg:top-[27rem]'
       } else if (sceneIndex === 3) {
         // Scene 4 positions
-        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-12'
-        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-12'
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[34%] sm:top-[36%] md:top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[64%] sm:top-[66%] md:top-[40rem]'
+        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12'
+        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[34%] sm:top-[36%] md:top-[40%] lg:top-[22rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[64%] sm:top-[66%] md:top-[70%] lg:top-[40rem]'
       } else if (sceneIndex === 4) {
         // Scene 5 positions
         if (cardData.position === 'right') {
-          if (cardData.cardType === 'controlled') return 'right-10 sm:right-12 md:right-16 bottom-16'
-          return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-12'
+          if (cardData.cardType === 'controlled') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20'
+          return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12'
         }
-        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-12'
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[38%] sm:top-[40%] md:top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[68%] sm:top-[70%] md:top-[41.5rem]'
+        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41.5rem]'
       } else if (sceneIndex === 5) {
         // Scene 6 positions
-        if (cardData.position === 'top') return 'left-12 sm:left-14 md:left-20 top-20 sm:top-22 md:top-16'
-        if (cardData.position === 'left') return 'left-10 sm:left-12 md:left-16 top-[35%] sm:top-[37%] md:top-[22rem]'
+        if (cardData.position === 'top') return 'left-12 sm:left-14 md:left-20 top-20 sm:top-22 md:top-26 lg:top-16'
+        if (cardData.position === 'left') return 'left-10 sm:left-12 md:left-16 top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem]'
         if (cardData.position === 'right') {
-          if (cardData.cardType === 'certified') return 'right-10 sm:right-12 md:right-16 bottom-16'
-          return 'right-12 sm:right-14 md:right-auto md:left-[20rem] top-[35%] sm:top-[37%] md:top-[22rem]'
+          if (cardData.cardType === 'certified') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20'
+          return 'right-12 sm:right-14 md:right-auto md:left-[20rem] top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem]'
         }
-        if (cardData.position === 'bottom') return 'left-12 sm:left-14 md:left-20 top-[60%] sm:top-[62%] md:top-[41em]'
+        if (cardData.position === 'bottom') return 'left-12 sm:left-14 md:left-20 top-[60%] sm:top-[62%] md:top-[66%] lg:top-[41em]'
       } else if (sceneIndex === 6) {
         // Scene 7 positions
-        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-16 sm:top-18 md:top-16'
+        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-16 sm:top-18 md:top-22 lg:top-16'
         if (cardData.position === 'right') {
-          if (cardData.cardType === 'verified') return 'right-10 sm:right-12 md:right-16 bottom-16'
-          return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-16 sm:top-18 md:top-16'
+          if (cardData.cardType === 'verified') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20'
+          return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-16 sm:top-18 md:top-22 lg:top-16'
         }
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[35%] sm:top-[37%] md:top-[24rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[60%] sm:top-[62%] md:top-[40rem]'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[35%] sm:top-[37%] md:top-[41%] lg:top-[24rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[60%] sm:top-[62%] md:top-[66%] lg:top-[40rem]'
       }
       // Default positions
-      if (cardData.position === 'right') return 'right-16 md:right-auto md:left-[16rem] top-24 md:top-20'
-      if (cardData.position === 'left') return 'left-6 md:left-8 top-24 md:top-20'
-      if (cardData.position === 'bottom-left') return 'left-4 md:left-8 top-[20rem]'
-      if (cardData.position === 'bottom-right') return 'left-4 md:left-[16rem] top-[22rem]'
+      if (cardData.position === 'right') return 'right-16 md:right-auto md:left-[16rem] top-24 md:top-28 lg:top-20'
+      if (cardData.position === 'left') return 'left-6 md:left-8 top-24 md:top-28 lg:top-20'
+      if (cardData.position === 'bottom-left') return 'left-4 md:left-8 top-[20rem] md:top-[22rem] lg:top-[20rem]'
+      if (cardData.position === 'bottom-right') return 'left-4 md:left-[16rem] top-[22rem] md:top-[24rem] lg:top-[22rem]'
       
-      return 'left-4 md:left-8 top-1/2 -translate-y-1/2'
+      return 'left-4 md:left-8 top-1/2 md:top-[52%] lg:top-1/2 -translate-y-1/2'
     }
 
     const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
@@ -1287,9 +1287,9 @@ export default function BatteryLifecycleScroll() {
           {(currentSceneForFrame > 0 || (currentSceneForFrame === 0 && currentFrame >= 50)) && (
             <>
               {/* Progress Boxes Container */}
-              <div className="absolute top-2 md:top-8 left-5 sm:left-4 md:left-[38rem] z-20">
+              <div className="absolute top-2 lg:top-8 left-5 sm:left-4 lg:left-[32rem] xl:left-[38rem] z-20">
                 <div 
-                  className="flex items-center gap-0.5 md:gap-2 backdrop-blur-sm h-[1.875rem] md:h-[4.688rem] rounded-md md:rounded-2xl px-1.5 md:px-5"
+                  className="flex items-center gap-0.5 lg:gap-2 backdrop-blur-sm h-[1.875rem] lg:h-[4.688rem] rounded-md lg:rounded-2xl px-1.5 lg:px-5"
                   style={{
                     border: '1px solid rgba(255, 255, 255, 0.10)',
                     background: 'rgba(0, 0, 0, 0.4)',
@@ -1301,7 +1301,7 @@ export default function BatteryLifecycleScroll() {
                     <div
                       key={index}
                       className={`relative transition-all duration-300 ${
-                        activeSceneIndex === index ? 'w-3 h-3 md:w-7 md:h-7' : 'w-2.5 h-2.5 md:w-6 md:h-6'
+                        activeSceneIndex === index ? 'w-3 h-3 lg:w-7 lg:h-7' : 'w-2.5 h-2.5 lg:w-6 lg:h-6'
                       }`}
                     >
                       {/* Box Background */}
@@ -1333,19 +1333,19 @@ export default function BatteryLifecycleScroll() {
 
               {/* Scene Title Label - Separate Container */}
               {activeSceneIndex !== null && (
-                <div className="absolute top-2 md:top-8 right-2 sm:right-4 md:right-16 z-20 max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-2rem)] md:max-w-none">
+                <div className="absolute top-2 lg:top-8 right-2 sm:right-4 lg:right-8 xl:right-16 z-20 max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-2rem)] lg:max-w-[600px] xl:max-w-none">
                   <div
-                    className="flex flex-col items-center justify-center backdrop-blur-sm min-h-[1.875rem] sm:min-h-[2.188rem] md:min-h-[4.688rem] rounded-lg md:rounded-2xl px-3 sm:px-4 md:px-6 lg:px-12 xl:px-24 w-auto md:w-[46.88rem] py-1 sm:py-1.5 md:py-3"
+                    className="flex flex-col items-center justify-center backdrop-blur-sm min-h-[1.875rem] sm:min-h-[2.188rem] lg:min-h-[4.688rem] rounded-lg lg:rounded-2xl px-3 sm:px-4 lg:px-6 xl:px-12 2xl:px-24 w-auto lg:w-[600px] xl:w-[46.88rem] py-1 sm:py-1.5 lg:py-3"
                     style={{
                       border: '1px solid rgba(255, 255, 255, 0.10)',
                       background: 'rgba(0, 0, 0, 0.4)',
                       willChange: 'transform'
                     }}
                   >
-                    <p className="text-[0.375rem] xs:text-[0.4375rem] sm:text-[0.5rem] md:text-sm lg:!text-base xl:!text-lg font-['Arial',sans-serif] tracking-wide uppercase text-center px-1" style={{ color: '#9F9F9F', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                    <p className="text-[0.375rem] xs:text-[0.4375rem] sm:text-[0.5rem] lg:text-sm xl:!text-base 2xl:!text-lg font-['Arial',sans-serif] tracking-wide uppercase text-center px-1" style={{ color: '#9F9F9F', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                       {sceneConfig[activeSceneIndex]?.headline}
                     </p>
-                    <p className="text-[0.3125rem] xs:text-[0.375rem] sm:text-[0.4375rem] md:text-xs lg:!text-sm xl:!text-base font-['Arial',sans-serif] tracking-normal normal-case text-center px-1 mt-0.5 sm:mt-1" style={{ color: '#9F9F9F', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                    <p className="text-[0.3125rem] xs:text-[0.375rem] sm:text-[0.4375rem] lg:text-xs xl:!text-sm 2xl:!text-base font-['Arial',sans-serif] tracking-normal normal-case text-center px-1 mt-0.5 sm:mt-1" style={{ color: '#9F9F9F', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                       {sceneConfig[activeSceneIndex]?.subline}
                     </p>
                   </div>
@@ -1400,9 +1400,9 @@ export default function BatteryLifecycleScroll() {
 
           {/* Scroll Indicator (only visible in active scene) */}
           {activeSceneIndex !== null && activeSceneIndex < 6 && (
-            <div className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1 md:gap-2 animate-bounce">
-              <p className="text-white/60 text-xs md:text-sm font-['Arial',sans-serif]">Scroll to explore</p>
-              <svg className="w-5 h-5 md:w-6 md:h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="absolute bottom-4 lg:bottom-8 left-[40%] lg:left-1/2 z-10 flex flex-col items-center gap-1 lg:gap-2 animate-bounce lg:-translate-x-1/2">
+              <p className="text-white/60 text-xs lg:text-sm font-['Arial',sans-serif]">Scroll to explore</p>
+              <svg className="w-5 h-5 lg:w-6 lg:h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
               </svg>
             </div>
