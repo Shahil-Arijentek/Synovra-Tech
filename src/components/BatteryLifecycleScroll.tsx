@@ -347,12 +347,71 @@ export default function BatteryLifecycleScroll() {
   const [currentSceneForFrame, setCurrentSceneForFrame] = useState(0) // Scene index for frame rendering (0-based)
   const [isPreloading, setIsPreloading] = useState(true) // Track preload state
   const [preloadProgress, setPreloadProgress] = useState(0) // Track preload progress
+  const [shouldShowUI, setShouldShowUI] = useState(false) // Track if progress bar and title should be visible (once true, stays true)
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
   const { setNavbarVisible } = useNavbar()
   const hasPreloadedRef = useRef(false)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const currentCanvasFrameRef = useRef({ scene: 0, frame: 1 }) // Track what's on canvas
   const rafRef = useRef<number | null>(null)
+
+  // Helper function to check if a card should be visible based on current frame
+  const shouldCardBeVisible = (sceneIndex: number, currentScene: number, currentFrame: number): boolean => {
+    // Scene 1 cards: Show when viewing scene-2 folder frames 1-26
+    if (sceneIndex === 0) {
+      return currentScene === 1 && currentFrame >= 1 && currentFrame <= 26
+    }
+    
+    // Scene 2 cards: Show when viewing scene-3 folder frames 1-52
+    if (sceneIndex === 1) {
+      return currentScene === 2 && currentFrame >= 1 && currentFrame <= 52
+    }
+    
+    // Scene 3 cards: Show when viewing scene-3 folder frames 60-end OR scene-4 folder frames 1-19
+    if (sceneIndex === 2) {
+      const scene3FrameCount = SCENE_FRAME_COUNTS[2]
+      return (currentScene === 2 && currentFrame >= 60 && currentFrame <= scene3FrameCount) ||
+             (currentScene === 3 && currentFrame >= 1 && currentFrame <= 19)
+    }
+    
+    // Scene 4 cards: Show when viewing scene-4 folder frames 81-end OR scene-5 folder frames 1-31
+    if (sceneIndex === 3) {
+      const scene4FrameCount = SCENE_FRAME_COUNTS[3]
+      return (currentScene === 3 && currentFrame >= 81 && currentFrame <= scene4FrameCount) ||
+             (currentScene === 4 && currentFrame >= 1 && currentFrame <= 31)
+    }
+    
+    // Scene 5 cards: Show when viewing scene-5 folder frames 40-187
+    if (sceneIndex === 4) {
+      return currentScene === 4 && currentFrame >= 40 && currentFrame <= 187
+    }
+    
+    // Scene 6 cards: Show when viewing scene-6 folder frames 31-end OR scene-7 folder frames 1-2
+    if (sceneIndex === 5) {
+      const scene6FrameCount = SCENE_FRAME_COUNTS[5]
+      return (currentScene === 5 && currentFrame >= 31 && currentFrame <= scene6FrameCount) ||
+             (currentScene === 6 && currentFrame >= 1 && currentFrame <= 2)
+    }
+    
+    // Scene 7 cards: Show when viewing scene-7 folder frames 29-88 (or end)
+    if (sceneIndex === 6) {
+      const scene7FrameCount = SCENE_FRAME_COUNTS[6]
+      return currentScene === 6 && currentFrame >= 29 && currentFrame <= scene7FrameCount
+    }
+    
+    return false
+  }
+
+  // Helper function to get the active scene index based on which cards are currently visible
+  const getActiveSceneIndexFromCards = (currentScene: number, currentFrame: number): number | null => {
+    // Check each scene in order to find which one should be active
+    for (let sceneIndex = 0; sceneIndex < sceneConfig.length; sceneIndex++) {
+      if (shouldCardBeVisible(sceneIndex, currentScene, currentFrame)) {
+        return sceneIndex
+      }
+    }
+    return null
+  }
 
   // Canvas frame rendering - ZERO BLINK guaranteed
   const drawFrame = (sceneIndex: number, frameNumber: number) => {
@@ -969,73 +1028,6 @@ export default function BatteryLifecycleScroll() {
             setCurrentFrame(clampedFrameIndex + 1)
             setCurrentSceneForFrame(scene.sceneIndex)
 
-            // Show/hide cards based on scene
-            setActiveSceneIndex(scene.sceneIndex)
-
-            // Hide cards from all other scenes - smooth exit
-            sceneConfig.forEach((otherScene, otherSceneIndex) => {
-              if (otherSceneIndex !== scene.sceneIndex) {
-                otherScene.cards.forEach((_otherCardData: CardData, cardIndex: number) => {
-                  const cardKey = `scene-${otherSceneIndex}-card-${cardIndex}`
-                  const card = cardRefs.current[cardKey]
-                  if (card) {
-                    gsap.to(card, {
-                      x: -400,
-                      opacity: 0,
-                      duration: 0.2,
-                      ease: 'power2.inOut',
-                      force3D: true,
-                      overwrite: 'auto'
-                    })
-                  }
-                })
-              }
-            })
-
-            // Hide cards from current scene if we're in scene 1 before frame 50
-            if (scene.sceneIndex === 0 && clampedFrameIndex < 50) {
-              const currentScene = sceneConfig[scene.sceneIndex]
-              currentScene.cards.forEach((_: CardData, cardIndex: number) => {
-                const cardKey = `scene-${scene.sceneIndex}-card-${cardIndex}`
-                const card = cardRefs.current[cardKey]
-                if (card) {
-                  gsap.to(card, {
-                    x: -400,
-                    opacity: 0,
-                    duration: 0.2,
-                    ease: 'power2.inOut',
-                    force3D: true,
-                    overwrite: 'auto'
-                  })
-                }
-              })
-            }
-
-            // Animate cards in - smooth entrance
-            // For the last scene, show cards earlier to ensure they're visible
-            const showThreshold = isLastScene ? 0.05 : 0.15
-            
-            // Only show cards after frame 50 in scene 1, or if we're past scene 1
-            const shouldShowCards = (scene.sceneIndex > 0) || (scene.sceneIndex === 0 && clampedFrameIndex >= 50)
-            
-            if (sceneProgress > showThreshold && shouldShowCards) {
-              const currentScene = sceneConfig[scene.sceneIndex]
-              currentScene.cards.forEach((_: CardData, cardIndex: number) => {
-                const cardKey = `scene-${scene.sceneIndex}-card-${cardIndex}`
-                const card = cardRefs.current[cardKey]
-                if (card) {
-                  gsap.to(card, {
-                    x: 0,
-                    opacity: 1,
-                    duration: 0.25,
-                    ease: 'power2.out',
-                    force3D: true,
-                    overwrite: 'auto'
-                  })
-                }
-              })
-            }
-
             break
           }
 
@@ -1203,6 +1195,55 @@ export default function BatteryLifecycleScroll() {
     }
   }, [currentFrame, currentSceneForFrame])
 
+  // Smooth card visibility based on frame ranges
+  useEffect(() => {
+    if (isPreloading) return
+
+    // Determine which scene should be active based on frame-based card visibility
+    const newActiveSceneIndex = getActiveSceneIndexFromCards(currentSceneForFrame, currentFrame)
+    setActiveSceneIndex(newActiveSceneIndex)
+
+    // Show UI when Scene 1 cards appear (scene-2 folder frames 1-26)
+    // Once shown, it stays visible permanently
+    if (!shouldShowUI && newActiveSceneIndex === 0) {
+      setShouldShowUI(true)
+    }
+
+    // Check visibility for each scene's cards and animate smoothly
+    sceneConfig.forEach((scene, sceneIndex) => {
+      const shouldBeVisible = shouldCardBeVisible(sceneIndex, currentSceneForFrame, currentFrame)
+      
+      scene.cards.forEach((_cardData: CardData, cardIndex: number) => {
+        const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
+        const card = cardRefs.current[cardKey]
+        
+        if (card) {
+          if (shouldBeVisible) {
+            // Smooth fade in and slide in
+            gsap.to(card, {
+              x: 0,
+              opacity: 1,
+              duration: 0.4,
+              ease: 'power2.out',
+              force3D: true,
+              overwrite: 'auto'
+            })
+          } else {
+            // Smooth fade out and slide out
+            gsap.to(card, {
+              x: -400,
+              opacity: 0,
+              duration: 0.4,
+              ease: 'power2.in',
+              force3D: true,
+              overwrite: 'auto'
+            })
+          }
+        }
+      })
+    })
+  }, [currentFrame, currentSceneForFrame, isPreloading, shouldShowUI])
+
   // Preload next frames for smooth scrolling (only when not in initial preload)
   useEffect(() => {
     if (isPreloading) return
@@ -1284,7 +1325,7 @@ export default function BatteryLifecycleScroll() {
           </div>
 
           {/* Scene Progress Indicator - Separate Containers */}
-          {(currentSceneForFrame > 0 || (currentSceneForFrame === 0 && currentFrame >= 50)) && (
+          {shouldShowUI && activeSceneIndex !== null && (
             <>
               {/* Progress Boxes Container */}
               <div className="absolute top-2 lg:top-8 left-5 sm:left-4 lg:left-[32rem] xl:left-[38rem] z-20">
