@@ -20,24 +20,14 @@ export default function RecordLockCard({ value, status }: RecordLockCardProps) {
         />
         
         {/* Text Overlay on Plate */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
-          <div 
-            className="text-[#1a1a1a] font-['Arial',sans-serif] font-normal uppercase tracking-wide text-center"
-            style={{
-              fontSize: '20px',
-              lineHeight: '24px'
-            }}
-          >
-            {value}
-          </div>
-          <div 
-            className="text-[#1a1a1a] font-['Arial',sans-serif] font-normal uppercase tracking-wide text-center px-4 sm:pr-6 md:pr-8"
-            style={{
-              fontSize: '12px',
-              lineHeight: '16px'
-            }}
-          >
-            {status}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-left">
+            <div className="text-black text-xl sm:text-2xl md:text-[2rem] font-['Gemunu_Libre',sans-serif] font-bold uppercase leading-none mb-1">
+              {value}
+            </div>
+            <div className="text-black text-sm sm:text-base md:text-[1rem] font-['Arial',sans-serif] font-normal uppercase leading-none">
+              {status}
+            </div>
           </div>
         </div>
       </div>
