@@ -66,7 +66,7 @@ export default function Hero() {
                 muted
                 playsInline
               >
-                <source src="/mainbattery.mp4" type="video/mp4" />
+                <source src="/mainbattery.webm" type="video/webm" />
                 Your browser does not support the video tag.
               </video>
             </div>
