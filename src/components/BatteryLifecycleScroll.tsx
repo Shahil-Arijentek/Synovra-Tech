@@ -32,13 +32,13 @@ gsap.registerPlugin(ScrollTrigger)
 
 // Frame counts per scene (Variable FPS for optimized performance)
 const SCENE_FRAME_COUNTS = [
-  60,   // Scene 1: 0-4s (15 FPS - Smooth intro)
-  60,   // Scene 2: 4-8s (15 FPS - Clear change)
-  180,  // Scene 3: 8-26s (10 FPS - Long scene, light)
-  160,  // Scene 4: 26-42s (10 FPS - Stable)
-  36,   // Scene 5: 42-45s (12 FPS - Short + fluid)
-  100,  // Scene 6: 45-55s (10 FPS - Verification)
-  96    // Scene 7: 55-67s (8 FPS - Calm ending)
+  60,   // Scene 1: 0-4s
+  60,   // Scene 2: 4-8s
+  84,   // Scene 3: 8-26s
+  120,  // Scene 4: 16-28s
+  187,  // Scene 5: 28-44s
+  125,  // Scene 6: 43-56s
+  88    // Scene 7: 56-67s
 ]
 
 interface CardData {
