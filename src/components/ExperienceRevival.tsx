@@ -17,7 +17,7 @@ export default function ExperienceRevival() {
   }, [])
 
   return (
-    <section id="lifecycle" className="revival-experience relative flex min-h-[25rem] md:min-h-[37.5rem] items-center justify-center overflow-hidden bg-black px-6 text-center text-white sm:px-8 py-12 md:py-20">
+    <section id="lifecycle" className="revival-experience relative flex min-h-[25rem] md:min-h-[37.5rem] items-center justify-center overflow-hidden bg-black px-6 text-center text-white sm:px-8 py-20 md:py-28">
 
       {/* Background Video */}
       <div className="absolute inset-0 h-full w-full">

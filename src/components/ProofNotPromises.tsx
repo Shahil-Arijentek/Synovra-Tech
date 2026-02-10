@@ -36,7 +36,7 @@ export default function ProofNotPromises() {
   const shortBarVariants = {
     initial: { width: 0 },
     animate: { 
-      width: '55%',
+      width: '20%',
       transition: { duration: 5, ease: [0.25, 0.1, 0.25, 1] as const }
     }
   }

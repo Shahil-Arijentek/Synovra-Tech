@@ -22,7 +22,7 @@ export default function WhatSynovraIsBuilding() {
   return (
     <section
       ref={ref}
-      className="w-full py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8"
+      className="w-full py-20 md:py-28 px-4 sm:px-6 lg:px-8"
       style={{ backgroundColor: SECTION_BG }}
     >
       <div className="mx-auto w-full max-w-7xl">

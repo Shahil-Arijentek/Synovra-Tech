@@ -22,8 +22,8 @@ export default function OurLeadership() {
       image: "/leadership/cfo.png"
     },
     {
-      name: "Chandrashekar Diwaakaran",
-      title: "Head of Battery Intelligence",
+      name: "Chandrashekar Diwakaran",
+      title: "Chief Technology Officer",
       image: "/leadership/hbi.png"
     },
     {
@@ -43,13 +43,13 @@ export default function OurLeadership() {
     },
     {
       name: "Harinder Mohan Singh",
-      title: "Technology Advisor",
+      title: "Head of Battery Intelligence",
       image: "/leadership/ta.png"
     }
   ]
 
   return (
-    <section className="relative w-full bg-black py-12 sm:py-16 md:py-20 px-4 sm:px-6">
+    <section className="relative w-full bg-black py-20 md:py-28 px-4 sm:px-6">
       {/* Subtle grid background */}
       <div className="absolute inset-0 opacity-10"
         style={{
@@ -100,7 +100,7 @@ export default function OurLeadership() {
           }}
           className="flex justify-center mb-8 sm:mb-10 md:mb-12"
         >
-          <div className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden w-full max-w-[20rem] sm:max-w-[22rem] md:max-w-[24rem] transform transition-transform hover:scale-105 duration-300">
+          <div className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden w-full max-w-[20rem] sm:max-w-[22rem] md:max-w-[24rem] transform transition-transform hover:scale-105 duration-300 cursor-pointer">
             <motion.div
               className="aspect-[3/4] bg-gradient-to-br from-gray-600 to-gray-800 relative overflow-hidden"
               initial={{ opacity: 0, scale: 0.97 }}
@@ -138,29 +138,31 @@ export default function OurLeadership() {
                 delay: index * 0.22,
                 ease: [0.25, 0.1, 0.25, 1]
               }}
-              className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden transform transition-transform hover:scale-105 duration-300 max-w-[20rem] sm:max-w-[22rem] md:max-w-[24rem] mx-auto w-full"
+              className="flex justify-center"
             >
-              <motion.div
-                className="aspect-[3/4] bg-gradient-to-br from-gray-600 to-gray-800 relative overflow-hidden"
-                initial={{ opacity: 0, scale: 0.97 }}
-                animate={isTeamInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.97 }}
-                transition={{ duration: 1.1, delay: index * 0.22 + 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-              >
-                <motion.img
-                  src={leader.image}
-                  alt={leader.name}
-                  className="w-full h-full object-cover"
-                  initial={{ opacity: 0, scale: 1.03 }}
-                  animate={isTeamInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.03 }}
-                  transition={{ duration: 1, delay: index * 0.22 + 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none'
-                  }}
-                />
-              </motion.div>
-              <div className="p-3 sm:p-4 text-center">
-                <h3 className="text-base sm:text-lg font-semibold text-white mb-1">{leader.name}</h3>
-                <p className="text-xs text-[#FF6B35] font-medium uppercase leading-tight">{leader.title}</p>
+              <div className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden transform transition-transform hover:scale-105 duration-300 cursor-pointer max-w-[20rem] sm:max-w-[22rem] md:max-w-[24rem] w-full">
+                <motion.div
+                  className="aspect-[3/4] bg-gradient-to-br from-gray-600 to-gray-800 relative overflow-hidden"
+                  initial={{ opacity: 0, scale: 0.97 }}
+                  animate={isTeamInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.97 }}
+                  transition={{ duration: 1.1, delay: index * 0.22 + 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+                >
+                  <motion.img
+                    src={leader.image}
+                    alt={leader.name}
+                    className="w-full h-full object-cover"
+                    initial={{ opacity: 0, scale: 1.03 }}
+                    animate={isTeamInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.03 }}
+                    transition={{ duration: 1, delay: index * 0.22 + 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none'
+                    }}
+                  />
+                </motion.div>
+                <div className="p-3 sm:p-4 text-center">
+                  <h3 className="text-base sm:text-lg font-semibold text-white mb-1">{leader.name}</h3>
+                  <p className="text-xs text-[#FF6B35] font-medium uppercase leading-tight">{leader.title}</p>
+                </div>
               </div>
             </motion.div>
           ))}
@@ -178,29 +180,31 @@ export default function OurLeadership() {
                 delay: (index + 3) * 0.22,
                 ease: [0.25, 0.1, 0.25, 1]
               }}
-              className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden transform transition-transform hover:scale-105 duration-300 max-w-[20rem] sm:max-w-[22rem] md:max-w-[24rem] mx-auto w-full"
+              className="flex justify-center"
             >
-              <motion.div
-                className="aspect-[3/4] bg-gradient-to-br from-gray-600 to-gray-800 relative overflow-hidden"
-                initial={{ opacity: 0, scale: 0.97 }}
-                animate={isTeamInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.97 }}
-                transition={{ duration: 1.1, delay: (index + 3) * 0.22 + 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-              >
-                <motion.img
-                  src={leader.image}
-                  alt={leader.name}
-                  className="w-full h-full object-cover"
-                  initial={{ opacity: 0, scale: 1.03 }}
-                  animate={isTeamInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.03 }}
-                  transition={{ duration: 1, delay: (index + 3) * 0.22 + 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none'
-                  }}
-                />
-              </motion.div>
-              <div className="p-3 sm:p-4 text-center">
-                <h3 className="text-base sm:text-lg font-semibold text-white mb-1">{leader.name}</h3>
-                <p className="text-xs text-[#FF6B35] font-medium uppercase leading-tight">{leader.title}</p>
+              <div className="bg-black/80 border border-white/5 rounded-xl sm:rounded-2xl overflow-hidden transform transition-transform hover:scale-105 duration-300 cursor-pointer max-w-[20rem] sm:max-w-[22rem] md:max-w-[24rem] w-full">
+                <motion.div
+                  className="aspect-[3/4] bg-gradient-to-br from-gray-600 to-gray-800 relative overflow-hidden"
+                  initial={{ opacity: 0, scale: 0.97 }}
+                  animate={isTeamInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.97 }}
+                  transition={{ duration: 1.1, delay: (index + 3) * 0.22 + 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+                >
+                  <motion.img
+                    src={leader.image}
+                    alt={leader.name}
+                    className="w-full h-full object-cover"
+                    initial={{ opacity: 0, scale: 1.03 }}
+                    animate={isTeamInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.03 }}
+                    transition={{ duration: 1, delay: (index + 3) * 0.22 + 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none'
+                    }}
+                  />
+                </motion.div>
+                <div className="p-3 sm:p-4 text-center">
+                  <h3 className="text-base sm:text-lg font-semibold text-white mb-1">{leader.name}</h3>
+                  <p className="text-xs text-[#FF6B35] font-medium uppercase leading-tight">{leader.title}</p>
+                </div>
               </div>
             </motion.div>
           ))}

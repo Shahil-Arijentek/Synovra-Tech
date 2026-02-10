@@ -25,12 +25,10 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
   const [video2Frame, setVideo2Frame] = React.useState(1);
   const [video3Frame, setVideo3Frame] = React.useState(1);
 
-  // Mount immediately without blocking
   useEffect(() => {
     setIsReady(true);
     const mountTimer = setTimeout(() => {
       setIsMounted(true);
-      // Notify parent that component is ready
       if (onReady) {
         onReady();
       }
@@ -38,17 +36,14 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
     return () => clearTimeout(mountTimer);
   }, [onReady]);
 
-  // Preload first few frames in background (non-blocking)
   useEffect(() => {
     const preloadInBackground = () => {
-      // Preload first 3 frames of video 1 in background
       for (let frame = 1; frame <= 3; frame++) {
         const img = new Image();
         img.src = `/whyrevive/frames/video1/frame_${String(frame).padStart(4, '0')}.webp`;
       }
     };
     
-    // Start background preload after component mounts
     const timer = setTimeout(preloadInBackground, 100);
     return () => clearTimeout(timer);
   }, []);
@@ -56,7 +51,6 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
   useEffect(() => {
     if (!containerRef.current || !isMounted) return;
 
-    // Force ScrollTrigger refresh after lazy loading
     ScrollTrigger.refresh();
 
     let ctx = gsap.context(() => {
@@ -104,7 +98,6 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
 
     }, containerRef);
 
-    // Additional refresh after a short delay to ensure everything is ready
     const refreshTimer = setTimeout(() => {
       ScrollTrigger.refresh();
     }, 200);
@@ -115,12 +108,11 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
     };
   }, [isMounted]);
 
-  // Aggressively preload upcoming frames based on current video
   useEffect(() => {
     if (!isReady) return;
 
     const preloadUpcoming = () => {
-      const framesToPreload = 10; // Increased for smoother experience
+      const framesToPreload = 10;
       let startFrame = 1;
       
       if (currentVideo === 1) startFrame = video1Frame;
@@ -145,7 +137,6 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
       ref={containerRef} 
       className={`relative w-full h-[250vh] bg-black z-10 transition-opacity duration-300 ${isMounted ? 'opacity-100' : 'opacity-0'}`}
     >
-      {/* Fade to #000000 at bottom */}
       <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-b from-transparent via-black/50 to-[#000000] pointer-events-none z-20" />
       <div className="w-full h-screen flex flex-col items-center justify-start pt-[10vh] sm:pt-[12vh] md:pt-[15vh] overflow-hidden">
         <div className="relative w-[70%] h-[28%] sm:w-[55%] sm:h-[35%] md:w-[45%] md:h-[50%] z-0 pointer-events-none bg-black mt-4 sm:mt-0">
@@ -186,20 +177,20 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
             </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-4 md:gap-6 w-full px-4 pointer-events-auto max-w-5xl">
               {['Electric mobility.', 'Renewable energy.', 'Regulated recycling.'].map((text, i) => (
-                <div key={i} className="bg-black/60 backdrop-blur-sm border border-white/5 rounded-2xl py-4 sm:py-5 md:py-10 px-3 sm:px-4 md:px-6">
-                  <p className="text-white/80 text-xs sm:text-sm md:text-base lg:text-lg font-light">{text}</p>
+                <div key={i} className="bg-black/60 backdrop-blur-sm border border-white/20 rounded-2xl py-4 sm:py-5 md:py-10 px-3 sm:px-4 md:px-6">
+                  <p className="text-white/80 text-xs sm:text-sm md:text-base lg:text-lg font-bold">{text}</p>
                 </div>
               ))}
             </div>
           </div>
 
           <div ref={layer2Ref} className="absolute inset-0 flex flex-col items-center text-center mt-2 sm:-mt-8 md:mt-0 opacity-0">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-3 md:gap-6 w-full px-4 pointer-events-auto max-w-6xl mb-2 sm:mb-3 md:mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-6 w-full px-4 pointer-events-auto max-w-6xl mb-2 sm:mb-3 md:mb-4">
               <ProblemCard title="CO2 surges" subtitle="→ from nonstop mining and smelting" />
               <ProblemCard title="Mines expand" subtitle="→ when old material sits unused" />
               <ProblemCard title="Batteries scrapped" subtitle="→ years early" />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3 md:gap-6 w-full px-4 pointer-events-auto max-w-4xl mb-3 sm:mb-6 md:mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3 md:gap-4 lg:gap-6 w-full px-4 pointer-events-auto max-w-4xl mb-3 sm:mb-6 md:mb-8">
               <ProblemCard title="No health data" subtitle="→ capacity disappears without trace" />
               <ProblemCard title="Systems broken" subtitle="→ collection, revival, recycling never meet" />
             </div>
@@ -228,9 +219,9 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
 };
 
 const ProblemCard: React.FC<{ title: string; subtitle: string }> = ({ title, subtitle }) => (
-  <div className="text-left p-1.5 sm:p-4 md:p-6 border border-red-500/30 bg-red-950/20 rounded-[0.625rem] sm:rounded-[0.875rem] shadow-2xl w-full max-w-[17.5rem] sm:max-w-[23.75rem] min-h-[3.438rem] sm:min-h-[5.313rem] md:min-h-[7.188rem] mx-auto overflow-hidden">
-    <h3 className="text-[#FF6467] text-[0.625rem] sm:text-base md:text-2xl font-bold mb-0.5 sm:mb-1 md:mb-1.5 break-words">{title}</h3>
-    <p className="text-white/60 text-[0.5625rem] sm:text-sm md:text-base lg:text-lg leading-snug break-words">{subtitle}</p>
+  <div className="p-1.5 sm:p-4 md:p-4 lg:p-6 border border-red-500/30 bg-red-950/20 rounded-[0.625rem] sm:rounded-[0.875rem] md:rounded-xl shadow-2xl w-full max-w-[17.5rem] sm:max-w-[23.75rem] md:max-w-none min-h-[3.438rem] sm:min-h-[5.313rem] md:min-h-[6rem] lg:min-h-[7.188rem] mx-auto overflow-hidden">
+    <h3 className="text-[#FF6467] text-[0.625rem] sm:text-base md:text-xl lg:text-2xl font-bold mb-0.5 sm:mb-1 md:mb-1.5 break-words text-center">{title}</h3>
+    <p className="text-white/60 text-[0.5625rem] sm:text-sm md:text-sm lg:text-base xl:text-lg leading-snug md:leading-relaxed text-center break-words">{subtitle}</p>
   </div>
 );
 

@@ -187,10 +187,12 @@ export default function GlobalPresence() {
   return (
     <section
       ref={ref}
-      className="w-full pt-0 pb-16 md:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-8"
+      className="w-full pt-28 pb-20 md:pt-36 md:pb-28 px-4 sm:px-6 lg:px-8 scroll-mt-24 md:scroll-mt-32 relative"
       style={{ backgroundColor: SECTION_BG }}
     >
-      <div className="mx-auto w-full max-w-7xl pt-12 md:pt-16">
+      {/* Fade to black gradient at top to prevent bleed-through from previous section */}
+      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black via-black to-transparent pointer-events-none z-0" />
+      <div className="mx-auto w-full max-w-7xl relative z-10">
         <motion.h2
           initial={{ opacity: 0, y: 24, scale: 0.98 }}
           animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 24, scale: 0.98 }}

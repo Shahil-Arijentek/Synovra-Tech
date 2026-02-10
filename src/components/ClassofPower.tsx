@@ -5,16 +5,12 @@ import ClassOfPowerHeading from "./ClassOfPowerHeading";
 interface ClassofPowerProps {
   onReady?: () => void;
 }
-
 export default function ClassofPower({ onReady }: ClassofPowerProps = {}) {
   const [showVideo, setShowVideo] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const sectionRef = useRef(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
-
-  // Preload: video is in DOM from mount (hidden) so it starts loading as soon as user lands on the page
-  // Only switch to video when BOTH in-view + delay AND video is ready → no loading state, smooth transition
 
   useEffect(() => {
     if (isInView) {
@@ -54,13 +50,15 @@ export default function ClassofPower({ onReady }: ClassofPowerProps = {}) {
   return (
     <section
       ref={sectionRef}
-      className="relative flex w-full flex-col items-center justify-start overflow-hidden pt-12 pb-8 px-6 md:pt-16 md:pb-12 md:px-8"
+      className="relative flex w-full flex-col items-center justify-start overflow-hidden pt-12 pb-24 px-6 md:pt-16 md:pb-32 md:px-8"
       style={{ backgroundColor: "#0d0d0d" }}
     >
+      {/* Fade to #0d0d0d gradient at bottom to prevent video bleed-through */}
+      <div className="absolute inset-x-0 bottom-0 h-32 pointer-events-none z-20" style={{ background: 'linear-gradient(to bottom, transparent, #0d0d0d, #0d0d0d)' }} />
       <ClassOfPowerHeading />
 
       <div
-        className="relative w-full flex items-center justify-center mt-4 md:mt-10"
+        className="relative w-full flex items-center justify-center -mt-16 md:-mt-14 lg:-mt-12"
         style={{ minHeight: "400px" }}
       >
         <div

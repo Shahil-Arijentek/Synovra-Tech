@@ -40,10 +40,12 @@ export default function WhatWeStandFor() {
   return (
     <section
       ref={ref}
-      className="w-full py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8"
+      className="w-full pt-28 pb-20 md:pt-36 md:pb-28 px-4 sm:px-6 lg:px-8 scroll-mt-24 md:scroll-mt-32"
       style={{ backgroundColor: SECTION_BG }}
     >
-      <div className="mx-auto w-full max-w-7xl">
+      {/* Fade to black gradient at top to prevent bleed-through from previous section */}
+      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black via-black to-transparent pointer-events-none z-0" />
+      <div className="mx-auto w-full max-w-7xl relative z-10">
         {/* Heading */}
         <motion.h2
           initial={{ opacity: 0, y: 16 }}

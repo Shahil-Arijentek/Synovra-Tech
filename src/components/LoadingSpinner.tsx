@@ -109,81 +109,32 @@ export default function LoadingSpinner({ progress: externalProgress }: LoadingSp
           />
         </div>
 
-        {/* Compact progress bar */}
-        <div className="w-56 space-y-2">
-          <div className="h-0.5 bg-white/5 rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-gradient-to-r from-[#ff6b1a] to-[#ff8c42] rounded-full transition-all duration-200 ease-out"
-              style={{ 
-                width: `${progress}%`,
-                boxShadow: '0 0 8px rgba(255, 107, 26, 0.5)'
-              }}
-            />
-          </div>
-          
-          {/* Loading text */}
-          <div className="flex items-center justify-center gap-2">
-            <span className="text-white/60 text-xs font-medium tracking-wider uppercase transition-all duration-300">
-              {getLoadingText()}
-            </span>
-            {progress < 100 && (
-              <div className="flex gap-1">
-                {[...Array(3)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="w-1 h-1 rounded-full bg-[#ff6b1a]"
-                    style={{
-                      animation: `pulse 1.4s ease-in-out infinite`,
-                      animationDelay: `${i * 0.15}s`,
-                      opacity: 0.4
-                    }}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
+        {/* Loading text */}
+        <div className="flex items-center justify-center gap-2">
+          <span className="text-white/60 text-xs font-medium tracking-wider uppercase transition-all duration-300">
+            {getLoadingText()}
+          </span>
+          {progress < 100 && (
+            <div className="flex gap-1">
+              {[...Array(3)].map((_, i) => (
+                <div
+                  key={i}
+                  className="w-1 h-1 rounded-full bg-[#ff6b1a]"
+                  style={{
+                    animation: `pulse 1.4s ease-in-out infinite`,
+                    animationDelay: `${i * 0.15}s`,
+                    opacity: 0.4
+                  }}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Minimalist battery indicator */}
-        <div className="flex items-center gap-2">
-          <svg width="32" height="16" viewBox="0 0 32 16" fill="none">
-            {/* Battery outline */}
-            <rect 
-              x="1" 
-              y="2" 
-              width="26" 
-              height="12" 
-              rx="1.5" 
-              stroke="rgba(255, 107, 26, 0.4)" 
-              strokeWidth="1.5" 
-              fill="none"
-            />
-            {/* Battery tip */}
-            <rect x="27" y="5" width="3" height="6" rx="0.5" fill="rgba(255, 107, 26, 0.4)"/>
-            
-            {/* Battery fill */}
-            <rect 
-              x="3" 
-              y="4" 
-              width={Math.max(0, (progress / 100) * 22)} 
-              height="8" 
-              rx="0.5" 
-              fill="url(#batteryFill)"
-              className="transition-all duration-200"
-            />
-            
-            <defs>
-              <linearGradient id="batteryFill" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#ff6b1a" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#ff8c42" stopOpacity="1" />
-              </linearGradient>
-            </defs>
-          </svg>
-          
-          <span className="text-[0.625rem] text-white/30 font-mono uppercase tracking-wider">
-            Synovra
-          </span>
-        </div>
+        {/* Synovra text */}
+        <span className="text-[0.625rem] text-white/30 font-mono uppercase tracking-wider">
+          Synovra
+        </span>
       </div>
 
       <style>{`

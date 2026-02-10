@@ -3,7 +3,6 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// Register GSAP plugin
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Sectors() {
@@ -48,22 +47,18 @@ export default function Sectors() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
-  // Mobile: Framer Motion useScroll
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   });
 
-  // Mobile: Text conveyor belt Y offset
   const textTranslateY = useTransform(
     scrollYProgress,
     [0, 1],
     [0, -(sectors.length - 1) * 120]
   );
 
-  // Mobile: Calculate active index from scroll progress
   useEffect(() => {
-    // Only run on mobile
     if (isDesktop) return;
 
     const unsubscribe = scrollYProgress.on("change", (latest) => {
@@ -79,7 +74,6 @@ export default function Sectors() {
     };
   }, [scrollYProgress, sectors.length, isDesktop]);
 
-  // Handle window resize to update breakpoint state
   useEffect(() => {
     const handleResize = () => {
       const newIsDesktop = window.innerWidth >= 1024;
@@ -90,14 +84,11 @@ export default function Sectors() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Desktop: GSAP ScrollTrigger setup
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
-    // Only set up GSAP ScrollTrigger on desktop
     if (!isDesktop) {
-      // Clean up if we're on mobile
       if (scrollTriggerRef.current) {
         scrollTriggerRef.current.kill();
         scrollTriggerRef.current = null;
@@ -105,22 +96,19 @@ export default function Sectors() {
       return;
     }
 
-    // Kill any existing ScrollTrigger
     if (scrollTriggerRef.current) {
       scrollTriggerRef.current.kill();
     }
 
-    // Create ScrollTrigger with pinning
     scrollTriggerRef.current = ScrollTrigger.create({
       trigger: section,
-      start: "top top",
+      start: "top top+=104",
       end: `+=${(sectors.length - 1) * 100}%`,
       pin: true,
       pinSpacing: true,
       anticipatePin: 1,
       scrub: 1,
       onUpdate: (self) => {
-        // Drive activeIndex purely from ScrollTrigger progress
         const progress = self.progress;
         const index = Math.min(
           Math.floor(progress * sectors.length),
@@ -130,7 +118,6 @@ export default function Sectors() {
       },
     });
 
-    // Cleanup
     return () => {
       if (scrollTriggerRef.current) {
         scrollTriggerRef.current.kill();
@@ -141,9 +128,9 @@ export default function Sectors() {
 
   return (
     <>
-      <section className="bg-black py-12 md:py-24 overflow-hidden relative font-['Poppins'] group">
+      <section className="bg-black pt-20 pb-8 md:py-28 overflow-hidden relative font-['Poppins'] group">
         <div className="flex items-center justify-center">
-          <h2 className="relative text-[7vw] sm:text-[8vw] md:text-[6.25rem] lg:text-[9.375rem] font-black uppercase tracking-tighter leading-none text-center text-[#1a1a1a] opacity-60 whitespace-nowrap">
+          <h2 className="relative text-[8vw] sm:text-[9vw] md:text-[5rem] lg:text-[10.5rem] font-black uppercase tracking-tighter leading-none text-center text-[#1a1a1a] opacity-60 whitespace-nowrap">
             <span className="block">SECTORS WE SERVE</span>
             <span className="reveal-text absolute inset-0 block">
               SECTORS WE SERVE
@@ -157,7 +144,7 @@ export default function Sectors() {
           .reveal-text {
             color: transparent;
             background-image: linear-gradient(90deg, #ff5e00 0%, #ff7a1a 50%,rgb(255, 94, 0) 100%);
-            background-size: 0% 100%;
+            background-size: 100% 100%;
             background-repeat: no-repeat;
             background-position: left center;
             -webkit-background-clip: text;
@@ -165,15 +152,22 @@ export default function Sectors() {
             transition: background-size 1800ms cubic-bezier(0.19, 1, 0.22, 1);
           }
 
-          .group:hover .reveal-text {
-            background-size: 100% 100%;
+          /* Hover effect only on desktop (lg and above) */
+          @media (min-width: 1024px) {
+            .reveal-text {
+              background-size: 0% 100%;
+            }
+
+            .group:hover .reveal-text {
+              background-size: 100% 100%;
+            }
           }
         `}</style>
       </section>
 
       <section
         ref={sectionRef}
-        className="bg-black pt-12 pb-0 md:pt-24 md:pb-24 text-white -mt-16 md:-mt-24"
+        className="bg-black pt-8 pb-16 md:pt-24 md:pb-24 text-white"
       >
         {/* Container with extra height for mobile scroll interaction */}
         <div
@@ -181,11 +175,9 @@ export default function Sectors() {
           className="relative lg:h-auto h-[250vh]"
           style={{ position: 'relative' }}
         >
-          {/* Sticky wrapper for visible content on mobile */}
-          <div className="sticky top-0 h-screen lg:h-auto lg:relative flex w-full max-w-[105rem] flex-col lg:flex-row lg:items-start lg:gap-16 px-6 mx-auto overflow-hidden lg:overflow-visible">
+          <div className="sticky top-[6.5rem] lg:top-0 h-[calc(100vh-6.5rem)] lg:h-auto lg:relative flex w-full max-w-[105rem] flex-col lg:flex-row lg:items-start lg:gap-16 px-6 mx-auto overflow-hidden lg:overflow-visible">
 
-            {/* Image - Perfect sticky at top on mobile */}
-            <div className="w-full lg:flex-[3.0] z-40 mb-2 lg:mb-0 order-1 lg:order-2 mt-28 lg:mt-0">
+            <div className="w-full lg:flex-[3.0] z-40 mb-2 lg:mb-0 order-1 lg:order-2 mt-8 lg:mt-0">
               <div className="relative h-[15.63rem] sm:h-[25rem] lg:h-[47.5rem] overflow-hidden rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/5 bg-black">
                 <AnimatePresence mode="wait">
                   <motion.img
@@ -203,10 +195,8 @@ export default function Sectors() {
               </div>
             </div>
 
-            {/* Text Content Area */}
             <div className="w-full lg:flex-1 lg:max-w-[22.5rem] order-2 lg:order-1 flex flex-col">
 
-              {/* Desktop View: Static List */}
               <div className="hidden lg:flex flex-col space-y-6">
                 {sectors.map((sector, index) => {
                   const isActive = index === activeIndex;
@@ -216,14 +206,10 @@ export default function Sectors() {
                       className={`group flex w-full flex-col items-start gap-3 border-b border-[#000000] pb-6 text-left transition-opacity duration-500 ${isActive ? "opacity-100" : "opacity-40"
                         }`}
                       onClick={() => {
-                        // On desktop, scroll ScrollTrigger to the target progress
-                        // This lets ScrollTrigger drive activeIndex naturally
                         if (scrollTriggerRef.current && window.innerWidth >= 1024) {
                           const targetProgress = index / (sectors.length - 1);
                           const trigger = scrollTriggerRef.current;
                           
-                          // Use ScrollTrigger's calculated start/end values
-                          // Wait for next frame to ensure values are calculated
                           requestAnimationFrame(() => {
                             if (trigger.start !== undefined && trigger.end !== undefined) {
                               const scrollDistance = trigger.end - trigger.start;
@@ -262,7 +248,6 @@ export default function Sectors() {
                 })}
               </div>
 
-              {/* Mobile View: Vertical Conveyor Belt Transition */}
               <div className="block lg:hidden h-[22.5rem] relative overflow-hidden mt-8">
                 <motion.div
                   style={{ y: textTranslateY }}
@@ -270,7 +255,6 @@ export default function Sectors() {
                 >
                   {sectors.map((sector, index) => {
                     const isActive = index === activeIndex;
-                    // Upcoming items are the next two after active
                     const isComingUp = index === activeIndex + 1 || index === activeIndex + 2;
 
                     return (
@@ -305,7 +289,6 @@ export default function Sectors() {
                   })}
                 </motion.div>
 
-                {/* Gradient Fades for the window edges - smoother transitions */}
                 <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-[#000000] via-[#000000]/40 to-transparent pointer-events-none z-10" />
                 <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#000000] via-[#000000]/60 to-transparent pointer-events-none z-10" />
               </div>

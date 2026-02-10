@@ -133,7 +133,7 @@ export default function BuyBatteries() {
     <>
       <section
         ref={sectionRef}
-        className="relative overflow-hidden bg-black px-6 py-12 md:py-20 text-center text-white"
+        className="relative overflow-hidden bg-black px-6 py-20 md:py-28 text-center text-white"
       >
       <div
         className="pointer-events-none absolute inset-x-0 top-12 mx-auto h-[38.75rem] max-w-[69.94rem] bg-[linear-gradient(270deg,rgba(0,0,0,0)_0%,#000000_8%,#000000_92%,rgba(0,0,0,0)_100%)]"
@@ -267,7 +267,7 @@ export default function BuyBatteries() {
           </motion.p>
         </motion.div>
       </section>
-      <section className="bg-black px-6 pb-16 md:pb-20 text-white">
+      <section className="bg-black px-6 py-16 md:py-20 text-white">
         <div className="mx-auto flex w-full max-w-[82.5rem] justify-center">
           <motion.div 
             ref={ctaSectionRef}

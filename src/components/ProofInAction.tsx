@@ -85,7 +85,7 @@ export default function ProofInAction() {
   }
 
   return (
-    <section className="bg-black px-6 py-12 md:py-20 text-white">
+    <section className="bg-black px-6 py-20 md:py-28 text-white">
       <div className="mx-auto flex max-w-6xl flex-col items-center">
         {/* Heading First - Animates Before Images */}
         <div ref={headingRef} className="flex flex-col items-center">
