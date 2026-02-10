@@ -11,19 +11,15 @@ export default function Hero() {
 
     let isCancelled = false
 
-    // Wait a tick to ensure DOM is ready
     const timer = setTimeout(() => {
       if (isCancelled || !video) return
 
       const playPromise = video.play()
 
       if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Silently handle play interruptions
-        })
+        playPromise.catch(() => {})
       }
 
-      // Pause after 3 seconds
       setTimeout(() => {
         if (!isCancelled && video) {
           video.pause()
@@ -42,7 +38,6 @@ export default function Hero() {
   }, [])
   return (
     <section className="relative bg-black overflow-hidden min-h-[31.25rem] sm:min-h-[34.38rem] md:min-h-[40.63rem] lg:min-h-[50rem] xl:min-h-[56.25rem] text-white">
-      {/* Bottom Gradient Fade to black */}
       <div className="absolute bottom-0 left-0 right-0 h-[30%] pointer-events-none z-20" style={{
         background: 'linear-gradient(to bottom, transparent 0%, #000000 100%)'
       }} />
@@ -63,7 +58,7 @@ export default function Hero() {
             </p>
           </div>
 
-          <div className="relative -mt-4 max-[479px]:mt-0 sm:mt-0 sm:-mt-12 md:-mt-16 lg:-mt-[18rem] xl:-mt-[11rem] flex justify-center items-center z-10 pointer-events-none">
+          <div className="relative -mt-4 max-[479px]:mt-0 sm:mt-0 sm:-mt-12 md:-mt-8 lg:-mt-[18rem] xl:-mt-[11rem] flex justify-center items-center z-10 pointer-events-none">
             <div className="w-full sm:w-[92%] md:w-[88%] lg:w-[90%] xl:w-[87.5rem] max-w-full scale-[1.1] sm:scale-[1.2] md:scale-[1.2] lg:scale-[1.05] xl:scale-100 origin-center flex justify-center items-center">
               <video
                 ref={videoRef}

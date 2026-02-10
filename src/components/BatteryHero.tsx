@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring, MotionValue } from 'framer-motion'
 
-// Helper component for individual scroll-driven words
 const ScrollWord = ({
   word,
   index,
@@ -17,19 +16,14 @@ const ScrollWord = ({
   exitRange?: [number, number],
   isLast: boolean
 }) => {
-  // Stagger calculation: Shift the start/end times slightly based on index
-  // Reduced stagger for tighter, more premium feel
   const staggerDelay = index * 0.01
 
-  // Enter transforms
   const enterStart = enterRange[0] + staggerDelay
   const enterEnd = enterRange[1] + staggerDelay
 
-  // Exit transforms (optional)
   const exitStart = exitRange ? exitRange[0] + staggerDelay : 1
   const exitEnd = exitRange ? exitRange[1] + staggerDelay : 1
 
-  // Map opacity: 0 -> 1 (Enter) ... 1 -> 0 (Exit)
   const opacityInput = exitRange
     ? [enterStart, enterEnd, exitStart, exitEnd]
     : [enterStart, enterEnd]
@@ -37,7 +31,6 @@ const ScrollWord = ({
     ? [0, 1, 1, 0]
     : [0, 1]
 
-  // Map Y position: 30 -> 0 (Enter) ... 0 -> -30 (Exit) - reduced for smoother feel
   const yInput = exitRange
     ? [enterStart, enterEnd, exitStart, exitEnd]
     : [enterStart, enterEnd]
@@ -45,7 +38,6 @@ const ScrollWord = ({
     ? [30, 0, 0, -30]
     : [30, 0]
 
-  // Map Blur: 8px -> 0px (Enter) ... 0px -> 8px (Exit) - reduced for smoother feel
   const blurInput = exitRange
     ? [enterStart, enterEnd, exitStart, exitEnd]
     : [enterStart, enterEnd]
@@ -67,7 +59,6 @@ const ScrollWord = ({
   )
 }
 
-// Container for splitting text into scroll-driven words
 const ScrollStaggeredText = ({
   text,
   progress,
@@ -105,29 +96,21 @@ export default function BatteryHero() {
   const [videoLoaded, setVideoLoaded] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
+  const [isDesktop, setIsDesktop] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
 
-  // Track scroll progress of the specific container
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   })
 
-  // Smooth scroll progress with spring physics for premium feel
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
     mass: 0.5
   })
 
-  // ---- RANGES ----
-  // Stage 1 (Intro): 0.0 - 0.25
-  // Stage 2 (Deliver): 0.22 - 0.58
-  // Stage 3 (Trace): 0.55 - 1.0
-
-  // --- STAGE 1 (Intro) ---
-  // Managed by variants (load) + scroll exit with smoother transitions
   const stage1ExitOpacity = useTransform(smoothProgress, [0.12, 0.28], [1, 0], {
     clamp: false
   })
@@ -141,25 +124,63 @@ export default function BatteryHero() {
     clamp: false
   })
 
-  // Mount animation
   useEffect(() => {
     const timer = setTimeout(() => setMounted(true), 50)
     return () => clearTimeout(timer)
   }, [])
 
-  // Lazy load video when component enters viewport
   useEffect(() => {
-    // Check network connection for better loading strategy
+    const checkIsDesktop = () => {
+      setIsDesktop(window.innerWidth >= 1024)
+    }
+    
+    checkIsDesktop()
+    window.addEventListener('resize', checkIsDesktop)
+    
+    return () => window.removeEventListener('resize', checkIsDesktop)
+  }, [])
+
+  useEffect(() => {
+    if (isDesktop && videoLoaded && videoRef.current && shouldLoadVideo) {
+      const playVideo = async () => {
+        try {
+          await videoRef.current?.play()
+        } catch (error) {
+          console.log('Video autoplay blocked, but video is loaded')
+        }
+      }
+      playVideo()
+    }
+  }, [videoLoaded, shouldLoadVideo, isDesktop])
+
+  useEffect(() => {
+    if (!isDesktop) {
+      return
+    }
+
     const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection
     const slowConnection = connection?.effectiveType === 'slow-2g' || connection?.effectiveType === '2g'
     
-    // Check for reduced motion preference
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     
-    // Skip video on slow connections or reduced motion
     if (slowConnection || prefersReducedMotion) {
-      setVideoLoaded(true) // Just show the poster image
+      setVideoLoaded(true)
       return
+    }
+
+    const checkIfInViewport = () => {
+      if (!containerRef.current) return false
+      const rect = containerRef.current.getBoundingClientRect()
+      return rect.top < window.innerHeight && rect.bottom > 0
+    }
+
+    if (checkIfInViewport()) {
+      setShouldLoadVideo(true)
+      setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.load()
+        }
+      }, 100)
     }
 
     const observer = new IntersectionObserver(
@@ -167,15 +188,16 @@ export default function BatteryHero() {
         entries.forEach((entry) => {
           if (entry.isIntersecting && !shouldLoadVideo) {
             setShouldLoadVideo(true)
-            // Start loading the video
-            if (videoRef.current) {
-              videoRef.current.load()
-            }
+            setTimeout(() => {
+              if (videoRef.current) {
+                videoRef.current.load()
+              }
+            }, 100)
           }
         })
       },
       {
-        rootMargin: '200px', // Start loading 200px before entering viewport (increased for smoother experience)
+        rootMargin: '200px',
         threshold: 0.1
       }
     )
@@ -184,17 +206,28 @@ export default function BatteryHero() {
       observer.observe(containerRef.current)
     }
 
+    const fallbackTimer = setTimeout(() => {
+      if (!shouldLoadVideo && containerRef.current) {
+        setShouldLoadVideo(true)
+        setTimeout(() => {
+          if (videoRef.current) {
+            videoRef.current.load()
+          }
+        }, 100)
+      }
+    }, 500)
+
     return () => {
+      clearTimeout(fallbackTimer)
       if (containerRef.current) {
         observer.unobserve(containerRef.current)
       }
     }
-  }, [shouldLoadVideo])
+  }, [shouldLoadVideo, isDesktop])
 
   const mainHeading = "A system for extending battery life, restoring performance, and closing the materials loop."
   const words = mainHeading.split(' ')
 
-  // Letter animation variants
   const letterVariants = {
     hidden: {
       opacity: 0,
@@ -212,64 +245,72 @@ export default function BatteryHero() {
     }
   }
 
-  // Calculate global index for continuous stagger across words
   let globalLetterCount = 0
 
   return (
-    // Outer scroll track - defines the total scroll distance (time)
-    // 200vh = 2 screens worth of scrolling time for smoother, more responsive feel
     <div
       ref={containerRef}
       className="relative w-full h-[200vh] bg-black"
       style={{ position: 'relative' }}
     >
-      {/* Sticky Inner Container - The visible viewport */}
       <div className="sticky top-0 left-0 w-full h-screen overflow-hidden flex items-center justify-center">
 
-        {/* Background Video (Persists through all stages) */}
         <div className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
-          {/* Loading Placeholder */}
-          {!videoLoaded && (
-            <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-black to-zinc-900" />
-          )}
+          <div className="absolute inset-0 bg-black lg:hidden" />
           
-          <video
-            ref={videoRef}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="none"
-            onLoadedData={() => setVideoLoaded(true)}
-            onError={() => {
-              setVideoLoaded(true) // Show anyway even if error
-            }}
-            onCanPlay={() => setVideoLoaded(true)}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
-          >
-            {shouldLoadVideo && (
-              <>
-                <source src="/Comp 1_6.webm" type="video/webm" />
-                <source src="/Comp 1_5.mp4" type="video/mp4" />
-              </>
-            )}
-          </video>
+          {isDesktop && (
+            <>
+              {!videoLoaded && (
+                <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-black to-zinc-900 hidden lg:block" />
+              )}
+              
+              <video
+                ref={videoRef}
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload={shouldLoadVideo ? "auto" : "none"}
+                onLoadedData={() => {
+                  setVideoLoaded(true)
+                  if (videoRef.current) {
+                    videoRef.current.play().catch(() => {})
+                  }
+                }}
+                onError={(e) => {
+                  console.error('Video load error:', e)
+                  setVideoLoaded(true)
+                }}
+                onCanPlay={() => {
+                  setVideoLoaded(true)
+                  if (videoRef.current) {
+                    videoRef.current.play().catch(() => {})
+                  }
+                }}
+                onPlay={() => setVideoLoaded(true)}
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 hidden lg:block ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
+              >
+                {shouldLoadVideo && (
+                  <>
+                    <source src="/Comp 1_6.webm" type="video/webm" />
+                    <source src="/Comp 1_5.mp4" type="video/mp4" />
+                  </>
+                )}
+              </video>
 
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-black/40" />
+              <div className="absolute inset-0 bg-black/40 hidden lg:block" />
 
-          {/* Vignette Effect */}
-          <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black" style={{
-            background: 'radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.2) 70%, rgba(0, 0, 0, 0.7) 100%)'
-          }} />
+              <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black hidden lg:block" style={{
+                background: 'radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.2) 70%, rgba(0, 0, 0, 0.7) 100%)'
+              }} />
 
-          {/* Bottom Gradient */}
-          <div className="absolute bottom-0 left-0 right-0 h-[30%] pointer-events-none z-5" style={{
-            background: 'linear-gradient(to bottom, transparent 0%, #000000 100%)'
-          }} />
+              <div className="absolute bottom-0 left-0 right-0 h-[30%] pointer-events-none z-5 hidden lg:block" style={{
+                background: 'linear-gradient(to bottom, transparent 0%, #000000 100%)'
+              }} />
+            </>
+          )}
         </div>
 
-        {/* --- STAGE 1 CONTENT (Intro) --- */}
         <motion.div
           style={{ opacity: stage1ExitOpacity, scale: stage1ExitScale, y: stage1ExitY, filter: stage1ExitFilter }}
           className="absolute inset-0 flex items-center justify-center z-10 px-4"
@@ -285,13 +326,11 @@ export default function BatteryHero() {
               }}
             >
               {words.map((word, wordIndex) => {
-                // Return a wrapper for the word to keep letters together
                 const wordElement = (
                   <span key={wordIndex} className="inline-block whitespace-nowrap mr-[0.25em]">
                     {word.split('').map((char, charIndex) => {
-                      // Apply global delay based on the running count
                       const delay = 0.2 + (globalLetterCount * 0.02)
-                      globalLetterCount++ // Increment for next letter
+                      globalLetterCount++
 
                       return (
                         <motion.span
@@ -319,7 +358,6 @@ export default function BatteryHero() {
           </div>
         </motion.div>
 
-        {/* --- STAGE 2 CONTENT --- */}
         <div className="absolute inset-0 flex items-center justify-center z-20 px-4 pointer-events-none">
           <ScrollStaggeredText
             text="BUILT TO DELIVER IT."
@@ -339,7 +377,6 @@ export default function BatteryHero() {
           />
         </div>
 
-        {/* --- STAGE 3 CONTENT --- */}
         <div className="absolute inset-0 flex flex-col items-center justify-center z-30 px-4 pointer-events-none">
           <div className="text-center">
             <ScrollStaggeredText
@@ -357,7 +394,7 @@ export default function BatteryHero() {
             <ScrollStaggeredText
               text="Witness the full journey from degradation to certified revival and recycle"
               progress={smoothProgress}
-              enterRange={[0.60, 0.75]} // Slight delay after title
+              enterRange={[0.60, 0.75]}
               className="text-gray-400 max-w-2xl mx-auto text-lg sm:text-xl block"
             />
           </div>

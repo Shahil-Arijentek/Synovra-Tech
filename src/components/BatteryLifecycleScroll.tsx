@@ -472,7 +472,7 @@ export default function BatteryLifecycleScroll() {
           <div
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
+            className={`absolute ${getCardPosition()} z-10 max-lg:scale-[0.55] sm:max-lg:scale-[0.65]`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <VoltageCard value={cardData.value} status={cardData.status} />
