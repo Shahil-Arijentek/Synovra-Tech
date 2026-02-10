@@ -42,11 +42,9 @@ export default function BatteryLifecycleLoader({ progress }: { progress: number 
         {/* Progress bar */}
         <div className="w-80 h-2 bg-white/10 rounded-full overflow-hidden backdrop-blur-sm">
           <div 
-            className="h-full bg-gradient-to-r from-[#ff7700] via-[#ff9944] to-[#ff7700] transition-all duration-300 ease-out rounded-full relative"
+            className="h-full bg-gradient-to-r from-[#ff7700] via-[#ff9944] to-[#ff7700] transition-all duration-300 ease-out rounded-full"
             style={{ width: `${progress}%` }}
           >
-            {/* Animated shine */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-slide"></div>
           </div>
         </div>
 
@@ -65,17 +63,8 @@ export default function BatteryLifecycleLoader({ progress }: { progress: number 
           100% { transform: translateX(100%); }
         }
         
-        @keyframes slide {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(200%); }
-        }
-        
         .animate-shimmer {
           animation: shimmer 2s infinite;
-        }
-        
-        .animate-slide {
-          animation: slide 1.5s infinite;
         }
       `}</style>
     </div>
