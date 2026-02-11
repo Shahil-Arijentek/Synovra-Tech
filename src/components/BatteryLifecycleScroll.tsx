@@ -485,9 +485,9 @@ export default function BatteryLifecycleScroll() {
           if (cardData.position === 'right') return 'left-6 top-[20%]' // Internal Resistance
           if (cardData.position === 'left') return 'left-6 top-[5%]' // Voltage
           // Sulphation Detected positioned on right side extending beyond edge
-          if (cardData.position === 'bottom-left' && cardData.cardType === 'sulphation-detected') return '-right-12 top-[6%]'
+          if (cardData.position === 'bottom-left' && cardData.cardType === 'sulphation-detected') return '-right-44 top-[6%]'
           // Decision card positioned at bottom right
-          if (cardData.position === 'bottom-right' && cardData.cardType === 'decision') return '-right-4 top-[75%]'
+          if (cardData.position === 'bottom-right' && cardData.cardType === 'decision') return '-right-20 top-[75%]'
         } else {
           // Desktop/laptop positioning (unchanged)
           if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] lg:left-[21em] xl:left-[22em] top-20 sm:top-24 md:top-28 lg:top-12'
@@ -571,7 +571,7 @@ export default function BatteryLifecycleScroll() {
           const isVoltageOrResistance = cardType === 'voltage' || cardType === 'internal-resistance'
           const isSulphationDetected = cardType === 'sulphation-detected'
           const isDecision = cardType === 'decision'
-          const scale = isVoltageOrResistance ? 'scale-[0.60]' : isSulphationDetected ? 'scale-[0.70]' : isDecision ? 'scale-[0.80]' : 'scale-[0.70]'
+          const scale = isVoltageOrResistance ? 'scale-[0.60]' : isSulphationDetected ? 'scale-[0.45]' : isDecision ? 'scale-[0.70]' : 'scale-[0.70]'
 
           return (
             <div className={`${scale} origin-top-left`}>
@@ -657,7 +657,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10 ${sceneIndex === 1 ? 'w-full lg:w-[26.25rem] lg:h-[13rem] [&>*]:lg:w-full [&>*]:lg:max-w-full [&>*]:lg:h-full [&>*]:lg:min-h-0' : ''}`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <SulphationDetectedCard value={cardData.value} />
+            <MobileWrapper>
+              <SulphationDetectedCard value={cardData.value} />
+            </MobileWrapper>
           </div>
         )
       case 'decision':
@@ -668,7 +670,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10 ${sceneIndex === 1 ? 'w-full lg:w-[26.25rem] lg:h-[13rem] [&>*]:lg:w-full [&>*]:lg:max-w-full [&>*]:lg:h-full [&>*]:lg:min-h-0' : ''}`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <DecisionCard value={cardData.value} status={cardData.status} />
+            <MobileWrapper>
+              <DecisionCard value={cardData.value} status={cardData.status} />
+            </MobileWrapper>
           </div>
         )
       case 'barcode':
