@@ -542,7 +542,7 @@ export default function BatteryLifecycleScroll() {
       if (isMobile && sceneIndex === 0) {
         // Additional scaling for voltage and internal resistance cards
         const isVoltageOrResistance = cardType === 'voltage' || cardType === 'internal-resistance'
-        const scale = isVoltageOrResistance ? 'scale-[0.47]' : 'scale-[0.55]' // 0.55 * 0.85 ≈ 0.47
+        const scale = isVoltageOrResistance ? 'scale-[0.60]' : 'scale-[0.70]' // Increased sizes for all cards
 
         return (
           <div className={`${scale} origin-top-left`}>
