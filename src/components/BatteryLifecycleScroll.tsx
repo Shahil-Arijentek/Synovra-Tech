@@ -454,73 +454,73 @@ export default function BatteryLifecycleScroll() {
   // Function to render specific card type
   const renderCard = (cardType: string, cardData: CardData, sceneIndex: number, cardIndex: number) => {
     const getCardPosition = () => {
-      // Scene-specific positioning
+      // Scene-specific positioning - Consistent left spacing across all scenes for desktop/laptop
       if (sceneIndex === 0) {
         // Scene 1 positions
-        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12'
+        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] lg:left-[21em] xl:left-[22em] top-20 sm:top-24 md:top-28 lg:top-12'
+        if (cardData.position === 'left') return 'left-[3.4rem] sm:left-[3.6rem] md:left-[4.4rem] lg:left-[5.4rem] xl:left-[5.9rem] top-20 sm:top-24 md:top-28 lg:top-12'
         // HEALTH % card: same as bottom-left but moved down on laptop only
-        if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return 'left-12 sm:left-14 md:left-[4rem] top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem] xl:top-[23rem] 2xl:top-[24rem]'
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-[4rem] top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem]'
+        if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return 'left-18 sm:left-20 md:left-[5.5rem] lg:left-26 xl:left-28 top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem] xl:top-[23rem] 2xl:top-[24rem]'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-[4rem] lg:left-20 xl:left-22 top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem]'
         // SULPHATION card (scene 1): same as bottom-right but moved up on laptop only
-        if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return 'left-12 sm:left-14 md:left-[4rem] top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41rem] xl:top-[27.5rem] 2xl:top-[42rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-[4rem] top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41rem] xl:top-[27rem] 2xl:top-[41rem]'
+        if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return 'left-18 sm:left-20 md:left-[5.5rem] lg:left-26 xl:left-28 top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41rem] xl:top-[27.5rem] 2xl:top-[42rem]'
+        if (cardData.position === 'bottom-right') return 'left-18 sm:left-20 md:left-[5.5rem] lg:left-26 xl:left-28 top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41rem] xl:top-[27rem] 2xl:top-[41rem]'
       } else if (sceneIndex === 1) {
         // Scene 2 positions
-        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-28 lg:left-16 top-[34%] sm:top-[36%] md:top-[40%] lg:top-[23rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-28 lg:left-16 top-[65%] sm:top-[67%] md:top-[71%] lg:top-[41rem]'
+        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] lg:left-[21em] xl:left-[22em] top-20 sm:top-24 md:top-28 lg:top-12'
+        if (cardData.position === 'left') return 'left-14 sm:left-16 md:left-18 lg:left-22 xl:left-24 top-20 sm:top-24 md:top-28 lg:top-12'
+        if (cardData.position === 'bottom-left') return 'left-18 sm:left-20 md:left-28 lg:left-26 xl:left-28 top-[34%] sm:top-[36%] md:top-[40%] lg:top-[23rem]'
+        if (cardData.position === 'bottom-right') return 'left-18 sm:left-20 md:left-28 lg:left-26 xl:left-28 top-[65%] sm:top-[67%] md:top-[71%] lg:top-[41rem]'
       } else if (sceneIndex === 2) {
         // Scene 3 positions
         if (cardData.position === 'right') {
-          if (cardData.cardType === 'logged') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20'
-          return 'left-12 sm:left-14 md:left-20 top-[67%] sm:top-[69%] md:top-[73%] lg:top-[43rem]'
+          if (cardData.cardType === 'logged') return 'right-10 sm:right-12 md:right-16 lg:right-18 xl:right-20 bottom-16 md:bottom-20'
+          return 'left-20 sm:left-22 md:left-28 lg:left-28 xl:left-30 top-[67%] sm:top-[69%] md:top-[73%] lg:top-[43rem]'
         }
-        if (cardData.position === 'left') return 'left-12 sm:left-14 md:left-20 top-14 sm:top-16 md:top-20 lg:top-12'
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-20 top-[22%] sm:top-[24%] md:top-[28%] lg:top-[14rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-20 top-[41%] sm:top-[42%] md:top-[46%] lg:top-[27rem]'
+        if (cardData.position === 'left') return 'left-20 sm:left-22 md:left-28 lg:left-28 xl:left-30 top-14 sm:top-16 md:top-20 lg:top-12'
+        if (cardData.position === 'bottom-left') return 'left-20 sm:left-22 md:left-28 lg:left-28 xl:left-30 top-[22%] sm:top-[24%] md:top-[28%] lg:top-[14rem]'
+        if (cardData.position === 'bottom-right') return 'left-20 sm:left-22 md:left-28 lg:left-28 xl:left-30 top-[41%] sm:top-[42%] md:top-[46%] lg:top-[27rem]'
       } else if (sceneIndex === 3) {
         // Scene 4 positions
-        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[34%] sm:top-[36%] md:top-[40%] lg:top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[64%] sm:top-[66%] md:top-[70%] lg:top-[40rem]'
+        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] lg:left-[21em] xl:left-[22em] top-20 sm:top-24 md:top-28 lg:top-12'
+        if (cardData.position === 'left') return 'left-14 sm:left-16 md:left-18 lg:left-22 xl:left-24 top-20 sm:top-24 md:top-28 lg:top-12'
+        if (cardData.position === 'bottom-left') return 'left-[4.8rem] sm:left-[5.3rem] md:left-[6.0rem] lg:left-[7.0rem] xl:left-[7.5rem] top-[34%] sm:top-[36%] md:top-[40%] lg:top-[22rem]'
+        if (cardData.position === 'bottom-right') return 'left-[4.8rem] sm:left-[5.3rem] md:left-[6.0rem] lg:left-[7.0rem] xl:left-[7.5rem] top-[64%] sm:top-[66%] md:top-[70%] lg:top-[40rem]'
       } else if (sceneIndex === 4) {
         // Scene 5 positions
         if (cardData.position === 'right') {
-          if (cardData.cardType === 'controlled') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20'
-          return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12'
+          if (cardData.cardType === 'controlled') return 'right-10 sm:right-12 md:right-16 lg:right-18 xl:right-20 bottom-16 md:bottom-20'
+          return 'right-10 sm:right-14 md:right-auto md:left-[19em] lg:left-[21em] xl:left-[22em] top-20 sm:top-24 md:top-28 lg:top-12'
         }
-        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41.5rem]'
+        if (cardData.position === 'left') return 'left-14 sm:left-16 md:left-18 lg:left-22 xl:left-24 top-20 sm:top-24 md:top-28 lg:top-12'
+        if (cardData.position === 'bottom-left') return 'left-[4.7rem] sm:left-[5.2rem] md:left-[5.7rem] lg:left-[6.7rem] xl:left-[7.2rem] top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem]'
+        if (cardData.position === 'bottom-right') return 'left-[4.7rem] sm:left-[5.2rem] md:left-[5.7rem] lg:left-[6.7rem] xl:left-[7.2rem] top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41.5rem]'
       } else if (sceneIndex === 5) {
         // Scene 6 positions
-        if (cardData.position === 'top') return 'left-12 sm:left-14 md:left-20 top-20 sm:top-22 md:top-26 lg:top-16'
-        if (cardData.position === 'left') return 'left-10 sm:left-12 md:left-16 top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem]'
+        if (cardData.position === 'top') return 'left-18 sm:left-20 md:left-26 lg:left-26 xl:left-28 top-20 sm:top-22 md:top-26 lg:top-16'
+        if (cardData.position === 'left') return 'left-[2.8rem] sm:left-[3.3rem] md:left-[4.3rem] lg:left-[5.3rem] xl:left-[5.8rem] top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem]'
         if (cardData.position === 'right') {
-          if (cardData.cardType === 'certified') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20'
-          return 'right-12 sm:right-14 md:right-auto md:left-[20rem] top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem]'
+          if (cardData.cardType === 'certified') return 'right-10 sm:right-12 md:right-16 lg:right-18 xl:right-20 bottom-16 md:bottom-20'
+          return 'right-18 sm:right-20 md:right-auto md:left-[19.4rem] lg:left-[21.4rem] xl:left-[22.4rem] top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem]'
         }
-        if (cardData.position === 'bottom') return 'left-12 sm:left-14 md:left-20 top-[60%] sm:top-[62%] md:top-[66%] lg:top-[41em]'
+        if (cardData.position === 'bottom') return 'left-18 sm:left-20 md:left-26 lg:left-26 xl:left-28 top-[60%] sm:top-[62%] md:top-[66%] lg:top-[41em]'
       } else if (sceneIndex === 6) {
         // Scene 7 positions
-        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-16 sm:top-18 md:top-22 lg:top-16'
+        if (cardData.position === 'left') return 'left-14 sm:left-16 md:left-18 lg:left-22 xl:left-24 top-16 sm:top-18 md:top-22 lg:top-16'
         if (cardData.position === 'right') {
-          if (cardData.cardType === 'verified') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20'
-          return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-16 sm:top-18 md:top-22 lg:top-16'
+          if (cardData.cardType === 'verified') return 'right-10 sm:right-12 md:right-16 lg:right-18 xl:right-20 bottom-16 md:bottom-20'
+          return 'right-10 sm:right-14 md:right-auto md:left-[19em] lg:left-[21em] xl:left-[22em] top-16 sm:top-18 md:top-22 lg:top-16'
         }
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[35%] sm:top-[37%] md:top-[41%] lg:top-[24rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[60%] sm:top-[62%] md:top-[66%] lg:top-[40rem]'
+        if (cardData.position === 'bottom-left') return 'left-18 sm:left-20 md:left-22 lg:left-26 xl:left-28 top-[35%] sm:top-[37%] md:top-[41%] lg:top-[24rem]'
+        if (cardData.position === 'bottom-right') return 'left-18 sm:left-20 md:left-22 lg:left-26 xl:left-28 top-[60%] sm:top-[62%] md:top-[66%] lg:top-[40rem]'
       }
       // Default positions
-      if (cardData.position === 'right') return 'right-16 md:right-auto md:left-[16rem] top-24 md:top-28 lg:top-20'
-      if (cardData.position === 'left') return 'left-6 md:left-8 top-24 md:top-28 lg:top-20'
-      if (cardData.position === 'bottom-left') return 'left-4 md:left-8 top-[20rem] md:top-[22rem] lg:top-[20rem]'
-      if (cardData.position === 'bottom-right') return 'left-4 md:left-[16rem] top-[22rem] md:top-[24rem] lg:top-[22rem]'
+      if (cardData.position === 'right') return 'right-16 md:right-auto md:left-[16rem] lg:left-[18rem] xl:left-[19rem] top-24 md:top-28 lg:top-20'
+      if (cardData.position === 'left') return 'left-6 md:left-8 lg:left-16 xl:left-18 top-24 md:top-28 lg:top-20'
+      if (cardData.position === 'bottom-left') return 'left-4 md:left-8 lg:left-16 xl:left-18 top-[20rem] md:top-[22rem] lg:top-[20rem]'
+      if (cardData.position === 'bottom-right') return 'left-4 md:left-[16rem] lg:left-[18rem] xl:left-[19rem] top-[22rem] md:top-[24rem] lg:top-[22rem]'
       
-      return 'left-4 md:left-8 top-1/2 md:top-[52%] lg:top-1/2 -translate-y-1/2'
+      return 'left-4 md:left-8 lg:left-16 xl:left-18 top-1/2 md:top-[52%] lg:top-1/2 -translate-y-1/2'
     }
 
     const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
@@ -572,7 +572,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <SulphationCard value={cardData.value} status={cardData.status} compactLaptop={sceneIndex === 0} />
+            <div className={sceneIndex === 3 ? 'scale-x-[1.005] origin-left' : ''}>
+              <SulphationCard value={cardData.value} status={cardData.status} compactLaptop={sceneIndex === 0} />
+            </div>
           </div>
         )
       case 'sulphation-detected':
@@ -649,7 +651,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <RecordLockCard value={cardData.value} status={cardData.status} />
+            <div className={sceneIndex === 3 || sceneIndex === 5 ? 'scale-x-[1.005] origin-left' : ''}>
+              <RecordLockCard value={cardData.value} status={cardData.status} />
+            </div>
           </div>
         )
       case 'voltage-trend':
@@ -682,7 +686,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <PlateConditionCard value={cardData.value} />
+            <div className={sceneIndex === 4 ? 'scale-x-[1.005] origin-left' : ''}>
+              <PlateConditionCard value={cardData.value} />
+            </div>
           </div>
         )
       case 'performance-restored':
@@ -742,7 +748,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <ComplianceRecordCard value={cardData.value} />
+            <div className={sceneIndex === 6 ? 'scale-x-[1.005] origin-left' : ''}>
+              <ComplianceRecordCard value={cardData.value} />
+            </div>
           </div>
         )
       case 'recovery-certified':
@@ -753,7 +761,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <RecoveryCertifiedCard />
+            <div className={sceneIndex === 6 ? 'scale-x-[1.005] origin-left' : ''}>
+              <RecoveryCertifiedCard />
+            </div>
           </div>
         )
       case 'logged':

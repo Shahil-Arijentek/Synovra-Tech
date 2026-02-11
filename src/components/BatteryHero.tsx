@@ -274,6 +274,10 @@ export default function BatteryHero() {
                 onLoadedData={() => {
                   setVideoLoaded(true)
                   if (videoRef.current) {
+                    const currentSrc = videoRef.current.currentSrc
+                    if (currentSrc && !currentSrc.includes('Comp 1_6.webm')) {
+                      console.warn('Video fallback detected: Using MP4 instead of WebM')
+                    }
                     videoRef.current.play().catch(() => {})
                   }
                 }}
@@ -284,6 +288,10 @@ export default function BatteryHero() {
                 onCanPlay={() => {
                   setVideoLoaded(true)
                   if (videoRef.current) {
+                    const currentSrc = videoRef.current.currentSrc
+                    if (currentSrc && !currentSrc.includes('Comp 1_6.webm')) {
+                      console.warn('Video fallback detected: Using MP4 instead of WebM')
+                    }
                     videoRef.current.play().catch(() => {})
                   }
                 }}
@@ -293,7 +301,6 @@ export default function BatteryHero() {
                 {shouldLoadVideo && (
                   <>
                     <source src="/Comp 1_6.webm" type="video/webm" />
-                    <source src="/Comp 1_5.mp4" type="video/mp4" />
                   </>
                 )}
               </video>
