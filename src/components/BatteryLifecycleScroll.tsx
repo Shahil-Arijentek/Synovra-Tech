@@ -348,6 +348,7 @@ export default function BatteryLifecycleScroll() {
   const [isPreloading, setIsPreloading] = useState(true) // Track preload state
   const [preloadProgress, setPreloadProgress] = useState(0) // Track preload progress
   const [shouldShowUI, setShouldShowUI] = useState(false) // Track if progress bar and title should be visible (once true, stays true)
+  const [isMobile, setIsMobile] = useState(false) // Track if viewport is mobile (< 1024px)
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
   const { setNavbarVisible } = useNavbar()
   const hasPreloadedRef = useRef(false)
@@ -361,44 +362,44 @@ export default function BatteryLifecycleScroll() {
     if (sceneIndex === 0) {
       return currentScene === 1 && currentFrame >= 1 && currentFrame <= 26
     }
-    
+
     // Scene 2 cards: Show when viewing scene-3 folder frames 1-52
     if (sceneIndex === 1) {
       return currentScene === 2 && currentFrame >= 1 && currentFrame <= 52
     }
-    
+
     // Scene 3 cards: Show when viewing scene-3 folder frames 60-end OR scene-4 folder frames 1-19
     if (sceneIndex === 2) {
       const scene3FrameCount = SCENE_FRAME_COUNTS[2]
       return (currentScene === 2 && currentFrame >= 60 && currentFrame <= scene3FrameCount) ||
-             (currentScene === 3 && currentFrame >= 1 && currentFrame <= 19)
+        (currentScene === 3 && currentFrame >= 1 && currentFrame <= 19)
     }
-    
+
     // Scene 4 cards: Show when viewing scene-4 folder frames 81-end OR scene-5 folder frames 1-31
     if (sceneIndex === 3) {
       const scene4FrameCount = SCENE_FRAME_COUNTS[3]
       return (currentScene === 3 && currentFrame >= 81 && currentFrame <= scene4FrameCount) ||
-             (currentScene === 4 && currentFrame >= 1 && currentFrame <= 31)
+        (currentScene === 4 && currentFrame >= 1 && currentFrame <= 31)
     }
-    
+
     // Scene 5 cards: Show when viewing scene-5 folder frames 40-187
     if (sceneIndex === 4) {
       return currentScene === 4 && currentFrame >= 40 && currentFrame <= 187
     }
-    
+
     // Scene 6 cards: Show when viewing scene-6 folder frames 31-end OR scene-7 folder frames 1-2
     if (sceneIndex === 5) {
       const scene6FrameCount = SCENE_FRAME_COUNTS[5]
       return (currentScene === 5 && currentFrame >= 31 && currentFrame <= scene6FrameCount) ||
-             (currentScene === 6 && currentFrame >= 1 && currentFrame <= 2)
+        (currentScene === 6 && currentFrame >= 1 && currentFrame <= 2)
     }
-    
+
     // Scene 7 cards: Show when viewing scene-7 folder frames 29-88 (or end)
     if (sceneIndex === 6) {
       const scene7FrameCount = SCENE_FRAME_COUNTS[6]
       return currentScene === 6 && currentFrame >= 29 && currentFrame <= scene7FrameCount
     }
-    
+
     return false
   }
 
@@ -416,8 +417,8 @@ export default function BatteryLifecycleScroll() {
   // Canvas frame rendering - ZERO BLINK guaranteed
   const drawFrame = (sceneIndex: number, frameNumber: number) => {
     // Skip if same frame already on canvas
-    if (currentCanvasFrameRef.current.scene === sceneIndex && 
-        currentCanvasFrameRef.current.frame === frameNumber) {
+    if (currentCanvasFrameRef.current.scene === sceneIndex &&
+      currentCanvasFrameRef.current.frame === frameNumber) {
       return
     }
 
@@ -430,18 +431,18 @@ export default function BatteryLifecycleScroll() {
     // CRITICAL: Only draw if image is cached and ready
     // This ensures old frame stays visible until new frame is ready
     if (cachedImage && cachedImage.complete && cachedImage.naturalWidth > 0) {
-      const ctx = canvas.getContext('2d', { 
+      const ctx = canvas.getContext('2d', {
         alpha: false, // No transparency = faster
         desynchronized: true // Better performance
       })
-      
+
       if (ctx) {
         // Ensure canvas is fully opaque
         ctx.globalAlpha = 1.0
         // Draw cached image directly to canvas - no blink!
         ctx.drawImage(cachedImage, 0, 0, canvas.width, canvas.height)
         currentCanvasFrameRef.current = { scene: sceneIndex, frame: frameNumber }
-        
+
         // Force canvas visibility
         if (canvas.style.opacity !== '1') {
           canvas.style.opacity = '1'
@@ -457,14 +458,25 @@ export default function BatteryLifecycleScroll() {
       // Scene-specific positioning - Consistent left spacing across all scenes for desktop/laptop
       if (sceneIndex === 0) {
         // Scene 1 positions
-        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] lg:left-[21em] xl:left-[22em] top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'left') return 'left-[3.4rem] sm:left-[3.6rem] md:left-[4.4rem] lg:left-[5.4rem] xl:left-[5.9rem] top-20 sm:top-24 md:top-28 lg:top-12'
-        // HEALTH % card: same as bottom-left but moved down on laptop only
-        if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return 'left-18 sm:left-20 md:left-[5.5rem] lg:left-26 xl:left-28 top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem] xl:top-[23rem] 2xl:top-[24rem]'
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-[4rem] lg:left-20 xl:left-22 top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem]'
-        // SULPHATION card (scene 1): same as bottom-right but moved up on laptop only
-        if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return 'left-18 sm:left-20 md:left-[5.5rem] lg:left-26 xl:left-28 top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41rem] xl:top-[27.5rem] 2xl:top-[42rem]'
-        if (cardData.position === 'bottom-right') return 'left-18 sm:left-20 md:left-[5.5rem] lg:left-26 xl:left-28 top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41rem] xl:top-[27rem] 2xl:top-[41rem]'
+        if (isMobile) {
+          // Mobile positioning for Scene 1
+          if (cardData.position === 'right') return 'left-6 top-[20%]'
+          if (cardData.position === 'left') return 'left-6 top-[5%]'
+          // Health gauge positioned extending to the right edge
+          if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return '-right-28 top-[6%]'
+          // Sulphation positioned extending beyond right edge
+          if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return '-right-4 top-[80%]'
+        } else {
+          // Desktop/laptop positioning (unchanged)
+          if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] lg:left-[21em] xl:left-[22em] top-20 sm:top-24 md:top-28 lg:top-12'
+          if (cardData.position === 'left') return 'left-[3.4rem] sm:left-[3.6rem] md:left-[4.4rem] lg:left-[5.4rem] xl:left-[5.9rem] top-20 sm:top-24 md:top-28 lg:top-12'
+          // HEALTH % card: same as bottom-left but moved down on laptop only
+          if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return 'left-18 sm:left-20 md:left-[5.5rem] lg:left-26 xl:left-28 top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem] xl:top-[23rem] 2xl:top-[24rem]'
+          if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-[4rem] lg:left-20 xl:left-22 top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem]'
+          // SULPHATION card (scene 1): same as bottom-right but moved up on laptop only
+          if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return 'left-18 sm:left-20 md:left-[5.5rem] lg:left-26 xl:left-28 top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41rem] xl:top-[27.5rem] 2xl:top-[42rem]'
+          if (cardData.position === 'bottom-right') return 'left-18 sm:left-20 md:left-[5.5rem] lg:left-26 xl:left-28 top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41rem] xl:top-[27rem] 2xl:top-[41rem]'
+        }
       } else if (sceneIndex === 1) {
         // Scene 2 positions
         if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] lg:left-[21em] xl:left-[22em] top-20 sm:top-24 md:top-28 lg:top-12'
@@ -519,11 +531,27 @@ export default function BatteryLifecycleScroll() {
       if (cardData.position === 'left') return 'left-6 md:left-8 lg:left-16 xl:left-18 top-24 md:top-28 lg:top-20'
       if (cardData.position === 'bottom-left') return 'left-4 md:left-8 lg:left-16 xl:left-18 top-[20rem] md:top-[22rem] lg:top-[20rem]'
       if (cardData.position === 'bottom-right') return 'left-4 md:left-[16rem] lg:left-[18rem] xl:left-[19rem] top-[22rem] md:top-[24rem] lg:top-[22rem]'
-      
+
       return 'left-4 md:left-8 lg:left-16 xl:left-18 top-1/2 md:top-[52%] lg:top-1/2 -translate-y-1/2'
     }
 
     const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
+
+    // Mobile scaling wrapper - only for Scene 1 on mobile
+    const MobileWrapper = ({ children }: { children: React.ReactNode }) => {
+      if (isMobile && sceneIndex === 0) {
+        // Additional scaling for voltage and internal resistance cards
+        const isVoltageOrResistance = cardType === 'voltage' || cardType === 'internal-resistance'
+        const scale = isVoltageOrResistance ? 'scale-[0.47]' : 'scale-[0.55]' // 0.55 * 0.85 ≈ 0.47
+
+        return (
+          <div className={`${scale} origin-top-left`}>
+            {children}
+          </div>
+        )
+      }
+      return <>{children}</>
+    }
 
     switch (cardType) {
       case 'voltage':
@@ -531,10 +559,12 @@ export default function BatteryLifecycleScroll() {
           <div
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10 max-lg:scale-[0.55] sm:max-lg:scale-[0.65]`}
+            className={`absolute ${getCardPosition()} z-10 ${!isMobile || sceneIndex !== 0 ? 'max-lg:scale-[0.55] sm:max-lg:scale-[0.65]' : ''}`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <VoltageCard value={cardData.value} status={cardData.status} />
+            <MobileWrapper>
+              <VoltageCard value={cardData.value} status={cardData.status} />
+            </MobileWrapper>
           </div>
         )
       case 'internal-resistance':
@@ -545,7 +575,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <InternalResistanceCard value={cardData.value} status={cardData.status} />
+            <MobileWrapper>
+              <InternalResistanceCard value={cardData.value} status={cardData.status} />
+            </MobileWrapper>
           </div>
         )
       case 'health-gauge':
@@ -553,15 +585,20 @@ export default function BatteryLifecycleScroll() {
           <div
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            className={`absolute ${getCardPosition()} z-10 ${isMobile && sceneIndex === 0 ? 'transition-opacity duration-500' : ''}`}
+            style={{
+              opacity: isMobile && sceneIndex === 0 && currentFrame > 35 ? 0 : 0,
+              transform: 'translateX(-400px) scale(1.2)'
+            }}
           >
-            <HealthGaugeCard 
-              value={cardData.value} 
-              video={sceneIndex === 5 ? '98.mp4' : '99.mp4'}
-              width={sceneIndex === 5 ? '200px' : '420px'}
-              compactLaptop={sceneIndex === 0}
-            />
+            <MobileWrapper>
+              <HealthGaugeCard
+                value={cardData.value}
+                video={sceneIndex === 5 ? '98.mp4' : '99.mp4'}
+                width={sceneIndex === 5 ? '200px' : '420px'}
+                compactLaptop={sceneIndex === 0}
+              />
+            </MobileWrapper>
           </div>
         )
       case 'sulphation':
@@ -569,12 +606,17 @@ export default function BatteryLifecycleScroll() {
           <div
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${getCardPosition()} z-10`}
-            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+            className={`absolute ${getCardPosition()} z-10 ${isMobile && sceneIndex === 0 ? 'transition-opacity duration-500' : ''}`}
+            style={{
+              opacity: isMobile && sceneIndex === 0 && currentFrame <= 35 ? 0 : 0,
+              transform: 'translateX(-400px) scale(1.2)'
+            }}
           >
-            <div className={sceneIndex === 3 ? 'scale-x-[1.005] origin-left' : ''}>
-              <SulphationCard value={cardData.value} status={cardData.status} compactLaptop={sceneIndex === 0} />
-            </div>
+            <MobileWrapper>
+              <div className={sceneIndex === 3 ? 'scale-x-[1.005] origin-left' : ''}>
+                <SulphationCard value={cardData.value} status={cardData.status} compactLaptop={sceneIndex === 0} />
+              </div>
+            </MobileWrapper>
           </div>
         )
       case 'sulphation-detected':
@@ -815,6 +857,18 @@ export default function BatteryLifecycleScroll() {
     }
   }
 
+  // Mobile detection effect
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024)
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
   // Preload critical frames before component becomes interactive
   useEffect(() => {
     if (hasPreloadedRef.current) return
@@ -833,7 +887,7 @@ export default function BatteryLifecycleScroll() {
         const scene3Frames = Array.from({ length: 36 }, (_, i) => (i * 5) + 1)
         // Scene 4: Every 10th frame (16 frames) - sample ahead
         const scene4Frames = Array.from({ length: 16 }, (_, i) => (i * 10) + 1)
-        
+
         const criticalFrames = [
           ...scene1Frames.map(f => `/lifecycle/frames/scene-1/frame_${String(f).padStart(4, '0')}.webp`),
           ...scene2Frames.map(f => `/lifecycle/frames/scene-2/frame_${String(f).padStart(4, '0')}.webp`),
@@ -849,7 +903,7 @@ export default function BatteryLifecycleScroll() {
         for (let i = 0; i < criticalFrames.length; i += batchSize) {
           const batch = criticalFrames.slice(i, i + batchSize)
           await Promise.all(
-            batch.map(src => 
+            batch.map(src =>
               preloadImage(src).then(() => {
                 loaded++
                 setPreloadProgress(Math.round((loaded / total) * 100))
@@ -862,7 +916,7 @@ export default function BatteryLifecycleScroll() {
         const elapsed = Date.now() - startTime
         const minLoadTime = 2000 // 2 seconds minimum
         const remainingTime = Math.max(0, minLoadTime - elapsed)
-        
+
         await new Promise(resolve => setTimeout(resolve, remainingTime + 300))
         setIsPreloading(false)
       } catch (error) {
@@ -888,14 +942,14 @@ export default function BatteryLifecycleScroll() {
       for (let i = 1; i <= SCENE_FRAME_COUNTS[6]; i += 4) {
         scene7Frames.push(`/lifecycle/frames/scene-7/frame_${String(i).padStart(4, '0')}.webp`)
       }
-      
+
       const batchSize = 4
       for (let i = 0; i < scene7Frames.length; i += batchSize) {
         const batch = scene7Frames.slice(i, i + batchSize)
-        await Promise.all(batch.map(src => preloadImage(src).catch(() => {})))
+        await Promise.all(batch.map(src => preloadImage(src).catch(() => { })))
         await new Promise(resolve => setTimeout(resolve, 50))
       }
-      
+
       // Priority 2: Fill in remaining frames for all scenes
       const scenes = [
         { sceneIndex: 2, count: SCENE_FRAME_COUNTS[2], stride: 1 }, // Scene 3: EVERY frame (fill gaps)
@@ -913,7 +967,7 @@ export default function BatteryLifecycleScroll() {
         // Preload in small batches with delays to not block main thread
         for (let i = 0; i < frames.length; i += batchSize) {
           const batch = frames.slice(i, i + batchSize)
-          await Promise.all(batch.map(src => preloadImage(src).catch(() => {})))
+          await Promise.all(batch.map(src => preloadImage(src).catch(() => { })))
           await new Promise(resolve => setTimeout(resolve, 60))
         }
       }
@@ -931,17 +985,17 @@ export default function BatteryLifecycleScroll() {
     const container = containerRef.current
 
     if (!container || isPreloading) return
-    
+
     // Set initial minimum height immediately to prevent black space
     gsap.set(container, { minHeight: window.innerHeight * 30 })
-    
+
     // Wait for component to be fully mounted and laid out
     const initTimeout = setTimeout(() => {
       // Create scroll sections for each scene
       const scrollSections = sceneTimings.map((scene, index) => {
         const isChargingPhase = index === 5 // Scene 6 (charging phase)
         const isFinalScene = index === 6 // Scene 7 (final dashboard)
-        
+
         return {
           ...scene,
           // Longer scroll distance for special scenes
@@ -961,93 +1015,93 @@ export default function BatteryLifecycleScroll() {
       setCurrentFrame(1)
       setCurrentSceneForFrame(0)
       setActiveSceneIndex(null) // Don't show cards initially, only frame
-      
+
       // Force initial frame draw
       drawFrame(0, 1)
 
       // Main ScrollTrigger for frame scrubbing
       ScrollTrigger.create({
-      trigger: container,
-      start: 'top top',
-      end: 'bottom bottom',
-      pin: stickyContainerRef.current,
-      pinSpacing: true,
-      scrub: true,
-      invalidateOnRefresh: true,
-      fastScrollEnd: true,
-      refreshPriority: -1,
-      anticipatePin: 1,
-      onEnter: () => {
-        // Hide navbar when entering the section
-        setNavbarVisible(false)
-        // Ensure first frame is visible and canvas is shown
-        drawFrame(0, 1)
-        // Force canvas visibility when entering section
-        const canvas = canvasRef.current
-        if (canvas) {
-          canvas.style.opacity = '1'
-          canvas.style.visibility = 'visible'
-        }
-      },
-      onLeave: () => {
-        // Show navbar when leaving the section (scrolling down past it)
-        setNavbarVisible(true)
-      },
-      onEnterBack: () => {
-        // Hide navbar when scrolling back into the section from below
-        setNavbarVisible(false)
-      },
-      onLeaveBack: () => {
-        // Show navbar when scrolling back up above the section
-        setNavbarVisible(true)
-        // Reset to first frame when leaving upwards
-        setCurrentFrame(1)
-        setCurrentSceneForFrame(0)
-        drawFrame(0, 1)
-      },
-      onUpdate: (self) => {
-        const progress = self.progress
-        
-        // Clamp progress to ensure we stay within bounds
-        const clampedProgress = Math.max(0, Math.min(progress, 1))
-        let accumulatedProgress = 0
+        trigger: container,
+        start: 'top top',
+        end: 'bottom bottom',
+        pin: stickyContainerRef.current,
+        pinSpacing: true,
+        scrub: true,
+        invalidateOnRefresh: true,
+        fastScrollEnd: true,
+        refreshPriority: -1,
+        anticipatePin: 1,
+        onEnter: () => {
+          // Hide navbar when entering the section
+          setNavbarVisible(false)
+          // Ensure first frame is visible and canvas is shown
+          drawFrame(0, 1)
+          // Force canvas visibility when entering section
+          const canvas = canvasRef.current
+          if (canvas) {
+            canvas.style.opacity = '1'
+            canvas.style.visibility = 'visible'
+          }
+        },
+        onLeave: () => {
+          // Show navbar when leaving the section (scrolling down past it)
+          setNavbarVisible(true)
+        },
+        onEnterBack: () => {
+          // Hide navbar when scrolling back into the section from below
+          setNavbarVisible(false)
+        },
+        onLeaveBack: () => {
+          // Show navbar when scrolling back up above the section
+          setNavbarVisible(true)
+          // Reset to first frame when leaving upwards
+          setCurrentFrame(1)
+          setCurrentSceneForFrame(0)
+          drawFrame(0, 1)
+        },
+        onUpdate: (self) => {
+          const progress = self.progress
 
-        // Find which scene we're in based on scroll progress
-        for (let i = 0; i < scrollSections.length; i++) {
-          const scene = scrollSections[i]
-          const sceneProgressShare = scene.scrollMultiplier / totalScrollMultiplier
-          const sceneStart = accumulatedProgress
-          const sceneEnd = accumulatedProgress + sceneProgressShare
-          const isLastScene = i === scrollSections.length - 1
+          // Clamp progress to ensure we stay within bounds
+          const clampedProgress = Math.max(0, Math.min(progress, 1))
+          let accumulatedProgress = 0
 
-          // For the last scene, include the end boundary (<=), otherwise use (<)
-          const isInScene = isLastScene 
-            ? (clampedProgress >= sceneStart && clampedProgress <= sceneEnd)
-            : (clampedProgress >= sceneStart && clampedProgress < sceneEnd)
+          // Find which scene we're in based on scroll progress
+          for (let i = 0; i < scrollSections.length; i++) {
+            const scene = scrollSections[i]
+            const sceneProgressShare = scene.scrollMultiplier / totalScrollMultiplier
+            const sceneStart = accumulatedProgress
+            const sceneEnd = accumulatedProgress + sceneProgressShare
+            const isLastScene = i === scrollSections.length - 1
 
-          if (isInScene) {
-            // Calculate scene progress, ensuring it doesn't exceed 1
-            const sceneProgress = Math.min((clampedProgress - sceneStart) / sceneProgressShare, 1)
-            
-            // Calculate frame index based on scene progress
-            const frameCount = SCENE_FRAME_COUNTS[scene.sceneIndex]
-            const frameIndex = Math.floor(sceneProgress * (frameCount - 1))
-            const clampedFrameIndex = Math.max(0, Math.min(frameIndex, frameCount - 1))
-            
-            // Update frame state (convert to 1-based for file naming)
-            setCurrentFrame(clampedFrameIndex + 1)
-            setCurrentSceneForFrame(scene.sceneIndex)
+            // For the last scene, include the end boundary (<=), otherwise use (<)
+            const isInScene = isLastScene
+              ? (clampedProgress >= sceneStart && clampedProgress <= sceneEnd)
+              : (clampedProgress >= sceneStart && clampedProgress < sceneEnd)
 
-            break
+            if (isInScene) {
+              // Calculate scene progress, ensuring it doesn't exceed 1
+              const sceneProgress = Math.min((clampedProgress - sceneStart) / sceneProgressShare, 1)
+
+              // Calculate frame index based on scene progress
+              const frameCount = SCENE_FRAME_COUNTS[scene.sceneIndex]
+              const frameIndex = Math.floor(sceneProgress * (frameCount - 1))
+              const clampedFrameIndex = Math.max(0, Math.min(frameIndex, frameCount - 1))
+
+              // Update frame state (convert to 1-based for file naming)
+              setCurrentFrame(clampedFrameIndex + 1)
+              setCurrentSceneForFrame(scene.sceneIndex)
+
+              break
+            }
+
+            accumulatedProgress = sceneEnd
           }
 
-          accumulatedProgress = sceneEnd
+          // Frame rendering is handled via state updates above
+          // No video seeking required
         }
-
-        // Frame rendering is handled via state updates above
-        // No video seeking required
-      }
-    })
+      })
 
       // Initial setup: hide all cards and reset their positions
       sceneConfig.forEach((scene, sceneIndex) => {
@@ -1083,9 +1137,9 @@ export default function BatteryLifecycleScroll() {
     canvas.height = 1080
 
     // Fill canvas with black immediately to prevent white flash
-    const ctx = canvas.getContext('2d', { 
+    const ctx = canvas.getContext('2d', {
       alpha: false,
-      desynchronized: true 
+      desynchronized: true
     })
     if (ctx) {
       ctx.fillStyle = '#000000'
@@ -1100,21 +1154,21 @@ export default function BatteryLifecycleScroll() {
     // Draw first frame when ready - CRITICAL for initial visibility
     let attempts = 0
     const maxAttempts = 100
-    
+
     const drawInitialFrame = () => {
       const firstFrameSrc = '/lifecycle/frames/scene-1/frame_0001.webp'
       const cachedImage = frameCache.get(firstFrameSrc)
-      
+
       if (cachedImage && cachedImage.complete && cachedImage.naturalWidth > 0) {
         // Draw frame immediately
         drawFrame(0, 1)
-        
+
         // Show canvas - frame is ready!
         if (canvas) {
           canvas.style.opacity = '1'
           canvas.style.visibility = 'visible'
         }
-        
+
         // Refresh after a moment
         setTimeout(() => {
           ScrollTrigger.refresh()
@@ -1219,17 +1273,44 @@ export default function BatteryLifecycleScroll() {
       setShouldShowUI(true)
     }
 
+
+
     // Check visibility for each scene's cards and animate smoothly
     sceneConfig.forEach((scene, sceneIndex) => {
       const shouldBeVisible = shouldCardBeVisible(sceneIndex, currentSceneForFrame, currentFrame)
-      
+
       scene.cards.forEach((_cardData: CardData, cardIndex: number) => {
         const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
         const card = cardRefs.current[cardKey]
-        
+
         if (card) {
-          if (shouldBeVisible) {
-            // Smooth fade in and slide in
+          // Special handling for Scene 1 mobile - all cards visible, no sequential reveal
+          if (isMobile && sceneIndex === 0 && shouldBeVisible) {
+            const cardData = scene.cards[cardIndex]
+
+            // Voltage and Internal Resistance: instant update to prevent blinking
+            if (cardData.cardType === 'voltage' || cardData.cardType === 'internal-resistance') {
+              gsap.to(card, {
+                x: 0,
+                opacity: 1,
+                duration: 0,
+                force3D: true,
+                overwrite: 'auto'
+              })
+            }
+            // All other cards (health-gauge, sulphation): normal fade in
+            else {
+              gsap.to(card, {
+                x: 0,
+                opacity: 1,
+                duration: 0.4,
+                ease: 'power2.out',
+                force3D: true,
+                overwrite: 'auto'
+              })
+            }
+          } else if (shouldBeVisible) {
+            // Normal fade in and slide in for all other cases
             gsap.to(card, {
               x: 0,
               opacity: 1,
@@ -1252,7 +1333,9 @@ export default function BatteryLifecycleScroll() {
         }
       })
     })
-  }, [currentFrame, currentSceneForFrame, isPreloading, shouldShowUI])
+  }, [currentFrame, currentSceneForFrame, isPreloading, shouldShowUI, isMobile])
+
+
 
   // Preload next frames for smooth scrolling (only when not in initial preload)
   useEffect(() => {
@@ -1260,10 +1343,10 @@ export default function BatteryLifecycleScroll() {
 
     const preloadCount = 35 // Aggressive preload to prevent first-scroll blink
     const frameCount = SCENE_FRAME_COUNTS[currentSceneForFrame]
-    
+
     for (let i = 1; i <= preloadCount; i++) {
       const nextFrame = currentFrame + i
-      
+
       // Preload frames within current scene
       if (nextFrame <= frameCount) {
         const src = `/lifecycle/frames/scene-${currentSceneForFrame + 1}/frame_${String(nextFrame).padStart(4, '0')}.webp`
@@ -1300,30 +1383,33 @@ export default function BatteryLifecycleScroll() {
       {/* Scroll Container */}
       <div ref={containerRef} className="relative w-full bg-black" style={{ position: 'relative' }}>
         {/* Sticky Frame Container */}
-        <div 
-          ref={stickyContainerRef} 
-          className="sticky top-0 left-0 w-full h-screen overflow-hidden bg-black" 
-          style={{ 
+        <div
+          ref={stickyContainerRef}
+          className="sticky top-0 left-0 w-full h-screen overflow-hidden bg-black"
+          style={{
             position: 'sticky',
-            transform: 'translate3d(0, 0, 0)', 
+            transform: 'translate3d(0, 0, 0)',
             contain: 'layout style paint',
             backgroundColor: '#000'
           }}
         >
           {/* Canvas renderer - ZERO BLINK, enterprise-grade */}
-          <div 
-            className="absolute inset-0 w-full h-full bg-black"
-            style={{ 
+          <div
+            className={`absolute w-full bg-black ${isMobile
+              ? 'top-1/2 left-0 -translate-y-1/2 h-[35vh]'
+              : 'inset-0 h-full'
+              }`}
+            style={{
               backfaceVisibility: 'hidden',
-              transform: 'translateZ(0)',
+              transform: isMobile ? 'translateY(-50%) translateZ(0)' : 'translateZ(0)',
               opacity: 1
             }}
           >
             <canvas
               ref={canvasRef}
               className="absolute inset-0 w-full h-full pointer-events-none bg-black"
-              style={{ 
-                objectFit: 'cover',
+              style={{
+                objectFit: isMobile ? 'contain' : 'cover',
                 imageRendering: 'crisp-edges',
                 backfaceVisibility: 'hidden',
                 transform: 'translateZ(0)',
@@ -1338,32 +1424,33 @@ export default function BatteryLifecycleScroll() {
           {shouldShowUI && activeSceneIndex !== null && (
             <>
               {/* Progress Boxes Container */}
-              <div className="absolute top-2 lg:top-8 left-5 sm:left-4 lg:left-[32rem] xl:left-[38rem] z-20">
-                <div 
+              <div className={`absolute z-20 ${isMobile
+                ? 'top-[calc(50%+17.5vh+0.5rem)] left-4'
+                : 'top-2 lg:top-8 left-5 sm:left-4 lg:left-[32rem] xl:left-[38rem]'
+                }`}>
+                <div
                   className="flex items-center gap-0.5 lg:gap-2 backdrop-blur-sm h-[1.875rem] lg:h-[4.688rem] rounded-md lg:rounded-2xl px-1.5 lg:px-5"
                   style={{
                     border: '1px solid rgba(255, 255, 255, 0.10)',
                     background: 'rgba(0, 0, 0, 0.4)',
                     willChange: 'transform'
-                    
+
                   }}
                 >
                   {sceneTimings.map((_, index) => (
                     <div
                       key={index}
-                      className={`relative transition-all duration-300 ${
-                        activeSceneIndex === index ? 'w-3 h-3 lg:w-7 lg:h-7' : 'w-2.5 h-2.5 lg:w-6 lg:h-6'
-                      }`}
+                      className={`relative transition-all duration-300 ${activeSceneIndex === index ? 'w-3 h-3 lg:w-7 lg:h-7' : 'w-2.5 h-2.5 lg:w-6 lg:h-6'
+                        }`}
                     >
                       {/* Box Background */}
                       <div
-                        className={`w-full h-full rounded-lg transition-all duration-300 ${
-                          activeSceneIndex === index
-                            ? 'bg-[#ff7700] shadow-[0_0_20px_rgba(255,119,0,0.9)]'
-                            : activeSceneIndex !== null && index < activeSceneIndex
+                        className={`w-full h-full rounded-lg transition-all duration-300 ${activeSceneIndex === index
+                          ? 'bg-[#ff7700] shadow-[0_0_20px_rgba(255,119,0,0.9)]'
+                          : activeSceneIndex !== null && index < activeSceneIndex
                             ? 'bg-[#ff7700]/40 border border-[#ff7700]/60'
                             : 'bg-white/10 border border-white/20'
-                        }`}
+                          }`}
                       >
                         {/* Inner glow for active box */}
                         {activeSceneIndex === index && (
@@ -1384,7 +1471,10 @@ export default function BatteryLifecycleScroll() {
 
               {/* Scene Title Label - Separate Container */}
               {activeSceneIndex !== null && (
-                <div className="absolute top-2 lg:top-8 right-2 sm:right-4 lg:right-8 xl:right-16 z-20 max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-2rem)] lg:max-w-[600px] xl:max-w-none">
+                <div className={`absolute z-20 ${isMobile
+                  ? 'top-[calc(50%+17.5vh+0.5rem)] right-4 max-w-[calc(100%-8rem)]'
+                  : 'top-2 lg:top-8 right-2 sm:right-4 lg:right-8 xl:right-16 max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-2rem)] lg:max-w-[600px] xl:max-w-none'
+                  }`}>
                   <div
                     className="flex flex-col items-center justify-center backdrop-blur-sm min-h-[1.875rem] sm:min-h-[2.188rem] lg:min-h-[4.688rem] rounded-lg lg:rounded-2xl px-3 sm:px-4 lg:px-6 xl:px-12 2xl:px-24 w-auto lg:w-[600px] xl:w-[46.88rem] py-1 sm:py-1.5 lg:py-3"
                     style={{
@@ -1409,7 +1499,7 @@ export default function BatteryLifecycleScroll() {
           <div className="absolute inset-0 z-10">
             {sceneConfig.map((scene, sceneIndex) => (
               <div key={scene.id} className={activeSceneIndex === sceneIndex ? '' : 'pointer-events-none'}>
-                {scene.cards.map((cardData, cardIndex) => 
+                {scene.cards.map((cardData, cardIndex) =>
                   renderCard(cardData.cardType, cardData, sceneIndex, cardIndex)
                 )}
               </div>
@@ -1434,7 +1524,7 @@ export default function BatteryLifecycleScroll() {
                       <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  
+
                   {/* Warning Text */}
                   <div className="text-center">
                     <h2 className="text-xl md:text-3xl font-bold text-[#ff6b1a] font-['Arial',sans-serif] tracking-wider mb-1 md:mb-2">

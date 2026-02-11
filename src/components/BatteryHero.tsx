@@ -324,7 +324,7 @@ export default function BatteryHero() {
         >
           <div className="max-w-[87.5rem] mx-auto text-center">
             <h1
-              className="text-white text-center max-w-[62.5rem] mx-auto text-[clamp(1.75rem,4vw,2.75rem)] lg:text-[clamp(2.25rem,4.25vw,3.25rem)]"
+              className="text-white text-center max-w-[62.5rem] mx-auto text-[clamp(1.25rem,3.5vw,2rem)] lg:text-[clamp(2.25rem,4.25vw,3.25rem)]"
               style={{
                 fontFamily: 'Arial, sans-serif',
                 fontWeight: 900,
