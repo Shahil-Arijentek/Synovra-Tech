@@ -571,7 +571,7 @@ export default function BatteryLifecycleScroll() {
           const isVoltageOrResistance = cardType === 'voltage' || cardType === 'internal-resistance'
           const isSulphationDetected = cardType === 'sulphation-detected'
           const isDecision = cardType === 'decision'
-          const scale = isVoltageOrResistance ? 'scale-[0.60]' : isSulphationDetected ? 'scale-[0.45]' : isDecision ? 'scale-[0.70]' : 'scale-[0.70]'
+          const scale = isVoltageOrResistance ? 'scale-[0.60]' : isSulphationDetected ? 'scale-[0.55]' : isDecision ? 'scale-[0.70]' : 'scale-[0.70]'
 
           return (
             <div className={`${scale} origin-top-left`}>
