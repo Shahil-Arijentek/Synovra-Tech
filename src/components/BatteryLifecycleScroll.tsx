@@ -593,7 +593,7 @@ export default function BatteryLifecycleScroll() {
         // Scene 3 scaling
         if (sceneIndex === 2) {
           return (
-            <div className="scale-[0.55] origin-top-left">
+            <div className="scale-[0.45] origin-top-left">
               {children}
             </div>
           )
@@ -702,7 +702,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <BarcodeCard value={cardData.value} />
+            <MobileWrapper>
+              <BarcodeCard value={cardData.value} />
+            </MobileWrapper>
           </div>
         )
       case 'system-record':
@@ -713,7 +715,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <SystemRecordCard value={cardData.value} />
+            <MobileWrapper>
+              <SystemRecordCard value={cardData.value} />
+            </MobileWrapper>
           </div>
         )
       case 'route':
@@ -724,7 +728,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <RouteCard />
+            <MobileWrapper>
+              <RouteCard />
+            </MobileWrapper>
           </div>
         )
       case 'seal':
@@ -735,7 +741,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <SealCard value={cardData.value} />
+            <MobileWrapper>
+              <SealCard value={cardData.value} />
+            </MobileWrapper>
           </div>
         )
       case 'record-lock':
@@ -869,7 +877,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <LoggedCard />
+            <MobileWrapper>
+              <LoggedCard />
+            </MobileWrapper>
           </div>
         )
       case 'controlled':
@@ -1361,7 +1371,7 @@ export default function BatteryLifecycleScroll() {
           // Scene 2 mobile - instant updates to prevent blinking
           else if (isMobile && sceneIndex === 1 && shouldBeVisible) {
             const cardData = scene.cards[cardIndex]
-            if (cardData.cardType === 'voltage' || cardData.cardType === 'internal-resistance' || cardData.cardType === 'sulphation-detected') {
+            if (cardData.cardType === 'voltage' || cardData.cardType === 'internal-resistance' || cardData.cardType === 'sulphation-detected' || cardData.cardType === 'decision') {
               gsap.set(card, {
                 x: 0,
                 opacity: 1,
@@ -1378,6 +1388,14 @@ export default function BatteryLifecycleScroll() {
                 overwrite: 'auto'
               })
             }
+          }
+          // Scene 3 mobile - instant updates to prevent blinking
+          else if (isMobile && sceneIndex === 2 && shouldBeVisible) {
+            gsap.set(card, {
+              x: 0,
+              opacity: 1,
+              force3D: true
+            })
           }
           else if (shouldBeVisible) {
             // Normal fade in and slide in for all other cases
