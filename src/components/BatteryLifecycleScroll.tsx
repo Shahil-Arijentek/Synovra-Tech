@@ -497,13 +497,23 @@ export default function BatteryLifecycleScroll() {
         }
       } else if (sceneIndex === 2) {
         // Scene 3 positions
-        if (cardData.position === 'right') {
-          if (cardData.cardType === 'logged') return 'right-10 sm:right-12 md:right-16 lg:right-18 xl:right-20 bottom-16 md:bottom-20'
-          return 'left-20 sm:left-22 md:left-28 lg:left-28 xl:left-30 top-[67%] sm:top-[69%] md:top-[73%] lg:top-[43rem]'
+        if (isMobile) {
+          // Mobile positioning for Scene 3 (2 top, 2 bottom)
+          if (cardData.cardType === 'barcode') return 'left-4 top-[10%]'
+          if (cardData.cardType === 'system-record') return '-right-8 top-[10%]'
+          if (cardData.cardType === 'route') return 'left-4 top-[55%]'
+          if (cardData.cardType === 'seal') return '-right-8 top-[55%]'
+          if (cardData.cardType === 'logged') return '-right-4 top-[78%]'
+        } else {
+          // Desktop/laptop positioning (unchanged)
+          if (cardData.position === 'right') {
+            if (cardData.cardType === 'logged') return 'right-10 sm:right-12 md:right-16 lg:right-18 xl:right-20 bottom-16 md:bottom-20'
+            return 'left-20 sm:left-22 md:left-28 lg:left-28 xl:left-30 top-[67%] sm:top-[69%] md:top-[73%] lg:top-[43rem]'
+          }
+          if (cardData.position === 'left') return 'left-20 sm:left-22 md:left-28 lg:left-28 xl:left-30 top-14 sm:top-16 md:top-20 lg:top-12'
+          if (cardData.position === 'bottom-left') return 'left-20 sm:left-22 md:left-28 lg:left-28 xl:left-30 top-[22%] sm:top-[24%] md:top-[28%] lg:top-[14rem]'
+          if (cardData.position === 'bottom-right') return 'left-20 sm:left-22 md:left-28 lg:left-28 xl:left-30 top-[41%] sm:top-[42%] md:top-[46%] lg:top-[27rem]'
         }
-        if (cardData.position === 'left') return 'left-20 sm:left-22 md:left-28 lg:left-28 xl:left-30 top-14 sm:top-16 md:top-20 lg:top-12'
-        if (cardData.position === 'bottom-left') return 'left-20 sm:left-22 md:left-28 lg:left-28 xl:left-30 top-[22%] sm:top-[24%] md:top-[28%] lg:top-[14rem]'
-        if (cardData.position === 'bottom-right') return 'left-20 sm:left-22 md:left-28 lg:left-28 xl:left-30 top-[41%] sm:top-[42%] md:top-[46%] lg:top-[27rem]'
       } else if (sceneIndex === 3) {
         // Scene 4 positions
         if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] lg:left-[21em] xl:left-[22em] top-20 sm:top-24 md:top-28 lg:top-12'
@@ -549,9 +559,9 @@ export default function BatteryLifecycleScroll() {
 
     const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
 
-    // Mobile scaling wrapper - for Scene 1 and Scene 2 on mobile
+    // Mobile scaling wrapper - for Scene 1, Scene 2 and Scene 3 on mobile
     const MobileWrapper = ({ children }: { children: React.ReactNode }) => {
-      if (isMobile && (sceneIndex === 0 || sceneIndex === 1)) {
+      if (isMobile && (sceneIndex === 0 || sceneIndex === 1 || sceneIndex === 2)) {
         // Scene 1 scaling
         if (sceneIndex === 0) {
           const isVoltageOrResistance = cardType === 'voltage' || cardType === 'internal-resistance'
@@ -575,6 +585,15 @@ export default function BatteryLifecycleScroll() {
 
           return (
             <div className={`${scale} origin-top-left`}>
+              {children}
+            </div>
+          )
+        }
+
+        // Scene 3 scaling
+        if (sceneIndex === 2) {
+          return (
+            <div className="scale-[0.55] origin-top-left">
               {children}
             </div>
           )
