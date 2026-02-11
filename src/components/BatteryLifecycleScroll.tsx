@@ -458,14 +458,15 @@ export default function BatteryLifecycleScroll() {
       // Scene-specific positioning - Consistent left spacing across all scenes for desktop/laptop
       if (sceneIndex === 0) {
         // Scene 1 positions
+        // Mobile positioning for Scene 1
         if (isMobile) {
           // Mobile positioning for Scene 1
           if (cardData.position === 'right') return 'left-6 top-[20%]'
           if (cardData.position === 'left') return 'left-6 top-[5%]'
           // Health gauge positioned extending to the right edge
-          if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return '-right-28 top-[6%]'
-          // Sulphation positioned extending beyond right edge
-          if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return '-right-4 top-[80%]'
+          if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return '-right-20 top-[6%]'
+          // Sulphation positioned in bottom right area
+          if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return '-right-4 top-[70%]'
         } else {
           // Desktop/laptop positioning (unchanged)
           if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] lg:left-[21em] xl:left-[22em] top-20 sm:top-24 md:top-28 lg:top-12'
@@ -542,7 +543,9 @@ export default function BatteryLifecycleScroll() {
       if (isMobile && sceneIndex === 0) {
         // Additional scaling for voltage and internal resistance cards
         const isVoltageOrResistance = cardType === 'voltage' || cardType === 'internal-resistance'
-        const scale = isVoltageOrResistance ? 'scale-[0.60]' : 'scale-[0.70]' // Increased sizes for all cards
+        const isHealthGauge = cardType === 'health-gauge'
+        const isSulphation = cardType === 'sulphation'
+        const scale = isVoltageOrResistance ? 'scale-[0.60]' : (isHealthGauge || isSulphation) ? 'scale-[0.80]' : 'scale-[0.70]' // Health gauge and sulphation larger
 
         return (
           <div className={`${scale} origin-top-left`}>
