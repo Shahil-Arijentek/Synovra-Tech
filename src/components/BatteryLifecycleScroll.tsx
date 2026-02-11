@@ -480,10 +480,21 @@ export default function BatteryLifecycleScroll() {
         }
       } else if (sceneIndex === 1) {
         // Scene 2 positions
-        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] lg:left-[21em] xl:left-[22em] top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'left') return 'left-14 sm:left-16 md:left-18 lg:left-22 xl:left-24 top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'bottom-left') return 'left-18 sm:left-20 md:left-28 lg:left-26 xl:left-28 top-[34%] sm:top-[36%] md:top-[40%] lg:top-[23rem]'
-        if (cardData.position === 'bottom-right') return 'left-18 sm:left-20 md:left-28 lg:left-26 xl:left-28 top-[65%] sm:top-[67%] md:top-[71%] lg:top-[41rem]'
+        if (isMobile) {
+          // Mobile positioning for Scene 2
+          if (cardData.position === 'right') return 'left-6 top-[20%]' // Internal Resistance
+          if (cardData.position === 'left') return 'left-6 top-[5%]' // Voltage
+          // Sulphation Detected positioned on right side extending beyond edge
+          if (cardData.position === 'bottom-left' && cardData.cardType === 'sulphation-detected') return '-right-12 top-[6%]'
+          // Decision card positioned at bottom right
+          if (cardData.position === 'bottom-right' && cardData.cardType === 'decision') return '-right-4 top-[75%]'
+        } else {
+          // Desktop/laptop positioning (unchanged)
+          if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] lg:left-[21em] xl:left-[22em] top-20 sm:top-24 md:top-28 lg:top-12'
+          if (cardData.position === 'left') return 'left-14 sm:left-16 md:left-18 lg:left-22 xl:left-24 top-20 sm:top-24 md:top-28 lg:top-12'
+          if (cardData.position === 'bottom-left') return 'left-18 sm:left-20 md:left-28 lg:left-26 xl:left-28 top-[34%] sm:top-[36%] md:top-[40%] lg:top-[23rem]'
+          if (cardData.position === 'bottom-right') return 'left-18 sm:left-20 md:left-28 lg:left-26 xl:left-28 top-[65%] sm:top-[67%] md:top-[71%] lg:top-[41rem]'
+        }
       } else if (sceneIndex === 2) {
         // Scene 3 positions
         if (cardData.position === 'right') {
@@ -538,20 +549,36 @@ export default function BatteryLifecycleScroll() {
 
     const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
 
-    // Mobile scaling wrapper - only for Scene 1 on mobile
+    // Mobile scaling wrapper - for Scene 1 and Scene 2 on mobile
     const MobileWrapper = ({ children }: { children: React.ReactNode }) => {
-      if (isMobile && sceneIndex === 0) {
-        // Additional scaling for voltage and internal resistance cards
-        const isVoltageOrResistance = cardType === 'voltage' || cardType === 'internal-resistance'
-        const isHealthGauge = cardType === 'health-gauge'
-        const isSulphation = cardType === 'sulphation'
-        const scale = isVoltageOrResistance ? 'scale-[0.60]' : isHealthGauge ? 'scale-[0.70]' : isSulphation ? 'scale-[0.80]' : 'scale-[0.70]' // Health gauge reduced
+      if (isMobile && (sceneIndex === 0 || sceneIndex === 1)) {
+        // Scene 1 scaling
+        if (sceneIndex === 0) {
+          const isVoltageOrResistance = cardType === 'voltage' || cardType === 'internal-resistance'
+          const isHealthGauge = cardType === 'health-gauge'
+          const isSulphation = cardType === 'sulphation'
+          const scale = isVoltageOrResistance ? 'scale-[0.60]' : isHealthGauge ? 'scale-[0.70]' : isSulphation ? 'scale-[0.80]' : 'scale-[0.70]'
 
-        return (
-          <div className={`${scale} origin-top-left`}>
-            {children}
-          </div>
-        )
+          return (
+            <div className={`${scale} origin-top-left`}>
+              {children}
+            </div>
+          )
+        }
+
+        // Scene 2 scaling
+        if (sceneIndex === 1) {
+          const isVoltageOrResistance = cardType === 'voltage' || cardType === 'internal-resistance'
+          const isSulphationDetected = cardType === 'sulphation-detected'
+          const isDecision = cardType === 'decision'
+          const scale = isVoltageOrResistance ? 'scale-[0.60]' : isSulphationDetected ? 'scale-[0.70]' : isDecision ? 'scale-[0.80]' : 'scale-[0.70]'
+
+          return (
+            <div className={`${scale} origin-top-left`}>
+              {children}
+            </div>
+          )
+        }
       }
       return <>{children}</>
     }
@@ -1287,21 +1314,16 @@ export default function BatteryLifecycleScroll() {
         const card = cardRefs.current[cardKey]
 
         if (card) {
-          // Special handling for Scene 1 mobile - all cards visible, no sequential reveal
+          // Scene 1 mobile - instant updates to prevent blinking
           if (isMobile && sceneIndex === 0 && shouldBeVisible) {
             const cardData = scene.cards[cardIndex]
-
-            // Voltage and Internal Resistance: instant update to prevent blinking
-            if (cardData.cardType === 'voltage' || cardData.cardType === 'internal-resistance') {
-              gsap.to(card, {
+            if (cardData.cardType === 'voltage' || cardData.cardType === 'internal-resistance' || cardData.cardType === 'health-gauge') {
+              gsap.set(card, {
                 x: 0,
                 opacity: 1,
-                duration: 0,
-                force3D: true,
-                overwrite: 'auto'
+                force3D: true
               })
             }
-            // All other cards (health-gauge, sulphation): normal fade in
             else {
               gsap.to(card, {
                 x: 0,
@@ -1312,7 +1334,29 @@ export default function BatteryLifecycleScroll() {
                 overwrite: 'auto'
               })
             }
-          } else if (shouldBeVisible) {
+          }
+          // Scene 2 mobile - instant updates to prevent blinking
+          else if (isMobile && sceneIndex === 1 && shouldBeVisible) {
+            const cardData = scene.cards[cardIndex]
+            if (cardData.cardType === 'voltage' || cardData.cardType === 'internal-resistance' || cardData.cardType === 'sulphation-detected') {
+              gsap.set(card, {
+                x: 0,
+                opacity: 1,
+                force3D: true
+              })
+            }
+            else {
+              gsap.to(card, {
+                x: 0,
+                opacity: 1,
+                duration: 0.4,
+                ease: 'power2.out',
+                force3D: true,
+                overwrite: 'auto'
+              })
+            }
+          }
+          else if (shouldBeVisible) {
             // Normal fade in and slide in for all other cases
             gsap.to(card, {
               x: 0,
