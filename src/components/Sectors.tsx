@@ -102,7 +102,7 @@ export default function Sectors() {
 
     scrollTriggerRef.current = ScrollTrigger.create({
       trigger: section,
-      start: "top top+=104",
+      start: "top top+=30",
       end: `+=${(sectors.length - 1) * 100}%`,
       pin: true,
       pinSpacing: true,
