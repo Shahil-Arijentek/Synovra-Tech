@@ -545,7 +545,7 @@ export default function BatteryLifecycleScroll() {
         const isVoltageOrResistance = cardType === 'voltage' || cardType === 'internal-resistance'
         const isHealthGauge = cardType === 'health-gauge'
         const isSulphation = cardType === 'sulphation'
-        const scale = isVoltageOrResistance ? 'scale-[0.60]' : (isHealthGauge || isSulphation) ? 'scale-[0.80]' : 'scale-[0.70]' // Health gauge and sulphation larger
+        const scale = isVoltageOrResistance ? 'scale-[0.60]' : isHealthGauge ? 'scale-[0.70]' : isSulphation ? 'scale-[0.80]' : 'scale-[0.70]' // Health gauge reduced
 
         return (
           <div className={`${scale} origin-top-left`}>
