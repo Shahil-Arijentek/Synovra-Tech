@@ -464,9 +464,9 @@ export default function BatteryLifecycleScroll() {
           if (cardData.position === 'right') return 'left-6 top-[20%]'
           if (cardData.position === 'left') return 'left-6 top-[5%]'
           // Health gauge positioned extending to the right edge
-          if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return '-right-20 top-[6%]'
+          if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return '-right-16 top-[6%]'
           // Sulphation positioned in bottom right area
-          if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return '-right-4 top-[70%]'
+          if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return '-right-4 top-[75%]'
         } else {
           // Desktop/laptop positioning (unchanged)
           if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] lg:left-[21em] xl:left-[22em] top-20 sm:top-24 md:top-28 lg:top-12'
