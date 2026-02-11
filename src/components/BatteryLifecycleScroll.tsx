@@ -498,11 +498,11 @@ export default function BatteryLifecycleScroll() {
       } else if (sceneIndex === 2) {
         // Scene 3 positions
         if (isMobile) {
-          // Mobile positioning for Scene 3 (2 top, 2 bottom)
-          if (cardData.cardType === 'barcode') return 'left-4 top-[10%]'
-          if (cardData.cardType === 'system-record') return '-right-8 top-[10%]'
-          if (cardData.cardType === 'route') return 'left-4 top-[55%]'
-          if (cardData.cardType === 'seal') return '-right-8 top-[55%]'
+          // Mobile positioning for Scene 3 
+          if (cardData.cardType === 'barcode') return 'left-[30%] -translate-x-[50%] top-[3%]'
+          if (cardData.cardType === 'system-record') return 'left-[30%] top-[15%]'
+          if (cardData.cardType === 'route') return 'left-20 top-[75%]'
+          if (cardData.cardType === 'seal') return '-right-5 top-[27%]'
           if (cardData.cardType === 'logged') return '-right-4 top-[78%]'
         } else {
           // Desktop/laptop positioning (unchanged)
@@ -593,7 +593,7 @@ export default function BatteryLifecycleScroll() {
         // Scene 3 scaling
         if (sceneIndex === 2) {
           return (
-            <div className="scale-[0.45] origin-top-left">
+            <div className="scale-[0.70] origin-top-left">
               {children}
             </div>
           )
