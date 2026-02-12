@@ -2107,7 +2107,7 @@ export default function BatteryLifecycleScroll() {
               {/* Progress Boxes Container */}
               <div className={`absolute z-20 ${isMobile
                 ? 'top-[calc(50%+17.5vh-2rem)] left-4'
-                : 'top-0 lg:top-2 left-5 sm:left-4 lg:left-[32rem] xl:left-[38rem]'
+                : 'top-4 lg:top-8 left-5 sm:left-4 lg:left-[32rem] xl:left-[38rem]'
                 }`}>
                 <div 
                   className="flex items-center gap-0.5 lg:gap-2 backdrop-blur-sm h-[1.875rem] lg:h-[4.688rem] rounded-md lg:rounded-2xl px-1.5 lg:px-5"
@@ -2156,7 +2156,7 @@ export default function BatteryLifecycleScroll() {
               {activeSceneIndex !== null && (
                 <div className={`absolute z-20 ${isMobile
                   ? 'top-[calc(50%+17.5vh-2rem)] right-4 max-w-[calc(100%-8rem)]'
-                  : 'top-0 lg:top-2 right-2 sm:right-4 lg:right-8 xl:right-16 max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-2rem)] lg:max-w-[600px] xl:max-w-none'
+                  : 'top-4 lg:top-8 right-2 sm:right-4 lg:right-8 xl:right-16 max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-2rem)] lg:max-w-[600px] xl:max-w-none'
                   }`}>
                   <div
                     className="flex flex-col items-center justify-center backdrop-blur-sm min-h-[1.875rem] sm:min-h-[2.188rem] lg:min-h-[4.688rem] rounded-lg lg:rounded-2xl px-3 sm:px-4 lg:px-6 xl:px-12 2xl:px-24 w-auto lg:w-[600px] xl:w-[46.88rem] py-1 sm:py-1.5 lg:py-3"
