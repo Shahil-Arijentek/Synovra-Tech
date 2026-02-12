@@ -20,16 +20,14 @@ export default function DecisionCard({ value, status }: DecisionCardProps) {
         />
         
         {/* Text Overlay on Plate */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-0">
-          <div 
-            className="text-[#1a1a1a] font-['Arial',sans-serif] font-normal uppercase tracking-wide text-center text-lg sm:text-xl md:text-2xl px-4 sm:pr-1 md:pr-2"
-          >
-            {value}
-          </div>
-          <div 
-            className="text-[#1a1a1a] font-['Arial',sans-serif] font-normal uppercase tracking-wide text-center md:text-right text-xs sm:text-sm md:text-base w-full px-4 sm:pr-30 md:pr-36"
-          >
-            {status}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-left">
+            <div className="text-black text-xl sm:text-2xl md:text-[2rem] font-['Gemunu_Libre',sans-serif] font-bold uppercase leading-none mb-1">
+              {value}
+            </div>
+            <div className="text-black text-sm sm:text-base md:text-[1rem] font-['Arial',sans-serif] font-normal uppercase leading-none">
+              {status}
+            </div>
           </div>
         </div>
       </div>

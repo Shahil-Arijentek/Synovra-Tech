@@ -29,8 +29,6 @@ import CertifiedCard from './cards/CertifiedCard'
 import VerifiedCard from './cards/VerifiedCard'
 
 gsap.registerPlugin(ScrollTrigger)
-
-// Frame counts per scene (Variable FPS for optimized performance)
 const SCENE_FRAME_COUNTS = [
   60,   // Scene 1: 0-4s
   60,   // Scene 2: 4-8s
@@ -348,12 +346,30 @@ export default function BatteryLifecycleScroll() {
   const [isPreloading, setIsPreloading] = useState(true) // Track preload state
   const [preloadProgress, setPreloadProgress] = useState(0) // Track preload progress
   const [shouldShowUI, setShouldShowUI] = useState(false) // Track if progress bar and title should be visible (once true, stays true)
+  const [isMobile, setIsMobile] = useState(false) // Track if screen is mobile (< 1024px)
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
   const { setNavbarVisible } = useNavbar()
   const hasPreloadedRef = useRef(false)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const currentCanvasFrameRef = useRef({ scene: 0, frame: 1 }) // Track what's on canvas
   const rafRef = useRef<number | null>(null)
+
+  // Mobile detection effect
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024)
+    }
+    
+    // Check on mount
+    checkMobile()
+    
+    // Check on resize
+    window.addEventListener('resize', checkMobile)
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile)
+    }
+  }, [])
 
   // Helper function to check if a card should be visible based on current frame
   const shouldCardBeVisible = (sceneIndex: number, currentScene: number, currentFrame: number): boolean => {
@@ -454,6 +470,70 @@ export default function BatteryLifecycleScroll() {
   // Function to render specific card type
   const renderCard = (cardType: string, cardData: CardData, sceneIndex: number, cardIndex: number) => {
     const getCardPosition = () => {
+      // Mobile-specific positioning (letterbox layout)
+      if (isMobile) {
+        // Scene 1 mobile positioning
+        if (sceneIndex === 0) {
+          if (cardData.position === 'right') return 'left-6 top-[20%]'
+          if (cardData.position === 'left') return 'left-6 top-[5%]'
+          // Health gauge positioned extending to the right edge - aligned with Voltage top and extends to Internal Resistance bottom
+          if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return '-right-12 top-[10%]'
+          // Sulphation positioned in bottom right area
+          if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return '-right-4 top-[75%]'
+        }
+        // Scene 2 mobile positioning
+        else if (sceneIndex === 1) {
+          if (cardData.position === 'right') return 'left-6 top-[20%]'
+          if (cardData.position === 'left') return 'left-6 top-[5%]'
+          // Sulphation detected positioned extending to the right edge - same top position as health gauge in Scene 1
+          if (cardData.position === 'bottom-left' && cardData.cardType === 'sulphation-detected') return '-right-44 top-[10%]'
+          if (cardData.position === 'bottom-right' && cardData.cardType === 'decision') return '-right-20 top-[77%]'
+        }
+        // Scene 3 mobile positioning - organized structure
+        else if (sceneIndex === 2) {
+          // Top section - barcode and system-record
+          if (cardData.cardType === 'barcode') return 'left-28 top-[5%]' // Top left, moved a little more right
+          if (cardData.cardType === 'system-record') return 'left-28 top-[18%]' // Below barcode, moved a little more right
+          // Bottom section - seal and route
+          if (cardData.cardType === 'seal') return 'left-28 top-[70%]' // Bottom left, moved up and a little more right
+          if (cardData.cardType === 'route') return 'left-28 top-[83%]' // Bottom left, below seal, moved up and a little more right
+          if (cardData.cardType === 'logged') return '-right-4 top-[32%]' // Bottom right, moved up slightly
+        }
+        else if (sceneIndex === 3) {
+          if (cardData.cardType === 'voltage') return 'left-6 top-[5%]' // Top left
+          if (cardData.cardType === 'internal-resistance') return 'left-6 top-[18%]' // Below voltage
+          // Sulphation positioned extending to the right edge - matching Scene 2 sulphation-detected
+          if (cardData.cardType === 'sulphation') return '-right-8 top-[8%]' // Right side, moved up
+          // Record-lock positioned matching Scene 2 decision card
+          if (cardData.cardType === 'record-lock') return '-right-16 top-[77%]' // Bottom right, moved more right
+        }
+        // Scene 5 mobile positioning (similar to Scene 4)
+        else if (sceneIndex === 4) {
+          if (cardData.cardType === 'voltage-trend') return 'left-6 top-[5%]' // Top left
+          if (cardData.cardType === 'internal-resistance') return 'left-6 top-[18%]' // Below voltage trend
+          if (cardData.cardType === 'electrochemical-correction') return '-right-8 top-[8%]' // Right side, moved more left
+          if (cardData.cardType === 'plate-condition') return 'left-20 top-[77%]' // Bottom, moved more left
+          if (cardData.cardType === 'controlled') return '-right-6 top-[90%]' // Bottom right badge, moved down more, slightly right
+        }
+        // Scene 6 mobile positioning (similar to previous scenes)
+        else if (sceneIndex === 5) {
+          if (cardData.cardType === 'health-gauge') return 'left-6 top-[5%]' // Top left
+          if (cardData.cardType === 'warranty') return 'left-6 top-[18%]' // Below health gauge
+          if (cardData.cardType === 'performance-restored') return '-right-4 top-[8%]' // Right side, moved more left
+          if (cardData.cardType === 'record-lock') return 'left-20 top-[75%]' // Bottom, moved more right
+          if (cardData.cardType === 'certified') return '-right-4 top-[95%]' // Bottom right badge, moved down even more
+        }
+        // Scene 7 mobile positioning (similar to previous scenes)
+        else if (sceneIndex === 6) {
+          if (cardData.cardType === 'recovery-certified') return 'left-20 top-[5%]' // Left side (record lock style) - moved slightly right
+          if (cardData.cardType === 'lead') return 'left-16 top-[24%]' // Just below record lock, moved slightly more right
+          if (cardData.cardType === 'polymer') return 'right-0 top-[24%]' // Right side, moved a little more left
+          if (cardData.cardType === 'compliance-record') return 'left-20 top-[77%]' // Bottom, moved down slightly
+          if (cardData.cardType === 'verified') return '-right-4 top-[92%]' // Bottom right badge, moved down a little more
+        }
+      }
+      
+      // Desktop/laptop positioning (unchanged)
       // Scene-specific positioning
       if (sceneIndex === 0) {
         // Scene 1 positions
@@ -525,6 +605,77 @@ export default function BatteryLifecycleScroll() {
 
     const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
 
+    // Mobile scaling helper - returns scale class based on scene and card type
+    const getMobileScale = () => {
+      if (!isMobile) return ''
+      
+      // Scene 1 scaling
+      if (sceneIndex === 0) {
+        const isVoltageOrResistance = cardType === 'voltage' || cardType === 'internal-resistance'
+        const isHealthGauge = cardType === 'health-gauge'
+        const isSulphation = cardType === 'sulphation'
+        const scale = isVoltageOrResistance ? 'scale-[0.60]' : isHealthGauge ? 'scale-[0.70]' : isSulphation ? 'scale-[0.80]' : 'scale-[0.70]'
+        return `${scale} origin-top-left`
+      }
+      
+      // Scene 2 scaling
+      if (sceneIndex === 1) {
+        const isVoltageOrResistance = cardType === 'voltage' || cardType === 'internal-resistance'
+        const isSulphationDetected = cardType === 'sulphation-detected'
+        const isDecision = cardType === 'decision'
+        const scale = isVoltageOrResistance ? 'scale-[0.60]' : isSulphationDetected ? 'scale-[0.75]' : isDecision ? 'scale-[0.70]' : 'scale-[0.70]'
+        return `${scale} origin-top-left`
+      }
+      
+      // Scene 3 scaling
+      if (sceneIndex === 2) {
+        return 'scale-[0.70] origin-top-left'
+      }
+      
+      // Scene 4 scaling (similar to Scene 1)
+      if (sceneIndex === 3) {
+        const isVoltageOrResistance = cardType === 'voltage' || cardType === 'internal-resistance'
+        const isSulphation = cardType === 'sulphation'
+        const isRecordLock = cardType === 'record-lock'
+        const scale = isVoltageOrResistance ? 'scale-[0.60]' : isSulphation ? 'scale-[0.80]' : isRecordLock ? 'scale-[0.70]' : 'scale-[0.70]'
+        return `${scale} origin-top-left`
+      }
+      
+      // Scene 5 scaling (similar to Scene 4)
+      if (sceneIndex === 4) {
+        const isVoltageTrendOrResistance = cardType === 'voltage-trend' || cardType === 'internal-resistance'
+        const isElectrochemical = cardType === 'electrochemical-correction'
+        const isPlateCondition = cardType === 'plate-condition'
+        const isControlled = cardType === 'controlled'
+        const scale = isVoltageTrendOrResistance ? 'scale-[0.60]' : isElectrochemical ? 'scale-[0.80]' : isPlateCondition ? 'scale-[0.70]' : isControlled ? 'scale-[0.70]' : 'scale-[0.70]'
+        return `${scale} origin-top-left`
+      }
+      
+      // Scene 6 scaling (similar to previous scenes)
+      if (sceneIndex === 5) {
+        const isHealthGauge = cardType === 'health-gauge'
+        const isWarranty = cardType === 'warranty'
+        const isPerformanceRestored = cardType === 'performance-restored'
+        const isRecordLock = cardType === 'record-lock'
+        const isCertified = cardType === 'certified'
+        const scale = isHealthGauge ? 'scale-[0.60]' : isWarranty ? 'scale-[0.60]' : isPerformanceRestored ? 'scale-[0.80]' : isRecordLock ? 'scale-[0.70]' : isCertified ? 'scale-[0.70]' : 'scale-[0.70]'
+        return `${scale} origin-top-left`
+      }
+      
+      // Scene 7 scaling (similar to previous scenes)
+      if (sceneIndex === 6) {
+        const isLead = cardType === 'lead'
+        const isPolymer = cardType === 'polymer'
+        const isRecoveryCertified = cardType === 'recovery-certified'
+        const isComplianceRecord = cardType === 'compliance-record'
+        const isVerified = cardType === 'verified'
+        const scale = isLead ? 'scale-[0.60]' : isPolymer ? 'scale-[0.60]' : isRecoveryCertified ? 'scale-[0.80]' : isComplianceRecord ? 'scale-[0.70]' : isVerified ? 'scale-[0.70]' : 'scale-[0.70]'
+        return `${scale} origin-top-left`
+      }
+      
+      return 'scale-[0.70] origin-top-left'
+    }
+
     switch (cardType) {
       case 'voltage':
         return (
@@ -534,7 +685,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10 max-lg:scale-[0.55] sm:max-lg:scale-[0.65]`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <VoltageCard value={cardData.value} status={cardData.status} />
+            <div className={getMobileScale()}>
+              <VoltageCard value={cardData.value} status={cardData.status} />
+            </div>
           </div>
         )
       case 'internal-resistance':
@@ -545,7 +698,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <InternalResistanceCard value={cardData.value} status={cardData.status} />
+            <div className={getMobileScale()}>
+              <InternalResistanceCard value={cardData.value} status={cardData.status} />
+            </div>
           </div>
         )
       case 'health-gauge':
@@ -556,12 +711,14 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <HealthGaugeCard 
-              value={cardData.value} 
-              video={sceneIndex === 5 ? '98.mp4' : '99.mp4'}
-              width={sceneIndex === 5 ? '200px' : '420px'}
-              compactLaptop={sceneIndex === 0}
-            />
+            <div className={getMobileScale()}>
+              <HealthGaugeCard 
+                value={cardData.value} 
+                video={sceneIndex === 5 ? '98.mp4' : '99.mp4'}
+                width={sceneIndex === 5 ? '200px' : '420px'}
+                compactLaptop={sceneIndex === 0}
+              />
+            </div>
           </div>
         )
       case 'sulphation':
@@ -572,7 +729,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <SulphationCard value={cardData.value} status={cardData.status} compactLaptop={sceneIndex === 0} />
+            <div className={getMobileScale()}>
+              <SulphationCard value={cardData.value} status={cardData.status} compactLaptop={sceneIndex === 0} />
+            </div>
           </div>
         )
       case 'sulphation-detected':
@@ -583,7 +742,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10 ${sceneIndex === 1 ? 'w-full lg:w-[26.25rem] lg:h-[13rem] [&>*]:lg:w-full [&>*]:lg:max-w-full [&>*]:lg:h-full [&>*]:lg:min-h-0' : ''}`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <SulphationDetectedCard value={cardData.value} />
+            <div className={getMobileScale()}>
+              <SulphationDetectedCard value={cardData.value} />
+            </div>
           </div>
         )
       case 'decision':
@@ -594,7 +755,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10 ${sceneIndex === 1 ? 'w-full lg:w-[26.25rem] lg:h-[13rem] [&>*]:lg:w-full [&>*]:lg:max-w-full [&>*]:lg:h-full [&>*]:lg:min-h-0' : ''}`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <DecisionCard value={cardData.value} status={cardData.status} />
+            <div className={getMobileScale()}>
+              <DecisionCard value={cardData.value} status={cardData.status} />
+            </div>
           </div>
         )
       case 'barcode':
@@ -605,7 +768,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <BarcodeCard value={cardData.value} />
+            <div className={getMobileScale()}>
+              <BarcodeCard value={cardData.value} />
+            </div>
           </div>
         )
       case 'system-record':
@@ -616,7 +781,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <SystemRecordCard value={cardData.value} />
+            <div className={getMobileScale()}>
+              <SystemRecordCard value={cardData.value} />
+            </div>
           </div>
         )
       case 'route':
@@ -627,7 +794,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <RouteCard />
+            <div className={getMobileScale()}>
+              <RouteCard />
+            </div>
           </div>
         )
       case 'seal':
@@ -638,7 +807,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <SealCard value={cardData.value} />
+            <div className={getMobileScale()}>
+              <SealCard value={cardData.value} />
+            </div>
           </div>
         )
       case 'record-lock':
@@ -649,7 +820,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <RecordLockCard value={cardData.value} status={cardData.status} />
+            <div className={getMobileScale()}>
+              <RecordLockCard value={cardData.value} status={cardData.status} />
+            </div>
           </div>
         )
       case 'voltage-trend':
@@ -660,7 +833,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <VoltageTrendCard value={cardData.value} status={cardData.status} />
+            <div className={getMobileScale()}>
+              <VoltageTrendCard value={cardData.value} status={cardData.status} />
+            </div>
           </div>
         )
       case 'electrochemical-correction':
@@ -671,7 +846,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <ElectrochemicalCorrectionCard />
+            <div className={getMobileScale()}>
+              <ElectrochemicalCorrectionCard />
+            </div>
           </div>
         )
       case 'plate-condition':
@@ -682,7 +859,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <PlateConditionCard value={cardData.value} />
+            <div className={getMobileScale()}>
+              <PlateConditionCard value={cardData.value} />
+            </div>
           </div>
         )
       case 'performance-restored':
@@ -693,12 +872,14 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <PerformanceRestoredCard
-              voltageFrom="11.8V"
-              voltageTo="12.4V"
-              resistanceFrom="8.7mΩ"
-              resistanceTo="4.2mΩ"
-            />
+            <div className={getMobileScale()}>
+              <PerformanceRestoredCard
+                voltageFrom="11.8V"
+                voltageTo="12.4V"
+                resistanceFrom="8.7mΩ"
+                resistanceTo="4.2mΩ"
+              />
+            </div>
           </div>
         )
       case 'warranty':
@@ -709,7 +890,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <WarrantyCard status={cardData.value} coverage={cardData.status} />
+            <div className={getMobileScale()}>
+              <WarrantyCard status={cardData.value} coverage={cardData.status} />
+            </div>
           </div>
         )
       case 'lead':
@@ -720,7 +903,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <LeadCard value={cardData.value} status={cardData.status} />
+            <div className={getMobileScale()}>
+              <LeadCard value={cardData.value} status={cardData.status} />
+            </div>
           </div>
         )
       case 'polymer':
@@ -731,7 +916,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <PolymerCard value={cardData.value} status={cardData.status} />
+            <div className={getMobileScale()}>
+              <PolymerCard value={cardData.value} status={cardData.status} />
+            </div>
           </div>
         )
       case 'compliance-record':
@@ -742,7 +929,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <ComplianceRecordCard value={cardData.value} />
+            <div className={getMobileScale()}>
+              <ComplianceRecordCard value={cardData.value} />
+            </div>
           </div>
         )
       case 'recovery-certified':
@@ -753,7 +942,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <RecoveryCertifiedCard />
+            <div className={getMobileScale()}>
+              <RecoveryCertifiedCard />
+            </div>
           </div>
         )
       case 'logged':
@@ -764,7 +955,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <LoggedCard />
+            <div className={getMobileScale()}>
+              <LoggedCard />
+            </div>
           </div>
         )
       case 'controlled':
@@ -775,7 +968,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <ControlledCard />
+            <div className={getMobileScale()}>
+              <ControlledCard />
+            </div>
           </div>
         )
       case 'certified':
@@ -786,7 +981,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <CertifiedCard />
+            <div className={getMobileScale()}>
+              <CertifiedCard />
+            </div>
           </div>
         )
       case 'verified':
@@ -797,7 +994,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <VerifiedCard />
+            <div className={getMobileScale()}>
+              <VerifiedCard />
+            </div>
           </div>
         )
       default:
@@ -1242,7 +1441,509 @@ export default function BatteryLifecycleScroll() {
         }
       })
     })
-  }, [currentFrame, currentSceneForFrame, isPreloading, shouldShowUI])
+  }, [currentFrame, currentSceneForFrame, isPreloading, shouldShowUI, isMobile])
+
+  // Scene 1 mobile: Adjust Health Gauge Card height to span from Voltage to Internal Resistance
+  useEffect(() => {
+    if (!isMobile || activeSceneIndex !== 0) return
+
+    // Helper function to find the actual card element inside the scaling wrapper
+    const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
+      if (!element) return null
+      // Look for div with backdrop-blur class
+      const card = Array.from(element.querySelectorAll('div')).find(
+        div => div.className.includes('backdrop-blur')
+      ) as HTMLElement
+      return card || null
+    }
+
+    const healthGaugeKey = 'scene-0-card-2' // Health Gauge is the 3rd card (index 2) in Scene 1
+    const healthGaugeElement = cardRefs.current[healthGaugeKey]
+    
+    if (healthGaugeElement) {
+      const cardElement = findCardElement(healthGaugeElement)
+      if (cardElement) {
+        // Set height to match sulphation card default height (similar to Scene 2 sulphation-detected)
+        cardElement.style.height = '12rem'
+        cardElement.style.minHeight = '12rem'
+        cardElement.style.maxHeight = '12rem'
+      }
+    }
+
+    // Scene 1 mobile: Increase Sulphation Card width
+    const sulphationKey = 'scene-0-card-3' // Sulphation is the 4th card (index 3) in Scene 1
+    const sulphationElement = cardRefs.current[sulphationKey]
+    
+    if (sulphationElement) {
+      const sulphationCardElement = findCardElement(sulphationElement)
+      if (sulphationCardElement) {
+        // Increase width from 18.75rem (300px) to 22rem (352px) for Scene 1 mobile
+        sulphationCardElement.style.width = '22rem'
+        sulphationCardElement.style.minWidth = '22rem'
+      }
+    }
+  }, [isMobile, activeSceneIndex, currentFrame])
+
+  // Scene 2 mobile: Reduce width of Sulphation Detected Card and adjust Decision Card
+  useEffect(() => {
+    if (!isMobile || activeSceneIndex !== 1) return
+
+    // Helper function to find the actual card element inside the scaling wrapper
+    const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
+      if (!element) return null
+      // Look for div with backdrop-blur class
+      const card = Array.from(element.querySelectorAll('div')).find(
+        div => div.className.includes('backdrop-blur')
+      ) as HTMLElement
+      return card || null
+    }
+
+    const sulphationDetectedKey = 'scene-1-card-2' // Sulphation Detected is the 3rd card (index 2) in Scene 2
+    const sulphationDetectedElement = cardRefs.current[sulphationDetectedKey]
+    
+    if (sulphationDetectedElement) {
+      const cardElement = findCardElement(sulphationDetectedElement)
+      if (cardElement) {
+        // Reduce width for mobile Scene 2
+        cardElement.style.width = '18rem'
+        cardElement.style.maxWidth = '18rem'
+        cardElement.style.minWidth = '18rem'
+      }
+    }
+
+    // Apply sulphation card dimensions from Scene 1 to Decision Card for mobile Scene 2
+    const decisionKey = 'scene-1-card-3' // Decision is the 4th card (index 3) in Scene 2
+    const decisionElement = cardRefs.current[decisionKey]
+    
+    if (decisionElement) {
+      const cardElement = findCardElement(decisionElement)
+      if (cardElement) {
+        // Increased width and height for mobile Scene 2
+        cardElement.style.width = '24rem'
+        cardElement.style.maxWidth = '24rem'
+        cardElement.style.minWidth = '24rem'
+        cardElement.style.height = '14rem'
+        cardElement.style.maxHeight = '14rem'
+        cardElement.style.minHeight = '14rem'
+        
+        // Move the image and text down within the card
+        const imageContainer = Array.from(cardElement.querySelectorAll('div')).find(
+          div => {
+            const img = div.querySelector('img[src="/cards/decision.png"]')
+            return img !== null
+          }
+        ) as HTMLElement
+        if (imageContainer) {
+          imageContainer.style.marginTop = '2rem'
+          imageContainer.style.paddingTop = '1rem'
+        }
+        
+        // Also adjust text overlay position
+        const textOverlay = Array.from(cardElement.querySelectorAll('div')).find(
+          div => {
+            const hasText = div.textContent?.includes('MAINTENANCE') || div.textContent?.includes('RECOMMENDED')
+            const isAbsolute = window.getComputedStyle(div).position === 'absolute'
+            return hasText && isAbsolute
+          }
+        ) as HTMLElement
+        if (textOverlay) {
+          textOverlay.style.top = '1.5rem'
+        }
+      }
+    }
+  }, [isMobile, activeSceneIndex, currentFrame])
+
+  // Scene 4 mobile: Apply same sizing as Scene 2 (sulphation matches sulphation-detected, record-lock matches decision)
+  useEffect(() => {
+    if (!isMobile || activeSceneIndex !== 3) return
+
+    // Helper function to find the actual card element inside the scaling wrapper
+    const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
+      if (!element) return null
+      // Look for div with backdrop-blur class
+      const card = Array.from(element.querySelectorAll('div')).find(
+        div => div.className.includes('backdrop-blur')
+      ) as HTMLElement
+      return card || null
+    }
+
+    // Sulphation card - match Scene 2 sulphation-detected card width
+    const sulphationKey = 'scene-3-card-2' // Sulphation is the 3rd card (index 2) in Scene 4
+    const sulphationElement = cardRefs.current[sulphationKey]
+    
+    if (sulphationElement) {
+      const cardElement = findCardElement(sulphationElement)
+      if (cardElement) {
+        // Match Scene 2 sulphation-detected card width
+        cardElement.style.width = '18rem'
+        cardElement.style.maxWidth = '18rem'
+        cardElement.style.minWidth = '18rem'
+      }
+    }
+
+    // Record-lock card - match Scene 2 decision card size
+    const recordLockKey = 'scene-3-card-3' // Record-lock is the 4th card (index 3) in Scene 4
+    const recordLockElement = cardRefs.current[recordLockKey]
+    
+    if (recordLockElement) {
+      const cardElement = findCardElement(recordLockElement)
+      if (cardElement) {
+        // Match Scene 2 decision card dimensions
+        cardElement.style.width = '24rem'
+        cardElement.style.maxWidth = '24rem'
+        cardElement.style.minWidth = '24rem'
+        cardElement.style.height = '14rem'
+        cardElement.style.maxHeight = '14rem'
+        cardElement.style.minHeight = '14rem'
+        
+        // Move the image and text down within the card (same as decision card in Scene 2)
+        const imageContainer = Array.from(cardElement.querySelectorAll('div')).find(
+          div => {
+            const img = div.querySelector('img[src="/cards/decision.png"]')
+            return img !== null
+          }
+        ) as HTMLElement
+        if (imageContainer) {
+          imageContainer.style.marginTop = '2rem'
+          imageContainer.style.paddingTop = '1rem'
+        }
+        
+        // Also adjust text overlay position (same as decision card in Scene 2)
+        const textOverlay = Array.from(cardElement.querySelectorAll('div')).find(
+          div => {
+            const hasText = div.textContent?.includes('DIAGNOSTIC') || div.textContent?.includes('LOCKED')
+            const isAbsolute = window.getComputedStyle(div).position === 'absolute'
+            return hasText && isAbsolute
+          }
+        ) as HTMLElement
+        if (textOverlay) {
+          textOverlay.style.top = '1.5rem'
+        }
+      }
+    }
+  }, [isMobile, activeSceneIndex, currentFrame])
+
+  // Scene 2 desktop/laptop: Match decision card size to sulphation-detected card
+  useEffect(() => {
+    if (isMobile || activeSceneIndex !== 1) return
+
+    // Helper function to find the actual card element inside the scaling wrapper
+    const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
+      if (!element) return null
+      // Look for div with backdrop-blur class
+      const card = Array.from(element.querySelectorAll('div')).find(
+        div => div.className.includes('backdrop-blur')
+      ) as HTMLElement
+      return card || null
+    }
+
+    const decisionKey = 'scene-1-card-3' // Decision is the 4th card (index 3) in Scene 2
+    const decisionElement = cardRefs.current[decisionKey]
+    
+    if (decisionElement) {
+      const cardElement = findCardElement(decisionElement)
+      if (cardElement) {
+        // Match sulphation-detected card dimensions: w-[26.25rem] h-[13rem]
+        cardElement.style.width = '26.25rem'
+        cardElement.style.height = '13rem'
+        cardElement.style.maxWidth = '26.25rem'
+        cardElement.style.minWidth = '26.25rem'
+        cardElement.style.maxHeight = '13rem'
+        cardElement.style.minHeight = '13rem'
+      }
+    }
+  }, [isMobile, activeSceneIndex, currentFrame])
+
+  // Scene 4 desktop/laptop: Match record-lock card size to sulphation card
+  useEffect(() => {
+    if (isMobile || activeSceneIndex !== 3) return
+
+    // Helper function to find the actual card element inside the scaling wrapper
+    const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
+      if (!element) return null
+      // Look for div with backdrop-blur class
+      const card = Array.from(element.querySelectorAll('div')).find(
+        div => div.className.includes('backdrop-blur')
+      ) as HTMLElement
+      return card || null
+    }
+
+    const recordLockKey = 'scene-3-card-3' // Record-lock is the 4th card (index 3) in Scene 4
+    const recordLockElement = cardRefs.current[recordLockKey]
+    
+    if (recordLockElement) {
+      const cardElement = findCardElement(recordLockElement)
+      if (cardElement) {
+        // Match sulphation card dimensions: w-[26.25rem] h-[13rem] (same as Scene 2)
+        cardElement.style.width = '26.25rem'
+        cardElement.style.height = '13rem'
+        cardElement.style.maxWidth = '26.25rem'
+        cardElement.style.minWidth = '26.25rem'
+        cardElement.style.maxHeight = '13rem'
+        cardElement.style.minHeight = '13rem'
+      }
+    }
+  }, [isMobile, activeSceneIndex, currentFrame])
+
+  // Scene 5 mobile: Reduce width of electrochemical-correction card
+  useEffect(() => {
+    if (!isMobile || activeSceneIndex !== 4) return
+
+    // Helper function to find the actual card element inside the scaling wrapper
+    const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
+      if (!element) return null
+      // Look for div with backdrop-blur class
+      const card = Array.from(element.querySelectorAll('div')).find(
+        div => div.className.includes('backdrop-blur')
+      ) as HTMLElement
+      return card || null
+    }
+
+    // Electrochemical-correction card - reduce width
+    const electrochemicalKey = 'scene-4-card-2' // Electrochemical-correction is the 3rd card (index 2) in Scene 5
+    const electrochemicalElement = cardRefs.current[electrochemicalKey]
+    
+    if (electrochemicalElement) {
+      const cardElement = findCardElement(electrochemicalElement)
+      if (cardElement) {
+        // Reduce width for mobile Scene 5
+        cardElement.style.width = '18rem'
+        cardElement.style.maxWidth = '18rem'
+        cardElement.style.minWidth = '18rem'
+      }
+    }
+
+    // Plate-condition card - increase width and height
+    const plateConditionKey = 'scene-4-card-3' // Plate-condition is the 4th card (index 3) in Scene 5
+    const plateConditionElement = cardRefs.current[plateConditionKey]
+    
+    if (plateConditionElement) {
+      const cardElement = findCardElement(plateConditionElement)
+      if (cardElement) {
+        // Increase width and height for mobile Scene 5
+        cardElement.style.width = '25rem'
+        cardElement.style.maxWidth = '25rem'
+        cardElement.style.minWidth = '25rem'
+        cardElement.style.height = '8rem'
+        cardElement.style.maxHeight = '8rem'
+        cardElement.style.minHeight = '8rem'
+        
+        // Ensure container doesn't overflow
+        cardElement.style.overflow = 'hidden'
+        
+        // Make "PLATE RESTORED" text single line and align with image
+        const textElement = Array.from(cardElement.querySelectorAll('div')).find(
+          div => {
+            const text = div.textContent?.includes('PLATE') || div.textContent?.includes('RESTORED')
+            const hasGemunuFont = div.className.includes('Gemunu_Libre')
+            return text && hasGemunuFont
+          }
+        ) as HTMLElement
+        if (textElement) {
+          textElement.style.marginTop = '0'
+          textElement.style.paddingTop = '0'
+          textElement.style.whiteSpace = 'nowrap'
+          textElement.style.display = 'inline-block'
+          textElement.style.maxWidth = '100%'
+          textElement.style.overflow = 'visible'
+        }
+        
+        // Adjust the flex container to align items properly
+        const flexContainer = Array.from(cardElement.querySelectorAll('div')).find(
+          div => {
+            const hasFlex = div.className.includes('flex') && div.className.includes('items-center')
+            return hasFlex
+          }
+        ) as HTMLElement
+        if (flexContainer) {
+          flexContainer.style.alignItems = 'center'
+          flexContainer.style.overflow = 'visible'
+          flexContainer.style.maxWidth = '100%'
+        }
+        
+        // Increase the image size while keeping it within container
+        const imageElement = cardElement.querySelector('img[src="/cards/platecondition.png"]') as HTMLImageElement
+        if (imageElement) {
+          imageElement.style.width = '14rem'
+          imageElement.style.height = '8.5rem'
+          imageElement.style.maxWidth = '14rem'
+          imageElement.style.maxHeight = '8.5rem'
+          imageElement.style.objectFit = 'contain'
+          imageElement.style.marginLeft = '3rem'
+        }
+        
+        // Also adjust the parent container to move image to the right
+        const imageContainer = imageElement?.parentElement as HTMLElement
+        if (imageContainer) {
+          imageContainer.style.marginLeft = 'auto'
+          imageContainer.style.marginRight = '0'
+        }
+      }
+    }
+  }, [isMobile, activeSceneIndex, currentFrame])
+
+  // Scene 6 mobile: Reduce width of performance-restored card
+  useEffect(() => {
+    if (!isMobile || activeSceneIndex !== 5) return
+
+    // Helper function to find the actual card element inside the scaling wrapper
+    const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
+      if (!element) return null
+      // Look for div with backdrop-blur class
+      const card = Array.from(element.querySelectorAll('div')).find(
+        div => div.className.includes('backdrop-blur')
+      ) as HTMLElement
+      return card || null
+    }
+
+    // Performance-restored card - reduce width (index 0, scene-5-card-0)
+    const performanceRestoredKey = 'scene-5-card-0'
+    const performanceRestoredElement = cardRefs.current[performanceRestoredKey]
+    
+    if (performanceRestoredElement) {
+      const cardElement = findCardElement(performanceRestoredElement)
+      if (cardElement) {
+        // Reduce width for mobile Scene 6
+        cardElement.style.width = '16rem'
+        cardElement.style.maxWidth = '16rem'
+        cardElement.style.minWidth = '16rem'
+      }
+    }
+  }, [isMobile, activeSceneIndex, currentFrame])
+
+  // Scene 6 mobile: Apply same sizing and positioning as Scene 4 for record-lock card
+  useEffect(() => {
+    if (!isMobile || activeSceneIndex !== 5) return
+
+    // Helper function to find the actual card element inside the scaling wrapper
+    const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
+      if (!element) return null
+      // Look for div with backdrop-blur class
+      const card = Array.from(element.querySelectorAll('div')).find(
+        div => div.className.includes('backdrop-blur')
+      ) as HTMLElement
+      return card || null
+    }
+
+    // Record-lock card - match Scene 4 record-lock card size
+    const recordLockKey = 'scene-5-card-3' // Record-lock is the 4th card (index 3) in Scene 6
+    const recordLockElement = cardRefs.current[recordLockKey]
+    
+    if (recordLockElement) {
+      const cardElement = findCardElement(recordLockElement)
+      if (cardElement) {
+        // Match Scene 4 record-lock card dimensions
+        cardElement.style.width = '24rem'
+        cardElement.style.maxWidth = '24rem'
+        cardElement.style.minWidth = '24rem'
+        cardElement.style.height = '14rem'
+        cardElement.style.maxHeight = '14rem'
+        cardElement.style.minHeight = '14rem'
+        
+        // Move the image and text down within the card (same as Scene 4)
+        const imageContainer = Array.from(cardElement.querySelectorAll('div')).find(
+          div => {
+            const img = div.querySelector('img[src="/cards/decision.png"]')
+            return img !== null
+          }
+        ) as HTMLElement
+        if (imageContainer) {
+          imageContainer.style.marginTop = '2rem'
+          imageContainer.style.paddingTop = '1rem'
+        }
+        
+        // Also adjust text overlay position (same as Scene 4)
+        const textOverlay = Array.from(cardElement.querySelectorAll('div')).find(
+          div => {
+            const hasText = div.textContent?.includes('DIAGNOSTIC') || div.textContent?.includes('LOCKED')
+            const isAbsolute = window.getComputedStyle(div).position === 'absolute'
+            return hasText && isAbsolute
+          }
+        ) as HTMLElement
+        if (textOverlay) {
+          textOverlay.style.top = '1.5rem'
+        }
+      }
+    }
+  }, [isMobile, activeSceneIndex, currentFrame])
+
+  // Scene 6 desktop/laptop: Match record-lock card size to Scene 4
+  useEffect(() => {
+    if (isMobile || activeSceneIndex !== 5) return
+
+    // Helper function to find the actual card element inside the scaling wrapper
+    const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
+      if (!element) return null
+      // Look for div with backdrop-blur class
+      const card = Array.from(element.querySelectorAll('div')).find(
+        div => div.className.includes('backdrop-blur')
+      ) as HTMLElement
+      return card || null
+    }
+
+    const recordLockKey = 'scene-5-card-3' // Record-lock is the 4th card (index 3) in Scene 6
+    const recordLockElement = cardRefs.current[recordLockKey]
+    
+    if (recordLockElement) {
+      const cardElement = findCardElement(recordLockElement)
+      if (cardElement) {
+        // Match Scene 4 record-lock card dimensions: w-[26.25rem] h-[13rem]
+        cardElement.style.width = '26.25rem'
+        cardElement.style.height = '13rem'
+        cardElement.style.maxWidth = '26.25rem'
+        cardElement.style.minWidth = '26.25rem'
+        cardElement.style.maxHeight = '13rem'
+        cardElement.style.minHeight = '13rem'
+      }
+    }
+  }, [isMobile, activeSceneIndex, currentFrame])
+
+  // Scene 7 mobile: Reduce size of recovery-certified and compliance-record cards
+  useEffect(() => {
+    if (!isMobile || activeSceneIndex !== 6) return
+
+    // Helper function to find the actual card element inside the scaling wrapper
+    const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
+      if (!element) return null
+      // Look for div with backdrop-blur class
+      const card = Array.from(element.querySelectorAll('div')).find(
+        div => div.className.includes('backdrop-blur')
+      ) as HTMLElement
+      return card || null
+    }
+
+    // Recovery-certified card - reduce size (index 3, scene-6-card-3)
+    const recoveryCertifiedKey = 'scene-6-card-3'
+    const recoveryCertifiedElement = cardRefs.current[recoveryCertifiedKey]
+    
+    if (recoveryCertifiedElement) {
+      const cardElement = findCardElement(recoveryCertifiedElement)
+      if (cardElement) {
+        cardElement.style.width = '20rem'
+        cardElement.style.maxWidth = '20rem'
+        cardElement.style.minWidth = '20rem'
+        cardElement.style.height = '10rem'
+        cardElement.style.maxHeight = '10rem'
+        cardElement.style.minHeight = '10rem'
+      }
+    }
+
+    // Compliance-record card - increase size (index 2, scene-6-card-2)
+    const complianceRecordKey = 'scene-6-card-2'
+    const complianceRecordElement = cardRefs.current[complianceRecordKey]
+    
+    if (complianceRecordElement) {
+      const cardElement = findCardElement(complianceRecordElement)
+      if (cardElement) {
+        cardElement.style.width = '24rem'
+        cardElement.style.maxWidth = '24rem'
+        cardElement.style.minWidth = '24rem'
+        cardElement.style.height = '10rem'
+        cardElement.style.maxHeight = '10rem'
+        cardElement.style.minHeight = '10rem'
+      }
+    }
+  }, [isMobile, activeSceneIndex, currentFrame])
 
   // Preload next frames for smooth scrolling (only when not in initial preload)
   useEffect(() => {
@@ -1302,18 +2003,22 @@ export default function BatteryLifecycleScroll() {
         >
           {/* Canvas renderer - ZERO BLINK, enterprise-grade */}
           <div 
-            className="absolute inset-0 w-full h-full bg-black"
+            className={`absolute w-full bg-black ${
+              isMobile ? 'h-[35vh] top-1/2 -translate-y-1/2' : 'inset-0 h-full'
+            }`}
             style={{ 
               backfaceVisibility: 'hidden',
-              transform: 'translateZ(0)',
+              transform: isMobile ? 'translateZ(0) translateY(-50%)' : 'translateZ(0)',
               opacity: 1
             }}
           >
             <canvas
               ref={canvasRef}
-              className="absolute inset-0 w-full h-full pointer-events-none bg-black"
+              className={`absolute w-full pointer-events-none bg-black ${
+                isMobile ? 'h-full' : 'inset-0 h-full'
+              }`}
               style={{ 
-                objectFit: 'cover',
+                objectFit: isMobile ? 'contain' : 'cover',
                 imageRendering: 'crisp-edges',
                 backfaceVisibility: 'hidden',
                 transform: 'translateZ(0)',
@@ -1328,7 +2033,10 @@ export default function BatteryLifecycleScroll() {
           {shouldShowUI && activeSceneIndex !== null && (
             <>
               {/* Progress Boxes Container */}
-              <div className="absolute top-2 lg:top-8 left-5 sm:left-4 lg:left-[32rem] xl:left-[38rem] z-20">
+              <div className={`absolute z-20 ${isMobile
+                ? 'top-[calc(50%+17.5vh-2rem)] left-4'
+                : 'top-0 lg:top-2 left-5 sm:left-4 lg:left-[32rem] xl:left-[38rem]'
+                }`}>
                 <div 
                   className="flex items-center gap-0.5 lg:gap-2 backdrop-blur-sm h-[1.875rem] lg:h-[4.688rem] rounded-md lg:rounded-2xl px-1.5 lg:px-5"
                   style={{
@@ -1374,7 +2082,10 @@ export default function BatteryLifecycleScroll() {
 
               {/* Scene Title Label - Separate Container */}
               {activeSceneIndex !== null && (
-                <div className="absolute top-2 lg:top-8 right-2 sm:right-4 lg:right-8 xl:right-16 z-20 max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-2rem)] lg:max-w-[600px] xl:max-w-none">
+                <div className={`absolute z-20 ${isMobile
+                  ? 'top-[calc(50%+17.5vh-2rem)] right-4 max-w-[calc(100%-8rem)]'
+                  : 'top-0 lg:top-2 right-2 sm:right-4 lg:right-8 xl:right-16 max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-2rem)] lg:max-w-[600px] xl:max-w-none'
+                  }`}>
                   <div
                     className="flex flex-col items-center justify-center backdrop-blur-sm min-h-[1.875rem] sm:min-h-[2.188rem] lg:min-h-[4.688rem] rounded-lg lg:rounded-2xl px-3 sm:px-4 lg:px-6 xl:px-12 2xl:px-24 w-auto lg:w-[600px] xl:w-[46.88rem] py-1 sm:py-1.5 lg:py-3"
                     style={{

@@ -274,6 +274,10 @@ export default function BatteryHero() {
                 onLoadedData={() => {
                   setVideoLoaded(true)
                   if (videoRef.current) {
+                    const currentSrc = videoRef.current.currentSrc
+                    if (currentSrc && !currentSrc.includes('Comp 1_6.webm')) {
+                      console.warn('Video fallback detected: Using MP4 instead of WebM')
+                    }
                     videoRef.current.play().catch(() => {})
                   }
                 }}
@@ -284,6 +288,10 @@ export default function BatteryHero() {
                 onCanPlay={() => {
                   setVideoLoaded(true)
                   if (videoRef.current) {
+                    const currentSrc = videoRef.current.currentSrc
+                    if (currentSrc && !currentSrc.includes('Comp 1_6.webm')) {
+                      console.warn('Video fallback detected: Using MP4 instead of WebM')
+                    }
                     videoRef.current.play().catch(() => {})
                   }
                 }}
@@ -293,7 +301,6 @@ export default function BatteryHero() {
                 {shouldLoadVideo && (
                   <>
                     <source src="/Comp 1_6.webm" type="video/webm" />
-                    <source src="/Comp 1_5.mp4" type="video/mp4" />
                   </>
                 )}
               </video>
@@ -317,7 +324,7 @@ export default function BatteryHero() {
         >
           <div className="max-w-[87.5rem] mx-auto text-center">
             <h1
-              className="text-white text-center max-w-[62.5rem] mx-auto text-[clamp(2.25rem,5vw,3.75rem)] lg:text-[clamp(2.25rem,4.25vw,3.25rem)]"
+              className="text-white text-center max-w-[62.5rem] mx-auto text-[clamp(1.25rem,3.5vw,2rem)] lg:text-[clamp(2.25rem,4.25vw,3.25rem)]"
               style={{
                 fontFamily: 'Arial, sans-serif',
                 fontWeight: 900,
