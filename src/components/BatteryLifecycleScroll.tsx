@@ -463,8 +463,8 @@ export default function BatteryLifecycleScroll() {
           // Mobile positioning for Scene 1
           if (cardData.position === 'right') return 'left-6 top-[20%]'
           if (cardData.position === 'left') return 'left-6 top-[5%]'
-          // Health gauge positioned extending to the right edge
-          if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return '-right-12 top-[6%]'
+          // Health gauge positioned extending to the right edge - aligned with Voltage top and extends to Internal Resistance bottom
+          if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return '-right-12 top-[5%]'
           // Sulphation positioned in bottom right area
           if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return '-right-4 top-[75%]'
         } else {
@@ -733,7 +733,9 @@ export default function BatteryLifecycleScroll() {
         return (
           <div
             key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
+            ref={el => { 
+              cardRefs.current[cardKey] = el
+            }}
             className={`absolute ${getCardPosition()} z-10 ${isMobile && sceneIndex === 0 ? 'transition-opacity duration-500' : ''}`}
             style={{
               opacity: isMobile && sceneIndex === 0 && currentFrame > 35 ? 0 : 0,
@@ -1576,6 +1578,35 @@ export default function BatteryLifecycleScroll() {
   }, [currentFrame, currentSceneForFrame, isPreloading, shouldShowUI, isMobile])
 
 
+
+  // Scene 1 mobile: Adjust Health Gauge Card height to span from Voltage to Internal Resistance
+  useEffect(() => {
+    if (!isMobile || activeSceneIndex !== 0) return
+
+    const healthGaugeKey = 'scene-0-card-2' // Health Gauge is the 3rd card (index 2) in Scene 1
+    const healthGaugeElement = cardRefs.current[healthGaugeKey]
+    
+    if (healthGaugeElement) {
+      // Find the actual card element inside the MobileWrapper
+      const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
+        if (!element) return null
+        // Look for div with backdrop-blur class
+        const card = Array.from(element.querySelectorAll('div')).find(
+          div => div.className.includes('backdrop-blur')
+        ) as HTMLElement
+        return card || null
+      }
+
+      const cardElement = findCardElement(healthGaugeElement)
+      if (cardElement) {
+        // Set height to span from Voltage top (5%) to Internal Resistance bottom
+        // Voltage: top-[5%], Internal Resistance: top-[20%] + ~5.625rem height
+        // Total span needed: ~15vh + 11.25rem, accounting for 0.70 scale = ~16rem base height
+        cardElement.style.height = '16rem'
+        cardElement.style.minHeight = '16rem'
+      }
+    }
+  }, [isMobile, activeSceneIndex, currentFrame])
 
   // Preload next frames for smooth scrolling (only when not in initial preload)
   useEffect(() => {
