@@ -525,11 +525,11 @@ export default function BatteryLifecycleScroll() {
         }
         // Scene 7 mobile positioning (similar to previous scenes)
         else if (sceneIndex === 6) {
-          if (cardData.cardType === 'lead') return 'left-6 top-[5%]' // Top left
-          if (cardData.cardType === 'polymer') return 'left-6 top-[18%]' // Below lead
-          if (cardData.cardType === 'recovery-certified') return '-right-28 top-[8%]' // Right side (record lock style)
-          if (cardData.cardType === 'compliance-record') return 'left-6 top-[75%]' // Bottom (system record)
-          if (cardData.cardType === 'verified') return '-right-4 top-[80%]' // Bottom right badge
+          if (cardData.cardType === 'recovery-certified') return 'left-20 top-[5%]' // Left side (record lock style) - moved slightly right
+          if (cardData.cardType === 'lead') return 'left-16 top-[24%]' // Just below record lock, moved slightly more right
+          if (cardData.cardType === 'polymer') return 'right-0 top-[24%]' // Right side, moved a little more left
+          if (cardData.cardType === 'compliance-record') return 'left-20 top-[77%]' // Bottom, moved down slightly
+          if (cardData.cardType === 'verified') return '-right-4 top-[92%]' // Bottom right badge, moved down a little more
         }
       }
       
@@ -1894,6 +1894,53 @@ export default function BatteryLifecycleScroll() {
         cardElement.style.minWidth = '26.25rem'
         cardElement.style.maxHeight = '13rem'
         cardElement.style.minHeight = '13rem'
+      }
+    }
+  }, [isMobile, activeSceneIndex, currentFrame])
+
+  // Scene 7 mobile: Reduce size of recovery-certified and compliance-record cards
+  useEffect(() => {
+    if (!isMobile || activeSceneIndex !== 6) return
+
+    // Helper function to find the actual card element inside the scaling wrapper
+    const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
+      if (!element) return null
+      // Look for div with backdrop-blur class
+      const card = Array.from(element.querySelectorAll('div')).find(
+        div => div.className.includes('backdrop-blur')
+      ) as HTMLElement
+      return card || null
+    }
+
+    // Recovery-certified card - reduce size (index 3, scene-6-card-3)
+    const recoveryCertifiedKey = 'scene-6-card-3'
+    const recoveryCertifiedElement = cardRefs.current[recoveryCertifiedKey]
+    
+    if (recoveryCertifiedElement) {
+      const cardElement = findCardElement(recoveryCertifiedElement)
+      if (cardElement) {
+        cardElement.style.width = '20rem'
+        cardElement.style.maxWidth = '20rem'
+        cardElement.style.minWidth = '20rem'
+        cardElement.style.height = '10rem'
+        cardElement.style.maxHeight = '10rem'
+        cardElement.style.minHeight = '10rem'
+      }
+    }
+
+    // Compliance-record card - increase size (index 2, scene-6-card-2)
+    const complianceRecordKey = 'scene-6-card-2'
+    const complianceRecordElement = cardRefs.current[complianceRecordKey]
+    
+    if (complianceRecordElement) {
+      const cardElement = findCardElement(complianceRecordElement)
+      if (cardElement) {
+        cardElement.style.width = '24rem'
+        cardElement.style.maxWidth = '24rem'
+        cardElement.style.minWidth = '24rem'
+        cardElement.style.height = '10rem'
+        cardElement.style.maxHeight = '10rem'
+        cardElement.style.minHeight = '10rem'
       }
     }
   }, [isMobile, activeSceneIndex, currentFrame])
