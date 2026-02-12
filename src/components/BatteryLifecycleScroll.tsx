@@ -29,8 +29,6 @@ import CertifiedCard from './cards/CertifiedCard'
 import VerifiedCard from './cards/VerifiedCard'
 
 gsap.registerPlugin(ScrollTrigger)
-
-// Frame counts per scene (Variable FPS for optimized performance)
 const SCENE_FRAME_COUNTS = [
   60,   // Scene 1: 0-4s
   60,   // Scene 2: 4-8s
@@ -491,13 +489,15 @@ export default function BatteryLifecycleScroll() {
           if (cardData.position === 'bottom-left' && cardData.cardType === 'sulphation-detected') return '-right-44 top-[10%]'
           if (cardData.position === 'bottom-right' && cardData.cardType === 'decision') return '-right-20 top-[77%]'
         }
-        // Scene 3 mobile positioning
+        // Scene 3 mobile positioning - organized structure
         else if (sceneIndex === 2) {
-          if (cardData.cardType === 'barcode') return 'left-[30%] -translate-x-[50%] top-[3%]'
-          if (cardData.cardType === 'system-record') return 'left-[30%] top-[14%]'
-          if (cardData.cardType === 'route') return 'left-20 top-[75%]'
-          if (cardData.cardType === 'seal') return '-right-4 top-[25%]'
-          if (cardData.cardType === 'logged') return '-right-4 top-[80%]'
+          // Top section - barcode and system-record
+          if (cardData.cardType === 'barcode') return 'left-28 top-[5%]' // Top left, moved a little more right
+          if (cardData.cardType === 'system-record') return 'left-28 top-[18%]' // Below barcode, moved a little more right
+          // Bottom section - seal and route
+          if (cardData.cardType === 'seal') return 'left-28 top-[70%]' // Bottom left, moved up and a little more right
+          if (cardData.cardType === 'route') return 'left-28 top-[83%]' // Bottom left, below seal, moved up and a little more right
+          if (cardData.cardType === 'logged') return '-right-4 top-[32%]' // Bottom right, moved up slightly
         }
         else if (sceneIndex === 3) {
           if (cardData.cardType === 'voltage') return 'left-6 top-[5%]' // Top left
@@ -2034,8 +2034,8 @@ export default function BatteryLifecycleScroll() {
             <>
               {/* Progress Boxes Container */}
               <div className={`absolute z-20 ${isMobile
-                ? 'top-[calc(50%+17.5vh+0.125rem)] left-4'
-                : 'top-2 lg:top-8 left-5 sm:left-4 lg:left-[32rem] xl:left-[38rem]'
+                ? 'top-[calc(50%+17.5vh-2rem)] left-4'
+                : 'top-0 lg:top-2 left-5 sm:left-4 lg:left-[32rem] xl:left-[38rem]'
                 }`}>
                 <div 
                   className="flex items-center gap-0.5 lg:gap-2 backdrop-blur-sm h-[1.875rem] lg:h-[4.688rem] rounded-md lg:rounded-2xl px-1.5 lg:px-5"
@@ -2083,8 +2083,8 @@ export default function BatteryLifecycleScroll() {
               {/* Scene Title Label - Separate Container */}
               {activeSceneIndex !== null && (
                 <div className={`absolute z-20 ${isMobile
-                  ? 'top-[calc(50%+17.5vh+0.125rem)] right-4 max-w-[calc(100%-8rem)]'
-                  : 'top-2 lg:top-8 right-2 sm:right-4 lg:right-8 xl:right-16 max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-2rem)] lg:max-w-[600px] xl:max-w-none'
+                  ? 'top-[calc(50%+17.5vh-2rem)] right-4 max-w-[calc(100%-8rem)]'
+                  : 'top-0 lg:top-2 right-2 sm:right-4 lg:right-8 xl:right-16 max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-2rem)] lg:max-w-[600px] xl:max-w-none'
                   }`}>
                   <div
                     className="flex flex-col items-center justify-center backdrop-blur-sm min-h-[1.875rem] sm:min-h-[2.188rem] lg:min-h-[4.688rem] rounded-lg lg:rounded-2xl px-3 sm:px-4 lg:px-6 xl:px-12 2xl:px-24 w-auto lg:w-[600px] xl:w-[46.88rem] py-1 sm:py-1.5 lg:py-3"
