@@ -519,9 +519,9 @@ export default function BatteryLifecycleScroll() {
         else if (sceneIndex === 5) {
           if (cardData.cardType === 'health-gauge') return 'left-6 top-[5%]' // Top left
           if (cardData.cardType === 'warranty') return 'left-6 top-[18%]' // Below health gauge
-          if (cardData.cardType === 'performance-restored') return '-right-28 top-[8%]' // Right side
-          if (cardData.cardType === 'record-lock') return 'left-6 top-[75%]' // Bottom
-          if (cardData.cardType === 'certified') return '-right-4 top-[80%]' // Bottom right badge
+          if (cardData.cardType === 'performance-restored') return '-right-4 top-[8%]' // Right side, moved more left
+          if (cardData.cardType === 'record-lock') return 'left-20 top-[75%]' // Bottom, moved more right
+          if (cardData.cardType === 'certified') return '-right-4 top-[95%]' // Bottom right badge, moved down even more
         }
         // Scene 7 mobile positioning (similar to previous scenes)
         else if (sceneIndex === 6) {
@@ -1778,6 +1778,122 @@ export default function BatteryLifecycleScroll() {
           imageContainer.style.marginLeft = 'auto'
           imageContainer.style.marginRight = '0'
         }
+      }
+    }
+  }, [isMobile, activeSceneIndex, currentFrame])
+
+  // Scene 6 mobile: Reduce width of performance-restored card
+  useEffect(() => {
+    if (!isMobile || activeSceneIndex !== 5) return
+
+    // Helper function to find the actual card element inside the scaling wrapper
+    const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
+      if (!element) return null
+      // Look for div with backdrop-blur class
+      const card = Array.from(element.querySelectorAll('div')).find(
+        div => div.className.includes('backdrop-blur')
+      ) as HTMLElement
+      return card || null
+    }
+
+    // Performance-restored card - reduce width (index 0, scene-5-card-0)
+    const performanceRestoredKey = 'scene-5-card-0'
+    const performanceRestoredElement = cardRefs.current[performanceRestoredKey]
+    
+    if (performanceRestoredElement) {
+      const cardElement = findCardElement(performanceRestoredElement)
+      if (cardElement) {
+        // Reduce width for mobile Scene 6
+        cardElement.style.width = '16rem'
+        cardElement.style.maxWidth = '16rem'
+        cardElement.style.minWidth = '16rem'
+      }
+    }
+  }, [isMobile, activeSceneIndex, currentFrame])
+
+  // Scene 6 mobile: Apply same sizing and positioning as Scene 4 for record-lock card
+  useEffect(() => {
+    if (!isMobile || activeSceneIndex !== 5) return
+
+    // Helper function to find the actual card element inside the scaling wrapper
+    const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
+      if (!element) return null
+      // Look for div with backdrop-blur class
+      const card = Array.from(element.querySelectorAll('div')).find(
+        div => div.className.includes('backdrop-blur')
+      ) as HTMLElement
+      return card || null
+    }
+
+    // Record-lock card - match Scene 4 record-lock card size
+    const recordLockKey = 'scene-5-card-3' // Record-lock is the 4th card (index 3) in Scene 6
+    const recordLockElement = cardRefs.current[recordLockKey]
+    
+    if (recordLockElement) {
+      const cardElement = findCardElement(recordLockElement)
+      if (cardElement) {
+        // Match Scene 4 record-lock card dimensions
+        cardElement.style.width = '24rem'
+        cardElement.style.maxWidth = '24rem'
+        cardElement.style.minWidth = '24rem'
+        cardElement.style.height = '14rem'
+        cardElement.style.maxHeight = '14rem'
+        cardElement.style.minHeight = '14rem'
+        
+        // Move the image and text down within the card (same as Scene 4)
+        const imageContainer = Array.from(cardElement.querySelectorAll('div')).find(
+          div => {
+            const img = div.querySelector('img[src="/cards/decision.png"]')
+            return img !== null
+          }
+        ) as HTMLElement
+        if (imageContainer) {
+          imageContainer.style.marginTop = '2rem'
+          imageContainer.style.paddingTop = '1rem'
+        }
+        
+        // Also adjust text overlay position (same as Scene 4)
+        const textOverlay = Array.from(cardElement.querySelectorAll('div')).find(
+          div => {
+            const hasText = div.textContent?.includes('DIAGNOSTIC') || div.textContent?.includes('LOCKED')
+            const isAbsolute = window.getComputedStyle(div).position === 'absolute'
+            return hasText && isAbsolute
+          }
+        ) as HTMLElement
+        if (textOverlay) {
+          textOverlay.style.top = '1.5rem'
+        }
+      }
+    }
+  }, [isMobile, activeSceneIndex, currentFrame])
+
+  // Scene 6 desktop/laptop: Match record-lock card size to Scene 4
+  useEffect(() => {
+    if (isMobile || activeSceneIndex !== 5) return
+
+    // Helper function to find the actual card element inside the scaling wrapper
+    const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
+      if (!element) return null
+      // Look for div with backdrop-blur class
+      const card = Array.from(element.querySelectorAll('div')).find(
+        div => div.className.includes('backdrop-blur')
+      ) as HTMLElement
+      return card || null
+    }
+
+    const recordLockKey = 'scene-5-card-3' // Record-lock is the 4th card (index 3) in Scene 6
+    const recordLockElement = cardRefs.current[recordLockKey]
+    
+    if (recordLockElement) {
+      const cardElement = findCardElement(recordLockElement)
+      if (cardElement) {
+        // Match Scene 4 record-lock card dimensions: w-[26.25rem] h-[13rem]
+        cardElement.style.width = '26.25rem'
+        cardElement.style.height = '13rem'
+        cardElement.style.maxWidth = '26.25rem'
+        cardElement.style.minWidth = '26.25rem'
+        cardElement.style.maxHeight = '13rem'
+        cardElement.style.minHeight = '13rem'
       }
     }
   }, [isMobile, activeSceneIndex, currentFrame])
