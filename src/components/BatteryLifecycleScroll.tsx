@@ -531,31 +531,61 @@ export default function BatteryLifecycleScroll() {
         }
       } else if (sceneIndex === 4) {
         // Scene 5 positions
-        if (cardData.position === 'right') {
-          if (cardData.cardType === 'controlled') return 'right-10 sm:right-12 md:right-16 lg:right-18 xl:right-20 bottom-16 md:bottom-20'
-          return 'right-10 sm:right-14 md:right-auto md:left-[19em] lg:left-[21em] xl:left-[22em] top-20 sm:top-24 md:top-28 lg:top-12'
+        if (isMobile) {
+          // Mobile positioning for Scene 5 (similar to Scene 4)
+          if (cardData.cardType === 'voltage-trend') return 'left-6 top-[5%]' // Top left
+          if (cardData.cardType === 'internal-resistance') return 'left-6 top-[18%]' // Below voltage trend
+          if (cardData.cardType === 'electrochemical-correction') return '-right-28 top-[8%]' // Right side
+          if (cardData.cardType === 'plate-condition') return 'left-6 top-[75%]' // Bottom
+          if (cardData.cardType === 'controlled') return '-right-4 top-[80%]' // Bottom right badge
+        } else {
+          // Desktop/laptop positioning (unchanged)
+          if (cardData.position === 'right') {
+            if (cardData.cardType === 'controlled') return 'right-10 sm:right-12 md:right-16 lg:right-18 xl:right-20 bottom-16 md:bottom-20'
+            return 'right-10 sm:right-14 md:right-auto md:left-[19em] lg:left-[21em] xl:left-[22em] top-20 sm:top-24 md:top-28 lg:top-12'
+          }
+          if (cardData.position === 'left') return 'left-14 sm:left-16 md:left-18 lg:left-22 xl:left-24 top-20 sm:top-24 md:top-28 lg:top-12'
+          if (cardData.position === 'bottom-left') return 'left-[4.7rem] sm:left-[5.2rem] md:left-[5.7rem] lg:left-[6.7rem] xl:left-[7.2rem] top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem]'
+          if (cardData.position === 'bottom-right') return 'left-[4.7rem] sm:left-[5.2rem] md:left-[5.7rem] lg:left-[6.7rem] xl:left-[7.2rem] top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41.5rem]'
         }
-        if (cardData.position === 'left') return 'left-14 sm:left-16 md:left-18 lg:left-22 xl:left-24 top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'bottom-left') return 'left-[4.7rem] sm:left-[5.2rem] md:left-[5.7rem] lg:left-[6.7rem] xl:left-[7.2rem] top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-[4.7rem] sm:left-[5.2rem] md:left-[5.7rem] lg:left-[6.7rem] xl:left-[7.2rem] top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41.5rem]'
       } else if (sceneIndex === 5) {
         // Scene 6 positions
-        if (cardData.position === 'top') return 'left-18 sm:left-20 md:left-26 lg:left-26 xl:left-28 top-20 sm:top-22 md:top-26 lg:top-16'
-        if (cardData.position === 'left') return 'left-[2.8rem] sm:left-[3.3rem] md:left-[4.3rem] lg:left-[5.3rem] xl:left-[5.8rem] top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem]'
-        if (cardData.position === 'right') {
-          if (cardData.cardType === 'certified') return 'right-10 sm:right-12 md:right-16 lg:right-18 xl:right-20 bottom-16 md:bottom-20'
-          return 'right-18 sm:right-20 md:right-auto md:left-[19.4rem] lg:left-[21.4rem] xl:left-[22.4rem] top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem]'
+        if (isMobile) {
+          // Mobile positioning for Scene 6 (similar to previous scenes)
+          if (cardData.cardType === 'health-gauge') return 'left-6 top-[5%]' // Top left
+          if (cardData.cardType === 'warranty') return 'left-6 top-[18%]' // Below health gauge
+          if (cardData.cardType === 'performance-restored') return '-right-28 top-[8%]' // Right side
+          if (cardData.cardType === 'record-lock') return 'left-6 top-[75%]' // Bottom
+          if (cardData.cardType === 'certified') return '-right-4 top-[80%]' // Bottom right badge
+        } else {
+          // Desktop/laptop positioning (unchanged)
+          if (cardData.position === 'top') return 'left-18 sm:left-20 md:left-26 lg:left-26 xl:left-28 top-20 sm:top-22 md:top-26 lg:top-16'
+          if (cardData.position === 'left') return 'left-[2.8rem] sm:left-[3.3rem] md:left-[4.3rem] lg:left-[5.3rem] xl:left-[5.8rem] top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem]'
+          if (cardData.position === 'right') {
+            if (cardData.cardType === 'certified') return 'right-10 sm:right-12 md:right-16 lg:right-18 xl:right-20 bottom-16 md:bottom-20'
+            return 'right-18 sm:right-20 md:right-auto md:left-[19.4rem] lg:left-[21.4rem] xl:left-[22.4rem] top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem]'
+          }
+          if (cardData.position === 'bottom') return 'left-18 sm:left-20 md:left-26 lg:left-26 xl:left-28 top-[60%] sm:top-[62%] md:top-[66%] lg:top-[41em]'
         }
-        if (cardData.position === 'bottom') return 'left-18 sm:left-20 md:left-26 lg:left-26 xl:left-28 top-[60%] sm:top-[62%] md:top-[66%] lg:top-[41em]'
       } else if (sceneIndex === 6) {
         // Scene 7 positions
-        if (cardData.position === 'left') return 'left-14 sm:left-16 md:left-18 lg:left-22 xl:left-24 top-16 sm:top-18 md:top-22 lg:top-16'
-        if (cardData.position === 'right') {
-          if (cardData.cardType === 'verified') return 'right-10 sm:right-12 md:right-16 lg:right-18 xl:right-20 bottom-16 md:bottom-20'
-          return 'right-10 sm:right-14 md:right-auto md:left-[19em] lg:left-[21em] xl:left-[22em] top-16 sm:top-18 md:top-22 lg:top-16'
+        if (isMobile) {
+          // Mobile positioning for Scene 7 (similar to previous scenes)
+          if (cardData.cardType === 'lead') return 'left-6 top-[5%]' // Top left
+          if (cardData.cardType === 'polymer') return 'left-6 top-[18%]' // Below lead
+          if (cardData.cardType === 'recovery-certified') return '-right-28 top-[8%]' // Right side (record lock style)
+          if (cardData.cardType === 'compliance-record') return 'left-6 top-[75%]' // Bottom (system record)
+          if (cardData.cardType === 'verified') return '-right-4 top-[80%]' // Bottom right badge
+        } else {
+          // Desktop/laptop positioning (unchanged)
+          if (cardData.position === 'left') return 'left-14 sm:left-16 md:left-18 lg:left-22 xl:left-24 top-16 sm:top-18 md:top-22 lg:top-16'
+          if (cardData.position === 'right') {
+            if (cardData.cardType === 'verified') return 'right-10 sm:right-12 md:right-16 lg:right-18 xl:right-20 bottom-16 md:bottom-20'
+            return 'right-10 sm:right-14 md:right-auto md:left-[19em] lg:left-[21em] xl:left-[22em] top-16 sm:top-18 md:top-22 lg:top-16'
+          }
+          if (cardData.position === 'bottom-left') return 'left-18 sm:left-20 md:left-22 lg:left-26 xl:left-28 top-[35%] sm:top-[37%] md:top-[41%] lg:top-[24rem]'
+          if (cardData.position === 'bottom-right') return 'left-18 sm:left-20 md:left-22 lg:left-26 xl:left-28 top-[60%] sm:top-[62%] md:top-[66%] lg:top-[40rem]'
         }
-        if (cardData.position === 'bottom-left') return 'left-18 sm:left-20 md:left-22 lg:left-26 xl:left-28 top-[35%] sm:top-[37%] md:top-[41%] lg:top-[24rem]'
-        if (cardData.position === 'bottom-right') return 'left-18 sm:left-20 md:left-22 lg:left-26 xl:left-28 top-[60%] sm:top-[62%] md:top-[66%] lg:top-[40rem]'
       }
       // Default positions
       if (cardData.position === 'right') return 'right-16 md:right-auto md:left-[16rem] lg:left-[18rem] xl:left-[19rem] top-24 md:top-28 lg:top-20'
@@ -568,9 +598,9 @@ export default function BatteryLifecycleScroll() {
 
     const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
 
-    // Mobile scaling wrapper - for Scene 1, Scene 2, Scene 3, and Scene 4 on mobile
+    // Mobile scaling wrapper - for Scene 1, Scene 2, Scene 3, Scene 4, Scene 5, Scene 6, and Scene 7 on mobile
     const MobileWrapper = ({ children }: { children: React.ReactNode }) => {
-      if (isMobile && (sceneIndex === 0 || sceneIndex === 1 || sceneIndex === 2 || sceneIndex === 3)) {
+      if (isMobile && (sceneIndex === 0 || sceneIndex === 1 || sceneIndex === 2 || sceneIndex === 3 || sceneIndex === 4 || sceneIndex === 5 || sceneIndex === 6)) {
         // Scene 1 scaling
         if (sceneIndex === 0) {
           const isVoltageOrResistance = cardType === 'voltage' || cardType === 'internal-resistance'
@@ -614,6 +644,53 @@ export default function BatteryLifecycleScroll() {
           const isSulphation = cardType === 'sulphation'
           const isRecordLock = cardType === 'record-lock'
           const scale = isVoltageOrResistance ? 'scale-[0.60]' : isSulphation ? 'scale-[0.80]' : isRecordLock ? 'scale-[0.70]' : 'scale-[0.70]'
+
+          return (
+            <div className={`${scale} origin-top-left`}>
+              {children}
+            </div>
+          )
+        }
+
+        // Scene 5 scaling (similar to Scene 4)
+        if (sceneIndex === 4) {
+          const isVoltageTrendOrResistance = cardType === 'voltage-trend' || cardType === 'internal-resistance'
+          const isElectrochemical = cardType === 'electrochemical-correction'
+          const isPlateCondition = cardType === 'plate-condition'
+          const isControlled = cardType === 'controlled'
+          const scale = isVoltageTrendOrResistance ? 'scale-[0.60]' : isElectrochemical ? 'scale-[0.80]' : isPlateCondition ? 'scale-[0.70]' : isControlled ? 'scale-[0.70]' : 'scale-[0.70]'
+
+          return (
+            <div className={`${scale} origin-top-left`}>
+              {children}
+            </div>
+          )
+        }
+
+        // Scene 6 scaling (similar to previous scenes)
+        if (sceneIndex === 5) {
+          const isHealthGauge = cardType === 'health-gauge'
+          const isWarranty = cardType === 'warranty'
+          const isPerformanceRestored = cardType === 'performance-restored'
+          const isRecordLock = cardType === 'record-lock'
+          const isCertified = cardType === 'certified'
+          const scale = isHealthGauge ? 'scale-[0.60]' : isWarranty ? 'scale-[0.60]' : isPerformanceRestored ? 'scale-[0.80]' : isRecordLock ? 'scale-[0.70]' : isCertified ? 'scale-[0.70]' : 'scale-[0.70]'
+
+          return (
+            <div className={`${scale} origin-top-left`}>
+              {children}
+            </div>
+          )
+        }
+
+        // Scene 7 scaling (similar to previous scenes)
+        if (sceneIndex === 6) {
+          const isLead = cardType === 'lead'
+          const isPolymer = cardType === 'polymer'
+          const isRecoveryCertified = cardType === 'recovery-certified'
+          const isComplianceRecord = cardType === 'compliance-record'
+          const isVerified = cardType === 'verified'
+          const scale = isLead ? 'scale-[0.60]' : isPolymer ? 'scale-[0.60]' : isRecoveryCertified ? 'scale-[0.80]' : isComplianceRecord ? 'scale-[0.70]' : isVerified ? 'scale-[0.70]' : 'scale-[0.70]'
 
           return (
             <div className={`${scale} origin-top-left`}>
@@ -792,7 +869,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <VoltageTrendCard value={cardData.value} status={cardData.status} />
+            <MobileWrapper>
+              <VoltageTrendCard value={cardData.value} status={cardData.status} />
+            </MobileWrapper>
           </div>
         )
       case 'electrochemical-correction':
@@ -803,7 +882,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <ElectrochemicalCorrectionCard />
+            <MobileWrapper>
+              <ElectrochemicalCorrectionCard />
+            </MobileWrapper>
           </div>
         )
       case 'plate-condition':
@@ -814,9 +895,11 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <div className={sceneIndex === 4 ? 'scale-x-[1.005] origin-left' : ''}>
-              <PlateConditionCard value={cardData.value} />
-            </div>
+            <MobileWrapper>
+              <div className={sceneIndex === 4 ? 'scale-x-[1.005] origin-left' : ''}>
+                <PlateConditionCard value={cardData.value} />
+              </div>
+            </MobileWrapper>
           </div>
         )
       case 'performance-restored':
@@ -827,12 +910,14 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <PerformanceRestoredCard
-              voltageFrom="11.8V"
-              voltageTo="12.4V"
-              resistanceFrom="8.7mΩ"
-              resistanceTo="4.2mΩ"
-            />
+            <MobileWrapper>
+              <PerformanceRestoredCard
+                voltageFrom="11.8V"
+                voltageTo="12.4V"
+                resistanceFrom="8.7mΩ"
+                resistanceTo="4.2mΩ"
+              />
+            </MobileWrapper>
           </div>
         )
       case 'warranty':
@@ -843,7 +928,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <WarrantyCard status={cardData.value} coverage={cardData.status} />
+            <MobileWrapper>
+              <WarrantyCard status={cardData.value} coverage={cardData.status} />
+            </MobileWrapper>
           </div>
         )
       case 'lead':
@@ -854,7 +941,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <LeadCard value={cardData.value} status={cardData.status} />
+            <MobileWrapper>
+              <LeadCard value={cardData.value} status={cardData.status} />
+            </MobileWrapper>
           </div>
         )
       case 'polymer':
@@ -865,7 +954,9 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <PolymerCard value={cardData.value} status={cardData.status} />
+            <MobileWrapper>
+              <PolymerCard value={cardData.value} status={cardData.status} />
+            </MobileWrapper>
           </div>
         )
       case 'compliance-record':
@@ -876,9 +967,11 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <div className={sceneIndex === 6 ? 'scale-x-[1.005] origin-left' : ''}>
-              <ComplianceRecordCard value={cardData.value} />
-            </div>
+            <MobileWrapper>
+              <div className={sceneIndex === 6 ? 'scale-x-[1.005] origin-left' : ''}>
+                <ComplianceRecordCard value={cardData.value} />
+              </div>
+            </MobileWrapper>
           </div>
         )
       case 'recovery-certified':
@@ -889,9 +982,11 @@ export default function BatteryLifecycleScroll() {
             className={`absolute ${getCardPosition()} z-10`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
-            <div className={sceneIndex === 6 ? 'scale-x-[1.005] origin-left' : ''}>
-              <RecoveryCertifiedCard />
-            </div>
+            <MobileWrapper>
+              <div className={sceneIndex === 6 ? 'scale-x-[1.005] origin-left' : ''}>
+                <RecoveryCertifiedCard />
+              </div>
+            </MobileWrapper>
           </div>
         )
       case 'logged':
@@ -1424,6 +1519,30 @@ export default function BatteryLifecycleScroll() {
           }
           // Scene 4 mobile - instant updates to prevent blinking
           else if (isMobile && sceneIndex === 3 && shouldBeVisible) {
+            gsap.set(card, {
+              x: 0,
+              opacity: 1,
+              force3D: true
+            })
+          }
+          // Scene 5 mobile - instant updates to prevent blinking
+          else if (isMobile && sceneIndex === 4 && shouldBeVisible) {
+            gsap.set(card, {
+              x: 0,
+              opacity: 1,
+              force3D: true
+            })
+          }
+          // Scene 6 mobile - instant updates to prevent blinking
+          else if (isMobile && sceneIndex === 5 && shouldBeVisible) {
+            gsap.set(card, {
+              x: 0,
+              opacity: 1,
+              force3D: true
+            })
+          }
+          // Scene 7 mobile - instant updates to prevent blinking
+          else if (isMobile && sceneIndex === 6 && shouldBeVisible) {
             gsap.set(card, {
               x: 0,
               opacity: 1,
