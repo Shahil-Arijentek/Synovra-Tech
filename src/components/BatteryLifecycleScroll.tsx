@@ -479,7 +479,7 @@ export default function BatteryLifecycleScroll() {
           if (cardData.position === 'right') return 'left-6 top-[20%]'
           if (cardData.position === 'left') return 'left-6 top-[5%]'
           // Health gauge positioned extending to the right edge - aligned with Voltage top and extends to Internal Resistance bottom
-          if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return '-right-12 top-[6.5%]'
+          if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return '-right-12 top-[10%]'
           // Sulphation positioned in bottom right area
           if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return '-right-4 top-[75%]'
         }
@@ -487,8 +487,9 @@ export default function BatteryLifecycleScroll() {
         else if (sceneIndex === 1) {
           if (cardData.position === 'right') return 'left-6 top-[20%]'
           if (cardData.position === 'left') return 'left-6 top-[5%]'
+          // Sulphation detected positioned extending to the right edge - same top position as health gauge in Scene 1
           if (cardData.position === 'bottom-left' && cardData.cardType === 'sulphation-detected') return '-right-44 top-[10%]'
-          if (cardData.position === 'bottom-right' && cardData.cardType === 'decision') return '-right-28 top-[77%]'
+          if (cardData.position === 'bottom-right' && cardData.cardType === 'decision') return '-right-20 top-[77%]'
         }
         // Scene 3 mobile positioning
         else if (sceneIndex === 2) {
@@ -504,15 +505,15 @@ export default function BatteryLifecycleScroll() {
           // Sulphation positioned extending to the right edge - matching Scene 2 sulphation-detected
           if (cardData.cardType === 'sulphation') return '-right-8 top-[8%]' // Right side, moved up
           // Record-lock positioned matching Scene 2 decision card
-          if (cardData.cardType === 'record-lock') return 'right-0 top-[77%]' // Bottom right, moved even more left
+          if (cardData.cardType === 'record-lock') return '-right-16 top-[77%]' // Bottom right, moved more right
         }
         // Scene 5 mobile positioning (similar to Scene 4)
         else if (sceneIndex === 4) {
           if (cardData.cardType === 'voltage-trend') return 'left-6 top-[5%]' // Top left
           if (cardData.cardType === 'internal-resistance') return 'left-6 top-[18%]' // Below voltage trend
-          if (cardData.cardType === 'electrochemical-correction') return '-right-28 top-[8%]' // Right side
-          if (cardData.cardType === 'plate-condition') return 'left-6 top-[75%]' // Bottom
-          if (cardData.cardType === 'controlled') return '-right-4 top-[80%]' // Bottom right badge
+          if (cardData.cardType === 'electrochemical-correction') return '-right-8 top-[8%]' // Right side, moved more left
+          if (cardData.cardType === 'plate-condition') return 'left-20 top-[77%]' // Bottom, moved more left
+          if (cardData.cardType === 'controlled') return '-right-6 top-[90%]' // Bottom right badge, moved down more, slightly right
         }
         // Scene 6 mobile positioning (similar to previous scenes)
         else if (sceneIndex === 5) {
@@ -1462,11 +1463,10 @@ export default function BatteryLifecycleScroll() {
     if (healthGaugeElement) {
       const cardElement = findCardElement(healthGaugeElement)
       if (cardElement) {
-        // Set height to span from Voltage top (5%) to Internal Resistance bottom
-        // Voltage: top-[5%], Internal Resistance: top-[20%] + ~5.625rem height
-        // Total span needed: ~15vh + 11.25rem, accounting for 0.70 scale = ~18rem base height (increased)
-        cardElement.style.height = '18rem'
-        cardElement.style.minHeight = '18rem'
+        // Set height to match sulphation card default height (similar to Scene 2 sulphation-detected)
+        cardElement.style.height = '12rem'
+        cardElement.style.minHeight = '12rem'
+        cardElement.style.maxHeight = '12rem'
       }
     }
 
@@ -1511,20 +1511,44 @@ export default function BatteryLifecycleScroll() {
       }
     }
 
-    // Increase height and width of Decision Card for mobile Scene 2
+    // Apply sulphation card dimensions from Scene 1 to Decision Card for mobile Scene 2
     const decisionKey = 'scene-1-card-3' // Decision is the 4th card (index 3) in Scene 2
     const decisionElement = cardRefs.current[decisionKey]
     
     if (decisionElement) {
       const cardElement = findCardElement(decisionElement)
       if (cardElement) {
-        // Increase width and height for mobile Scene 2
-        cardElement.style.width = '20rem'
-        cardElement.style.maxWidth = '20rem'
-        cardElement.style.minWidth = '20rem'
-        cardElement.style.height = '10rem'
-        cardElement.style.maxHeight = '10rem'
-        cardElement.style.minHeight = '10rem'
+        // Increased width and height for mobile Scene 2
+        cardElement.style.width = '24rem'
+        cardElement.style.maxWidth = '24rem'
+        cardElement.style.minWidth = '24rem'
+        cardElement.style.height = '14rem'
+        cardElement.style.maxHeight = '14rem'
+        cardElement.style.minHeight = '14rem'
+        
+        // Move the image and text down within the card
+        const imageContainer = Array.from(cardElement.querySelectorAll('div')).find(
+          div => {
+            const img = div.querySelector('img[src="/cards/decision.png"]')
+            return img !== null
+          }
+        ) as HTMLElement
+        if (imageContainer) {
+          imageContainer.style.marginTop = '2rem'
+          imageContainer.style.paddingTop = '1rem'
+        }
+        
+        // Also adjust text overlay position
+        const textOverlay = Array.from(cardElement.querySelectorAll('div')).find(
+          div => {
+            const hasText = div.textContent?.includes('MAINTENANCE') || div.textContent?.includes('RECOMMENDED')
+            const isAbsolute = window.getComputedStyle(div).position === 'absolute'
+            return hasText && isAbsolute
+          }
+        ) as HTMLElement
+        if (textOverlay) {
+          textOverlay.style.top = '1.5rem'
+        }
       }
     }
   }, [isMobile, activeSceneIndex, currentFrame])
@@ -1565,12 +1589,36 @@ export default function BatteryLifecycleScroll() {
       const cardElement = findCardElement(recordLockElement)
       if (cardElement) {
         // Match Scene 2 decision card dimensions
-        cardElement.style.width = '20rem'
-        cardElement.style.maxWidth = '20rem'
-        cardElement.style.minWidth = '20rem'
-        cardElement.style.height = '10rem'
-        cardElement.style.maxHeight = '10rem'
-        cardElement.style.minHeight = '10rem'
+        cardElement.style.width = '24rem'
+        cardElement.style.maxWidth = '24rem'
+        cardElement.style.minWidth = '24rem'
+        cardElement.style.height = '14rem'
+        cardElement.style.maxHeight = '14rem'
+        cardElement.style.minHeight = '14rem'
+        
+        // Move the image and text down within the card (same as decision card in Scene 2)
+        const imageContainer = Array.from(cardElement.querySelectorAll('div')).find(
+          div => {
+            const img = div.querySelector('img[src="/cards/decision.png"]')
+            return img !== null
+          }
+        ) as HTMLElement
+        if (imageContainer) {
+          imageContainer.style.marginTop = '2rem'
+          imageContainer.style.paddingTop = '1rem'
+        }
+        
+        // Also adjust text overlay position (same as decision card in Scene 2)
+        const textOverlay = Array.from(cardElement.querySelectorAll('div')).find(
+          div => {
+            const hasText = div.textContent?.includes('DIAGNOSTIC') || div.textContent?.includes('LOCKED')
+            const isAbsolute = window.getComputedStyle(div).position === 'absolute'
+            return hasText && isAbsolute
+          }
+        ) as HTMLElement
+        if (textOverlay) {
+          textOverlay.style.top = '1.5rem'
+        }
       }
     }
   }, [isMobile, activeSceneIndex, currentFrame])
@@ -1633,6 +1681,103 @@ export default function BatteryLifecycleScroll() {
         cardElement.style.minWidth = '26.25rem'
         cardElement.style.maxHeight = '13rem'
         cardElement.style.minHeight = '13rem'
+      }
+    }
+  }, [isMobile, activeSceneIndex, currentFrame])
+
+  // Scene 5 mobile: Reduce width of electrochemical-correction card
+  useEffect(() => {
+    if (!isMobile || activeSceneIndex !== 4) return
+
+    // Helper function to find the actual card element inside the scaling wrapper
+    const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
+      if (!element) return null
+      // Look for div with backdrop-blur class
+      const card = Array.from(element.querySelectorAll('div')).find(
+        div => div.className.includes('backdrop-blur')
+      ) as HTMLElement
+      return card || null
+    }
+
+    // Electrochemical-correction card - reduce width
+    const electrochemicalKey = 'scene-4-card-2' // Electrochemical-correction is the 3rd card (index 2) in Scene 5
+    const electrochemicalElement = cardRefs.current[electrochemicalKey]
+    
+    if (electrochemicalElement) {
+      const cardElement = findCardElement(electrochemicalElement)
+      if (cardElement) {
+        // Reduce width for mobile Scene 5
+        cardElement.style.width = '18rem'
+        cardElement.style.maxWidth = '18rem'
+        cardElement.style.minWidth = '18rem'
+      }
+    }
+
+    // Plate-condition card - increase width and height
+    const plateConditionKey = 'scene-4-card-3' // Plate-condition is the 4th card (index 3) in Scene 5
+    const plateConditionElement = cardRefs.current[plateConditionKey]
+    
+    if (plateConditionElement) {
+      const cardElement = findCardElement(plateConditionElement)
+      if (cardElement) {
+        // Increase width and height for mobile Scene 5
+        cardElement.style.width = '25rem'
+        cardElement.style.maxWidth = '25rem'
+        cardElement.style.minWidth = '25rem'
+        cardElement.style.height = '8rem'
+        cardElement.style.maxHeight = '8rem'
+        cardElement.style.minHeight = '8rem'
+        
+        // Ensure container doesn't overflow
+        cardElement.style.overflow = 'hidden'
+        
+        // Make "PLATE RESTORED" text single line and align with image
+        const textElement = Array.from(cardElement.querySelectorAll('div')).find(
+          div => {
+            const text = div.textContent?.includes('PLATE') || div.textContent?.includes('RESTORED')
+            const hasGemunuFont = div.className.includes('Gemunu_Libre')
+            return text && hasGemunuFont
+          }
+        ) as HTMLElement
+        if (textElement) {
+          textElement.style.marginTop = '0'
+          textElement.style.paddingTop = '0'
+          textElement.style.whiteSpace = 'nowrap'
+          textElement.style.display = 'inline-block'
+          textElement.style.maxWidth = '100%'
+          textElement.style.overflow = 'visible'
+        }
+        
+        // Adjust the flex container to align items properly
+        const flexContainer = Array.from(cardElement.querySelectorAll('div')).find(
+          div => {
+            const hasFlex = div.className.includes('flex') && div.className.includes('items-center')
+            return hasFlex
+          }
+        ) as HTMLElement
+        if (flexContainer) {
+          flexContainer.style.alignItems = 'center'
+          flexContainer.style.overflow = 'visible'
+          flexContainer.style.maxWidth = '100%'
+        }
+        
+        // Increase the image size while keeping it within container
+        const imageElement = cardElement.querySelector('img[src="/cards/platecondition.png"]') as HTMLImageElement
+        if (imageElement) {
+          imageElement.style.width = '14rem'
+          imageElement.style.height = '8.5rem'
+          imageElement.style.maxWidth = '14rem'
+          imageElement.style.maxHeight = '8.5rem'
+          imageElement.style.objectFit = 'contain'
+          imageElement.style.marginLeft = '3rem'
+        }
+        
+        // Also adjust the parent container to move image to the right
+        const imageContainer = imageElement?.parentElement as HTMLElement
+        if (imageContainer) {
+          imageContainer.style.marginLeft = 'auto'
+          imageContainer.style.marginRight = '0'
+        }
       }
     }
   }, [isMobile, activeSceneIndex, currentFrame])
