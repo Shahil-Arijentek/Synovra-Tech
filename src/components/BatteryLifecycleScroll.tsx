@@ -487,8 +487,8 @@ export default function BatteryLifecycleScroll() {
         else if (sceneIndex === 1) {
           if (cardData.position === 'right') return 'left-6 top-[20%]'
           if (cardData.position === 'left') return 'left-6 top-[5%]'
-          if (cardData.position === 'bottom-left' && cardData.cardType === 'sulphation-detected') return '-right-44 top-[6%]'
-          if (cardData.position === 'bottom-right' && cardData.cardType === 'decision') return '-right-20 top-[75%]'
+          if (cardData.position === 'bottom-left' && cardData.cardType === 'sulphation-detected') return '-right-44 top-[10%]'
+          if (cardData.position === 'bottom-right' && cardData.cardType === 'decision') return '-right-28 top-[77%]'
         }
         // Scene 3 mobile positioning
         else if (sceneIndex === 2) {
@@ -498,12 +498,13 @@ export default function BatteryLifecycleScroll() {
           if (cardData.cardType === 'seal') return '-right-4 top-[25%]'
           if (cardData.cardType === 'logged') return '-right-4 top-[80%]'
         }
-        // Scene 4 mobile positioning (similar to Scene 1)
         else if (sceneIndex === 3) {
           if (cardData.cardType === 'voltage') return 'left-6 top-[5%]' // Top left
           if (cardData.cardType === 'internal-resistance') return 'left-6 top-[18%]' // Below voltage
-          if (cardData.cardType === 'sulphation') return '-right-28 top-[8%]' // Right side
-          if (cardData.cardType === 'record-lock') return 'left-6 top-[75%]' // Bottom
+          // Sulphation positioned extending to the right edge - matching Scene 2 sulphation-detected
+          if (cardData.cardType === 'sulphation') return '-right-8 top-[8%]' // Right side, moved up
+          // Record-lock positioned matching Scene 2 decision card
+          if (cardData.cardType === 'record-lock') return 'right-0 top-[77%]' // Bottom right, moved even more left
         }
         // Scene 5 mobile positioning (similar to Scene 4)
         else if (sceneIndex === 4) {
@@ -1479,6 +1480,159 @@ export default function BatteryLifecycleScroll() {
         // Increase width from 18.75rem (300px) to 22rem (352px) for Scene 1 mobile
         sulphationCardElement.style.width = '22rem'
         sulphationCardElement.style.minWidth = '22rem'
+      }
+    }
+  }, [isMobile, activeSceneIndex, currentFrame])
+
+  // Scene 2 mobile: Reduce width of Sulphation Detected Card and adjust Decision Card
+  useEffect(() => {
+    if (!isMobile || activeSceneIndex !== 1) return
+
+    // Helper function to find the actual card element inside the scaling wrapper
+    const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
+      if (!element) return null
+      // Look for div with backdrop-blur class
+      const card = Array.from(element.querySelectorAll('div')).find(
+        div => div.className.includes('backdrop-blur')
+      ) as HTMLElement
+      return card || null
+    }
+
+    const sulphationDetectedKey = 'scene-1-card-2' // Sulphation Detected is the 3rd card (index 2) in Scene 2
+    const sulphationDetectedElement = cardRefs.current[sulphationDetectedKey]
+    
+    if (sulphationDetectedElement) {
+      const cardElement = findCardElement(sulphationDetectedElement)
+      if (cardElement) {
+        // Reduce width for mobile Scene 2
+        cardElement.style.width = '18rem'
+        cardElement.style.maxWidth = '18rem'
+        cardElement.style.minWidth = '18rem'
+      }
+    }
+
+    // Increase height and width of Decision Card for mobile Scene 2
+    const decisionKey = 'scene-1-card-3' // Decision is the 4th card (index 3) in Scene 2
+    const decisionElement = cardRefs.current[decisionKey]
+    
+    if (decisionElement) {
+      const cardElement = findCardElement(decisionElement)
+      if (cardElement) {
+        // Increase width and height for mobile Scene 2
+        cardElement.style.width = '20rem'
+        cardElement.style.maxWidth = '20rem'
+        cardElement.style.minWidth = '20rem'
+        cardElement.style.height = '10rem'
+        cardElement.style.maxHeight = '10rem'
+        cardElement.style.minHeight = '10rem'
+      }
+    }
+  }, [isMobile, activeSceneIndex, currentFrame])
+
+  // Scene 4 mobile: Apply same sizing as Scene 2 (sulphation matches sulphation-detected, record-lock matches decision)
+  useEffect(() => {
+    if (!isMobile || activeSceneIndex !== 3) return
+
+    // Helper function to find the actual card element inside the scaling wrapper
+    const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
+      if (!element) return null
+      // Look for div with backdrop-blur class
+      const card = Array.from(element.querySelectorAll('div')).find(
+        div => div.className.includes('backdrop-blur')
+      ) as HTMLElement
+      return card || null
+    }
+
+    // Sulphation card - match Scene 2 sulphation-detected card width
+    const sulphationKey = 'scene-3-card-2' // Sulphation is the 3rd card (index 2) in Scene 4
+    const sulphationElement = cardRefs.current[sulphationKey]
+    
+    if (sulphationElement) {
+      const cardElement = findCardElement(sulphationElement)
+      if (cardElement) {
+        // Match Scene 2 sulphation-detected card width
+        cardElement.style.width = '18rem'
+        cardElement.style.maxWidth = '18rem'
+        cardElement.style.minWidth = '18rem'
+      }
+    }
+
+    // Record-lock card - match Scene 2 decision card size
+    const recordLockKey = 'scene-3-card-3' // Record-lock is the 4th card (index 3) in Scene 4
+    const recordLockElement = cardRefs.current[recordLockKey]
+    
+    if (recordLockElement) {
+      const cardElement = findCardElement(recordLockElement)
+      if (cardElement) {
+        // Match Scene 2 decision card dimensions
+        cardElement.style.width = '20rem'
+        cardElement.style.maxWidth = '20rem'
+        cardElement.style.minWidth = '20rem'
+        cardElement.style.height = '10rem'
+        cardElement.style.maxHeight = '10rem'
+        cardElement.style.minHeight = '10rem'
+      }
+    }
+  }, [isMobile, activeSceneIndex, currentFrame])
+
+  // Scene 2 desktop/laptop: Match decision card size to sulphation-detected card
+  useEffect(() => {
+    if (isMobile || activeSceneIndex !== 1) return
+
+    // Helper function to find the actual card element inside the scaling wrapper
+    const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
+      if (!element) return null
+      // Look for div with backdrop-blur class
+      const card = Array.from(element.querySelectorAll('div')).find(
+        div => div.className.includes('backdrop-blur')
+      ) as HTMLElement
+      return card || null
+    }
+
+    const decisionKey = 'scene-1-card-3' // Decision is the 4th card (index 3) in Scene 2
+    const decisionElement = cardRefs.current[decisionKey]
+    
+    if (decisionElement) {
+      const cardElement = findCardElement(decisionElement)
+      if (cardElement) {
+        // Match sulphation-detected card dimensions: w-[26.25rem] h-[13rem]
+        cardElement.style.width = '26.25rem'
+        cardElement.style.height = '13rem'
+        cardElement.style.maxWidth = '26.25rem'
+        cardElement.style.minWidth = '26.25rem'
+        cardElement.style.maxHeight = '13rem'
+        cardElement.style.minHeight = '13rem'
+      }
+    }
+  }, [isMobile, activeSceneIndex, currentFrame])
+
+  // Scene 4 desktop/laptop: Match record-lock card size to sulphation card
+  useEffect(() => {
+    if (isMobile || activeSceneIndex !== 3) return
+
+    // Helper function to find the actual card element inside the scaling wrapper
+    const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
+      if (!element) return null
+      // Look for div with backdrop-blur class
+      const card = Array.from(element.querySelectorAll('div')).find(
+        div => div.className.includes('backdrop-blur')
+      ) as HTMLElement
+      return card || null
+    }
+
+    const recordLockKey = 'scene-3-card-3' // Record-lock is the 4th card (index 3) in Scene 4
+    const recordLockElement = cardRefs.current[recordLockKey]
+    
+    if (recordLockElement) {
+      const cardElement = findCardElement(recordLockElement)
+      if (cardElement) {
+        // Match sulphation card dimensions: w-[26.25rem] h-[13rem] (same as Scene 2)
+        cardElement.style.width = '26.25rem'
+        cardElement.style.height = '13rem'
+        cardElement.style.maxWidth = '26.25rem'
+        cardElement.style.minWidth = '26.25rem'
+        cardElement.style.maxHeight = '13rem'
+        cardElement.style.minHeight = '13rem'
       }
     }
   }, [isMobile, activeSceneIndex, currentFrame])
