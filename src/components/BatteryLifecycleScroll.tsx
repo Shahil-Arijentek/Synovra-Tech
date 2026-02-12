@@ -464,7 +464,7 @@ export default function BatteryLifecycleScroll() {
           if (cardData.position === 'right') return 'left-6 top-[20%]'
           if (cardData.position === 'left') return 'left-6 top-[5%]'
           // Health gauge positioned extending to the right edge - aligned with Voltage top and extends to Internal Resistance bottom
-          if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return '-right-12 top-[5%]'
+          if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return '-right-12 top-[6.5%]'
           // Sulphation positioned in bottom right area
           if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return '-right-4 top-[75%]'
         } else {
@@ -756,7 +756,21 @@ export default function BatteryLifecycleScroll() {
         return (
           <div
             key={cardKey}
-            ref={el => { cardRefs.current[cardKey] = el }}
+            ref={el => { 
+              cardRefs.current[cardKey] = el
+              // Scene 1 mobile: Increase Sulphation Card width
+              if (isMobile && sceneIndex === 0 && el) {
+                setTimeout(() => {
+                  const cardElement = Array.from(el.querySelectorAll('div')).find(
+                    div => div.className.includes('backdrop-blur')
+                  ) as HTMLElement
+                  if (cardElement) {
+                    cardElement.style.width = '22rem' // Increased from 18.75rem (300px) to 22rem (352px)
+                    cardElement.style.minWidth = '22rem'
+                  }
+                }, 10)
+              }
+            }}
             className={`absolute ${getCardPosition()} z-10 ${isMobile && sceneIndex === 0 ? 'transition-opacity duration-500' : ''}`}
             style={{
               opacity: isMobile && sceneIndex === 0 && currentFrame <= 35 ? 0 : 0,
@@ -1583,27 +1597,40 @@ export default function BatteryLifecycleScroll() {
   useEffect(() => {
     if (!isMobile || activeSceneIndex !== 0) return
 
+    // Helper function to find the actual card element inside the MobileWrapper
+    const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
+      if (!element) return null
+      // Look for div with backdrop-blur class
+      const card = Array.from(element.querySelectorAll('div')).find(
+        div => div.className.includes('backdrop-blur')
+      ) as HTMLElement
+      return card || null
+    }
+
     const healthGaugeKey = 'scene-0-card-2' // Health Gauge is the 3rd card (index 2) in Scene 1
     const healthGaugeElement = cardRefs.current[healthGaugeKey]
     
     if (healthGaugeElement) {
-      // Find the actual card element inside the MobileWrapper
-      const findCardElement = (element: HTMLElement | null): HTMLElement | null => {
-        if (!element) return null
-        // Look for div with backdrop-blur class
-        const card = Array.from(element.querySelectorAll('div')).find(
-          div => div.className.includes('backdrop-blur')
-        ) as HTMLElement
-        return card || null
-      }
-
       const cardElement = findCardElement(healthGaugeElement)
       if (cardElement) {
         // Set height to span from Voltage top (5%) to Internal Resistance bottom
         // Voltage: top-[5%], Internal Resistance: top-[20%] + ~5.625rem height
-        // Total span needed: ~15vh + 11.25rem, accounting for 0.70 scale = ~16rem base height
-        cardElement.style.height = '16rem'
-        cardElement.style.minHeight = '16rem'
+        // Total span needed: ~15vh + 11.25rem, accounting for 0.70 scale = ~18rem base height (increased)
+        cardElement.style.height = '18rem'
+        cardElement.style.minHeight = '18rem'
+      }
+    }
+
+    // Scene 1 mobile: Increase Sulphation Card width
+    const sulphationKey = 'scene-0-card-3' // Sulphation is the 4th card (index 3) in Scene 1
+    const sulphationElement = cardRefs.current[sulphationKey]
+    
+    if (sulphationElement) {
+      const sulphationCardElement = findCardElement(sulphationElement)
+      if (sulphationCardElement) {
+        // Increase width from 18.75rem (300px) to 22rem (352px) for Scene 1 mobile
+        sulphationCardElement.style.width = '22rem'
+        sulphationCardElement.style.minWidth = '22rem'
       }
     }
   }, [isMobile, activeSceneIndex, currentFrame])
