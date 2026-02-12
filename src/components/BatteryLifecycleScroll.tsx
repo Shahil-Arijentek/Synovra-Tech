@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useNavbar } from '../contexts/NavbarContext'
@@ -353,6 +353,13 @@ export default function BatteryLifecycleScroll() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const currentCanvasFrameRef = useRef({ scene: 0, frame: 1 }) // Track what's on canvas
   const rafRef = useRef<number | null>(null)
+  // Track card visibility states to prevent unnecessary animations
+  const cardVisibilityState = useRef<{ [key: string]: boolean }>({})
+  // Track active GSAP animations to prevent overlaps
+  const activeAnimations = useRef<{ [key: string]: gsap.core.Tween | null }>({})
+  // Throttle state updates during scroll
+  const scrollUpdateTimeoutRef = useRef<number | null>(null)
+  const pendingFrameUpdate = useRef<{ frame: number; scene: number } | null>(null)
 
   // Mobile detection effect
   useEffect(() => {
@@ -371,8 +378,8 @@ export default function BatteryLifecycleScroll() {
     }
   }, [])
 
-  // Helper function to check if a card should be visible based on current frame
-  const shouldCardBeVisible = (sceneIndex: number, currentScene: number, currentFrame: number): boolean => {
+  // Memoized helper function to check if a card should be visible based on current frame
+  const shouldCardBeVisible = useCallback((sceneIndex: number, currentScene: number, currentFrame: number): boolean => {
     // Scene 1 cards: Show when viewing scene-2 folder frames 1-26
     if (sceneIndex === 0) {
       return currentScene === 1 && currentFrame >= 1 && currentFrame <= 26
@@ -416,10 +423,10 @@ export default function BatteryLifecycleScroll() {
     }
     
     return false
-  }
+  }, [])
 
-  // Helper function to get the active scene index based on which cards are currently visible
-  const getActiveSceneIndexFromCards = (currentScene: number, currentFrame: number): number | null => {
+  // Memoized helper function to get the active scene index based on which cards are currently visible
+  const getActiveSceneIndexFromCards = useCallback((currentScene: number, currentFrame: number): number | null => {
     // Check each scene in order to find which one should be active
     for (let sceneIndex = 0; sceneIndex < sceneConfig.length; sceneIndex++) {
       if (shouldCardBeVisible(sceneIndex, currentScene, currentFrame)) {
@@ -427,7 +434,7 @@ export default function BatteryLifecycleScroll() {
       }
     }
     return null
-  }
+  }, [shouldCardBeVisible])
 
   // Canvas frame rendering - ZERO BLINK guaranteed
   const drawFrame = (sceneIndex: number, frameNumber: number) => {
@@ -1223,9 +1230,24 @@ export default function BatteryLifecycleScroll() {
             const frameIndex = Math.floor(sceneProgress * (frameCount - 1))
             const clampedFrameIndex = Math.max(0, Math.min(frameIndex, frameCount - 1))
             
-            // Update frame state (convert to 1-based for file naming)
-            setCurrentFrame(clampedFrameIndex + 1)
-            setCurrentSceneForFrame(scene.sceneIndex)
+            // Calculate new frame and scene values
+            const newFrame = clampedFrameIndex + 1
+            const newScene = scene.sceneIndex
+
+            // Store pending update
+            pendingFrameUpdate.current = { frame: newFrame, scene: newScene }
+
+            // Throttle state updates using RAF for smooth performance
+            if (scrollUpdateTimeoutRef.current === null) {
+              scrollUpdateTimeoutRef.current = requestAnimationFrame(() => {
+                if (pendingFrameUpdate.current) {
+                  setCurrentFrame(pendingFrameUpdate.current.frame)
+                  setCurrentSceneForFrame(pendingFrameUpdate.current.scene)
+                  pendingFrameUpdate.current = null
+                }
+                scrollUpdateTimeoutRef.current = null
+              })
+            }
 
             break
           }
@@ -1256,6 +1278,16 @@ export default function BatteryLifecycleScroll() {
 
     return () => {
       clearTimeout(initTimeout)
+      // Cancel pending scroll updates
+      if (scrollUpdateTimeoutRef.current !== null) {
+        cancelAnimationFrame(scrollUpdateTimeoutRef.current)
+        scrollUpdateTimeoutRef.current = null
+      }
+      // Kill all active card animations
+      Object.values(activeAnimations.current).forEach(anim => {
+        if (anim) anim.kill()
+      })
+      activeAnimations.current = {}
       ScrollTrigger.getAll().forEach(trigger => trigger.kill())
       // Show navbar when component unmounts
       setNavbarVisible(true)
@@ -1394,7 +1426,7 @@ export default function BatteryLifecycleScroll() {
     }
   }, [currentFrame, currentSceneForFrame])
 
-  // Smooth card visibility based on frame ranges
+  // Optimized card visibility based on frame ranges - prevents lag and overlap
   useEffect(() => {
     if (isPreloading) return
 
@@ -1408,7 +1440,10 @@ export default function BatteryLifecycleScroll() {
       setShouldShowUI(true)
     }
 
-    // Check visibility for each scene's cards and animate smoothly
+    // Batch all animations to prevent conflicts
+    const animationsToRun: Array<{ card: HTMLElement; key: string; visible: boolean }> = []
+
+    // Check visibility for each scene's cards and collect animations
     sceneConfig.forEach((scene, sceneIndex) => {
       const shouldBeVisible = shouldCardBeVisible(sceneIndex, currentSceneForFrame, currentFrame)
       
@@ -1417,31 +1452,68 @@ export default function BatteryLifecycleScroll() {
         const card = cardRefs.current[cardKey]
         
         if (card) {
-          if (shouldBeVisible) {
+          // Check if visibility state has changed - skip if already in correct state
+          const currentVisibility = cardVisibilityState.current[cardKey] || false
+          
+          if (shouldBeVisible !== currentVisibility) {
+            // Only animate if state actually changed
+            animationsToRun.push({ card, key: cardKey, visible: shouldBeVisible })
+            // Update state immediately to prevent duplicate animations
+            cardVisibilityState.current[cardKey] = shouldBeVisible
+          }
+        }
+      })
+    })
+
+    // Execute animations in batch using RAF for smooth performance
+    if (animationsToRun.length > 0) {
+      requestAnimationFrame(() => {
+        animationsToRun.forEach(({ card, key, visible }) => {
+          // Kill any existing animation for this card to prevent overlap
+          if (activeAnimations.current[key]) {
+            activeAnimations.current[key]?.kill()
+            activeAnimations.current[key] = null
+          }
+
+          if (visible) {
             // Smooth fade in and slide in
-            gsap.to(card, {
+            const tween = gsap.to(card, {
               x: 0,
               opacity: 1,
               duration: 0.4,
               ease: 'power2.out',
               force3D: true,
-              overwrite: 'auto'
+              overwrite: true, // Force overwrite to prevent conflicts
+              onComplete: () => {
+                activeAnimations.current[key] = null
+              }
             })
+            activeAnimations.current[key] = tween
           } else {
             // Smooth fade out and slide out
-            gsap.to(card, {
+            const tween = gsap.to(card, {
               x: -400,
               opacity: 0,
               duration: 0.4,
               ease: 'power2.in',
               force3D: true,
-              overwrite: 'auto'
+              overwrite: true, // Force overwrite to prevent conflicts
+              onComplete: () => {
+                activeAnimations.current[key] = null
+              }
             })
+            activeAnimations.current[key] = tween
           }
-        }
+        })
       })
-    })
-  }, [currentFrame, currentSceneForFrame, isPreloading, shouldShowUI, isMobile])
+    }
+
+    // Cleanup function to kill animations when effect re-runs or unmounts
+    return () => {
+      // Note: We don't kill animations here as they should complete naturally
+      // Only kill if component unmounts (handled in main cleanup)
+    }
+  }, [currentFrame, currentSceneForFrame, isPreloading, shouldShowUI, isMobile, getActiveSceneIndexFromCards, shouldCardBeVisible])
 
   // Scene 1 mobile: Adjust Health Gauge Card height to span from Voltage to Internal Resistance
   useEffect(() => {
