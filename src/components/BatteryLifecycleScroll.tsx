@@ -1800,9 +1800,9 @@ export default function BatteryLifecycleScroll() {
         cardElement.style.width = '25rem'
         cardElement.style.maxWidth = '25rem'
         cardElement.style.minWidth = '25rem'
-        cardElement.style.height = '8rem'
-        cardElement.style.maxHeight = '8rem'
-        cardElement.style.minHeight = '8rem'
+        cardElement.style.height = '10rem'
+        cardElement.style.maxHeight = '10rem'
+        cardElement.style.minHeight = '10rem'
         
         // Ensure container doesn't overflow
         cardElement.style.overflow = 'hidden'
@@ -1841,9 +1841,9 @@ export default function BatteryLifecycleScroll() {
         const imageElement = cardElement.querySelector('img[src="/cards/platecondition.png"]') as HTMLImageElement
         if (imageElement) {
           imageElement.style.width = '14rem'
-          imageElement.style.height = '8.5rem'
+          imageElement.style.height = '10rem'
           imageElement.style.maxWidth = '14rem'
-          imageElement.style.maxHeight = '8.5rem'
+          imageElement.style.maxHeight = '10rem'
           imageElement.style.objectFit = 'contain'
           imageElement.style.marginLeft = '3rem'
         }
