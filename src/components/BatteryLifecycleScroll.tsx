@@ -543,63 +543,67 @@ export default function BatteryLifecycleScroll() {
       // Desktop/laptop positioning (unchanged)
       // Scene-specific positioning
       if (sceneIndex === 0) {
-        // Scene 1 positions
-        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12'
+        // Scene 1 positions - Desktop/Laptop alignment fixes
+        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12 lg:left-[19em] xl:top-12 xl:left-[19.5em] 2xl:top-12 2xl:left-[20em]'
+        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12 lg:left-12 xl:top-12 xl:left-14 2xl:top-12 2xl:left-16'
         // HEALTH % card: same as bottom-left but moved down on laptop only
-        if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return 'left-12 sm:left-14 md:left-[4rem] top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem] xl:top-[23rem] 2xl:top-[24rem]'
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-[4rem] top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem]'
+        if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return 'left-12 sm:left-14 md:left-[4rem] top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem] lg:left-[4.5rem] xl:top-[23rem] xl:left-[5rem] 2xl:top-[24rem] 2xl:left-[5.5rem]'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-[4rem] top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem] lg:left-[4.5rem] xl:top-[22rem] xl:left-[5rem] 2xl:top-[22rem] 2xl:left-[5.5rem]'
         // SULPHATION card (scene 1): same as bottom-right but moved up on laptop only
-        if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return 'left-12 sm:left-14 md:left-[4rem] top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41rem] xl:top-[27.5rem] 2xl:top-[42rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-[4rem] top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41rem] xl:top-[27rem] 2xl:top-[41rem]'
+        if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return 'left-12 sm:left-14 md:left-[4rem] top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41rem] lg:left-[4.5rem] xl:top-[27.5rem] xl:left-[5rem] 2xl:top-[42rem] 2xl:left-[5.5rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-[4rem] top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41rem] lg:left-[4.5rem] xl:top-[27rem] xl:left-[5rem] 2xl:top-[41rem] 2xl:left-[5.5rem]'
       } else if (sceneIndex === 1) {
-        // Scene 2 positions
-        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-28 lg:left-16 top-[34%] sm:top-[36%] md:top-[40%] lg:top-[23rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-28 lg:left-16 top-[65%] sm:top-[67%] md:top-[71%] lg:top-[41rem]'
+        // Scene 2 positions - Desktop/Laptop alignment fixes
+        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12 lg:left-[19em] xl:top-12 xl:left-[19.5em] 2xl:top-12 2xl:left-[20em]'
+        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12 lg:left-12 xl:top-12 xl:left-14 2xl:top-12 2xl:left-16'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-28 lg:left-[4.5rem] xl:left-[5rem] 2xl:left-[5.5rem] top-[34%] sm:top-[36%] md:top-[40%] lg:top-[23rem] xl:top-[23rem] 2xl:top-[23rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-28 lg:left-[4.5rem] xl:left-[5rem] 2xl:left-[5.5rem] top-[65%] sm:top-[67%] md:top-[71%] lg:top-[41rem] xl:top-[41rem] 2xl:top-[41rem]'
       } else if (sceneIndex === 2) {
-        // Scene 3 positions
+        // Scene 3 positions - Desktop/Laptop alignment fixes
         if (cardData.position === 'right') {
-          if (cardData.cardType === 'logged') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20'
-          return 'left-12 sm:left-14 md:left-20 top-[67%] sm:top-[69%] md:top-[73%] lg:top-[43rem]'
+          if (cardData.cardType === 'logged') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20 lg:bottom-20 xl:bottom-20 2xl:bottom-20'
+          return 'left-12 sm:left-14 md:left-20 top-[67%] sm:top-[69%] md:top-[73%] lg:top-[43rem] lg:left-[4.5rem] xl:top-[43rem] xl:left-[5rem] 2xl:top-[43rem] 2xl:left-[5.5rem]'
         }
-        if (cardData.position === 'left') return 'left-12 sm:left-14 md:left-20 top-14 sm:top-16 md:top-20 lg:top-12'
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-20 top-[22%] sm:top-[24%] md:top-[28%] lg:top-[14rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-20 top-[41%] sm:top-[42%] md:top-[46%] lg:top-[27rem]'
+        if (cardData.position === 'left') return 'left-12 sm:left-14 md:left-20 top-14 sm:top-16 md:top-20 lg:top-12 lg:left-[4.5rem] xl:top-12 xl:left-[5rem] 2xl:top-12 2xl:left-[5.5rem]'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-20 top-[22%] sm:top-[24%] md:top-[28%] lg:top-[14rem] lg:left-[4.5rem] xl:top-[14rem] xl:left-[5rem] 2xl:top-[14rem] 2xl:left-[5.5rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-20 top-[41%] sm:top-[42%] md:top-[46%] lg:top-[27rem] lg:left-[4.5rem] xl:top-[27rem] xl:left-[5rem] 2xl:top-[27rem] 2xl:left-[5.5rem]'
       } else if (sceneIndex === 3) {
-        // Scene 4 positions
-        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[34%] sm:top-[36%] md:top-[40%] lg:top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[64%] sm:top-[66%] md:top-[70%] lg:top-[40rem]'
+        // Scene 4 positions - Desktop/Laptop alignment fixes
+        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12 lg:left-[19em] xl:top-12 xl:left-[19.5em] 2xl:top-12 2xl:left-[20em]'
+        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12 lg:left-12 xl:top-12 xl:left-14 2xl:top-12 2xl:left-16'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[34%] sm:top-[36%] md:top-[40%] lg:top-[22rem] lg:left-[4.5rem] xl:top-[22rem] xl:left-[5rem] 2xl:top-[22rem] 2xl:left-[5.5rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[64%] sm:top-[66%] md:top-[70%] lg:top-[40rem] lg:left-[4.5rem] xl:top-[40rem] xl:left-[5rem] 2xl:top-[40rem] 2xl:left-[5.5rem]'
       } else if (sceneIndex === 4) {
-        // Scene 5 positions
+        // Scene 5 positions - Desktop/Laptop alignment fixes
         if (cardData.position === 'right') {
-          if (cardData.cardType === 'controlled') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20'
-          return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12'
+          if (cardData.cardType === 'controlled') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20 lg:bottom-20 xl:bottom-20 2xl:bottom-20'
+          return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12 lg:left-[19em] xl:top-12 xl:left-[19.5em] 2xl:top-12 2xl:left-[20em]'
         }
-        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41.5rem]'
+        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12 lg:left-12 xl:top-12 xl:left-14 2xl:top-12 2xl:left-16'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem] lg:left-[4.5rem] xl:top-[22rem] xl:left-[5rem] 2xl:top-[22rem] 2xl:left-[5.5rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41.5rem] lg:left-[4.5rem] xl:top-[41.5rem] xl:left-[5rem] 2xl:top-[41.5rem] 2xl:left-[5.5rem]'
       } else if (sceneIndex === 5) {
-        // Scene 6 positions
-        if (cardData.position === 'top') return 'left-12 sm:left-14 md:left-20 top-20 sm:top-22 md:top-26 lg:top-16'
-        if (cardData.position === 'left') return 'left-10 sm:left-12 md:left-16 top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem]'
-        if (cardData.position === 'right') {
-          if (cardData.cardType === 'certified') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20'
-          return 'right-12 sm:right-14 md:right-auto md:left-[20rem] top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem]'
+        // Scene 6 positions - Desktop/Laptop alignment fixes
+        if (cardData.position === 'top') return 'left-12 sm:left-14 md:left-20 top-20 sm:top-22 md:top-26 lg:top-16 lg:left-[4.5rem] xl:top-16 xl:left-[5rem] 2xl:top-16 2xl:left-[5.5rem]'
+        if (cardData.position === 'left') {
+          if (cardData.cardType === 'health-gauge') return 'left-10 sm:left-12 md:left-16 top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem] lg:left-[3rem] xl:top-[22rem] xl:left-[3.5rem] 2xl:top-[22rem] 2xl:left-[4rem]'
+          return 'left-10 sm:left-12 md:left-16 top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem] lg:left-[4.5rem] xl:top-[22rem] xl:left-[5rem] 2xl:top-[22rem] 2xl:left-[5.5rem]'
         }
-        if (cardData.position === 'bottom') return 'left-12 sm:left-14 md:left-20 top-[60%] sm:top-[62%] md:top-[66%] lg:top-[41em]'
+        if (cardData.position === 'right') {
+          if (cardData.cardType === 'certified') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20 lg:bottom-20 xl:bottom-20 2xl:bottom-20'
+          if (cardData.cardType === 'warranty') return 'right-12 sm:right-14 md:right-auto md:left-[20rem] top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem] lg:left-[19.5em] xl:top-[22rem] xl:left-[20em] 2xl:top-[22rem] 2xl:left-[20.5em]'
+          return 'right-12 sm:right-14 md:right-auto md:left-[20rem] top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem] lg:left-[19em] xl:top-[22rem] xl:left-[19.5em] 2xl:top-[22rem] 2xl:left-[20em]'
+        }
+        if (cardData.position === 'bottom') return 'left-12 sm:left-14 md:left-20 top-[60%] sm:top-[62%] md:top-[66%] lg:top-[41em] lg:left-[4.5rem] xl:top-[41em] xl:left-[5rem] 2xl:top-[41em] 2xl:left-[5.5rem]'
       } else if (sceneIndex === 6) {
-        // Scene 7 positions
-        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-16 sm:top-18 md:top-22 lg:top-16'
+        // Scene 7 positions - Desktop/Laptop alignment fixes
+        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-16 sm:top-18 md:top-22 lg:top-16 lg:left-[3rem] xl:top-16 xl:left-[3.5rem] 2xl:top-16 2xl:left-[4rem]'
         if (cardData.position === 'right') {
-          if (cardData.cardType === 'verified') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20'
-          return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-16 sm:top-18 md:top-22 lg:top-16'
+          if (cardData.cardType === 'verified') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20 lg:bottom-20 xl:bottom-20 2xl:bottom-20'
+          return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-16 sm:top-18 md:top-22 lg:top-16 lg:left-[19.5em] xl:top-16 xl:left-[20em] 2xl:top-16 2xl:left-[20.5em]'
         }
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[35%] sm:top-[37%] md:top-[41%] lg:top-[24rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[60%] sm:top-[62%] md:top-[66%] lg:top-[40rem]'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[35%] sm:top-[37%] md:top-[41%] lg:top-[24rem] lg:left-[4.5rem] xl:top-[24rem] xl:left-[5rem] 2xl:top-[24rem] 2xl:left-[5.5rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[60%] sm:top-[62%] md:top-[66%] lg:top-[40rem] lg:left-[4.5rem] xl:top-[40rem] xl:left-[5rem] 2xl:top-[40rem] 2xl:left-[5.5rem]'
       }
       // Default positions
       if (cardData.position === 'right') return 'right-16 md:right-auto md:left-[16rem] top-24 md:top-28 lg:top-20'
