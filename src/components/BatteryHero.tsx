@@ -97,6 +97,7 @@ export default function BatteryHero() {
   const [mounted, setMounted] = useState(false)
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
   const [isDesktop, setIsDesktop] = useState(false)
+  const [letterSpacing, setLetterSpacing] = useState('-2.4px')
   const containerRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
 
@@ -131,7 +132,16 @@ export default function BatteryHero() {
 
   useEffect(() => {
     const checkIsDesktop = () => {
-      setIsDesktop(window.innerWidth >= 1024)
+      const width = window.innerWidth
+      setIsDesktop(width >= 1024)
+      // Adjust letter spacing based on screen size
+      if (width < 640) {
+        setLetterSpacing('0px')
+      } else if (width < 1024) {
+        setLetterSpacing('-1px')
+      } else {
+        setLetterSpacing('-2.4px')
+      }
     }
     
     checkIsDesktop()
@@ -329,12 +339,12 @@ export default function BatteryHero() {
                 fontFamily: 'Arial, sans-serif',
                 fontWeight: 900,
                 lineHeight: '120%',
-                letterSpacing: '-2.4px'
+                letterSpacing: letterSpacing
               }}
             >
               {words.map((word, wordIndex) => {
                 const wordElement = (
-                  <span key={wordIndex} className="inline-block whitespace-nowrap mr-[0.25em]">
+                  <span key={wordIndex} className="inline-block whitespace-nowrap mr-[0.15em] sm:mr-[0.2em] lg:mr-[0.25em]">
                     {word.split('').map((char, charIndex) => {
                       const delay = 0.2 + (globalLetterCount * 0.02)
                       globalLetterCount++

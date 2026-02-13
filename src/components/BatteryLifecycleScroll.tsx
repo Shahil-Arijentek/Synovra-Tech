@@ -486,7 +486,7 @@ export default function BatteryLifecycleScroll() {
           // Health gauge positioned extending to the right edge - aligned with Voltage top and extends to Internal Resistance bottom
           if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return '-right-12 top-[10%]'
           // Sulphation positioned in bottom right area
-          if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return '-right-4 top-[75%]'
+          if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return '-right-4 top-[72%]'
         }
         // Scene 2 mobile positioning
         else if (sceneIndex === 1) {
@@ -494,7 +494,7 @@ export default function BatteryLifecycleScroll() {
           if (cardData.position === 'left') return 'left-6 top-[5%]'
           // Sulphation detected positioned extending to the right edge - same top position as health gauge in Scene 1
           if (cardData.position === 'bottom-left' && cardData.cardType === 'sulphation-detected') return '-right-44 top-[10%]'
-          if (cardData.position === 'bottom-right' && cardData.cardType === 'decision') return '-right-20 top-[77%]'
+          if (cardData.position === 'bottom-right' && cardData.cardType === 'decision') return '-right-20 top-[72%]'
         }
         // Scene 3 mobile positioning - organized structure
         else if (sceneIndex === 2) {
@@ -512,14 +512,14 @@ export default function BatteryLifecycleScroll() {
           // Sulphation positioned extending to the right edge - matching Scene 2 sulphation-detected
           if (cardData.cardType === 'sulphation') return '-right-8 top-[8%]' // Right side, moved up
           // Record-lock positioned matching Scene 2 decision card
-          if (cardData.cardType === 'record-lock') return '-right-16 top-[77%]' // Bottom right, moved more right
+          if (cardData.cardType === 'record-lock') return '-right-16 top-[72%]' // Bottom right, moved more right
         }
         // Scene 5 mobile positioning (similar to Scene 4)
         else if (sceneIndex === 4) {
           if (cardData.cardType === 'voltage-trend') return 'left-6 top-[5%]' // Top left
           if (cardData.cardType === 'internal-resistance') return 'left-6 top-[18%]' // Below voltage trend
           if (cardData.cardType === 'electrochemical-correction') return '-right-8 top-[8%]' // Right side, moved more left
-          if (cardData.cardType === 'plate-condition') return 'left-20 top-[77%]' // Bottom, moved more left
+          if (cardData.cardType === 'plate-condition') return 'left-20 top-[72%]' // Bottom, moved more left
           if (cardData.cardType === 'controlled') return '-right-6 top-[90%]' // Bottom right badge, moved down more, slightly right
         }
         // Scene 6 mobile positioning (similar to previous scenes)
@@ -527,7 +527,7 @@ export default function BatteryLifecycleScroll() {
           if (cardData.cardType === 'health-gauge') return 'left-6 top-[5%]' // Top left
           if (cardData.cardType === 'warranty') return 'left-6 top-[18%]' // Below health gauge
           if (cardData.cardType === 'performance-restored') return '-right-4 top-[8%]' // Right side, moved more left
-          if (cardData.cardType === 'record-lock') return 'left-20 top-[75%]' // Bottom, moved more right
+          if (cardData.cardType === 'record-lock') return 'left-20 top-[72%]' // Bottom, moved more right
           if (cardData.cardType === 'certified') return '-right-4 top-[95%]' // Bottom right badge, moved down even more
         }
         // Scene 7 mobile positioning (similar to previous scenes)
@@ -535,7 +535,7 @@ export default function BatteryLifecycleScroll() {
           if (cardData.cardType === 'recovery-certified') return 'left-20 top-[5%]' // Left side (record lock style) - moved slightly right
           if (cardData.cardType === 'lead') return 'left-16 top-[24%]' // Just below record lock, moved slightly more right
           if (cardData.cardType === 'polymer') return 'right-0 top-[24%]' // Right side, moved a little more left
-          if (cardData.cardType === 'compliance-record') return 'left-20 top-[77%]' // Bottom, moved down slightly
+          if (cardData.cardType === 'compliance-record') return 'left-20 top-[72%]' // Bottom, moved down slightly
           if (cardData.cardType === 'verified') return '-right-4 top-[92%]' // Bottom right badge, moved down a little more
         }
       }
