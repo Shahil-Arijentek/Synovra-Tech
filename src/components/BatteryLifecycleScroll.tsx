@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useNavbar } from '../contexts/NavbarContext'
@@ -353,6 +353,13 @@ export default function BatteryLifecycleScroll() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const currentCanvasFrameRef = useRef({ scene: 0, frame: 1 }) // Track what's on canvas
   const rafRef = useRef<number | null>(null)
+  // Track card visibility states to prevent unnecessary animations
+  const cardVisibilityState = useRef<{ [key: string]: boolean }>({})
+  // Track active GSAP animations to prevent overlaps
+  const activeAnimations = useRef<{ [key: string]: gsap.core.Tween | null }>({})
+  // Throttle state updates during scroll
+  const scrollUpdateTimeoutRef = useRef<number | null>(null)
+  const pendingFrameUpdate = useRef<{ frame: number; scene: number } | null>(null)
 
   // Mobile detection effect
   useEffect(() => {
@@ -371,8 +378,8 @@ export default function BatteryLifecycleScroll() {
     }
   }, [])
 
-  // Helper function to check if a card should be visible based on current frame
-  const shouldCardBeVisible = (sceneIndex: number, currentScene: number, currentFrame: number): boolean => {
+  // Memoized helper function to check if a card should be visible based on current frame
+  const shouldCardBeVisible = useCallback((sceneIndex: number, currentScene: number, currentFrame: number): boolean => {
     // Scene 1 cards: Show when viewing scene-2 folder frames 1-26
     if (sceneIndex === 0) {
       return currentScene === 1 && currentFrame >= 1 && currentFrame <= 26
@@ -416,10 +423,10 @@ export default function BatteryLifecycleScroll() {
     }
     
     return false
-  }
+  }, [])
 
-  // Helper function to get the active scene index based on which cards are currently visible
-  const getActiveSceneIndexFromCards = (currentScene: number, currentFrame: number): number | null => {
+  // Memoized helper function to get the active scene index based on which cards are currently visible
+  const getActiveSceneIndexFromCards = useCallback((currentScene: number, currentFrame: number): number | null => {
     // Check each scene in order to find which one should be active
     for (let sceneIndex = 0; sceneIndex < sceneConfig.length; sceneIndex++) {
       if (shouldCardBeVisible(sceneIndex, currentScene, currentFrame)) {
@@ -427,7 +434,7 @@ export default function BatteryLifecycleScroll() {
       }
     }
     return null
-  }
+  }, [shouldCardBeVisible])
 
   // Canvas frame rendering - ZERO BLINK guaranteed
   const drawFrame = (sceneIndex: number, frameNumber: number) => {
@@ -536,63 +543,67 @@ export default function BatteryLifecycleScroll() {
       // Desktop/laptop positioning (unchanged)
       // Scene-specific positioning
       if (sceneIndex === 0) {
-        // Scene 1 positions
-        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12'
+        // Scene 1 positions - Desktop/Laptop alignment fixes
+        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12 lg:left-[19em] xl:top-12 xl:left-[19.5em] 2xl:top-12 2xl:left-[20em]'
+        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12 lg:left-12 xl:top-12 xl:left-14 2xl:top-12 2xl:left-16'
         // HEALTH % card: same as bottom-left but moved down on laptop only
-        if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return 'left-12 sm:left-14 md:left-[4rem] top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem] xl:top-[23rem] 2xl:top-[24rem]'
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-[4rem] top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem]'
+        if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return 'left-12 sm:left-14 md:left-[4rem] top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem] lg:left-[4.5rem] xl:top-[23rem] xl:left-[5rem] 2xl:top-[24rem] 2xl:left-[5.5rem]'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-[4rem] top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem] lg:left-[4.5rem] xl:top-[22rem] xl:left-[5rem] 2xl:top-[22rem] 2xl:left-[5.5rem]'
         // SULPHATION card (scene 1): same as bottom-right but moved up on laptop only
-        if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return 'left-12 sm:left-14 md:left-[4rem] top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41rem] xl:top-[27.5rem] 2xl:top-[42rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-[4rem] top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41rem] xl:top-[27rem] 2xl:top-[41rem]'
+        if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') return 'left-12 sm:left-14 md:left-[4rem] top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41rem] lg:left-[4.5rem] xl:top-[27.5rem] xl:left-[5rem] 2xl:top-[42rem] 2xl:left-[5.5rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-[4rem] top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41rem] lg:left-[4.5rem] xl:top-[27rem] xl:left-[5rem] 2xl:top-[41rem] 2xl:left-[5.5rem]'
       } else if (sceneIndex === 1) {
-        // Scene 2 positions
-        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-28 lg:left-16 top-[34%] sm:top-[36%] md:top-[40%] lg:top-[23rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-28 lg:left-16 top-[65%] sm:top-[67%] md:top-[71%] lg:top-[41rem]'
+        // Scene 2 positions - Desktop/Laptop alignment fixes
+        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12 lg:left-[19em] xl:top-12 xl:left-[19.5em] 2xl:top-12 2xl:left-[20em]'
+        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12 lg:left-12 xl:top-12 xl:left-14 2xl:top-12 2xl:left-16'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-28 lg:left-[4.5rem] xl:left-[5rem] 2xl:left-[5.5rem] top-[34%] sm:top-[36%] md:top-[40%] lg:top-[23rem] xl:top-[23rem] 2xl:top-[23rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-28 lg:left-[4.5rem] xl:left-[5rem] 2xl:left-[5.5rem] top-[65%] sm:top-[67%] md:top-[71%] lg:top-[41rem] xl:top-[41rem] 2xl:top-[41rem]'
       } else if (sceneIndex === 2) {
-        // Scene 3 positions
+        // Scene 3 positions - Desktop/Laptop alignment fixes
         if (cardData.position === 'right') {
-          if (cardData.cardType === 'logged') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20'
-          return 'left-12 sm:left-14 md:left-20 top-[67%] sm:top-[69%] md:top-[73%] lg:top-[43rem]'
+          if (cardData.cardType === 'logged') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20 lg:bottom-20 xl:bottom-20 2xl:bottom-20'
+          return 'left-12 sm:left-14 md:left-20 top-[67%] sm:top-[69%] md:top-[73%] lg:top-[43rem] lg:left-[4.5rem] xl:top-[43rem] xl:left-[5rem] 2xl:top-[43rem] 2xl:left-[5.5rem]'
         }
-        if (cardData.position === 'left') return 'left-12 sm:left-14 md:left-20 top-14 sm:top-16 md:top-20 lg:top-12'
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-20 top-[22%] sm:top-[24%] md:top-[28%] lg:top-[14rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-20 top-[41%] sm:top-[42%] md:top-[46%] lg:top-[27rem]'
+        if (cardData.position === 'left') return 'left-12 sm:left-14 md:left-20 top-14 sm:top-16 md:top-20 lg:top-12 lg:left-[4.5rem] xl:top-12 xl:left-[5rem] 2xl:top-12 2xl:left-[5.5rem]'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-20 top-[22%] sm:top-[24%] md:top-[28%] lg:top-[14rem] lg:left-[4.5rem] xl:top-[14rem] xl:left-[5rem] 2xl:top-[14rem] 2xl:left-[5.5rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-20 top-[41%] sm:top-[42%] md:top-[46%] lg:top-[27rem] lg:left-[4.5rem] xl:top-[27rem] xl:left-[5rem] 2xl:top-[27rem] 2xl:left-[5.5rem]'
       } else if (sceneIndex === 3) {
-        // Scene 4 positions
-        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[34%] sm:top-[36%] md:top-[40%] lg:top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[64%] sm:top-[66%] md:top-[70%] lg:top-[40rem]'
+        // Scene 4 positions - Desktop/Laptop alignment fixes
+        if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12 lg:left-[19em] xl:top-12 xl:left-[19.5em] 2xl:top-12 2xl:left-[20em]'
+        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12 lg:left-12 xl:top-12 xl:left-14 2xl:top-12 2xl:left-16'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[34%] sm:top-[36%] md:top-[40%] lg:top-[22rem] lg:left-[4.5rem] xl:top-[22rem] xl:left-[5rem] 2xl:top-[22rem] 2xl:left-[5.5rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[64%] sm:top-[66%] md:top-[70%] lg:top-[40rem] lg:left-[4.5rem] xl:top-[40rem] xl:left-[5rem] 2xl:top-[40rem] 2xl:left-[5.5rem]'
       } else if (sceneIndex === 4) {
-        // Scene 5 positions
+        // Scene 5 positions - Desktop/Laptop alignment fixes
         if (cardData.position === 'right') {
-          if (cardData.cardType === 'controlled') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20'
-          return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12'
+          if (cardData.cardType === 'controlled') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20 lg:bottom-20 xl:bottom-20 2xl:bottom-20'
+          return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12 lg:left-[19em] xl:top-12 xl:left-[19.5em] 2xl:top-12 2xl:left-[20em]'
         }
-        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12'
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41.5rem]'
+        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12 lg:left-12 xl:top-12 xl:left-14 2xl:top-12 2xl:left-16'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem] lg:left-[4.5rem] xl:top-[22rem] xl:left-[5rem] 2xl:top-[22rem] 2xl:left-[5.5rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41.5rem] lg:left-[4.5rem] xl:top-[41.5rem] xl:left-[5rem] 2xl:top-[41.5rem] 2xl:left-[5.5rem]'
       } else if (sceneIndex === 5) {
-        // Scene 6 positions
-        if (cardData.position === 'top') return 'left-12 sm:left-14 md:left-20 top-20 sm:top-22 md:top-26 lg:top-16'
-        if (cardData.position === 'left') return 'left-10 sm:left-12 md:left-16 top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem]'
-        if (cardData.position === 'right') {
-          if (cardData.cardType === 'certified') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20'
-          return 'right-12 sm:right-14 md:right-auto md:left-[20rem] top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem]'
+        // Scene 6 positions - Desktop/Laptop alignment fixes
+        if (cardData.position === 'top') return 'left-12 sm:left-14 md:left-20 top-20 sm:top-22 md:top-26 lg:top-16 lg:left-[4.5rem] xl:top-16 xl:left-[5rem] 2xl:top-16 2xl:left-[5.5rem]'
+        if (cardData.position === 'left') {
+          if (cardData.cardType === 'health-gauge') return 'left-10 sm:left-12 md:left-16 top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem] lg:left-[3rem] xl:top-[22rem] xl:left-[3.5rem] 2xl:top-[22rem] 2xl:left-[4rem]'
+          return 'left-10 sm:left-12 md:left-16 top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem] lg:left-[4.5rem] xl:top-[22rem] xl:left-[5rem] 2xl:top-[22rem] 2xl:left-[5.5rem]'
         }
-        if (cardData.position === 'bottom') return 'left-12 sm:left-14 md:left-20 top-[60%] sm:top-[62%] md:top-[66%] lg:top-[41em]'
+        if (cardData.position === 'right') {
+          if (cardData.cardType === 'certified') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20 lg:bottom-20 xl:bottom-20 2xl:bottom-20'
+          if (cardData.cardType === 'warranty') return 'right-12 sm:right-14 md:right-auto md:left-[20rem] top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem] lg:left-[19.5em] xl:top-[22rem] xl:left-[20em] 2xl:top-[22rem] 2xl:left-[20.5em]'
+          return 'right-12 sm:right-14 md:right-auto md:left-[20rem] top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem] lg:left-[19em] xl:top-[22rem] xl:left-[19.5em] 2xl:top-[22rem] 2xl:left-[20em]'
+        }
+        if (cardData.position === 'bottom') return 'left-12 sm:left-14 md:left-20 top-[60%] sm:top-[62%] md:top-[66%] lg:top-[41em] lg:left-[4.5rem] xl:top-[41em] xl:left-[5rem] 2xl:top-[41em] 2xl:left-[5.5rem]'
       } else if (sceneIndex === 6) {
-        // Scene 7 positions
-        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-16 sm:top-18 md:top-22 lg:top-16'
+        // Scene 7 positions - Desktop/Laptop alignment fixes
+        if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-16 sm:top-18 md:top-22 lg:top-16 lg:left-[3rem] xl:top-16 xl:left-[3.5rem] 2xl:top-16 2xl:left-[4rem]'
         if (cardData.position === 'right') {
-          if (cardData.cardType === 'verified') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20'
-          return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-16 sm:top-18 md:top-22 lg:top-16'
+          if (cardData.cardType === 'verified') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20 lg:bottom-20 xl:bottom-20 2xl:bottom-20'
+          return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-16 sm:top-18 md:top-22 lg:top-16 lg:left-[19.5em] xl:top-16 xl:left-[20em] 2xl:top-16 2xl:left-[20.5em]'
         }
-        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[35%] sm:top-[37%] md:top-[41%] lg:top-[24rem]'
-        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[60%] sm:top-[62%] md:top-[66%] lg:top-[40rem]'
+        if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[35%] sm:top-[37%] md:top-[41%] lg:top-[24rem] lg:left-[4.5rem] xl:top-[24rem] xl:left-[5rem] 2xl:top-[24rem] 2xl:left-[5.5rem]'
+        if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[60%] sm:top-[62%] md:top-[66%] lg:top-[40rem] lg:left-[4.5rem] xl:top-[40rem] xl:left-[5rem] 2xl:top-[40rem] 2xl:left-[5.5rem]'
       }
       // Default positions
       if (cardData.position === 'right') return 'right-16 md:right-auto md:left-[16rem] top-24 md:top-28 lg:top-20'
@@ -1223,9 +1234,24 @@ export default function BatteryLifecycleScroll() {
             const frameIndex = Math.floor(sceneProgress * (frameCount - 1))
             const clampedFrameIndex = Math.max(0, Math.min(frameIndex, frameCount - 1))
             
-            // Update frame state (convert to 1-based for file naming)
-            setCurrentFrame(clampedFrameIndex + 1)
-            setCurrentSceneForFrame(scene.sceneIndex)
+            // Calculate new frame and scene values
+            const newFrame = clampedFrameIndex + 1
+            const newScene = scene.sceneIndex
+
+            // Store pending update
+            pendingFrameUpdate.current = { frame: newFrame, scene: newScene }
+
+            // Throttle state updates using RAF for smooth performance
+            if (scrollUpdateTimeoutRef.current === null) {
+              scrollUpdateTimeoutRef.current = requestAnimationFrame(() => {
+                if (pendingFrameUpdate.current) {
+                  setCurrentFrame(pendingFrameUpdate.current.frame)
+                  setCurrentSceneForFrame(pendingFrameUpdate.current.scene)
+                  pendingFrameUpdate.current = null
+                }
+                scrollUpdateTimeoutRef.current = null
+              })
+            }
 
             break
           }
@@ -1256,6 +1282,16 @@ export default function BatteryLifecycleScroll() {
 
     return () => {
       clearTimeout(initTimeout)
+      // Cancel pending scroll updates
+      if (scrollUpdateTimeoutRef.current !== null) {
+        cancelAnimationFrame(scrollUpdateTimeoutRef.current)
+        scrollUpdateTimeoutRef.current = null
+      }
+      // Kill all active card animations
+      Object.values(activeAnimations.current).forEach(anim => {
+        if (anim) anim.kill()
+      })
+      activeAnimations.current = {}
       ScrollTrigger.getAll().forEach(trigger => trigger.kill())
       // Show navbar when component unmounts
       setNavbarVisible(true)
@@ -1394,7 +1430,7 @@ export default function BatteryLifecycleScroll() {
     }
   }, [currentFrame, currentSceneForFrame])
 
-  // Smooth card visibility based on frame ranges
+  // Optimized card visibility based on frame ranges - prevents lag and overlap
   useEffect(() => {
     if (isPreloading) return
 
@@ -1408,7 +1444,10 @@ export default function BatteryLifecycleScroll() {
       setShouldShowUI(true)
     }
 
-    // Check visibility for each scene's cards and animate smoothly
+    // Batch all animations to prevent conflicts
+    const animationsToRun: Array<{ card: HTMLElement; key: string; visible: boolean }> = []
+
+    // Check visibility for each scene's cards and collect animations
     sceneConfig.forEach((scene, sceneIndex) => {
       const shouldBeVisible = shouldCardBeVisible(sceneIndex, currentSceneForFrame, currentFrame)
       
@@ -1417,31 +1456,68 @@ export default function BatteryLifecycleScroll() {
         const card = cardRefs.current[cardKey]
         
         if (card) {
-          if (shouldBeVisible) {
+          // Check if visibility state has changed - skip if already in correct state
+          const currentVisibility = cardVisibilityState.current[cardKey] || false
+          
+          if (shouldBeVisible !== currentVisibility) {
+            // Only animate if state actually changed
+            animationsToRun.push({ card, key: cardKey, visible: shouldBeVisible })
+            // Update state immediately to prevent duplicate animations
+            cardVisibilityState.current[cardKey] = shouldBeVisible
+          }
+        }
+      })
+    })
+
+    // Execute animations in batch using RAF for smooth performance
+    if (animationsToRun.length > 0) {
+      requestAnimationFrame(() => {
+        animationsToRun.forEach(({ card, key, visible }) => {
+          // Kill any existing animation for this card to prevent overlap
+          if (activeAnimations.current[key]) {
+            activeAnimations.current[key]?.kill()
+            activeAnimations.current[key] = null
+          }
+
+          if (visible) {
             // Smooth fade in and slide in
-            gsap.to(card, {
+            const tween = gsap.to(card, {
               x: 0,
               opacity: 1,
               duration: 0.4,
               ease: 'power2.out',
               force3D: true,
-              overwrite: 'auto'
+              overwrite: true, // Force overwrite to prevent conflicts
+              onComplete: () => {
+                activeAnimations.current[key] = null
+              }
             })
+            activeAnimations.current[key] = tween
           } else {
             // Smooth fade out and slide out
-            gsap.to(card, {
+            const tween = gsap.to(card, {
               x: -400,
               opacity: 0,
               duration: 0.4,
               ease: 'power2.in',
               force3D: true,
-              overwrite: 'auto'
+              overwrite: true, // Force overwrite to prevent conflicts
+              onComplete: () => {
+                activeAnimations.current[key] = null
+              }
             })
+            activeAnimations.current[key] = tween
           }
-        }
+        })
       })
-    })
-  }, [currentFrame, currentSceneForFrame, isPreloading, shouldShowUI, isMobile])
+    }
+
+    // Cleanup function to kill animations when effect re-runs or unmounts
+    return () => {
+      // Note: We don't kill animations here as they should complete naturally
+      // Only kill if component unmounts (handled in main cleanup)
+    }
+  }, [currentFrame, currentSceneForFrame, isPreloading, shouldShowUI, isMobile, getActiveSceneIndexFromCards, shouldCardBeVisible])
 
   // Scene 1 mobile: Adjust Health Gauge Card height to span from Voltage to Internal Resistance
   useEffect(() => {
@@ -2035,7 +2111,7 @@ export default function BatteryLifecycleScroll() {
               {/* Progress Boxes Container */}
               <div className={`absolute z-20 ${isMobile
                 ? 'top-[calc(50%+17.5vh-2rem)] left-4'
-                : 'top-0 lg:top-2 left-5 sm:left-4 lg:left-[32rem] xl:left-[38rem]'
+                : 'top-4 lg:top-8 left-5 sm:left-4 lg:left-[32rem] xl:left-[38rem]'
                 }`}>
                 <div 
                   className="flex items-center gap-0.5 lg:gap-2 backdrop-blur-sm h-[1.875rem] lg:h-[4.688rem] rounded-md lg:rounded-2xl px-1.5 lg:px-5"
@@ -2084,7 +2160,7 @@ export default function BatteryLifecycleScroll() {
               {activeSceneIndex !== null && (
                 <div className={`absolute z-20 ${isMobile
                   ? 'top-[calc(50%+17.5vh-2rem)] right-4 max-w-[calc(100%-8rem)]'
-                  : 'top-0 lg:top-2 right-2 sm:right-4 lg:right-8 xl:right-16 max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-2rem)] lg:max-w-[600px] xl:max-w-none'
+                  : 'top-4 lg:top-8 right-2 sm:right-4 lg:right-8 xl:right-16 max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-2rem)] lg:max-w-[600px] xl:max-w-none'
                   }`}>
                   <div
                     className="flex flex-col items-center justify-center backdrop-blur-sm min-h-[1.875rem] sm:min-h-[2.188rem] lg:min-h-[4.688rem] rounded-lg lg:rounded-2xl px-3 sm:px-4 lg:px-6 xl:px-12 2xl:px-24 w-auto lg:w-[600px] xl:w-[46.88rem] py-1 sm:py-1.5 lg:py-3"

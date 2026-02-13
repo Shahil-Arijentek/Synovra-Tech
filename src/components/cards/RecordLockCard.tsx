@@ -12,7 +12,7 @@ export default function RecordLockCard({ value, status }: RecordLockCardProps) {
       </div>
 
       {/* Metallic Plate with Text Overlay */}
-      <div className="relative w-full h-[7.5rem] flex items-center justify-center">
+      <div className="relative w-full h-[7.5rem] flex items-center justify-center lg:mt-4 xl:mt-5 2xl:mt-6">
         <img
           src="/cards/decision.png"
           alt="Record Lock Plate"
@@ -20,7 +20,7 @@ export default function RecordLockCard({ value, status }: RecordLockCardProps) {
         />
         
         {/* Text Overlay on Plate */}
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="absolute left-0 right-0 top-0 bottom-0 flex items-center justify-center lg:items-start lg:pt-6 xl:pt-7 2xl:pt-8">
           <div className="text-left">
             <div className="text-black text-xl sm:text-2xl md:text-[2rem] font-['Gemunu_Libre',sans-serif] font-bold uppercase leading-none mb-1">
               {value}
