@@ -24,6 +24,29 @@ export default function ClassofPower({ onReady }: ClassofPowerProps = {}) {
     if (onReady) onReady();
   };
 
+  // Check if video is already loaded (handles browser caching)
+  // This effect runs when the component mounts and checks if the video is already ready
+  useEffect(() => {
+    const checkVideoReady = () => {
+      if (videoRef.current) {
+        // Check if video is already ready (cached videos might not fire events)
+        // readyState >= 2 means HAVE_CURRENT_DATA or higher (ready to play)
+        if (videoRef.current.readyState >= 2) {
+          setVideoLoaded(true);
+          if (onReady) onReady();
+        }
+      }
+    };
+
+    // Check immediately
+    checkVideoReady();
+    
+    // Also check after a short delay in case the ref isn't set yet
+    const timeoutId = setTimeout(checkVideoReady, 100);
+    
+    return () => clearTimeout(timeoutId);
+  }, []);
+
   // Only display video when we want to show it AND it's ready to play (no spinner, no blank state)
   const displayVideo = showVideo && videoLoaded;
 
