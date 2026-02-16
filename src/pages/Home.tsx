@@ -51,7 +51,9 @@ export default function Home() {
       style={{ opacity: isReady ? 1 : 0 }}
     >
       <Hero />
-      <BatteryHero/>
+      <div style={{ position: 'relative' }}>
+        <BatteryHero/>
+      </div>
       <Suspense fallback={<SectionLoader />}>
         <div style={{ position: 'relative' }}>
           <BatteryLifecycleScroll/>

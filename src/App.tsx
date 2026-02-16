@@ -8,6 +8,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import LoadingSpinner from './components/LoadingSpinner'
 import FullPageLoadingSpinner from './components/FullPageLoadingSpinner'
+import ErrorBoundary from './components/ErrorBoundary'
 
 // Lazy load all page components for better code splitting
 const Home = lazy(() => import('./pages/Home'))
@@ -63,18 +64,20 @@ function AppContent({ showContent }: { showContent: boolean }) {
     <>
       <ScrollToTop />
       <div className="w-full min-h-screen font-sans bg-black animate-fadeIn">
-        {isNavbarVisible && <Header />}
-        <main>
-          <Suspense fallback={<FullPageLoadingSpinner />}>
-            <Routes location={location} key={location.pathname}>
-              <Route path="/" element={<Home />} />
-              <Route path="/why-revive" element={<WhyRevive />} />
-              <Route path="/about-us" element={<AboutUs />} />
-              <Route path="/get-started" element={<GetStarted />} />
-            </Routes>
-          </Suspense>
-        </main>
-        {!hideFooter && <Footer />}
+        <ErrorBoundary>
+          {isNavbarVisible && <Header />}
+          <main role="main">
+            <Suspense fallback={<FullPageLoadingSpinner />}>
+              <Routes location={location} key={location.pathname}>
+                <Route path="/" element={<Home />} />
+                <Route path="/why-revive" element={<WhyRevive />} />
+                <Route path="/about-us" element={<AboutUs />} />
+                <Route path="/get-started" element={<GetStarted />} />
+              </Routes>
+            </Suspense>
+          </main>
+          {!hideFooter && <Footer />}
+        </ErrorBoundary>
       </div>
     </>
   )
@@ -162,10 +165,10 @@ function App() {
       {isInitialLoading && (
         <>
           {/* Solid black background that stays during entire fade */}
-          <div className={`fixed inset-0 z-[9998] bg-black transition-opacity duration-500 ${isFadingOut ? 'opacity-0' : 'opacity-100'}`} />
+          <div className={`fixed inset-0 z-[9998] bg-black transition-opacity duration-500 ${isFadingOut ? 'opacity-0' : 'opacity-100'}`} aria-hidden="true" />
           
           {/* Loading spinner with real progress - keep at 100% during fade */}
-          <div className={`fixed inset-0 z-[9999] ${isFadingOut ? 'animate-fadeOut' : ''}`}>
+          <div className={`fixed inset-0 z-[9999] ${isFadingOut ? 'animate-fadeOut' : ''}`} role="status" aria-live="polite" aria-label="Loading">
             <LoadingSpinner progress={isFadingOut ? 100 : loadingProgress} />
           </div>
         </>
@@ -173,9 +176,11 @@ function App() {
       
       {/* Delay content mounting until after fade starts */}
       {(showContent || isFadingOut) && (
-        <NavbarProvider>
-          <AppContent showContent={showContent} />
-        </NavbarProvider>
+        <ErrorBoundary>
+          <NavbarProvider>
+            <AppContent showContent={showContent} />
+          </NavbarProvider>
+        </ErrorBoundary>
       )}
     </Router>
   )
