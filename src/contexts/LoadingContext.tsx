@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import type { ReactNode } from 'react'
-import LoadingScreen from '../components/LoadingScreen'
 
 interface LoadingContextType {
   isLoading: boolean
@@ -49,7 +48,6 @@ export function LoadingProvider({ children, initialLoadingTime = 1500 }: Loading
 
   return (
     <LoadingContext.Provider value={value}>
-      {isLoading && <LoadingScreen message={loadingMessage} />}
       {children}
     </LoadingContext.Provider>
   )

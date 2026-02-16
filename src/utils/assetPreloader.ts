@@ -142,6 +142,9 @@ export class AssetPreloader {
  */
 export function getCriticalAssets(): string[] {
   return [
+    // Hero video - MUST load first (largest file, most visible)
+    '/mainbattery.mp4',
+    
     // Essential branding
     '/logo.png',
     '/synovra.png',

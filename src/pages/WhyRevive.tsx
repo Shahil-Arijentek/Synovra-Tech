@@ -11,18 +11,6 @@ const BenefitsByAudience = lazy(() => import('../components/BenefitsByAudience')
 const BeforeYouRecycle = lazy(() => import('../components/BeforeYouRecycle'))
 
 
-// Loading fallback component - Simple dual ring pattern
-const SectionLoader = () => (
-  <div className="min-h-[25rem] flex items-center justify-center bg-[#0d0d0d]">
-    <div className="relative w-16 h-16">
-      {/* Outer rotating ring */}
-      <div className="absolute inset-0 border-4 border-transparent border-t-[#ff6b1a] border-r-[#ff6b1a] rounded-full animate-spin" />
-      {/* Inner rotating ring (reverse) */}
-      <div className="absolute inset-2 border-4 border-transparent border-b-[#ff8c42] border-l-[#ff8c42] rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }} />
-    </div>
-  </div>
-)
-
 export default function WhyRevive() {
   const [isReady, setIsReady] = useState(false)
   
@@ -49,23 +37,23 @@ export default function WhyRevive() {
       <StorytellingSection />
       
       {/* Below-the-fold: Lazy load */}
-      <Suspense fallback={<SectionLoader />}>
+      <Suspense fallback={null}>
         <MythsVsTruths />
       </Suspense>
       
-      <Suspense fallback={<SectionLoader />}>
+      <Suspense fallback={null}>
         <ProofNotPromises/>
       </Suspense>
       
-      <Suspense fallback={<SectionLoader />}>
+      <Suspense fallback={null}>
         <BusinessImpact/>
       </Suspense>
       
-      <Suspense fallback={<SectionLoader />}>
+      <Suspense fallback={null}>
         <BenefitsByAudience/>
       </Suspense>
       
-      <Suspense fallback={<SectionLoader />}>
+      <Suspense fallback={null}>
         <BeforeYouRecycle/>
       </Suspense>
     </div>

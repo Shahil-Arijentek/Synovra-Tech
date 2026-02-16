@@ -119,10 +119,10 @@ export default function ProofNotPromises() {
 
         {/* Call to Action Buttons */}
         <div className="hidden md:flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 px-4">
-          <button className="w-full sm:w-auto bg-[#ff6b1a] hover:bg-[#ff7a2e] text-white font-medium text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-lg transition-all duration-300 shadow-none md:shadow-lg hover:shadow-xl">
+          <button className="w-full sm:w-auto bg-[#ff6b1a] text-white font-medium text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-lg">
             See Your CO<sub>2</sub> Savings
           </button>
-          <button className="w-full sm:w-auto bg-white hover:bg-gray-100 text-black font-medium text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-lg transition-all duration-300 shadow-none md:shadow-lg hover:shadow-xl">
+          <button className="w-full sm:w-auto bg-white text-black font-medium text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-lg">
             Book a Revival Pickup
           </button>
         </div>

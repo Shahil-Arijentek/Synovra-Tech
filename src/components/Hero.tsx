@@ -59,7 +59,7 @@ export default function Hero() {
           </div>
 
           <div className="relative -mt-4 max-[479px]:mt-0 sm:mt-0 sm:-mt-12 md:-mt-8 lg:-mt-[18rem] xl:-mt-[11rem] flex justify-center items-center z-10 pointer-events-none">
-            <div className="w-full sm:w-[92%] md:w-[88%] lg:w-[90%] xl:w-[87.5rem] max-w-full scale-[1.1] sm:scale-[1.2] md:scale-[1.2] lg:scale-[1.05] xl:scale-100 origin-center flex justify-center items-center">
+            <div className="w-full sm:w-[92%] md:w-[92%] lg:w-[90%] xl:w-[87.5rem] max-w-full scale-[1.1] sm:scale-[1.2] md:scale-[1.3] lg:scale-[1.05] xl:scale-100 origin-center flex justify-center items-center">
               <video
                 ref={videoRef}
                 className="w-full h-auto object-contain mix-blend-screen"
