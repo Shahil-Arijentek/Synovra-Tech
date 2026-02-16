@@ -21,7 +21,6 @@ const DecisionJustification = lazy(() => import('../components/DecisionJustifica
 export default function Home() {
   const [isReady, setIsReady] = useState(false)
   
-  // Ensure page starts at top and prevent flash
   useEffect(() => {
     window.scrollTo(0, 0)
     document.documentElement.scrollTop = 0

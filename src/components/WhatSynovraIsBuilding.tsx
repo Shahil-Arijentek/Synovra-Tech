@@ -56,29 +56,69 @@ export default function WhatSynovraIsBuilding() {
               initial={{ opacity: 0, y: 12 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
               transition={{ duration: 0.9, delay: 0.25 + i * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-              className="flex flex-col items-center text-center rounded-xl p-5 md:p-6"
+              className="flex flex-col items-center text-center rounded-xl p-5 md:p-6 cursor-pointer relative overflow-hidden"
               style={{ backgroundColor: CARD_BG }}
+              whileHover={{
+                y: -8,
+                scale: 1.02,
+                backgroundColor: 'rgba(40, 40, 40, 0.70)',
+                boxShadow: `0 12px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px ${ACCENT_ORANGE}30`,
+                transition: { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }
+              }}
             >
-              <motion.span
-                className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 mb-4"
-                style={{ backgroundColor: ICON_BG }}
-                initial={{ opacity: 0, scale: 0.6 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.6 }}
-                transition={{ duration: 0.9, delay: 0.35 + i * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-              >
-                <motion.img
-                  src={icon}
-                  alt=""
-                  className="w-6 h-6"
-                  aria-hidden
-                  initial={{ opacity: 0 }}
-                  animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                  transition={{ duration: 0.8, delay: 0.45 + i * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-                />
-              </motion.span>
-              <p className="text-white text-base sm:text-lg leading-snug">
-                {text}
-              </p>
+              {/* Hover background glow effect */}
+              <motion.div
+                className="absolute inset-0 rounded-xl opacity-0"
+                style={{
+                  background: `linear-gradient(135deg, ${ACCENT_ORANGE}15, ${ACCENT_ORANGE}05)`,
+                  boxShadow: `0 0 0 1px ${ACCENT_ORANGE}20`
+                }}
+                whileHover={{
+                  opacity: 1,
+                  transition: { duration: 0.3 }
+                }}
+              />
+              
+              {/* Content wrapper */}
+              <div className="relative z-10 flex flex-col items-center">
+                <motion.span
+                  className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 mb-4 relative"
+                  style={{ backgroundColor: ICON_BG }}
+                  initial={{ opacity: 0, scale: 0.6 }}
+                  animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.6 }}
+                  transition={{ duration: 0.9, delay: 0.35 + i * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+                  whileHover={{
+                    scale: 1.15,
+                    backgroundColor: `${ACCENT_ORANGE}20`,
+                    boxShadow: `0 0 20px ${ACCENT_ORANGE}40`,
+                    transition: { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }
+                  }}
+                >
+                  <motion.img
+                    src={icon}
+                    alt=""
+                    className="w-6 h-6"
+                    aria-hidden
+                    initial={{ opacity: 0 }}
+                    animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                    transition={{ duration: 0.8, delay: 0.45 + i * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+                    whileHover={{
+                      scale: 1.1,
+                      filter: 'brightness(1.2)',
+                      transition: { duration: 0.3 }
+                    }}
+                  />
+                </motion.span>
+                <motion.p
+                  className="text-white text-base sm:text-lg leading-snug"
+                  whileHover={{
+                    color: '#FFFFFF',
+                    transition: { duration: 0.3 }
+                  }}
+                >
+                  {text}
+                </motion.p>
+              </div>
             </motion.div>
           ))}
         </div>

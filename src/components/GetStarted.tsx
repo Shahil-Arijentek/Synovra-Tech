@@ -13,7 +13,6 @@ export default function GetStarted() {
   })
 
   useEffect(() => {
-    // Ensure smooth rendering
     const timer = setTimeout(() => setMounted(true), 50)
     return () => clearTimeout(timer)
   }, [])
@@ -66,9 +65,6 @@ export default function GetStarted() {
       message: sanitizeInput(formData.message),
     }
 
-    // TODO: Connect to backend API
-    // await fetch('/api/contact', { method: 'POST', body: JSON.stringify(sanitizedData) })
-    
     alert(`Form submitted successfully!\n\nData ready to send:\n${JSON.stringify(sanitizedData, null, 2)}`)
   }
 

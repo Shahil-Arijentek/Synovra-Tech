@@ -1227,7 +1227,7 @@ export default function BatteryLifecycleScroll() {
             backgroundColor: '#000'
           }}
         >
-          {/* Canvas renderer - ZERO BLINK, enterprise-grade */}
+          {/* Canvas renderer */}
           <div 
             className={`absolute w-full bg-black ${
               isMobile ? 'h-[35vh] top-1/2 -translate-y-1/2' : 'inset-0 h-full'
@@ -1255,7 +1255,7 @@ export default function BatteryLifecycleScroll() {
             />
           </div>
 
-          {/* Scene Progress Indicator - Separate Containers */}
+          {/* Scene Progress Indicator*/}
           {shouldShowUI && activeSceneIndex !== null && (
             <>
               {/* Progress Boxes Container */}
@@ -1306,7 +1306,7 @@ export default function BatteryLifecycleScroll() {
                 </div>
               </div>
 
-              {/* Scene Title Label - Separate Container */}
+              {/* Scene Title Label */}
               {activeSceneIndex !== null && (
                 <div className={`absolute z-20 ${isMobile
                   ? 'top-[calc(50%+17.5vh-2rem)] right-4 max-w-[calc(100%-8rem)]'

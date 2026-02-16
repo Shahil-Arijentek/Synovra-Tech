@@ -17,7 +17,6 @@ export function NavbarProvider({ children }: { children: ReactNode }) {
     </NavbarContext.Provider>
   )
 }
-
 export function useNavbar() {
   const context = useContext(NavbarContext)
   if (context === undefined) {

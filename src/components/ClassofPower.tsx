@@ -23,31 +23,21 @@ export default function ClassofPower({ onReady }: ClassofPowerProps = {}) {
     setVideoLoaded(true);
     if (onReady) onReady();
   };
-
-  // Check if video is already loaded (handles browser caching)
-  // This effect runs when the component mounts and checks if the video is already ready
   useEffect(() => {
     const checkVideoReady = () => {
       if (videoRef.current) {
-        // Check if video is already ready (cached videos might not fire events)
-        // readyState >= 2 means HAVE_CURRENT_DATA or higher (ready to play)
         if (videoRef.current.readyState >= 2) {
           setVideoLoaded(true);
           if (onReady) onReady();
         }
       }
     };
-
-    // Check immediately
     checkVideoReady();
-    
-    // Also check after a short delay in case the ref isn't set yet
     const timeoutId = setTimeout(checkVideoReady, 100);
     
     return () => clearTimeout(timeoutId);
-  }, []);
+  }, [onReady]);
 
-  // Only display video when we want to show it AND it's ready to play (no spinner, no blank state)
   const displayVideo = showVideo && videoLoaded;
 
   useEffect(() => {
@@ -57,10 +47,11 @@ export default function ClassofPower({ onReady }: ClassofPowerProps = {}) {
   }, [displayVideo]);
 
   useEffect(() => {
+    const video = videoRef.current;
     return () => {
-      if (videoRef.current) {
-        videoRef.current.pause();
-        videoRef.current.src = "";
+      if (video) {
+        video.pause();
+        video.src = "";
       }
     };
   }, []);
@@ -76,7 +67,6 @@ export default function ClassofPower({ onReady }: ClassofPowerProps = {}) {
       className="relative flex w-full flex-col items-center justify-start overflow-hidden pt-12 pb-24 px-6 md:pt-16 md:pb-32 md:px-8"
       style={{ backgroundColor: "#0d0d0d" }}
     >
-      {/* Fade to #0d0d0d gradient at bottom to prevent video bleed-through */}
       <div className="absolute inset-x-0 bottom-0 h-32 pointer-events-none z-20" style={{ background: 'linear-gradient(to bottom, transparent, #0d0d0d, #0d0d0d)' }} />
       <ClassOfPowerHeading />
 
@@ -88,7 +78,6 @@ export default function ClassofPower({ onReady }: ClassofPowerProps = {}) {
           className="relative flex items-center justify-center"
           style={{ ...mediaStyle, minHeight: "400px" }}
         >
-          {/* Video: always in DOM from mount so it preloads; visible only when ready */}
           <motion.video
             ref={videoRef}
             src="/classofpower.webm"
@@ -108,8 +97,6 @@ export default function ClassofPower({ onReady }: ClassofPowerProps = {}) {
             onCanPlay={handleVideoCanPlay}
             onLoadedData={handleVideoCanPlay}
           />
-
-          {/* Image: show until video is ready, then crossfade out (no loading spinner) */}
           <AnimatePresence>
             {!displayVideo && (
               <motion.img

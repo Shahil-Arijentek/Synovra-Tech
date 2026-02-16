@@ -8,16 +8,11 @@ export default function ProofNotPromises() {
   const isHeadingInView = useInView(headingRef, { once: true, amount: 0.3 })
   const [isMounted, setIsMounted] = React.useState(false)
 
-  // Ensure scroll is always enabled
   useEffect(() => {
-    // Make sure body is scrollable
     document.body.style.overflow = ''
     document.documentElement.style.overflow = ''
-
-    // Mount with delay for smooth fade-in
     const timer = setTimeout(() => setIsMounted(true), 100)
 
-    // Cleanup on unmount
     return () => {
       clearTimeout(timer)
       document.body.style.overflow = ''

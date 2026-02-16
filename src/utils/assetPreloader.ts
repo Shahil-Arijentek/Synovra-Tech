@@ -1,8 +1,3 @@
-/**
- * Asset Preloader Utility
- * Tracks real loading progress of images, videos, and other resources
- */
-
 export interface AssetLoadProgress {
   loaded: number
   total: number
@@ -23,45 +18,33 @@ export class AssetPreloader {
     this.onProgress = onProgress || null
   }
 
-  /**
-   * Start preloading all assets with progressive loading
-   */
   async load(): Promise<void> {
     if (this.totalCount === 0) {
       this.updateProgress()
       return Promise.resolve()
     }
-
-    // Start with 0% immediately
     this.updateProgress()
 
-    // Load assets sequentially with small delays for visible progress
     for (let i = 0; i < this.assets.length; i++) {
       const asset = this.assets[i]
       
       try {
         await this.loadAsset(asset)
-      } catch (error) {
+      } catch {
         this.loadedCount++
         this.updateProgress()
       }
       
-      // Small delay between assets for smooth visual progress
       if (i < this.assets.length - 1) {
         await new Promise(resolve => setTimeout(resolve, 60))
       }
     }
   }
-
-  /**
-   * Load a single asset (image or video)
-   */
   private loadAsset(url: string): Promise<void> {
     return new Promise((resolve) => {
       const extension = url.split('.').pop()?.toLowerCase()
 
       if (['mp4', 'webm', 'mov'].includes(extension || '')) {
-        // Video loading
         const video = document.createElement('video')
         video.preload = 'auto'
         
@@ -76,7 +59,7 @@ export class AssetPreloader {
           this.loadedCount++
           this.updateProgress()
           cleanup()
-          resolve() // Resolve anyway to not block
+          resolve() 
         }
 
         const cleanup = () => {
@@ -88,7 +71,6 @@ export class AssetPreloader {
         video.addEventListener('error', onError)
         video.src = url
       } else {
-        // Image loading
         const img = new Image()
         
         const onLoaded = () => {
@@ -102,7 +84,7 @@ export class AssetPreloader {
           this.loadedCount++
           this.updateProgress()
           cleanup()
-          resolve() // Resolve anyway to not block
+          resolve() 
         }
 
         const cleanup = () => {
@@ -116,10 +98,6 @@ export class AssetPreloader {
       }
     })
   }
-
-  /**
-   * Update progress and notify callback
-   */
   private updateProgress(): void {
     const percentage = this.totalCount > 0 
       ? Math.round((this.loadedCount / this.totalCount) * 100)
@@ -136,16 +114,9 @@ export class AssetPreloader {
     }
   }
 }
-
-/**
- * Get critical assets that should be preloaded
- */
 export function getCriticalAssets(): string[] {
   return [
-    // Hero video - MUST load first (largest file, most visible)
     '/mainbattery.mp4',
-    
-    // Essential branding
     '/logo.png',
     '/synovra.png',
     

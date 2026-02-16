@@ -1,6 +1,47 @@
 import { useEffect, useState, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 
+function ComparisonRow({ row, index }: { row: { recycling: string; synovra: string }; index: number }) {
+  const rowRef = useRef(null)
+  const isRowInView = useInView(rowRef, { once: true, amount: 0.3 })
+  
+  return (
+    <div
+      ref={rowRef}
+      className="grid grid-cols-2 border-b border-[#333] last:border-b-0"
+    >
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={isRowInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+        transition={{
+          duration: 1.2,
+          delay: 0.7 + index * 0.1,
+          ease: [0.19, 1, 0.22, 1]
+        }}
+        className="bg-[#0d0d0d] p-4 sm:p-6 md:p-12 border-r border-[#333] flex items-center"
+      >
+        <p className="text-xs sm:text-sm md:text-base lg:text-lg text-white/90">
+          {row.recycling}
+        </p>
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={isRowInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+        transition={{
+          duration: 1.2,
+          delay: 0.7 + index * 0.1,
+          ease: [0.19, 1, 0.22, 1]
+        }}
+        className="bg-gradient-to-br from-[#2d1a10] to-[#1f1410] p-4 sm:p-6 md:p-12 flex items-center"
+      >
+        <p className="text-xs sm:text-sm md:text-base lg:text-lg text-white/90">
+          {row.synovra}
+        </p>
+      </motion.div>
+    </div>
+  )
+}
+
 export default function BusinessImpact() {
   const [isMounted, setIsMounted] = useState(false)
   const headingRef = useRef(null)
@@ -85,47 +126,9 @@ export default function BusinessImpact() {
           </div>
 
           {/* Table Rows */}
-          {comparisonData.map((row, index) => {
-            const rowRef = useRef(null)
-            const isRowInView = useInView(rowRef, { once: true, amount: 0.3 })
-            
-            return (
-              <div
-                key={index}
-                ref={rowRef}
-                className="grid grid-cols-2 border-b border-[#333] last:border-b-0"
-              >
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={isRowInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-                  transition={{
-                    duration: 1.2,
-                    delay: 0.7 + index * 0.1,
-                    ease: [0.19, 1, 0.22, 1]
-                  }}
-                  className="bg-[#0d0d0d] p-4 sm:p-6 md:p-12 border-r border-[#333] flex items-center"
-                >
-                  <p className="text-xs sm:text-sm md:text-base lg:text-lg text-white/90">
-                    {row.recycling}
-                  </p>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={isRowInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-                  transition={{
-                    duration: 1.2,
-                    delay: 0.7 + index * 0.1,
-                    ease: [0.19, 1, 0.22, 1]
-                  }}
-                  className="bg-gradient-to-br from-[#2d1a10] to-[#1f1410] p-4 sm:p-6 md:p-12 flex items-center"
-                >
-                  <p className="text-xs sm:text-sm md:text-base lg:text-lg text-white/90">
-                    {row.synovra}
-                  </p>
-                </motion.div>
-              </div>
-            )
-          })}
+          {comparisonData.map((row, index) => (
+            <ComparisonRow key={index} row={row} index={index} />
+          ))}
         </div>
       </div>
     </section>
