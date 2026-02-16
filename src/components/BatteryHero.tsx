@@ -156,7 +156,9 @@ export default function BatteryHero() {
         try {
           await videoRef.current?.play()
         } catch (error) {
-          console.log('Video autoplay blocked, but video is loaded')
+          if (import.meta.env.DEV) {
+            console.log('Video autoplay blocked, but video is loaded')
+          }
         }
       }
       playVideo()
@@ -261,7 +263,7 @@ export default function BatteryHero() {
     <div
       ref={containerRef}
       className="relative w-full h-[200vh] bg-black"
-      style={{ position: 'relative' }}
+      style={{ position: 'relative' } as React.CSSProperties}
     >
       <div className="sticky top-0 left-0 w-full h-screen overflow-hidden flex items-center justify-center">
 
@@ -281,6 +283,8 @@ export default function BatteryHero() {
                 muted
                 playsInline
                 preload={shouldLoadVideo ? "auto" : "none"}
+                aria-label="Battery lifecycle animation video"
+                role="img"
                 onLoadedData={() => {
                   setVideoLoaded(true)
                   if (videoRef.current) {
@@ -292,7 +296,9 @@ export default function BatteryHero() {
                   }
                 }}
                 onError={(e) => {
-                  console.error('Video load error:', e)
+                  if (import.meta.env.DEV) {
+                    console.error('Video load error:', e)
+                  }
                   setVideoLoaded(true)
                 }}
                 onCanPlay={() => {
@@ -341,6 +347,7 @@ export default function BatteryHero() {
                 lineHeight: '120%',
                 letterSpacing: letterSpacing
               }}
+              aria-label="A system for extending battery life, restoring performance, and closing the materials loop"
             >
               {words.map((word, wordIndex) => {
                 const wordElement = (

@@ -225,8 +225,8 @@ export default function GetStarted() {
               </svg>
             </div>
             <p className="text-white/60 text-xs sm:text-sm mb-2 font-['Arial',sans-serif]">Email</p>
-            <a href="mailto:shahil@arijentek.com" className="text-white text-xs sm:text-sm font-['Arial',sans-serif] hover:text-[#ff6b1a] transition-colors">
-              shahil@arijentek.com
+            <a href="mailto:yjdoshi@synovratech.com" className="text-white text-xs sm:text-sm font-['Arial',sans-serif] hover:text-[#ff6b1a] transition-colors">
+              yjdoshi@synovratech.com
             </a>
           </div>
 

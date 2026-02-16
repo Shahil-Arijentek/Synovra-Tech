@@ -10,18 +10,6 @@ const GlobalPresence = lazy(() => import('../components/GlobalPresence'))
 const OurLeadership = lazy(() => import('../components/OurLeadership'))
 const CTASection = lazy(() => import('../components/CTASection'))
 
-// Loading fallback component - Simple dual ring pattern
-const SectionLoader = () => (
-  <div className="min-h-[25rem] flex items-center justify-center bg-black">
-    <div className="relative w-16 h-16">
-      {/* Outer rotating ring */}
-      <div className="absolute inset-0 border-4 border-transparent border-t-[#ff6b1a] border-r-[#ff6b1a] rounded-full animate-spin" />
-      {/* Inner rotating ring (reverse) */}
-      <div className="absolute inset-2 border-4 border-transparent border-b-[#ff8c42] border-l-[#ff8c42] rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }} />
-    </div>
-  </div>
-)
-
 export default function AboutUs() {
   const [isReady, setIsReady] = useState(false)
   
@@ -46,23 +34,23 @@ export default function AboutUs() {
       <AboutUsHero />
       
       {/* Below-the-fold: Lazy load */}
-      <Suspense fallback={<SectionLoader />}>
+      <Suspense fallback={null}>
         <WhatWeStandFor />
       </Suspense>
       
-      <Suspense fallback={<SectionLoader />}>
+      <Suspense fallback={null}>
         <WhatSynovraIsBuilding />
       </Suspense>
       
-      <Suspense fallback={<SectionLoader />}>
+      <Suspense fallback={null}>
         <GlobalPresence />
       </Suspense>
       
-      <Suspense fallback={<SectionLoader />}>
+      <Suspense fallback={null}>
         <OurLeadership />
       </Suspense>
       
-      <Suspense fallback={<SectionLoader />}>
+      <Suspense fallback={null}>
         <CTASection />
       </Suspense>
     </div>

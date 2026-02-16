@@ -208,7 +208,7 @@ const MythsVsTruths: React.FC = () => {
         loop
         muted
         playsInline
-        className="absolute inset-0 w-full h-full object-cover opacity-[0.02]"
+        className="absolute inset-0 w-full h-full object-cover opacity-[0.05]"
       >
         <source src="/whyrevive/plexus-black-white.mov" type="video/mp4" />
       </video>
@@ -269,14 +269,16 @@ const MythTruthContent: React.FC<{ myth: string; truth: string }> = ({ myth, tru
       {/* MYTH Section */}
       <div className="text-left md:text-left space-y-2 md:space-y-3 p-4 md:p-5 lg:p-6" style={{
         borderRadius: '15px',
-        opacity: 0.89,
-        background: '#0D0D0D',
-        backdropFilter: 'blur(22.2px)'
+        background: 'rgba(13, 13, 13, 0.4)',
+        backdropFilter: 'blur(22.2px)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)'
       }}>
         <h3 className="uppercase text-lg sm:text-xl md:text-2xl lg:text-3xl font-black" style={{
           color: '#595959',
           fontFamily: 'Arial',
           fontStyle: 'normal',
+          fontWeight: '900',
           lineHeight: '120%',
           letterSpacing: '-2.4px',
           textTransform: 'uppercase'
@@ -291,11 +293,14 @@ const MythTruthContent: React.FC<{ myth: string; truth: string }> = ({ myth, tru
       {/* TRUTH Section */}
       <div className="text-left md:text-left space-y-2 md:space-y-3 mt-8 md:mt-24 lg:mt-32 p-4 md:p-5 lg:p-6" style={{
         borderRadius: '15px',
-        opacity: 0.89,
-        background: '#1A0D03',
-        backdropFilter: 'blur(22.2px)'
+        background: 'rgba(26, 13, 3, 0.4)',
+        backdropFilter: 'blur(22.2px)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)'
       }}>
-        <h3 className="text-[#FF6B35] text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold tracking-wider">
+        <h3 className="text-[#FF6B35] text-lg sm:text-xl md:text-2xl lg:text-3xl font-black tracking-wider" style={{
+          fontWeight: '900'
+        }}>
           TRUTH
         </h3>
         <p className="text-white text-sm sm:text-base md:text-base lg:text-lg font-light leading-relaxed">
