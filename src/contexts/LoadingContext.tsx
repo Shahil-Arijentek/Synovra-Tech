@@ -20,7 +20,6 @@ export function LoadingProvider({ children, initialLoadingTime = 1500 }: Loading
   const [isLoading, setIsLoading] = useState(true)
   const [loadingMessage, setLoadingMessage] = useState('Loading Synovra...')
 
-  // Auto-hide loading after initial load
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false)
@@ -52,8 +51,6 @@ export function LoadingProvider({ children, initialLoadingTime = 1500 }: Loading
     </LoadingContext.Provider>
   )
 }
-
-// Custom hook to use loading context
 export function useLoading() {
   const context = useContext(LoadingContext)
   if (context === undefined) {

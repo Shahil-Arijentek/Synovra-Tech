@@ -116,7 +116,7 @@ export default function BuyBatteries() {
 
     const internalOpacity = activeStage === 'new' ? 0 : activeStage === 'used' ? 0.4 : 1
     gsap.set(internal, { opacity: internalOpacity })
-  }, [])
+  }, [activeStage])
 
   useEffect(() => {
     const interval = window.setInterval(() => {

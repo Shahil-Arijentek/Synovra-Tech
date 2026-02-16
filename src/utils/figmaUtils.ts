@@ -44,7 +44,7 @@ export function extractPages(designContextJson: string): FigmaPage[] {
       })) || [];
 
     return pages;
-  } catch (error) {
+  } catch {
     return [];
   }
 }

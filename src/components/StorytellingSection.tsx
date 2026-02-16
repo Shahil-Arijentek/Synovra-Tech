@@ -5,8 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const FRAME_COUNT = 59; // Each video has 59 frames at 10 FPS
-
+const FRAME_COUNT = 59;
 interface StorytellingProps {
   onReady?: () => void;
 }
@@ -19,14 +18,13 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const isHeadingInView = useInView(headingRef, { once: true, amount: 0.3 });
   const [isMounted, setIsMounted] = React.useState(false);
-  const [isReady, setIsReady] = React.useState(false);
+  const [isReady] = React.useState(true); 
   const [currentVideo, setCurrentVideo] = React.useState(1);
   const [video1Frame, setVideo1Frame] = React.useState(1);
   const [video2Frame, setVideo2Frame] = React.useState(1);
   const [video3Frame, setVideo3Frame] = React.useState(1);
 
   useEffect(() => {
-    setIsReady(true);
     const mountTimer = setTimeout(() => {
       setIsMounted(true);
       if (onReady) {
@@ -53,7 +51,7 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
 
     ScrollTrigger.refresh();
 
-    let ctx = gsap.context(() => {
+    const ctx = gsap.context(() => {
       gsap.set([layer2Ref.current, layer3Ref.current], { opacity: 0 });
 
       const tl = gsap.timeline({

@@ -3,7 +3,6 @@ import { motion, useAnimation } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-// Register GSAP plugin
 gsap.registerPlugin(ScrollTrigger);
 
 const ProofInNumbersGSAP = () => {
@@ -11,8 +10,6 @@ const ProofInNumbersGSAP = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
-
-  // Data for the comparison bars
   const comparisonData = [
     {
       label: 'Recycling Only',
@@ -24,15 +21,13 @@ const ProofInNumbersGSAP = () => {
       label: 'Revival First, Then Recycle',
       value: 1.2,
       color: 'bg-orange-500',
-      maxWidth: 12, // 12% relative to recycling only
+      maxWidth: 12,
     },
   ];
 
-  // GSAP ScrollTrigger setup with pinning
   useEffect(() => {
     if (!sectionRef.current) return;
 
-    // Pin the section while animation plays
     scrollTriggerRef.current = ScrollTrigger.create({
       trigger: sectionRef.current,
       start: 'top top',
@@ -51,7 +46,6 @@ const ProofInNumbersGSAP = () => {
       },
     });
 
-    // Cleanup
     return () => {
       if (scrollTriggerRef.current) {
         scrollTriggerRef.current.kill();
@@ -60,7 +54,6 @@ const ProofInNumbersGSAP = () => {
     };
   }, [controls, isAnimationFinished]);
 
-  // Update ScrollTrigger when animation finishes
   useEffect(() => {
     if (isAnimationFinished && scrollTriggerRef.current) {
       scrollTriggerRef.current.refresh();
@@ -71,7 +64,7 @@ const ProofInNumbersGSAP = () => {
   const handleAnimationComplete = () => {
     setTimeout(() => {
       setIsAnimationFinished(true);
-    }, 500); // Small delay before unpinning
+    }, 500); 
   };
 
   return (

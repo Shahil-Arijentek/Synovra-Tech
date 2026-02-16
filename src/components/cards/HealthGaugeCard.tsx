@@ -27,13 +27,14 @@ export default function HealthGaugeCard({ value, video = '99.mp4', width = '420p
       { threshold: 0.5 } // Play when 50% of the card is visible
     )
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current)
+    const container = containerRef.current;
+    if (container) {
+      observer.observe(container)
     }
 
     return () => {
-      if (containerRef.current) {
-        observer.unobserve(containerRef.current)
+      if (container) {
+        observer.unobserve(container)
       }
     }
   }, [hasPlayed])

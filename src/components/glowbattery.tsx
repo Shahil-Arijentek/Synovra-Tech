@@ -34,13 +34,11 @@ export default function GlowBattery() {
   const activeIndex = Math.floor(progress)
   const activeCard = CARDS[activeIndex]
 
-  // Calculate synchronized opacities for the batteries/glows based on card types
   const leftBatteryOpacity = CARDS.reduce((acc, card, i) => {
     if (card.type !== 'old') return acc
-    // Match the card's transition logic: peaks at integer index, fades out within +/- 0.5 distance
     const cardOpacity = clamp(1 - Math.abs(progress - i) * 2, 0, 1)
     return Math.max(acc, cardOpacity)
-  }, progress < 0.5 ? 1 : 0) // Keep fixed for the very start
+  }, progress < 0.5 ? 1 : 0)
 
   const rightBatteryOpacity = CARDS.reduce((acc, card, i) => {
     if (card.type !== 'new') return acc

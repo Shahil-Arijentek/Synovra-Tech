@@ -39,14 +39,12 @@ const MythsVsTruths: React.FC = () => {
   const [isMounted, setIsMounted] = React.useState(false);
 
   useEffect(() => {
-    // Ensure body is scrollable on mount
     if (typeof window !== 'undefined') {
       document.body.style.overflow = '';
       document.body.style.position = '';
       document.documentElement.style.overflow = '';
     }
     
-    // Mark as mounted after a brief delay
     const mountTimer = setTimeout(() => {
       setIsMounted(true);
     }, 50);
@@ -63,24 +61,19 @@ const MythsVsTruths: React.FC = () => {
     let isActive = true;
     let ctx: gsap.Context | null = null;
 
-    // Set initial visibility immediately (before GSAP)
     if (layer1Ref.current) {
       layer1Ref.current.style.opacity = '1';
     }
 
-    // Wait for DOM to be fully ready before initializing GSAP
     const initTimer = setTimeout(() => {
       if (!isActive || !containerRef.current) return;
 
       ctx = gsap.context(() => {
-        // Ensure all refs exist before setting up animations
         if (!layer1Ref.current || !layer2Ref.current || !layer3Ref.current || !layer4Ref.current) {
           return;
         }
 
-        // Set Layer 1 visible immediately at position 0
         gsap.set(layer1Ref.current, { opacity: 1, y: 0 });
-        // Set other layers below the viewport (positive Y) and invisible
         gsap.set([layer2Ref.current, layer3Ref.current, layer4Ref.current], { opacity: 0, y: 300 });
 
         const tl = gsap.timeline({
@@ -147,50 +140,43 @@ const MythsVsTruths: React.FC = () => {
 
       }, containerRef);
 
-      // Refresh ScrollTrigger after setup
       ScrollTrigger.refresh();
     }, 100);
 
+    const video = videoRef.current;
     return () => {
       isActive = false;
       clearTimeout(initTimer);
       
-      // IMMEDIATE cleanup - kill all ScrollTriggers synchronously
       const triggers = ScrollTrigger.getAll();
       triggers.forEach(trigger => {
         try {
-          trigger.kill(true); // true = revert pinning immediately
-        } catch (error) {
-          // Already killed
+          trigger.kill(true);
+        } catch {
+          // Ignore errors during cleanup
         }
       });
       
-      // Then revert GSAP context
       if (ctx) {
         try {
           ctx.revert();
-        } catch (error) {
-          // Already reverted
+        } catch {
         }
       }
       
-      // Clean up video on unmount
-      if (videoRef.current) {
+      if (video) {
         try {
-          videoRef.current.pause();
-          videoRef.current.src = '';
-        } catch (error) {
-          // Video already cleaned up
+          video.pause();
+          video.src = '';
+        } catch {
         }
       }
       
-      // Force DOM to be responsive again
       if (typeof window !== 'undefined') {
         document.body.style.overflow = '';
         document.body.style.position = '';
         document.documentElement.style.overflow = '';
         
-        // Force refresh ScrollTrigger to ensure clean state
         setTimeout(() => {
           ScrollTrigger.refresh();
         }, 10);
@@ -201,7 +187,7 @@ const MythsVsTruths: React.FC = () => {
   return (
     <div ref={containerRef} className={`relative w-full h-[500vh] md:h-[400vh] bg-[#0d0d0d] z-[101] -mt-[150vh] transition-opacity duration-500 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
       <div ref={contentRef} className="sticky top-0 w-full min-h-screen bg-[#0d0d0d] flex items-start justify-center pt-24 md:pt-24 pb-12 md:pb-16">
-      {/* Background Video with low opacity */}
+      {/* Background Video */}
       <video
         ref={videoRef}
         autoPlay
@@ -213,7 +199,6 @@ const MythsVsTruths: React.FC = () => {
         <source src="/whyrevive/plexus-black-white.mov" type="video/mp4" />
       </video>
 
-      {/* Dark overlay for better text contrast */}
       <div className="absolute inset-0 bg-[#0d0d0d]/30"></div>
 
       {/* Content */}

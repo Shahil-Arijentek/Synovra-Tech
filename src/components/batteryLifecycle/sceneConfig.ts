@@ -87,7 +87,6 @@ export const sceneConfig: SceneConfig[] = [
       }
     ]
   },
-  // Scene 3: Logistics & Tracking
   {
     id: 3,
     headline: 'DIAGNOSTIC TRACE — CHAIN OF CUSTODY',

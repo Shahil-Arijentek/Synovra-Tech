@@ -7,11 +7,11 @@ export default function ExperienceRevival() {
   const isInView = useInView(containerRef, { once: true, amount: 0.8 })
 
   useEffect(() => {
+    const video = videoRef.current;
     return () => {
-      // Clean up video on unmount
-      if (videoRef.current) {
-        videoRef.current.pause()
-        videoRef.current.src = ''
+      if (video) {
+        video.pause()
+        video.src = ''
       }
     }
   }, [])

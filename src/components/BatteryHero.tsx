@@ -134,7 +134,6 @@ export default function BatteryHero() {
     const checkIsDesktop = () => {
       const width = window.innerWidth
       setIsDesktop(width >= 1024)
-      // Adjust letter spacing based on screen size
       if (width < 640) {
         setLetterSpacing('0px')
       } else if (width < 1024) {
@@ -155,9 +154,10 @@ export default function BatteryHero() {
       const playVideo = async () => {
         try {
           await videoRef.current?.play()
-        } catch (error) {
+        } catch {
+          // Video autoplay may be blocked by browser policy - this is expected behavior
           if (import.meta.env.DEV) {
-            console.log('Video autoplay blocked, but video is loaded')
+            console.warn('Video autoplay blocked, but video is loaded')
           }
         }
       }
@@ -169,7 +169,6 @@ export default function BatteryHero() {
     if (!isDesktop) {
       return
     }
-
     const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection
     const slowConnection = connection?.effectiveType === 'slow-2g' || connection?.effectiveType === '2g'
     
@@ -229,10 +228,11 @@ export default function BatteryHero() {
       }
     }, 500)
 
+    const container = containerRef.current;
     return () => {
       clearTimeout(fallbackTimer)
-      if (containerRef.current) {
-        observer.unobserve(containerRef.current)
+      if (container) {
+        observer.unobserve(container)
       }
     }
   }, [shouldLoadVideo, isDesktop])
@@ -288,10 +288,6 @@ export default function BatteryHero() {
                 onLoadedData={() => {
                   setVideoLoaded(true)
                   if (videoRef.current) {
-                    const currentSrc = videoRef.current.currentSrc
-                    if (currentSrc && !currentSrc.includes('Comp 1_6.webm')) {
-                      // console.warn('Video fallback detected: Using MP4 instead of WebM')
-                    }
                     videoRef.current.play().catch(() => {})
                   }
                 }}
@@ -304,10 +300,6 @@ export default function BatteryHero() {
                 onCanPlay={() => {
                   setVideoLoaded(true)
                   if (videoRef.current) {
-                    const currentSrc = videoRef.current.currentSrc
-                    if (currentSrc && !currentSrc.includes('Comp 1_6.webm')) {
-                      // console.warn('Video fallback detected: Using MP4 instead of WebM')
-                    }
                     videoRef.current.play().catch(() => {})
                   }
                 }}

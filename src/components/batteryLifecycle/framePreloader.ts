@@ -15,14 +15,9 @@ export const preloadCriticalFrames = async (
   const startTime = Date.now()
 
   try {
-    // Extended preload strategy: Load enough frames to ensure smooth first scroll
-    // Scene 1: EVERY frame (60 frames)
     const scene1Frames = Array.from({ length: 60 }, (_, i) => i + 1)
-    // Scene 2: EVERY frame (60 frames) - ensure full smooth playback
     const scene2Frames = Array.from({ length: 60 }, (_, i) => i + 1)
-    // Scene 3: Every 5th frame (36 frames) - sample ahead
     const scene3Frames = Array.from({ length: 36 }, (_, i) => (i * 5) + 1)
-    // Scene 4: Every 10th frame (16 frames) - sample ahead
     const scene4Frames = Array.from({ length: 16 }, (_, i) => (i * 10) + 1)
     
     const criticalFrames = [
@@ -35,7 +30,6 @@ export const preloadCriticalFrames = async (
     let loaded = 0
     const total = criticalFrames.length
 
-    // Preload in larger batches for faster loading
     const batchSize = 8
     for (let i = 0; i < criticalFrames.length; i += batchSize) {
       const batch = criticalFrames.slice(i, i + batchSize)
@@ -54,15 +48,12 @@ export const preloadCriticalFrames = async (
         )
       )
     }
-
-    // Ensure minimum loading time (2 seconds) so caching is complete
     const elapsed = Date.now() - startTime
     const minLoadTime = 2000 // 2 seconds minimum
     const remainingTime = Math.max(0, minLoadTime - elapsed)
     
     await new Promise(resolve => setTimeout(resolve, remainingTime + 300))
-  } catch (error) {
-    // Even on error, ensure minimum load time
+  } catch {
     const elapsed = Date.now() - startTime
     const minLoadTime = 2000
     const remainingTime = Math.max(0, minLoadTime - elapsed)
@@ -71,7 +62,6 @@ export const preloadCriticalFrames = async (
 }
 
 export const preloadRemainingFrames = async (): Promise<void> => {
-  // Priority 1: Preload scene 7 first (to prevent flicker at the end)
   const scene7Frames: string[] = []
   for (let i = 1; i <= SCENE_FRAME_COUNTS[6]; i += 4) {
     scene7Frames.push(`/lifecycle/frames/scene-7/frame_${String(i).padStart(4, '0')}.webp`)
@@ -83,13 +73,11 @@ export const preloadRemainingFrames = async (): Promise<void> => {
     await Promise.all(batch.map(src => preloadImage(src).catch(() => {})))
     await new Promise(resolve => setTimeout(resolve, 50))
   }
-  
-  // Priority 2: Fill in remaining frames for all scenes
   const scenes = [
-    { sceneIndex: 2, count: SCENE_FRAME_COUNTS[2], stride: 1 }, // Scene 3: EVERY frame (fill gaps)
-    { sceneIndex: 3, count: SCENE_FRAME_COUNTS[3], stride: 1 }, // Scene 4: EVERY frame (fill gaps)
-    { sceneIndex: 4, count: SCENE_FRAME_COUNTS[4], stride: 1 }, // Scene 5: EVERY frame
-    { sceneIndex: 5, count: SCENE_FRAME_COUNTS[5], stride: 2 }, // Scene 6: every 2nd frame
+    { sceneIndex: 2, count: SCENE_FRAME_COUNTS[2], stride: 1 }, 
+    { sceneIndex: 3, count: SCENE_FRAME_COUNTS[3], stride: 1 }, 
+    { sceneIndex: 4, count: SCENE_FRAME_COUNTS[4], stride: 1 },
+    { sceneIndex: 5, count: SCENE_FRAME_COUNTS[5], stride: 2 }, 
   ]
 
   for (const scene of scenes) {
@@ -97,8 +85,6 @@ export const preloadRemainingFrames = async (): Promise<void> => {
     for (let i = 1; i <= scene.count; i += scene.stride) {
       frames.push(`/lifecycle/frames/scene-${scene.sceneIndex + 1}/frame_${String(i).padStart(4, '0')}.webp`)
     }
-
-    // Preload in small batches with delays to not block main thread
     for (let i = 0; i < frames.length; i += batchSize) {
       const batch = frames.slice(i, i + batchSize)
       await Promise.all(batch.map(src => preloadImage(src).catch(() => {})))
@@ -116,8 +102,6 @@ export const preloadNextFrames = (
   
   for (let i = 1; i <= preloadCount; i++) {
     const nextFrame = currentFrame + i
-    
-    // Preload frames within current scene
     if (nextFrame <= frameCount) {
       const src = `/lifecycle/frames/scene-${currentScene + 1}/frame_${String(nextFrame).padStart(4, '0')}.webp`
       if (!frameCache.has(src)) {
@@ -127,7 +111,6 @@ export const preloadNextFrames = (
         img.onload = () => frameCache.set(src, img)
       }
     } else if (currentScene < SCENE_FRAME_COUNTS.length - 1) {
-      // Preload first frames of next scene
       const nextSceneIndex = currentScene + 1
       const nextSceneFrame = nextFrame - frameCount
       if (nextSceneFrame <= SCENE_FRAME_COUNTS[nextSceneIndex]) {

@@ -8,8 +8,6 @@ import Footer from './components/Footer'
 import LoadingSpinner from './components/LoadingSpinner'
 import ErrorBoundary from './components/ErrorBoundary'
 import SmoothScrollLayout from './components/layout/SmoothScrollLayout'
-
-// Lazy load all page components for better code splitting
 const Home = lazy(() => import('./pages/Home'))
 const WhyRevive = lazy(() => import('./pages/WhyRevive'))
 const AboutUs = lazy(() => import('./pages/AboutUs'))
@@ -32,7 +30,10 @@ function ScrollToTop() {
       import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
         ScrollTrigger.getAll().forEach(trigger => trigger.kill(true))
         ScrollTrigger.refresh()
-      }).catch(() => {
+      }).catch((error) => {
+        if (import.meta.env.DEV) {
+          console.warn('Failed to load GSAP ScrollTrigger:', error)
+        }
       })
     }, 100)
 
@@ -47,16 +48,18 @@ function AppContent({ showContent }: { showContent: boolean }) {
   const { isNavbarVisible } = useNavbar()
   const hideFooter = location.pathname === '/battery-lifecycle'
   const [showFooter, setShowFooter] = React.useState(false)
-  if (!showContent) {
-    return null
-  }
 
   React.useEffect(() => {
+    if (!showContent) return
     const timer = setTimeout(() => {
       setShowFooter(true)
     }, 500)
     return () => clearTimeout(timer)
-  }, [])
+  }, [showContent])
+
+  if (!showContent) {
+    return null
+  }
 
   return (
     <>
@@ -130,7 +133,6 @@ function App() {
           await new Promise(resolve => setTimeout(resolve, remainingTime))
         }
 
-        // Ensure we show 100% briefly before fading out
         setLoadingProgress(100)
 
         setTimeout(() => {
@@ -138,17 +140,15 @@ function App() {
 
           setTimeout(() => {
             setIsInitialLoading(false)
-            // Wait for fade-out animation to complete before showing content
             setTimeout(() => setShowContent(true), 600)
           }, 500)
         }, 400)
-      } catch (error) {
+      } catch {
         setLoadingProgress(100)
         setTimeout(() => {
           setIsFadingOut(true)
           setTimeout(() => {
             setIsInitialLoading(false)
-            // Wait for fade-out animation to complete before showing content
             setTimeout(() => setShowContent(true), 600)
           }, 500)
         }, 500)
@@ -160,20 +160,14 @@ function App() {
 
   return (
     <Router>
-      {/* Full-page loading overlay when entering website */}
       {isInitialLoading && (
         <>
-          {/* Solid black background that stays during entire fade */}
           <div className={`fixed inset-0 z-[9998] bg-black transition-opacity duration-500 ${isFadingOut ? 'opacity-0' : 'opacity-100'}`} aria-hidden="true" />
-
-          {/* Loading spinner with real progress - keep at 100% during fade */}
           <div className={`fixed inset-0 z-[9999] ${isFadingOut ? 'animate-fadeOut' : ''}`} role="status" aria-live="polite" aria-label="Loading">
             <LoadingSpinner progress={isFadingOut ? 100 : loadingProgress} />
           </div>
         </>
       )}
-
-      {/* Delay content mounting until showContent is true to prevent flash */}
       {showContent && (
         <ErrorBoundary>
           <NavbarProvider>
@@ -186,5 +180,4 @@ function App() {
     </Router>
   )
 }
-
 export default App

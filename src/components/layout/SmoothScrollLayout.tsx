@@ -12,9 +12,9 @@ interface SmoothScrollLayoutProps {
 
 export default function SmoothScrollLayout({ children }: SmoothScrollLayoutProps) {
     const lenisRef = useRef<Lenis | null>(null)
+    const tickerCallbackRef = useRef<((time: number) => void) | null>(null)
 
     useEffect(() => {
-        // Initialize Lenis
         const lenis = new Lenis({
             duration: 1.2,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -27,25 +27,25 @@ export default function SmoothScrollLayout({ children }: SmoothScrollLayoutProps
 
         lenisRef.current = lenis
 
-        // Integrate with GSAP ScrollTrigger
         gsap.registerPlugin(ScrollTrigger)
 
-        // Update ScrollTrigger on Lenis scroll
         lenis.on('scroll', ScrollTrigger.update)
 
-        // Add Lenis's requestAnimationFrame to GSAP's ticker
-        gsap.ticker.add((time) => {
+        const tickerCallback = (time: number) => {
             lenis.raf(time * 1000)
-        })
+        }
+        tickerCallbackRef.current = tickerCallback
 
-        // Disable lag smoothing in GSAP to ensure smooth scrolling
+        gsap.ticker.add(tickerCallback)
         gsap.ticker.lagSmoothing(0)
 
         return () => {
+            if (tickerCallbackRef.current) {
+                gsap.ticker.remove(tickerCallbackRef.current)
+                tickerCallbackRef.current = null
+            }
+            lenis.off('scroll', ScrollTrigger.update)
             lenis.destroy()
-            gsap.ticker.remove((time) => {
-                lenis.raf(time * 1000)
-            })
         }
     }, [])
 

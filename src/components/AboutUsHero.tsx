@@ -13,7 +13,6 @@ export default function AboutUsHero() {
         ref={contentRef}
         className="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,36rem)_auto] gap-6 sm:gap-10 md:gap-12 lg:gap-8 xl:gap-10 items-center min-w-0"
       >
-        {/* Left: Text content - on mobile appears below logo so both sit under navbar */}
         <div className="flex flex-col min-w-0 w-full max-w-[32rem] lg:max-w-[36rem] order-2 lg:order-1">
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
@@ -70,7 +69,7 @@ export default function AboutUsHero() {
           </motion.p>
         </div>
 
-        {/* Right: Logo + company name - on mobile first (right under navbar) */}
+    
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}

@@ -9,7 +9,7 @@ export default function CTASection() {
 
   return (
     <section ref={sectionRef} className="relative w-full h-[28.13rem] sm:h-[37.5rem] md:h-[43.75rem] overflow-hidden flex items-center justify-center bg-black">
-      {/* Video Background - fade in on scroll */}
+      {/* Video Background */}
       <motion.div
         className="absolute inset-0"
         initial={{ opacity: 0 }}
@@ -54,7 +54,7 @@ export default function CTASection() {
           }}
           className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6"
         >
-          {/* Get in Touch Button - Orange */}
+          {/* Get in Touch Button  */}
           <motion.button
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
@@ -63,7 +63,7 @@ export default function CTASection() {
             Get in Touch
           </motion.button>
 
-          {/* Learn More Button - Outlined */}
+          {/* Learn More Button */}
           <motion.button
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}

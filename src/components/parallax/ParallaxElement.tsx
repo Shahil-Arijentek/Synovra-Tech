@@ -31,22 +31,6 @@ export default function ParallaxElement({
         gsap.registerPlugin(ScrollTrigger)
 
         const context = gsap.context(() => {
-            // Calculate movement based on speed
-            // If speed is 1, yMovement should be 0 (natural scroll)
-            // We want to offset the natural scroll.
-            // A speed of 0.5 means it should move 50% of the distance it would have naturally.
-            // So we translate it down by 50% of the scroll distance?
-
-            // Actually, standard parallax logic:
-            // data-speed="0.5" -> moves at half speed.
-            // To achieve this with transform while scrolling:
-            // y = (scrollTop * (1 - speed))
-
-            // Using ScrollTrigger scrub:
-            // We can animate 'y' from -offset to +offset.
-            // Or simply 'y' to some value based on scroll distance.
-
-            // Let's use a simpler visual approach:
             // Strength of effect.
             // yPercent can be convenient.
 
