@@ -185,8 +185,8 @@ const MythsVsTruths: React.FC = () => {
   }, [isMounted]);
 
   return (
-    <div ref={containerRef} className={`relative w-full h-[500vh] md:h-[400vh] bg-[#0d0d0d] z-[101] -mt-[150vh] transition-opacity duration-500 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
-      <div ref={contentRef} className="sticky top-0 w-full min-h-screen bg-[#0d0d0d] flex items-start justify-center pt-24 md:pt-24 pb-12 md:pb-16">
+    <div ref={containerRef} className={`relative w-full h-[500vh] sm:h-[450vh] md:h-[400vh] bg-[#0d0d0d] z-[101] -mt-[150vh] transition-opacity duration-500 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
+      <div ref={contentRef} className="sticky top-0 w-full min-h-screen bg-[#0d0d0d] flex items-start justify-center pt-24 sm:pt-20 md:pt-24 pb-12 sm:pb-14 md:pb-16">
       {/* Background Video */}
       <video
         ref={videoRef}
@@ -202,14 +202,14 @@ const MythsVsTruths: React.FC = () => {
       <div className="absolute inset-0 bg-[#0d0d0d]/30"></div>
 
       {/* Content */}
-      <div className="relative z-[210] w-full max-w-7xl mx-auto px-4 md:px-8">
+      <div className="relative z-[210] w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
         {/* Title */}
-        <h2 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mt-8 md:mt-12 lg:mt-16 mb-8 md:mb-8 lg:mb-12">
+        <h2 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mt-8 sm:mt-10 md:mt-12 lg:mt-16 mb-8 sm:mb-10 md:mb-8 lg:mb-12">
           Myths vs Truths
         </h2>
 
         {/* Content Layers Container */}
-        <div className="relative w-full mt-12 md:mt-16 lg:mt-24" style={{ minHeight: '450px' }}>
+        <div className="relative w-full mt-12 sm:mt-14 md:mt-16 lg:mt-24" style={{ minHeight: 'clamp(400px, 50vh, 450px)' }}>
           {/* Layer 1 */}
           <div ref={layer1Ref} className="absolute inset-0 w-full">
             <MythTruthContent 
@@ -250,9 +250,9 @@ const MythsVsTruths: React.FC = () => {
 
 const MythTruthContent: React.FC<{ myth: string; truth: string }> = ({ myth, truth }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 lg:gap-20 items-start max-w-5xl mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-10 lg:gap-20 items-start max-w-5xl mx-auto">
       {/* MYTH Section */}
-      <div className="text-left md:text-left space-y-2 md:space-y-3 p-4 md:p-5 lg:p-6" style={{
+      <div className="text-left md:text-left space-y-2 sm:space-y-2.5 md:space-y-3 p-4 sm:p-[1.125rem] md:p-5 lg:p-6" style={{
         borderRadius: '15px',
         background: 'rgba(13, 13, 13, 0.4)',
         backdropFilter: 'blur(22.2px)',
@@ -265,18 +265,18 @@ const MythTruthContent: React.FC<{ myth: string; truth: string }> = ({ myth, tru
           fontStyle: 'normal',
           fontWeight: '900',
           lineHeight: '120%',
-          letterSpacing: '-2.4px',
+          letterSpacing: 'clamp(-2px, -0.15vw, -2.4px)',
           textTransform: 'uppercase'
         }}>
           MYTH
         </h3>
-        <p className="text-white text-sm sm:text-base md:text-base lg:text-lg font-light leading-relaxed">
+        <p className="text-white text-sm sm:text-[0.9375rem] md:text-base lg:text-lg font-light leading-relaxed">
           {myth}
         </p>
       </div>
 
       {/* TRUTH Section */}
-      <div className="text-left md:text-left space-y-2 md:space-y-3 mt-8 md:mt-24 lg:mt-32 p-4 md:p-5 lg:p-6" style={{
+      <div className="text-left md:text-left space-y-2 sm:space-y-2.5 md:space-y-3 mt-8 sm:mt-12 md:mt-20 lg:mt-32 p-4 sm:p-[1.125rem] md:p-5 lg:p-6" style={{
         borderRadius: '15px',
         background: 'rgba(26, 13, 3, 0.4)',
         backdropFilter: 'blur(22.2px)',
@@ -288,7 +288,7 @@ const MythTruthContent: React.FC<{ myth: string; truth: string }> = ({ myth, tru
         }}>
           TRUTH
         </h3>
-        <p className="text-white text-sm sm:text-base md:text-base lg:text-lg font-light leading-relaxed">
+        <p className="text-white text-sm sm:text-[0.9375rem] md:text-base lg:text-lg font-light leading-relaxed">
           {truth}
         </p>
       </div>

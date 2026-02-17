@@ -96,7 +96,7 @@ export default function BatteryLifecycleScroll() {
           <div
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${positionClasses} z-10 max-lg:scale-[0.55] sm:max-lg:scale-[0.65]`}
+            className={`absolute ${positionClasses} z-10 max-lg:scale-[0.55] sm:max-lg:scale-[0.70] md:max-lg:scale-[0.75]`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <div className={scaleClasses}>
@@ -153,7 +153,7 @@ export default function BatteryLifecycleScroll() {
           <div
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${positionClasses} z-10 ${sceneIndex === 1 ? 'w-full lg:w-[26.25rem] lg:h-[13rem] [&>*]:lg:w-full [&>*]:lg:max-w-full [&>*]:lg:h-full [&>*]:lg:min-h-0' : ''}`}
+            className={`absolute ${positionClasses} z-10 ${sceneIndex === 1 ? 'w-full md:w-auto lg:w-[26.25rem] lg:h-[13rem] [&>*]:lg:w-full [&>*]:lg:max-w-full [&>*]:lg:h-full [&>*]:lg:min-h-0' : ''}`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <div className={scaleClasses}>
@@ -166,7 +166,7 @@ export default function BatteryLifecycleScroll() {
           <div
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${positionClasses} z-10 ${sceneIndex === 1 ? 'w-full lg:w-[26.25rem] lg:h-[13rem] [&>*]:lg:w-full [&>*]:lg:max-w-full [&>*]:lg:h-full [&>*]:lg:min-h-0' : ''}`}
+            className={`absolute ${positionClasses} z-10 ${sceneIndex === 1 ? 'w-full md:w-auto lg:w-[26.25rem] lg:h-[13rem] [&>*]:lg:w-full [&>*]:lg:max-w-full [&>*]:lg:h-full [&>*]:lg:min-h-0' : ''}`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <div className={scaleClasses}>
@@ -817,9 +817,16 @@ export default function BatteryLifecycleScroll() {
     if (sulphationDetectedElement) {
       const cardElement = findCardElement(sulphationDetectedElement)
       if (cardElement) {
-        cardElement.style.width = '18rem'
-        cardElement.style.maxWidth = '18rem'
-        cardElement.style.minWidth = '18rem'
+        // Match decision card width on tablet
+        const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024
+        cardElement.style.width = isTablet ? '24rem' : '18rem'
+        cardElement.style.maxWidth = isTablet ? '24rem' : '18rem'
+        cardElement.style.minWidth = isTablet ? '24rem' : '18rem'
+        if (isTablet) {
+          cardElement.style.height = '14rem'
+          cardElement.style.maxHeight = '14rem'
+          cardElement.style.minHeight = '14rem'
+        }
       }
     }
 
@@ -878,9 +885,16 @@ export default function BatteryLifecycleScroll() {
     if (sulphationElement) {
       const cardElement = findCardElement(sulphationElement)
       if (cardElement) {
-        cardElement.style.width = '18rem'
-        cardElement.style.maxWidth = '18rem'
-        cardElement.style.minWidth = '18rem'
+        // Match Scene 2 sulphation detected card size on tablet
+        const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024
+        cardElement.style.width = isTablet ? '24rem' : '18rem'
+        cardElement.style.maxWidth = isTablet ? '24rem' : '18rem'
+        cardElement.style.minWidth = isTablet ? '24rem' : '18rem'
+        if (isTablet) {
+          cardElement.style.height = '14rem'
+          cardElement.style.maxHeight = '14rem'
+          cardElement.style.minHeight = '14rem'
+        }
       }
     }
 
@@ -993,9 +1007,16 @@ export default function BatteryLifecycleScroll() {
     if (electrochemicalElement) {
       const cardElement = findCardElement(electrochemicalElement)
       if (cardElement) {
+        const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024
         cardElement.style.width = '18rem'
         cardElement.style.maxWidth = '18rem'
         cardElement.style.minWidth = '18rem'
+        if (isTablet) {
+          cardElement.style.height = '12.5rem'
+          cardElement.style.maxHeight = '12.5rem'
+          cardElement.style.minHeight = '12.5rem'
+        }
+        cardElement.style.overflow = 'hidden'
       }
     }
 
@@ -1005,12 +1026,23 @@ export default function BatteryLifecycleScroll() {
     if (plateConditionElement) {
       const cardElement = findCardElement(plateConditionElement)
       if (cardElement) {
-        cardElement.style.width = '25rem'
-        cardElement.style.maxWidth = '25rem'
-        cardElement.style.minWidth = '25rem'
-        cardElement.style.height = '10rem'
-        cardElement.style.maxHeight = '10rem'
-        cardElement.style.minHeight = '10rem'
+        // Adjust sizing for tablet vs mobile
+        const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024
+        if (isTablet) {
+          cardElement.style.width = '30rem'
+          cardElement.style.maxWidth = '30rem'
+          cardElement.style.minWidth = '30rem'
+          cardElement.style.height = '13rem'
+          cardElement.style.maxHeight = '13rem'
+          cardElement.style.minHeight = '13rem'
+        } else {
+          cardElement.style.width = '25rem'
+          cardElement.style.maxWidth = '25rem'
+          cardElement.style.minWidth = '25rem'
+          cardElement.style.height = '10rem'
+          cardElement.style.maxHeight = '10rem'
+          cardElement.style.minHeight = '10rem'
+        }
         
         cardElement.style.overflow = 'hidden'
         
@@ -1044,12 +1076,22 @@ export default function BatteryLifecycleScroll() {
         
         const imageElement = cardElement.querySelector('img[src="/cards/platecondition.png"]') as HTMLImageElement
         if (imageElement) {
-          imageElement.style.width = '14rem'
-          imageElement.style.height = '10rem'
-          imageElement.style.maxWidth = '14rem'
-          imageElement.style.maxHeight = '10rem'
+          if (isTablet) {
+            imageElement.style.width = '15rem'
+            imageElement.style.height = '10rem'
+            imageElement.style.maxWidth = '15rem'
+            imageElement.style.maxHeight = '10rem'
+            imageElement.style.marginLeft = '2rem'
+          } else {
+            imageElement.style.width = '14rem'
+            imageElement.style.height = '10rem'
+            imageElement.style.maxWidth = '14rem'
+            imageElement.style.maxHeight = '10rem'
+            imageElement.style.marginLeft = '3rem'
+          }
           imageElement.style.objectFit = 'contain'
-          imageElement.style.marginLeft = '3rem'
+          imageElement.style.visibility = 'visible'
+          imageElement.style.display = 'block'
         }
         
         const imageContainer = imageElement?.parentElement as HTMLElement
@@ -1230,7 +1272,7 @@ export default function BatteryLifecycleScroll() {
           {/* Canvas renderer */}
           <div 
             className={`absolute w-full bg-black ${
-              isMobile ? 'h-[35vh] top-1/2 -translate-y-1/2' : 'inset-0 h-full'
+              isMobile ? 'h-[35vh] sm:h-[40vh] md:h-[42vh] top-1/2 -translate-y-1/2' : 'inset-0 h-full'
             }`}
             style={{ 
               backfaceVisibility: 'hidden',
@@ -1260,11 +1302,11 @@ export default function BatteryLifecycleScroll() {
             <>
               {/* Progress Boxes Container */}
               <div className={`absolute z-20 ${isMobile
-                ? 'top-[calc(50%+17.5vh-2rem)] left-4'
+                ? 'top-[calc(50%+17.5vh-2rem)] sm:top-[calc(50%+22vh-2rem)] md:top-[calc(50%+24vh-2rem)] left-4 sm:left-5 md:left-6'
                 : 'top-4 lg:top-8 left-5 sm:left-4 lg:left-[32rem] xl:left-[38rem]'
                 }`}>
                 <div 
-                  className="flex items-center gap-0.5 lg:gap-2 backdrop-blur-sm h-[1.875rem] lg:h-[4.688rem] rounded-md lg:rounded-2xl px-1.5 lg:px-5"
+                  className="flex items-center gap-0.5 sm:gap-1 md:gap-1.5 lg:gap-2 backdrop-blur-sm h-[1.875rem] sm:h-[2.25rem] md:h-[2.75rem] lg:h-[4.688rem] rounded-md sm:rounded-lg md:rounded-xl lg:rounded-2xl px-1.5 sm:px-2 md:px-3 lg:px-5"
                   style={{
                     border: '1px solid rgba(255, 255, 255, 0.10)',
                     background: 'rgba(0, 0, 0, 0.4)',
@@ -1276,7 +1318,7 @@ export default function BatteryLifecycleScroll() {
                     <div
                       key={index}
                       className={`relative transition-all duration-300 ${
-                        activeSceneIndex === index ? 'w-3 h-3 lg:w-7 lg:h-7' : 'w-2.5 h-2.5 lg:w-6 lg:h-6'
+                        activeSceneIndex === index ? 'w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 lg:w-7 lg:h-7' : 'w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5 lg:w-6 lg:h-6'
                       }`}
                     >
                       {/* Box Background */}
@@ -1309,21 +1351,21 @@ export default function BatteryLifecycleScroll() {
               {/* Scene Title Label */}
               {activeSceneIndex !== null && (
                 <div className={`absolute z-20 ${isMobile
-                  ? 'top-[calc(50%+17.5vh-2rem)] right-4 max-w-[calc(100%-8rem)]'
+                  ? 'top-[calc(50%+17.5vh-2rem)] sm:top-[calc(50%+22vh-2rem)] md:top-[calc(50%+24vh-2rem)] right-4 sm:right-5 md:right-6 max-w-[calc(100%-8rem)] sm:max-w-[calc(100%-9rem)] md:max-w-[calc(100%-10rem)]'
                   : 'top-4 lg:top-8 right-2 sm:right-4 lg:right-8 xl:right-16 max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-2rem)] lg:max-w-[600px] xl:max-w-none'
                   }`}>
                   <div
-                    className="flex flex-col items-center justify-center backdrop-blur-sm min-h-[1.875rem] sm:min-h-[2.188rem] lg:min-h-[4.688rem] rounded-lg lg:rounded-2xl px-3 sm:px-4 lg:px-6 xl:px-12 2xl:px-24 w-auto lg:w-[600px] xl:w-[46.88rem] py-1 sm:py-1.5 lg:py-3"
+                    className="flex flex-col items-center justify-center backdrop-blur-sm min-h-[1.875rem] sm:min-h-[2.188rem] md:min-h-[2.5rem] lg:min-h-[4.688rem] rounded-lg sm:rounded-xl md:rounded-xl lg:rounded-2xl px-3 sm:px-4 md:px-5 lg:px-6 xl:px-12 2xl:px-24 w-auto lg:w-[600px] xl:w-[46.88rem] py-1 sm:py-1.5 md:py-2 lg:py-3"
                     style={{
                       border: '1px solid rgba(255, 255, 255, 0.10)',
                       background: 'rgba(0, 0, 0, 0.4)',
                       willChange: 'transform'
                     }}
                   >
-                    <p className="text-[0.375rem] xs:text-[0.4375rem] sm:text-[0.5rem] lg:text-sm xl:!text-base 2xl:!text-lg font-['Arial',sans-serif] tracking-wide uppercase text-center px-1" style={{ color: '#9F9F9F', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                    <p className="text-[0.375rem] xs:text-[0.4375rem] sm:text-[0.5625rem] md:text-[0.625rem] lg:text-sm xl:!text-base 2xl:!text-lg font-['Arial',sans-serif] tracking-wide uppercase text-center px-1" style={{ color: '#9F9F9F', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                       {sceneConfig[activeSceneIndex]?.headline}
                     </p>
-                    <p className="text-[0.3125rem] xs:text-[0.375rem] sm:text-[0.4375rem] lg:text-xs xl:!text-sm 2xl:!text-base font-['Arial',sans-serif] tracking-normal normal-case text-center px-1 mt-0.5 sm:mt-1" style={{ color: '#9F9F9F', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                    <p className="text-[0.3125rem] xs:text-[0.375rem] sm:text-[0.4375rem] md:text-[0.5rem] lg:text-xs xl:!text-sm 2xl:!text-base font-['Arial',sans-serif] tracking-normal normal-case text-center px-1 mt-0.5 sm:mt-1 md:mt-1.5" style={{ color: '#9F9F9F', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                       {sceneConfig[activeSceneIndex]?.subline}
                     </p>
                   </div>
@@ -1378,9 +1420,9 @@ export default function BatteryLifecycleScroll() {
 
           {/* Scroll Indicator (only visible in active scene) */}
           {activeSceneIndex !== null && activeSceneIndex < 6 && (
-            <div className="absolute bottom-4 lg:bottom-8 left-[40%] lg:left-1/2 z-10 flex flex-col items-center gap-1 lg:gap-2 animate-bounce lg:-translate-x-1/2">
-              <p className="text-white/60 text-xs lg:text-sm font-['Arial',sans-serif]">Scroll to explore</p>
-              <svg className="w-5 h-5 lg:w-6 lg:h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="absolute bottom-4 md:bottom-6 lg:bottom-8 left-[40%] md:left-[45%] lg:left-1/2 z-10 flex flex-col items-center gap-1 md:gap-1.5 lg:gap-2 animate-bounce md:-translate-x-1/2 lg:-translate-x-1/2">
+              <p className="text-white/60 text-xs md:text-sm lg:text-sm font-['Arial',sans-serif]">Scroll to explore</p>
+              <svg className="w-5 h-5 md:w-[1.375rem] md:h-[1.375rem] lg:w-6 lg:h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
               </svg>
             </div>
