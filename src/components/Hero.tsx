@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [isVideoReady, setIsVideoReady] = useState(false)
 
   useEffect(() => {
     const video = videoRef.current
@@ -10,8 +9,8 @@ export default function Hero() {
 
     let isCancelled = false
     video.preload = 'auto'
+    
     const handleCanPlay = () => {
-      setIsVideoReady(true)
       if (!isCancelled) {
         const playPromise = video.play()
         if (playPromise !== undefined) {
@@ -26,18 +25,11 @@ export default function Hero() {
       }
     }
 
-    const handleLoadedData = () => {
-      setIsVideoReady(true)
-    }
-
-    // If video is already loaded, play immediately
-    if (video.readyState >= 3) { // HAVE_FUTURE_DATA or higher
+    if (video.readyState >= 3) { 
       handleCanPlay()
     } else {
       video.addEventListener('canplaythrough', handleCanPlay, { once: true })
-      video.addEventListener('loadeddata', handleLoadedData, { once: true })
-      
-      // Fallback: try to play after a short delay even if events don't fire
+      video.addEventListener('loadeddata', handleCanPlay, { once: true })
       const fallbackTimer = setTimeout(() => {
         if (!isCancelled && video && video.readyState >= 2) {
           handleCanPlay()
@@ -48,7 +40,7 @@ export default function Hero() {
         isCancelled = true
         clearTimeout(fallbackTimer)
         video.removeEventListener('canplaythrough', handleCanPlay)
-        video.removeEventListener('loadeddata', handleLoadedData)
+        video.removeEventListener('loadeddata', handleCanPlay)
         if (video) {
           video.pause()
           video.currentTime = 0
@@ -105,4 +97,3 @@ export default function Hero() {
     </section>
   )
 }
-
