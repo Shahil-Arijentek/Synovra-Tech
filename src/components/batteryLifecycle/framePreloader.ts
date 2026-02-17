@@ -1,5 +1,7 @@
 import { preloadImage, frameCache } from './frameCache'
 import { SCENE_FRAME_COUNTS } from './sceneConfig'
+import { bandwidthDetector } from '../../utils/bandwidthDetector'
+import { priorityPreloader, type PreloadTask } from '../../utils/priorityPreloader'
 
 export interface PreloadProgress {
   loaded: number
@@ -13,12 +15,18 @@ export const preloadCriticalFrames = async (
   onProgress?: PreloadProgressCallback
 ): Promise<void> => {
   const startTime = Date.now()
+  const networkInfo = bandwidthDetector.getNetworkInfo()
+  const MAX_WAIT_TIME = 8000
 
   try {
     const scene1Frames = Array.from({ length: 60 }, (_, i) => i + 1)
     const scene2Frames = Array.from({ length: 60 }, (_, i) => i + 1)
-    const scene3Frames = Array.from({ length: 36 }, (_, i) => (i * 5) + 1)
-    const scene4Frames = Array.from({ length: 16 }, (_, i) => (i * 10) + 1)
+    const scene3Frames = networkInfo.isSlowConnection 
+      ? Array.from({ length: 15 }, (_, i) => (i * 4) + 1) 
+      : Array.from({ length: 30 }, (_, i) => (i * 3) + 1) 
+    const scene4Frames = networkInfo.isSlowConnection
+      ? Array.from({ length: 8 }, (_, i) => (i * 15) + 1) 
+      : Array.from({ length: 12 }, (_, i) => (i * 10) + 1)
     
     const criticalFrames = [
       ...scene1Frames.map(f => `/lifecycle/frames/scene-1/frame_${String(f).padStart(4, '0')}.webp`),
@@ -29,33 +37,42 @@ export const preloadCriticalFrames = async (
 
     let loaded = 0
     const total = criticalFrames.length
-
-    const batchSize = 8
-    for (let i = 0; i < criticalFrames.length; i += batchSize) {
-      const batch = criticalFrames.slice(i, i + batchSize)
-      await Promise.all(
-        batch.map(src => 
-          preloadImage(src).then(() => {
-            loaded++
-            if (onProgress) {
-              onProgress({
-                loaded,
-                total,
-                percentage: Math.round((loaded / total) * 100)
-              })
-            }
+    const tasks: PreloadTask[] = criticalFrames.map((src, index) => ({
+      url: src,
+      type: 'frame',
+      priority: index < 120 ? 'critical' : 'high', 
+      onLoad: () => {
+        loaded++
+        if (onProgress) {
+          onProgress({
+            loaded,
+            total,
+            percentage: Math.round((loaded / total) * 100)
           })
-        )
+        }
+      }
+    }))
+    priorityPreloader.addTasks(tasks)
+    const criticalFrameUrls = criticalFrames.slice(0, 120)
+    const loadPromise = Promise.all(
+      criticalFrameUrls.map(src => 
+        preloadImage(src).catch(() => {})
       )
-    }
+    )
+    await Promise.race([
+      loadPromise,
+      new Promise(resolve => setTimeout(resolve, MAX_WAIT_TIME))
+    ])
     const elapsed = Date.now() - startTime
-    const minLoadTime = 2000 // 2 seconds minimum
+    const minLoadTime = networkInfo.isSlowConnection ? 1000 : 1500
     const remainingTime = Math.max(0, minLoadTime - elapsed)
     
-    await new Promise(resolve => setTimeout(resolve, remainingTime + 300))
+    if (remainingTime > 0) {
+      await new Promise(resolve => setTimeout(resolve, remainingTime))
+    }
   } catch {
     const elapsed = Date.now() - startTime
-    const minLoadTime = 2000
+    const minLoadTime = networkInfo.isSlowConnection ? 1000 : 1500
     const remainingTime = Math.max(0, minLoadTime - elapsed)
     await new Promise(resolve => setTimeout(resolve, remainingTime))
   }
@@ -96,32 +113,57 @@ export const preloadRemainingFrames = async (): Promise<void> => {
 export const preloadNextFrames = (
   currentScene: number,
   currentFrame: number,
-  preloadCount: number = 35
+  preloadCount?: number
 ): void => {
+  const networkInfo = bandwidthDetector.getNetworkInfo()
+  const baseCount = networkInfo.isSlowConnection ? 30 : 60
+  const count = preloadCount || baseCount
   const frameCount = SCENE_FRAME_COUNTS[currentScene]
   
-  for (let i = 1; i <= preloadCount; i++) {
+  const tasks: PreloadTask[] = []
+  for (let i = 1; i <= count; i++) {
     const nextFrame = currentFrame + i
     if (nextFrame <= frameCount) {
       const src = `/lifecycle/frames/scene-${currentScene + 1}/frame_${String(nextFrame).padStart(4, '0')}.webp`
-      if (!frameCache.has(src)) {
-        const img = new Image()
-        img.decoding = 'async'
-        img.src = src
-        img.onload = () => frameCache.set(src, img)
+      if (!frameCache.has(src) && !priorityPreloader.isLoaded(src)) {
+        tasks.push({
+          url: src,
+          type: 'frame',
+          priority: i <= 20 ? 'high' : 'medium', 
+          onLoad: () => {
+          }
+        })
       }
     } else if (currentScene < SCENE_FRAME_COUNTS.length - 1) {
       const nextSceneIndex = currentScene + 1
       const nextSceneFrame = nextFrame - frameCount
-      if (nextSceneFrame <= SCENE_FRAME_COUNTS[nextSceneIndex]) {
+      if (nextSceneFrame <= Math.min(40, SCENE_FRAME_COUNTS[nextSceneIndex])) {
         const src = `/lifecycle/frames/scene-${nextSceneIndex + 1}/frame_${String(nextSceneFrame).padStart(4, '0')}.webp`
-        if (!frameCache.has(src)) {
-          const img = new Image()
-          img.decoding = 'async'
-          img.src = src
-          img.onload = () => frameCache.set(src, img)
+        if (!frameCache.has(src) && !priorityPreloader.isLoaded(src)) {
+          tasks.push({
+            url: src,
+            type: 'frame',
+            priority: nextSceneFrame <= 20 ? 'high' : 'medium' 
+          })
         }
       }
     }
+  }
+  for (let i = 1; i <= 10; i++) {
+    const prevFrame = currentFrame - i
+    if (prevFrame >= 1) {
+      const src = `/lifecycle/frames/scene-${currentScene + 1}/frame_${String(prevFrame).padStart(4, '0')}.webp`
+      if (!frameCache.has(src) && !priorityPreloader.isLoaded(src)) {
+        tasks.push({
+          url: src,
+          type: 'frame',
+          priority: 'medium'
+        })
+      }
+    }
+  }
+
+  if (tasks.length > 0) {
+    priorityPreloader.addTasks(tasks)
   }
 }

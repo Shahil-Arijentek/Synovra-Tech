@@ -1,5 +1,3 @@
-
-
 import { useEffect, useRef } from 'react'
 
 export default function Hero() {
@@ -10,26 +8,48 @@ export default function Hero() {
     if (!video) return
 
     let isCancelled = false
-
-    const timer = setTimeout(() => {
-      if (isCancelled || !video) return
-
-      const playPromise = video.play()
-
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {})
-      }
-
-      setTimeout(() => {
-        if (!isCancelled && video) {
-          video.pause()
+    video.preload = 'auto'
+    
+    const handleCanPlay = () => {
+      if (!isCancelled) {
+        const playPromise = video.play()
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {})
         }
-      }, 3000)
-    }, 100)
+
+        setTimeout(() => {
+          if (!isCancelled && video) {
+            video.pause()
+          }
+        }, 3000)
+      }
+    }
+
+    if (video.readyState >= 3) { 
+      handleCanPlay()
+    } else {
+      video.addEventListener('canplaythrough', handleCanPlay, { once: true })
+      video.addEventListener('loadeddata', handleCanPlay, { once: true })
+      const fallbackTimer = setTimeout(() => {
+        if (!isCancelled && video && video.readyState >= 2) {
+          handleCanPlay()
+        }
+      }, 500)
+      
+      return () => {
+        isCancelled = true
+        clearTimeout(fallbackTimer)
+        video.removeEventListener('canplaythrough', handleCanPlay)
+        video.removeEventListener('loadeddata', handleCanPlay)
+        if (video) {
+          video.pause()
+          video.currentTime = 0
+        }
+      }
+    }
 
     return () => {
       isCancelled = true
-      clearTimeout(timer)
       if (video) {
         video.pause()
         video.currentTime = 0
@@ -65,6 +85,7 @@ export default function Hero() {
                 className="w-full h-auto object-contain mix-blend-screen"
                 muted
                 playsInline
+                preload="auto"
               >
                 <source src="/mainbattery.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
@@ -76,4 +97,3 @@ export default function Hero() {
     </section>
   )
 }
-

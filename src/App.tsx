@@ -101,10 +101,18 @@ function App() {
   }, [])
 
   useEffect(() => {
+    let isMounted = true
+    let progressInterval: ReturnType<typeof setInterval> | null = null
+    let timeoutId: ReturnType<typeof setTimeout> | null = null
+    let fadeOutTimeout: ReturnType<typeof setTimeout> | null = null
+    let showContentTimeout: ReturnType<typeof setTimeout> | null = null
+    let finalTimeout: ReturnType<typeof setTimeout> | null = null
+
     const loadAssets = async () => {
       try {
         const startTime = Date.now()
-
+        const MAX_LOAD_TIME = 10000 
+        const MIN_LOAD_TIME = 1500 
         const componentsPromise = Promise.all([
           import('./pages/Home'),
           import('./pages/WhyRevive'),
@@ -112,50 +120,120 @@ function App() {
           import('./pages/GetStarted'),
         ])
 
-        const { AssetPreloader, getCriticalAssets } = await import('./utils/assetPreloader')
+        const { priorityPreloader } = await import('./utils/priorityPreloader')
+        const { getAllCriticalAssets } = await import('./utils/assetManifest')
 
-        const criticalAssets = getCriticalAssets()
+        const criticalAssets = getAllCriticalAssets()
+        let loadedCount = 0
+        const totalAssets = criticalAssets.length
+        
+        const loadCriticalAssets = new Promise<void>((resolve) => {
+          const checkProgress = () => {
+            if (!isMounted) {
+              resolve()
+              return
+            }
+            const heroVideo = '/mainbattery.mp4'
+            const videoElement = document.querySelector(`video[src="${heroVideo}"]`) as HTMLVideoElement
+            const heroLoaded = priorityPreloader.isLoaded(heroVideo) || 
+                              (videoElement && videoElement.readyState >= 3)
+            const currentLoaded = criticalAssets.filter(url => 
+              priorityPreloader.isLoaded(url)
+            ).length
 
-        const preloader = new AssetPreloader(criticalAssets, (progress) => {
-          setLoadingProgress(progress.percentage)
+            loadedCount = currentLoaded
+            const progress = Math.min(95, Math.round((loadedCount / totalAssets) * 100))
+            if (isMounted) {
+              setLoadingProgress(progress)
+            }
+            if (heroLoaded && (loadedCount >= Math.max(5, totalAssets * 0.5) || progress >= 70)) {
+              if (progressInterval) {
+                clearInterval(progressInterval)
+                progressInterval = null
+              }
+              if (timeoutId) {
+                clearTimeout(timeoutId)
+                timeoutId = null
+              }
+              resolve()
+            }
+          }
+          progressInterval = setInterval(checkProgress, 100)
+          timeoutId = setTimeout(() => {
+            if (progressInterval) {
+              clearInterval(progressInterval)
+              progressInterval = null
+            }
+            resolve() 
+          }, MAX_LOAD_TIME)
+          checkProgress()
         })
-
-        await Promise.all([
-          preloader.load(),
-          componentsPromise
+        
+        await Promise.race([
+          Promise.all([componentsPromise, loadCriticalAssets]),
+          new Promise(resolve => setTimeout(resolve, MAX_LOAD_TIME))
         ])
 
+        if (!isMounted) return
+
         const elapsed = Date.now() - startTime
-        const minLoadTime = 1500
-        const remainingTime = Math.max(0, minLoadTime - elapsed)
+        const remainingTime = Math.max(0, MIN_LOAD_TIME - elapsed)
 
         if (remainingTime > 0) {
           await new Promise(resolve => setTimeout(resolve, remainingTime))
         }
 
+        if (!isMounted) return
+
         setLoadingProgress(100)
 
-        setTimeout(() => {
+        fadeOutTimeout = setTimeout(() => {
+          if (!isMounted) return
           setIsFadingOut(true)
 
-          setTimeout(() => {
+          showContentTimeout = setTimeout(() => {
+            if (!isMounted) return
             setIsInitialLoading(false)
-            setTimeout(() => setShowContent(true), 600)
+            finalTimeout = setTimeout(() => {
+              if (isMounted) {
+                setShowContent(true)
+              }
+            }, 600)
           }, 500)
         }, 400)
-      } catch {
+      } catch (error) {
+        if (import.meta.env.DEV) {
+          console.warn('Asset loading error:', error)
+        }
+        if (!isMounted) return
+        
         setLoadingProgress(100)
-        setTimeout(() => {
+        fadeOutTimeout = setTimeout(() => {
+          if (!isMounted) return
           setIsFadingOut(true)
-          setTimeout(() => {
+          showContentTimeout = setTimeout(() => {
+            if (!isMounted) return
             setIsInitialLoading(false)
-            setTimeout(() => setShowContent(true), 600)
+            finalTimeout = setTimeout(() => {
+              if (isMounted) {
+                setShowContent(true)
+              }
+            }, 600)
           }, 500)
         }, 500)
       }
     }
 
     loadAssets()
+
+    return () => {
+      isMounted = false
+      if (progressInterval) clearInterval(progressInterval)
+      if (timeoutId) clearTimeout(timeoutId)
+      if (fadeOutTimeout) clearTimeout(fadeOutTimeout)
+      if (showContentTimeout) clearTimeout(showContentTimeout)
+      if (finalTimeout) clearTimeout(finalTimeout)
+    }
   }, [])
 
   return (
