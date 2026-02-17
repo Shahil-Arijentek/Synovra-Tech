@@ -9,66 +9,26 @@ export default function Hero() {
 
     let isCancelled = false
     video.preload = 'auto'
-    video.load()
-    
-    const handleCanPlay = () => {
-      if (!isCancelled && video) {
-        const playPromise = video.play()
-        if (playPromise !== undefined) {
-          playPromise.catch(() => {})
-        }
 
-        setTimeout(() => {
-          if (!isCancelled && video) {
-            video.pause()
-          }
-        }, 3000)
+    const timer = setTimeout(() => {
+      if (isCancelled || !video) return
+
+      const playPromise = video.play()
+
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {})
       }
-    }
 
-    if (video.readyState >= 3) { 
-      handleCanPlay()
-    } else {
-      const events = ['canplaythrough', 'loadeddata', 'loadedmetadata']
-      const handlers: { event: string; handler: () => void }[] = []
-      
-      events.forEach(eventName => {
-        const handler = () => {
-          if (!isCancelled) {
-            handleCanPlay()
-            handlers.forEach(h => {
-              video.removeEventListener(h.event as any, h.handler)
-            })
-          }
-        }
-        handlers.push({ event: eventName, handler })
-        video.addEventListener(eventName, handler, { once: true })
-      })
-      
-      const fallbackTimer = setTimeout(() => {
-        if (!isCancelled && video && video.readyState >= 2) {
-          handleCanPlay()
-          handlers.forEach(h => {
-            video.removeEventListener(h.event as any, h.handler)
-          })
-        }
-      }, 1000)
-      
-      return () => {
-        isCancelled = true
-        clearTimeout(fallbackTimer)
-        handlers.forEach(h => {
-          video.removeEventListener(h.event as any, h.handler)
-        })
-        if (video) {
+      setTimeout(() => {
+        if (!isCancelled && video) {
           video.pause()
-          video.currentTime = 0
         }
-      }
-    }
+      }, 3000)
+    }, 100)
 
     return () => {
       isCancelled = true
+      clearTimeout(timer)
       if (video) {
         video.pause()
         video.currentTime = 0
@@ -104,7 +64,6 @@ export default function Hero() {
                 className="w-full h-auto object-contain mix-blend-screen"
                 muted
                 playsInline
-                preload="auto"
               >
                 <source src="/mainbattery.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
