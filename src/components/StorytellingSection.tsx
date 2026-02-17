@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { priorityPreloader, type PreloadTask } from '../utils/priorityPreloader';
 import { bandwidthDetector } from '../utils/bandwidthDetector';
+import { useNavbar } from '../contexts/NavbarContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,8 +26,12 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
   const [video1Frame, setVideo1Frame] = React.useState(1);
   const [video2Frame, setVideo2Frame] = React.useState(1);
   const [video3Frame, setVideo3Frame] = React.useState(1);
+  const { setNavbarVisible } = useNavbar();
+  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
   useEffect(() => {
+    setNavbarVisible(true);
+    
     const mountTimer = setTimeout(() => {
       setIsMounted(true);
       if (onReady) {
@@ -34,7 +39,7 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
       }
     }, 100);
     return () => clearTimeout(mountTimer);
-  }, [onReady]);
+  }, [onReady, setNavbarVisible]);
 
   useEffect(() => {
     // Enhanced preloading with priority system
@@ -77,43 +82,75 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
   useEffect(() => {
     if (!containerRef.current || !isMounted) return;
 
+    setNavbarVisible(true);
+    
+    const scrollToSection = () => {
+      const element = document.getElementById('why-revive');
+      if (element) {
+        const headerHeight = document.querySelector('header')?.offsetHeight || 0;
+        const elementTop = element.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+        window.scrollTo({ top: Math.max(0, elementTop), behavior: 'instant' });
+        
+        const lenisInstance = (window as any).lenis;
+        if (lenisInstance) {
+          lenisInstance.scrollTo(Math.max(0, elementTop), { immediate: true });
+        }
+      }
+    };
+
     ScrollTrigger.refresh();
 
     const ctx = gsap.context(() => {
       gsap.set([layer2Ref.current, layer3Ref.current], { opacity: 0 });
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: 0.5,
-          pin: true,
-          pinSpacing: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          refreshPriority: 1,
-          onUpdate: (self) => {
-            const progress = self.progress;
-            
-            if (progress < 0.33) {
-              setCurrentVideo(1);
-              const frameProgress = progress / 0.33;
-              const frameIndex = Math.floor(frameProgress * (FRAME_COUNT - 1)) + 1;
-              setVideo1Frame(Math.max(1, Math.min(frameIndex, FRAME_COUNT)));
-            } else if (progress >= 0.33 && progress < 0.66) {
-              setCurrentVideo(2);
-              const frameProgress = (progress - 0.33) / 0.33;
-              const frameIndex = Math.floor(frameProgress * (FRAME_COUNT - 1)) + 1;
-              setVideo2Frame(Math.max(1, Math.min(frameIndex, FRAME_COUNT)));
-            } else {
-              setCurrentVideo(3);
-              const frameProgress = (progress - 0.66) / 0.34;
-              const frameIndex = Math.floor(frameProgress * (FRAME_COUNT - 1)) + 1;
-              setVideo3Frame(Math.max(1, Math.min(frameIndex, FRAME_COUNT)));
-            }
-          }
+      const scrollTriggerInstance = ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.5,
+        pin: true,
+        pinSpacing: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        refreshPriority: 1,
+        onEnter: () => {
+          setNavbarVisible(false);
         },
+        onLeave: () => {
+          setNavbarVisible(true);
+        },
+        onEnterBack: () => {
+          setNavbarVisible(false);
+        },
+        onLeaveBack: () => {
+          setNavbarVisible(true);
+        },
+        onUpdate: (self) => {
+          const progress = self.progress;
+          
+          if (progress < 0.33) {
+            setCurrentVideo(1);
+            const frameProgress = progress / 0.33;
+            const frameIndex = Math.floor(frameProgress * (FRAME_COUNT - 1)) + 1;
+            setVideo1Frame(Math.max(1, Math.min(frameIndex, FRAME_COUNT)));
+          } else if (progress >= 0.33 && progress < 0.66) {
+            setCurrentVideo(2);
+            const frameProgress = (progress - 0.33) / 0.33;
+            const frameIndex = Math.floor(frameProgress * (FRAME_COUNT - 1)) + 1;
+            setVideo2Frame(Math.max(1, Math.min(frameIndex, FRAME_COUNT)));
+          } else {
+            setCurrentVideo(3);
+            const frameProgress = (progress - 0.66) / 0.34;
+            const frameIndex = Math.floor(frameProgress * (FRAME_COUNT - 1)) + 1;
+            setVideo3Frame(Math.max(1, Math.min(frameIndex, FRAME_COUNT)));
+          }
+        }
+      });
+      
+      scrollTriggerRef.current = scrollTriggerInstance;
+
+      const tl = gsap.timeline({
+        scrollTrigger: scrollTriggerInstance
       });
 
       tl.to(layer1Ref.current, { opacity: 0, duration: 0.1 }, 0.28)
@@ -126,13 +163,19 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
 
     const refreshTimer = setTimeout(() => {
       ScrollTrigger.refresh();
+      scrollToSection();
     }, 200);
 
     return () => {
       clearTimeout(refreshTimer);
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+        scrollTriggerRef.current = null;
+      }
+      setNavbarVisible(true);
       ctx.revert();
     };
-  }, [isMounted]);
+  }, [isMounted, setNavbarVisible]);
 
   useEffect(() => {
     if (!isReady) return;
