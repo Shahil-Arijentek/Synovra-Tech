@@ -62,7 +62,11 @@ class PriorityPreloader {
           this.loadedAssets.add(task.url)
           task.onLoad?.()
         })
-        .catch(() => {
+        .catch((error) => {
+          if (import.meta.env.DEV) {
+            console.warn(`Asset failed to load: ${task.url}`, error)
+          }
+          this.loadedAssets.add(task.url)
           task.onError?.()
         })
         .finally(() => {
@@ -113,21 +117,38 @@ class PriorityPreloader {
       const img = new Image()
       img.decoding = 'async'
       
+      const TIMEOUT = 15000 // 15 seconds timeout
+      let timeoutId: ReturnType<typeof setTimeout> | null = null
+      
       const cleanup = () => {
         img.onload = null
         img.onerror = null
+        if (timeoutId) {
+          clearTimeout(timeoutId)
+          timeoutId = null
+        }
       }
 
-      img.onload = () => {
+      const onLoad = () => {
         cleanup()
         resolve()
       }
 
-      img.onerror = () => {
+      const onError = () => {
         cleanup()
         reject(new Error(`Failed to load image: ${url}`))
       }
 
+      const onTimeout = () => {
+        cleanup()
+        this.loadedAssets.add(url)
+        reject(new Error(`Timeout loading image: ${url}`))
+      }
+
+      img.onload = onLoad
+      img.onerror = onError
+      timeoutId = setTimeout(onTimeout, TIMEOUT)
+      
       img.src = url
     })
   }
@@ -139,10 +160,17 @@ class PriorityPreloader {
       video.muted = true
       video.playsInline = true
       
+      const TIMEOUT = 20000 
+      let timeoutId: ReturnType<typeof setTimeout> | null = null
+      
       const cleanup = () => {
         video.removeEventListener('loadeddata', onLoaded)
         video.removeEventListener('error', onError)
         video.removeEventListener('canplaythrough', onCanPlay)
+        if (timeoutId) {
+          clearTimeout(timeoutId)
+          timeoutId = null
+        }
       }
 
       const onLoaded = () => {
@@ -160,9 +188,16 @@ class PriorityPreloader {
         reject(new Error(`Failed to load video: ${url}`))
       }
 
+      const onTimeout = () => {
+        cleanup()
+        this.loadedAssets.add(url)
+        reject(new Error(`Timeout loading video: ${url}`))
+      }
+
       video.addEventListener('loadeddata', onLoaded, { once: true })
       video.addEventListener('canplaythrough', onCanPlay, { once: true })
       video.addEventListener('error', onError, { once: true })
+      timeoutId = setTimeout(onTimeout, TIMEOUT)
       
       video.src = url
     })
