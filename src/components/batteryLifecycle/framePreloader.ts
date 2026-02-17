@@ -1,5 +1,7 @@
 import { preloadImage, frameCache } from './frameCache'
 import { SCENE_FRAME_COUNTS } from './sceneConfig'
+import { bandwidthDetector } from '../../utils/bandwidthDetector'
+import { priorityPreloader, type PreloadTask } from '../../utils/priorityPreloader'
 
 export interface PreloadProgress {
   loaded: number
@@ -13,12 +15,20 @@ export const preloadCriticalFrames = async (
   onProgress?: PreloadProgressCallback
 ): Promise<void> => {
   const startTime = Date.now()
+  const networkInfo = bandwidthDetector.getNetworkInfo()
 
   try {
+    // Tier 1: Critical frames (Scene 1-2 all frames)
     const scene1Frames = Array.from({ length: 60 }, (_, i) => i + 1)
     const scene2Frames = Array.from({ length: 60 }, (_, i) => i + 1)
-    const scene3Frames = Array.from({ length: 36 }, (_, i) => (i * 5) + 1)
-    const scene4Frames = Array.from({ length: 16 }, (_, i) => (i * 10) + 1)
+    
+    // Tier 2: High priority frames (Scene 3-4 sampled)
+    const scene3Frames = networkInfo.isSlowConnection 
+      ? Array.from({ length: 20 }, (_, i) => (i * 4) + 1) 
+      : Array.from({ length: 36 }, (_, i) => (i * 5) + 1)
+    const scene4Frames = networkInfo.isSlowConnection
+      ? Array.from({ length: 10 }, (_, i) => (i * 12) + 1)
+      : Array.from({ length: 16 }, (_, i) => (i * 10) + 1)
     
     const criticalFrames = [
       ...scene1Frames.map(f => `/lifecycle/frames/scene-1/frame_${String(f).padStart(4, '0')}.webp`),
@@ -30,32 +40,45 @@ export const preloadCriticalFrames = async (
     let loaded = 0
     const total = criticalFrames.length
 
-    const batchSize = 8
-    for (let i = 0; i < criticalFrames.length; i += batchSize) {
-      const batch = criticalFrames.slice(i, i + batchSize)
-      await Promise.all(
-        batch.map(src => 
-          preloadImage(src).then(() => {
-            loaded++
-            if (onProgress) {
-              onProgress({
-                loaded,
-                total,
-                percentage: Math.round((loaded / total) * 100)
-              })
-            }
+    // Use priority preloader for better management
+    const tasks: PreloadTask[] = criticalFrames.map((src, index) => ({
+      url: src,
+      type: 'frame',
+      priority: index < 120 ? 'critical' : 'high', // Scene 1-2 are critical
+      onLoad: () => {
+        loaded++
+        if (onProgress) {
+          onProgress({
+            loaded,
+            total,
+            percentage: Math.round((loaded / total) * 100)
           })
-        )
+        }
+      }
+    }))
+
+    // Add all tasks to priority preloader
+    priorityPreloader.addTasks(tasks)
+
+    // Wait for critical frames to load (Scene 1-2)
+    const criticalFrameUrls = criticalFrames.slice(0, 120)
+    await Promise.all(
+      criticalFrameUrls.map(src => 
+        preloadImage(src).catch(() => {})
       )
-    }
+    )
+
+    // Ensure minimum load time for smooth UX
     const elapsed = Date.now() - startTime
-    const minLoadTime = 2000 // 2 seconds minimum
+    const minLoadTime = networkInfo.isSlowConnection ? 1500 : 2000
     const remainingTime = Math.max(0, minLoadTime - elapsed)
     
-    await new Promise(resolve => setTimeout(resolve, remainingTime + 300))
+    if (remainingTime > 0) {
+      await new Promise(resolve => setTimeout(resolve, remainingTime))
+    }
   } catch {
     const elapsed = Date.now() - startTime
-    const minLoadTime = 2000
+    const minLoadTime = networkInfo.isSlowConnection ? 1500 : 2000
     const remainingTime = Math.max(0, minLoadTime - elapsed)
     await new Promise(resolve => setTimeout(resolve, remainingTime))
   }
@@ -96,32 +119,65 @@ export const preloadRemainingFrames = async (): Promise<void> => {
 export const preloadNextFrames = (
   currentScene: number,
   currentFrame: number,
-  preloadCount: number = 35
+  preloadCount?: number
 ): void => {
+  const networkInfo = bandwidthDetector.getNetworkInfo()
+  // Increase preload count for production - ensure no lag
+  const baseCount = networkInfo.isSlowConnection ? 30 : 60
+  const count = preloadCount || baseCount
   const frameCount = SCENE_FRAME_COUNTS[currentScene]
   
-  for (let i = 1; i <= preloadCount; i++) {
+  const tasks: PreloadTask[] = []
+  
+  // Preload frames in current scene - more aggressively
+  for (let i = 1; i <= count; i++) {
     const nextFrame = currentFrame + i
     if (nextFrame <= frameCount) {
       const src = `/lifecycle/frames/scene-${currentScene + 1}/frame_${String(nextFrame).padStart(4, '0')}.webp`
-      if (!frameCache.has(src)) {
-        const img = new Image()
-        img.decoding = 'async'
-        img.src = src
-        img.onload = () => frameCache.set(src, img)
+      if (!frameCache.has(src) && !priorityPreloader.isLoaded(src)) {
+        tasks.push({
+          url: src,
+          type: 'frame',
+          priority: i <= 20 ? 'high' : 'medium', // Increased from 10 to 20
+          onLoad: () => {
+            // Frame will be cached by frameCache when loaded
+          }
+        })
       }
     } else if (currentScene < SCENE_FRAME_COUNTS.length - 1) {
+      // Preload first frames of next scene - more aggressively
       const nextSceneIndex = currentScene + 1
       const nextSceneFrame = nextFrame - frameCount
-      if (nextSceneFrame <= SCENE_FRAME_COUNTS[nextSceneIndex]) {
+      // Preload more frames of next scene (increased from 20 to 40)
+      if (nextSceneFrame <= Math.min(40, SCENE_FRAME_COUNTS[nextSceneIndex])) {
         const src = `/lifecycle/frames/scene-${nextSceneIndex + 1}/frame_${String(nextSceneFrame).padStart(4, '0')}.webp`
-        if (!frameCache.has(src)) {
-          const img = new Image()
-          img.decoding = 'async'
-          img.src = src
-          img.onload = () => frameCache.set(src, img)
+        if (!frameCache.has(src) && !priorityPreloader.isLoaded(src)) {
+          tasks.push({
+            url: src,
+            type: 'frame',
+            priority: nextSceneFrame <= 20 ? 'high' : 'medium' // Increased from 10 to 20
+          })
         }
       }
     }
+  }
+
+  // Also preload previous frames in case user scrolls back
+  for (let i = 1; i <= 10; i++) {
+    const prevFrame = currentFrame - i
+    if (prevFrame >= 1) {
+      const src = `/lifecycle/frames/scene-${currentScene + 1}/frame_${String(prevFrame).padStart(4, '0')}.webp`
+      if (!frameCache.has(src) && !priorityPreloader.isLoaded(src)) {
+        tasks.push({
+          url: src,
+          type: 'frame',
+          priority: 'medium'
+        })
+      }
+    }
+  }
+
+  if (tasks.length > 0) {
+    priorityPreloader.addTasks(tasks)
   }
 }

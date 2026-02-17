@@ -34,6 +34,7 @@ import { drawFrame } from './batteryLifecycle/frameRenderer'
 import { preloadCriticalFrames, preloadRemainingFrames, preloadNextFrames } from './batteryLifecycle/framePreloader'
 import { shouldCardBeVisible, getActiveSceneIndexFromCards } from './batteryLifecycle/cardVisibility'
 import { getCardPosition, getMobileScale } from './batteryLifecycle/cardPositions'
+import { intersectionPreloader } from '../utils/intersectionPreloader'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -434,8 +435,30 @@ export default function BatteryLifecycleScroll() {
   useEffect(() => {
     if (isPreloading) return
 
+    // Use priority preloader for remaining frames
     const timeoutId = setTimeout(() => {
       preloadRemainingFrames()
+      
+      // Register intersection preloader for smart loading
+      if (containerRef.current) {
+        // Preload frames when section approaches viewport
+        const allFrames: string[] = []
+        for (let scene = 0; scene < SCENE_FRAME_COUNTS.length; scene++) {
+          const frameCount = SCENE_FRAME_COUNTS[scene]
+          // Sample frames for each scene
+          for (let i = 1; i <= frameCount; i += Math.max(1, Math.floor(frameCount / 20))) {
+            allFrames.push(`/lifecycle/frames/scene-${scene + 1}/frame_${String(i).padStart(4, '0')}.webp`)
+          }
+        }
+        
+        intersectionPreloader.register({
+          element: containerRef.current,
+          assets: allFrames,
+          assetType: 'frame',
+          priority: 'medium',
+          rootMargin: '500px'
+        })
+      }
     }, 100)
 
     return () => clearTimeout(timeoutId)
@@ -528,6 +551,7 @@ export default function BatteryLifecycleScroll() {
             
             const newFrame = clampedFrameIndex + 1
             const newScene = scene.sceneIndex
+            preloadNextFrames(newScene, newFrame)
 
             pendingFrameUpdate.current = { frame: newFrame, scene: newScene }
 
