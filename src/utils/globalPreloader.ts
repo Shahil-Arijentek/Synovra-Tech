@@ -24,7 +24,7 @@ class GlobalPreloader {
 
   private preloadCriticalAssets(): void {
     const criticalAssets = getAllCriticalAssets()
-    const tasks: PreloadTask[] = criticalAssets.map((url, index) => {
+    const tasks: PreloadTask[] = criticalAssets.map((url) => {
       const extension = url.split('.').pop()?.toLowerCase() || ''
       const isVideo = ['mp4', 'webm', 'mov'].includes(extension)
       
