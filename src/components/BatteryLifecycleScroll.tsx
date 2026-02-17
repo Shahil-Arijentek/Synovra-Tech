@@ -817,7 +817,6 @@ export default function BatteryLifecycleScroll() {
     if (sulphationDetectedElement) {
       const cardElement = findCardElement(sulphationDetectedElement)
       if (cardElement) {
-        // Match decision card width on tablet
         const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024
         cardElement.style.width = isTablet ? '24rem' : '18rem'
         cardElement.style.maxWidth = isTablet ? '24rem' : '18rem'
@@ -885,7 +884,6 @@ export default function BatteryLifecycleScroll() {
     if (sulphationElement) {
       const cardElement = findCardElement(sulphationElement)
       if (cardElement) {
-        // Match Scene 2 sulphation detected card size on tablet
         const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024
         cardElement.style.width = isTablet ? '24rem' : '18rem'
         cardElement.style.maxWidth = isTablet ? '24rem' : '18rem'
@@ -1026,7 +1024,6 @@ export default function BatteryLifecycleScroll() {
     if (plateConditionElement) {
       const cardElement = findCardElement(plateConditionElement)
       if (cardElement) {
-        // Adjust sizing for tablet vs mobile
         const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024
         if (isTablet) {
           cardElement.style.width = '30rem'

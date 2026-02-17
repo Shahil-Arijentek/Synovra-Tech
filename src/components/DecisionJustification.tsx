@@ -92,7 +92,6 @@ function Feature({
   const cardRef = useRef(null)
   const isInView = useInView(cardRef, { once: true, amount: 0.2 })
   
-  // Alternate cards slide from left (even) and right (odd) - minimal distance
   const isLeft = index % 2 === 0
   
   return (

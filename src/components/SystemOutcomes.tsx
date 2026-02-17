@@ -110,7 +110,7 @@ const AnimatedGauge = ({ value, label, id, range }: { value: number; label: stri
 
 export default function SystemOutcomes() {
     const [activeTab, setActiveTab] = useState(0);
-    const [isLoaded] = useState(true); // Always loaded on mount
+    const [isLoaded] = useState(true);
     const titleRef = React.useRef(null);
     const isTitleInView = useInView(titleRef, { once: true, amount: 0.8 });
     const tabs = [

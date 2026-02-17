@@ -8,35 +8,31 @@ export default function LoadingSpinner({ progress: externalProgress }: LoadingSp
   const [displayProgress, setDisplayProgress] = useState(0)
 
   useEffect(() => {
-    // Smooth transition to real progress with faster response
     const targetProgress = externalProgress ?? 0
     
     const animate = () => {
       setDisplayProgress((prev) => {
         const diff = targetProgress - prev
         
-        // Smooth easing towards target (faster response)
         if (Math.abs(diff) < 0.5) {
           return targetProgress
         }
         
-        return prev + diff * 0.15 // Faster smooth easing
+        return prev + diff * 0.15
       })
     }
 
-    const interval = setInterval(animate, 16) // 60fps
+    const interval = setInterval(animate, 16)
 
     return () => clearInterval(interval)
   }, [externalProgress])
 
   const progress = displayProgress
 
-  // Calculate circle progress
   const radius = 45
   const circumference = 2 * Math.PI * radius
   const strokeDashoffset = circumference - (progress / 100) * circumference
 
-  // Dynamic loading text based on progress
   const getLoadingText = () => {
     if (progress < 20) return 'Initializing'
     if (progress < 50) return 'Loading Assets'

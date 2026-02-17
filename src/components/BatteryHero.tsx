@@ -155,7 +155,6 @@ export default function BatteryHero() {
         try {
           await videoRef.current?.play()
         } catch {
-          // Video autoplay may be blocked by browser policy - this is expected behavior
           if (import.meta.env.DEV) {
             console.warn('Video autoplay blocked, but video is loaded')
           }

@@ -1,10 +1,8 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 
-// Above-the-fold components - load immediately
 import Hero from '../components/Hero'
 import BatteryHero from '../components/BatteryHero'
 
-// Below-the-fold components - lazy load for better performance
 const BatteryLifecycleScroll = lazy(() => import('../components/BatteryLifecycleScroll'))
 const ExperienceRevival = lazy(() => import('../components/ExperienceRevival'))
 const SystemOutcomes = lazy(() => import('../components/SystemOutcomes'))

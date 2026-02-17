@@ -1,11 +1,11 @@
 export const SCENE_FRAME_COUNTS = [
-  60,   // Scene 1: 0-4s
-  60,   // Scene 2: 4-8s
-  84,   // Scene 3: 8-26s
-  120,  // Scene 4: 16-28s
-  187,  // Scene 5: 28-44s
-  125,  // Scene 6: 43-56s
-  88    // Scene 7: 56-67s
+  60,
+  60,
+  84,
+  120,
+  187,
+  125,
+  88
 ]
 
 export type CardData = {
@@ -23,7 +23,6 @@ export type SceneConfig = {
 }
 
 export const sceneConfig: SceneConfig[] = [
-  // Scene 1: Initial Diagnostics
   {
     id: 1,
     headline: 'DIAGNOSTIC TRACE — BASELINE RECORDED',
@@ -55,7 +54,6 @@ export const sceneConfig: SceneConfig[] = [
       }
     ]
   },
-  // Scene 2: Sulphation Detection
   {
     id: 2,
     headline: 'DIAGNOSTIC TRACE — DECLINE DETECTED',
@@ -124,7 +122,6 @@ export const sceneConfig: SceneConfig[] = [
       }
     ]
   },
-  // Scene 4: Diagnostic Lock
   {
     id: 4,
     headline: 'DIAGNOSTIC TRACE — ELIGIBILITY CONFIRMED',
@@ -156,7 +153,6 @@ export const sceneConfig: SceneConfig[] = [
       }
     ]
   },
-  // Scene 5: Recovery Process
   {
     id: 5,
     headline: 'DIAGNOSTIC TRACE — CONTROLLED RESTORATION',
@@ -194,7 +190,6 @@ export const sceneConfig: SceneConfig[] = [
       }
     ]
   },
-  // Scene 6: Performance Verification
   {
     id: 6,
     headline: 'PATH AHEAD — SECOND LIFE ENABLED',
@@ -232,7 +227,6 @@ export const sceneConfig: SceneConfig[] = [
       }
     ]
   },
-  // Scene 7: Final Summary
   {
     id: 7,
     headline: 'PATH AHEAD — MATERIAL RECOVERY',
@@ -272,13 +266,12 @@ export const sceneConfig: SceneConfig[] = [
   }
 ]
 
-// Scene timings in seconds
 export const sceneTimings = [
-  { start: 0, pause: 4, sceneIndex: 0 },      // Scene 1: 0-4s
-  { start: 4, pause: 8, sceneIndex: 1 },      // Scene 2: 4-8s
-  { start: 8, pause: 26, sceneIndex: 2 },     // Scene 3: 8-26s
-  { start: 26, pause: 42, sceneIndex: 3 },    // Scene 4: 26-42s
-  { start: 42, pause: 45, sceneIndex: 4 },    // Scene 5: 42-45s
-  { start: 45, pause: 55, sceneIndex: 5 },    // Scene 6: 45-55s
-  { start: 55, pause: 67, sceneIndex: 6 }     // Scene 7: 55-67s 
+  { start: 0, pause: 4, sceneIndex: 0 },
+  { start: 4, pause: 8, sceneIndex: 1 },
+  { start: 8, pause: 26, sceneIndex: 2 },
+  { start: 26, pause: 42, sceneIndex: 3 },
+  { start: 42, pause: 45, sceneIndex: 4 },
+  { start: 45, pause: 55, sceneIndex: 5 },
+  { start: 55, pause: 67, sceneIndex: 6 }
 ]

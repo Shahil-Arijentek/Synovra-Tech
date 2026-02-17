@@ -61,7 +61,7 @@ function LocationCard({
   bullets,
   address,
   imageFirst,
-  index: _index, // eslint-disable-line @typescript-eslint/no-unused-vars
+  index: _index,
 }: {
   image: string
   label: string

@@ -49,7 +49,7 @@ export const preloadCriticalFrames = async (
       )
     }
     const elapsed = Date.now() - startTime
-    const minLoadTime = 2000 // 2 seconds minimum
+    const minLoadTime = 2000
     const remainingTime = Math.max(0, minLoadTime - elapsed)
     
     await new Promise(resolve => setTimeout(resolve, remainingTime + 300))

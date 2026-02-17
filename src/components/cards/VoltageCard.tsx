@@ -9,10 +9,8 @@ export default function VoltageCard({ value, status }: VoltageCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
-    // Auto-play the video when component mounts
     if (videoRef.current) {
       videoRef.current.play().catch(() => {
-        // Video autoplay prevented
       })
     }
   }, [])
