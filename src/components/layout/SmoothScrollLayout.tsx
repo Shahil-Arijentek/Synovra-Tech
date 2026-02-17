@@ -26,10 +26,8 @@ export default function SmoothScrollLayout({ children }: SmoothScrollLayoutProps
         })
 
         lenisRef.current = lenis
-        ;(window as any).lenis = lenis
 
         gsap.registerPlugin(ScrollTrigger)
-        ;(window as any).gsap = gsap
 
         lenis.on('scroll', ScrollTrigger.update)
 
@@ -48,7 +46,6 @@ export default function SmoothScrollLayout({ children }: SmoothScrollLayoutProps
             }
             lenis.off('scroll', ScrollTrigger.update)
             lenis.destroy()
-            delete (window as any).lenis
         }
     }, [])
 

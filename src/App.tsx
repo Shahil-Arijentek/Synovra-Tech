@@ -15,64 +15,29 @@ const GetStarted = lazy(() => import('./pages/GetStarted'))
 
 function ScrollToTop() {
   const location = useLocation()
-  
   useLayoutEffect(() => {
-    const scrollToTop = () => {
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    window.scrollTo(0, 0)
+    if (document.documentElement) {
       document.documentElement.scrollTop = 0
-      document.body.scrollTop = 0
-      
-      const lenisInstance = (window as any).lenis
-      if (lenisInstance) {
-        lenisInstance.scrollTo(0, { immediate: true })
-      }
     }
-    
-    scrollToTop()
+    if (document.body) {
+      document.body.scrollTop = 0
+    }
   }, [location.pathname])
 
   useEffect(() => {
-    const cleanupScrollTriggers = async () => {
-      try {
-        const { ScrollTrigger } = await import('gsap/ScrollTrigger')
+    const timeoutId = setTimeout(() => {
+      import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
         ScrollTrigger.getAll().forEach(trigger => trigger.kill(true))
         ScrollTrigger.refresh()
-      } catch (error) {
+      }).catch((error) => {
         if (import.meta.env.DEV) {
           console.warn('Failed to load GSAP ScrollTrigger:', error)
         }
-      }
-    }
-    
-    const scrollToTop = () => {
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
-      document.documentElement.scrollTop = 0
-      document.body.scrollTop = 0
-      
-      const lenisInstance = (window as any).lenis
-      if (lenisInstance) {
-        lenisInstance.scrollTo(0, { immediate: true })
-      }
-    }
-    
-    const timeoutId1 = setTimeout(() => {
-      cleanupScrollTriggers()
-    }, 50)
-    
-    const timeoutId2 = setTimeout(() => {
-      scrollToTop()
-      cleanupScrollTriggers()
-    }, 150)
-    
-    const timeoutId3 = setTimeout(() => {
-      scrollToTop()
-    }, 300)
+      })
+    }, 100)
 
-    return () => {
-      clearTimeout(timeoutId1)
-      clearTimeout(timeoutId2)
-      clearTimeout(timeoutId3)
-    }
+    return () => clearTimeout(timeoutId)
   }, [location.pathname])
 
   return null

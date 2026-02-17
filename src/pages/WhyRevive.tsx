@@ -11,46 +11,14 @@ export default function WhyRevive() {
   const [isReady, setIsReady] = useState(false)
   
   useEffect(() => {
-    const scrollToTop = () => {
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
-      document.documentElement.scrollTop = 0
-      document.body.scrollTop = 0
-      
-      const lenisInstance = (window as any).lenis
-      if (lenisInstance) {
-        lenisInstance.scrollTo(0, { immediate: true })
-      }
-    }
+    window.scrollTo(0, 0)
+    document.documentElement.scrollTop = 0
     
-    scrollToTop()
-    
-    const timer1 = setTimeout(() => {
-      scrollToTop()
+    const timer = setTimeout(() => {
+      setIsReady(true)
     }, 10)
     
-    const timer2 = setTimeout(() => {
-      scrollToTop()
-      setIsReady(true)
-    }, 50)
-    
-    const timer3 = setTimeout(() => {
-      scrollToTop()
-      const gsapInstance = (window as any).gsap
-      if (gsapInstance?.ScrollTrigger) {
-        gsapInstance.ScrollTrigger.refresh()
-      }
-    }, 200)
-    
-    const timer4 = setTimeout(() => {
-      scrollToTop()
-    }, 400)
-    
-    return () => {
-      clearTimeout(timer1)
-      clearTimeout(timer2)
-      clearTimeout(timer3)
-      clearTimeout(timer4)
-    }
+    return () => clearTimeout(timer)
   }, [])
   
   return (
