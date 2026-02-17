@@ -85,15 +85,25 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
     setNavbarVisible(true);
     
     const scrollToSection = () => {
-      const element = document.getElementById('why-revive');
-      if (element) {
-        const headerHeight = document.querySelector('header')?.offsetHeight || 0;
-        const elementTop = element.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-        window.scrollTo({ top: Math.max(0, elementTop), behavior: 'instant' });
-        
+      const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+      
+      if (currentScroll > 100) {
+        const element = document.getElementById('why-revive');
+        if (element) {
+          const headerHeight = document.querySelector('header')?.offsetHeight || 0;
+          const elementTop = element.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+          window.scrollTo({ top: Math.max(0, elementTop), behavior: 'instant' });
+          
+          const lenisInstance = (window as any).lenis;
+          if (lenisInstance) {
+            lenisInstance.scrollTo(Math.max(0, elementTop), { immediate: true });
+          }
+        }
+      } else {
+        window.scrollTo({ top: 0, behavior: 'instant' });
         const lenisInstance = (window as any).lenis;
         if (lenisInstance) {
-          lenisInstance.scrollTo(Math.max(0, elementTop), { immediate: true });
+          lenisInstance.scrollTo(0, { immediate: true });
         }
       }
     };

@@ -24,22 +24,32 @@ export default function WhyRevive() {
     
     scrollToTop()
     
-    const timer = setTimeout(() => {
+    const timer1 = setTimeout(() => {
       scrollToTop()
-      setIsReady(true)
     }, 10)
     
-    const refreshTimer = setTimeout(() => {
+    const timer2 = setTimeout(() => {
+      scrollToTop()
+      setIsReady(true)
+    }, 50)
+    
+    const timer3 = setTimeout(() => {
       scrollToTop()
       const gsapInstance = (window as any).gsap
       if (gsapInstance?.ScrollTrigger) {
         gsapInstance.ScrollTrigger.refresh()
       }
-    }, 300)
+    }, 200)
+    
+    const timer4 = setTimeout(() => {
+      scrollToTop()
+    }, 400)
     
     return () => {
-      clearTimeout(timer)
-      clearTimeout(refreshTimer)
+      clearTimeout(timer1)
+      clearTimeout(timer2)
+      clearTimeout(timer3)
+      clearTimeout(timer4)
     }
   }, [])
   

@@ -15,29 +15,64 @@ const GetStarted = lazy(() => import('./pages/GetStarted'))
 
 function ScrollToTop() {
   const location = useLocation()
+  
   useLayoutEffect(() => {
-    window.scrollTo(0, 0)
-    if (document.documentElement) {
+    const scrollToTop = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
       document.documentElement.scrollTop = 0
-    }
-    if (document.body) {
       document.body.scrollTop = 0
+      
+      const lenisInstance = (window as any).lenis
+      if (lenisInstance) {
+        lenisInstance.scrollTo(0, { immediate: true })
+      }
     }
+    
+    scrollToTop()
   }, [location.pathname])
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
+    const cleanupScrollTriggers = async () => {
+      try {
+        const { ScrollTrigger } = await import('gsap/ScrollTrigger')
         ScrollTrigger.getAll().forEach(trigger => trigger.kill(true))
         ScrollTrigger.refresh()
-      }).catch((error) => {
+      } catch (error) {
         if (import.meta.env.DEV) {
           console.warn('Failed to load GSAP ScrollTrigger:', error)
         }
-      })
-    }, 100)
+      }
+    }
+    
+    const scrollToTop = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+      document.documentElement.scrollTop = 0
+      document.body.scrollTop = 0
+      
+      const lenisInstance = (window as any).lenis
+      if (lenisInstance) {
+        lenisInstance.scrollTo(0, { immediate: true })
+      }
+    }
+    
+    const timeoutId1 = setTimeout(() => {
+      cleanupScrollTriggers()
+    }, 50)
+    
+    const timeoutId2 = setTimeout(() => {
+      scrollToTop()
+      cleanupScrollTriggers()
+    }, 150)
+    
+    const timeoutId3 = setTimeout(() => {
+      scrollToTop()
+    }, 300)
 
-    return () => clearTimeout(timeoutId)
+    return () => {
+      clearTimeout(timeoutId1)
+      clearTimeout(timeoutId2)
+      clearTimeout(timeoutId3)
+    }
   }, [location.pathname])
 
   return null
