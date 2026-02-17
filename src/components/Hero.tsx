@@ -1,35 +1,63 @@
-
-
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null)
+  const [isVideoReady, setIsVideoReady] = useState(false)
 
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
 
     let isCancelled = false
-
-    const timer = setTimeout(() => {
-      if (isCancelled || !video) return
-
-      const playPromise = video.play()
-
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {})
-      }
-
-      setTimeout(() => {
-        if (!isCancelled && video) {
-          video.pause()
+    video.preload = 'auto'
+    const handleCanPlay = () => {
+      setIsVideoReady(true)
+      if (!isCancelled) {
+        const playPromise = video.play()
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {})
         }
-      }, 3000)
-    }, 100)
+
+        setTimeout(() => {
+          if (!isCancelled && video) {
+            video.pause()
+          }
+        }, 3000)
+      }
+    }
+
+    const handleLoadedData = () => {
+      setIsVideoReady(true)
+    }
+
+    // If video is already loaded, play immediately
+    if (video.readyState >= 3) { // HAVE_FUTURE_DATA or higher
+      handleCanPlay()
+    } else {
+      video.addEventListener('canplaythrough', handleCanPlay, { once: true })
+      video.addEventListener('loadeddata', handleLoadedData, { once: true })
+      
+      // Fallback: try to play after a short delay even if events don't fire
+      const fallbackTimer = setTimeout(() => {
+        if (!isCancelled && video && video.readyState >= 2) {
+          handleCanPlay()
+        }
+      }, 500)
+      
+      return () => {
+        isCancelled = true
+        clearTimeout(fallbackTimer)
+        video.removeEventListener('canplaythrough', handleCanPlay)
+        video.removeEventListener('loadeddata', handleLoadedData)
+        if (video) {
+          video.pause()
+          video.currentTime = 0
+        }
+      }
+    }
 
     return () => {
       isCancelled = true
-      clearTimeout(timer)
       if (video) {
         video.pause()
         video.currentTime = 0
@@ -65,6 +93,7 @@ export default function Hero() {
                 className="w-full h-auto object-contain mix-blend-screen"
                 muted
                 playsInline
+                preload="auto"
               >
                 <source src="/mainbattery.mp4" type="video/mp4" />
                 Your browser does not support the video tag.

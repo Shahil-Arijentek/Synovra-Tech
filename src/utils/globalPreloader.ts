@@ -24,18 +24,37 @@ class GlobalPreloader {
 
   private preloadCriticalAssets(): void {
     const criticalAssets = getAllCriticalAssets()
-    const tasks: PreloadTask[] = criticalAssets.map((url) => {
-      const extension = url.split('.').pop()?.toLowerCase() || ''
-      const isVideo = ['mp4', 'webm', 'mov'].includes(extension)
-      
-      return {
-        url,
-        type: isVideo ? 'video' : 'image',
-        priority: 'critical'
+    const heroVideo = '/mainbattery.mp4'
+    const heroVideoTask: PreloadTask = {
+      url: heroVideo,
+      type: 'video',
+      priority: 'critical',
+      onLoad: () => {
+        // Ensure video element is ready if it exists
+        const video = document.querySelector('video[src="/mainbattery.mp4"]') as HTMLVideoElement
+        if (video) {
+          video.load() // Force reload to ensure it's ready
+        }
       }
-    })
+    }
+    
+    // Add hero video first, then other critical assets
+    priorityPreloader.addTask(heroVideoTask)
+    
+    const otherTasks: PreloadTask[] = criticalAssets
+      .filter(url => url !== heroVideo)
+      .map((url) => {
+        const extension = url.split('.').pop()?.toLowerCase() || ''
+        const isVideo = ['mp4', 'webm', 'mov'].includes(extension)
+        
+        return {
+          url,
+          type: isVideo ? 'video' : 'image',
+          priority: 'critical'
+        }
+      })
 
-    priorityPreloader.addTasks(tasks)
+    priorityPreloader.addTasks(otherTasks)
   }
 
   private preloadHighPriorityAssets(): void {
