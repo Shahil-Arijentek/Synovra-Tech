@@ -17,8 +17,43 @@ export const preloadCriticalFrames = async (
   const startTime = Date.now()
   const networkInfo = bandwidthDetector.getNetworkInfo()
   const MAX_WAIT_TIME = 8000
+  const ESSENTIAL_FRAMES_COUNT = 10
 
   try {
+    const essentialFrames = Array.from({ length: ESSENTIAL_FRAMES_COUNT }, (_, i) => 
+      `/lifecycle/frames/scene-1/frame_${String(i + 1).padStart(4, '0')}.webp`
+    )
+
+    const cachedEssential = essentialFrames.filter(src => frameCache.has(src))
+    
+    if (cachedEssential.length === essentialFrames.length) {
+      if (onProgress) {
+        onProgress({ loaded: essentialFrames.length, total: essentialFrames.length, percentage: 100 })
+      }
+      const elapsed = Date.now() - startTime
+      const minLoadTime = 300
+      const remainingTime = Math.max(0, minLoadTime - elapsed)
+      if (remainingTime > 0) {
+        await new Promise(resolve => setTimeout(resolve, remainingTime))
+      }
+      return
+    }
+
+    const essentialLoadPromise = Promise.all(
+      essentialFrames.map(src => 
+        preloadImage(src).catch(() => {})
+      )
+    )
+
+    await Promise.race([
+      essentialLoadPromise,
+      new Promise(resolve => setTimeout(resolve, MAX_WAIT_TIME))
+    ])
+
+    if (onProgress) {
+      onProgress({ loaded: ESSENTIAL_FRAMES_COUNT, total: ESSENTIAL_FRAMES_COUNT, percentage: 100 })
+    }
+
     const scene1Frames = Array.from({ length: 60 }, (_, i) => i + 1)
     const scene2Frames = Array.from({ length: 60 }, (_, i) => i + 1)
     const scene3Frames = networkInfo.isSlowConnection 
@@ -35,36 +70,15 @@ export const preloadCriticalFrames = async (
       ...scene4Frames.map(f => `/lifecycle/frames/scene-4/frame_${String(f).padStart(4, '0')}.webp`)
     ]
 
-    let loaded = 0
-    const total = criticalFrames.length
     const tasks: PreloadTask[] = criticalFrames.map((src, index) => ({
       url: src,
       type: 'frame',
-      priority: index < 120 ? 'critical' : 'high', 
-      onLoad: () => {
-        loaded++
-        if (onProgress) {
-          onProgress({
-            loaded,
-            total,
-            percentage: Math.round((loaded / total) * 100)
-          })
-        }
-      }
+      priority: index < 120 ? 'critical' : 'high'
     }))
     priorityPreloader.addTasks(tasks)
-    const criticalFrameUrls = criticalFrames.slice(0, 120)
-    const loadPromise = Promise.all(
-      criticalFrameUrls.map(src => 
-        preloadImage(src).catch(() => {})
-      )
-    )
-    await Promise.race([
-      loadPromise,
-      new Promise(resolve => setTimeout(resolve, MAX_WAIT_TIME))
-    ])
+
     const elapsed = Date.now() - startTime
-    const minLoadTime = networkInfo.isSlowConnection ? 1000 : 1500
+    const minLoadTime = networkInfo.isSlowConnection ? 500 : 800
     const remainingTime = Math.max(0, minLoadTime - elapsed)
     
     if (remainingTime > 0) {
@@ -72,7 +86,7 @@ export const preloadCriticalFrames = async (
     }
   } catch {
     const elapsed = Date.now() - startTime
-    const minLoadTime = networkInfo.isSlowConnection ? 1000 : 1500
+    const minLoadTime = networkInfo.isSlowConnection ? 500 : 800
     const remainingTime = Math.max(0, minLoadTime - elapsed)
     await new Promise(resolve => setTimeout(resolve, remainingTime))
   }
