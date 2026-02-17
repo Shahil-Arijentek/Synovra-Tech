@@ -6,27 +6,41 @@ export interface CanvasFrameRef {
   frame: number
 }
 
+const contextCache = new WeakMap<HTMLCanvasElement, CanvasRenderingContext2D | null>()
+const loadingFrames = new Set<string>()
+
+export const getCanvasContext = (canvas: HTMLCanvasElement): CanvasRenderingContext2D | null => {
+  if (!canvas) return null
+  
+  let ctx = contextCache.get(canvas)
+  if (ctx === undefined) {
+    ctx = canvas.getContext('2d', { 
+      alpha: false, 
+      desynchronized: true 
+    })
+    contextCache.set(canvas, ctx)
+  }
+  return ctx
+}
+
 export const drawFrame = (
   canvas: HTMLCanvasElement | null,
   sceneIndex: number,
   frameNumber: number,
   currentCanvasFrameRef: { current: CanvasFrameRef }
-): void => {
+): boolean => {
   if (currentCanvasFrameRef.current.scene === sceneIndex && 
       currentCanvasFrameRef.current.frame === frameNumber) {
-    return
+    return true
   }
 
-  if (!canvas) return
+  if (!canvas) return false
 
   const frameSrc = `/lifecycle/frames/scene-${sceneIndex + 1}/frame_${String(frameNumber).padStart(4, '0')}.webp`
   const cachedImage = frameCache.get(frameSrc)
 
   if (cachedImage && cachedImage.complete && cachedImage.naturalWidth > 0) {
-    const ctx = canvas.getContext('2d', { 
-      alpha: false, 
-      desynchronized: true 
-    })
+    const ctx = getCanvasContext(canvas)
     
     if (ctx) {
       ctx.globalAlpha = 1.0
@@ -36,32 +50,49 @@ export const drawFrame = (
       if (canvas.style.opacity !== '1') {
         canvas.style.opacity = '1'
       }
+      
+      loadingFrames.delete(frameSrc)
+      return true
     }
   } else {
-    // Frame not cached - preload it immediately and wait for it
-    if (!cachedImage) {
+    if (!loadingFrames.has(frameSrc) && !cachedImage) {
+      loadingFrames.add(frameSrc)
+      
       preloadImage(frameSrc).then(() => {
-        // Retry drawing after frame is loaded
+        loadingFrames.delete(frameSrc)
+        
         const loadedImage = frameCache.get(frameSrc)
         if (loadedImage && loadedImage.complete && loadedImage.naturalWidth > 0) {
-          const ctx = canvas.getContext('2d', { 
-            alpha: false, 
-            desynchronized: true 
-          })
+          const ctx = getCanvasContext(canvas)
           
           if (ctx) {
-            ctx.globalAlpha = 1.0
-            ctx.drawImage(loadedImage, 0, 0, canvas.width, canvas.height)
-            currentCanvasFrameRef.current = { scene: sceneIndex, frame: frameNumber }
+            const targetFrame = currentCanvasFrameRef.current
+            const isStillTarget = targetFrame.scene === sceneIndex && targetFrame.frame === frameNumber
             
-            if (canvas.style.opacity !== '1') {
-              canvas.style.opacity = '1'
+            const frameDiff = Math.abs(
+              (targetFrame.scene * 1000 + targetFrame.frame) - 
+              (sceneIndex * 1000 + frameNumber)
+            )
+            const isNearby = frameDiff <= 5
+            
+            if (isStillTarget || isNearby) {
+              ctx.globalAlpha = 1.0
+              ctx.drawImage(loadedImage, 0, 0, canvas.width, canvas.height)
+              currentCanvasFrameRef.current = { scene: sceneIndex, frame: frameNumber }
+              
+              if (canvas.style.opacity !== '1') {
+                canvas.style.opacity = '1'
+              }
             }
           }
         }
       }).catch(() => {
-        // Silently fail - frame will be retried on next scroll update
+        loadingFrames.delete(frameSrc)
       })
     }
+    
+    return false
   }
+  
+  return false
 }
