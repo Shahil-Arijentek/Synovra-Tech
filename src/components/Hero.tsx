@@ -9,9 +9,10 @@ export default function Hero() {
 
     let isCancelled = false
     video.preload = 'auto'
+    video.load()
     
     const handleCanPlay = () => {
-      if (!isCancelled) {
+      if (!isCancelled && video) {
         const playPromise = video.play()
         if (playPromise !== undefined) {
           playPromise.catch(() => {})
@@ -28,19 +29,37 @@ export default function Hero() {
     if (video.readyState >= 3) { 
       handleCanPlay()
     } else {
-      video.addEventListener('canplaythrough', handleCanPlay, { once: true })
-      video.addEventListener('loadeddata', handleCanPlay, { once: true })
+      const events = ['canplaythrough', 'loadeddata', 'loadedmetadata']
+      const handlers: { event: string; handler: () => void }[] = []
+      
+      events.forEach(eventName => {
+        const handler = () => {
+          if (!isCancelled) {
+            handleCanPlay()
+            handlers.forEach(h => {
+              video.removeEventListener(h.event as any, h.handler)
+            })
+          }
+        }
+        handlers.push({ event: eventName, handler })
+        video.addEventListener(eventName, handler, { once: true })
+      })
+      
       const fallbackTimer = setTimeout(() => {
         if (!isCancelled && video && video.readyState >= 2) {
           handleCanPlay()
+          handlers.forEach(h => {
+            video.removeEventListener(h.event as any, h.handler)
+          })
         }
-      }, 500)
+      }, 1000)
       
       return () => {
         isCancelled = true
         clearTimeout(fallbackTimer)
-        video.removeEventListener('canplaythrough', handleCanPlay)
-        video.removeEventListener('loadeddata', handleCanPlay)
+        handlers.forEach(h => {
+          video.removeEventListener(h.event as any, h.handler)
+        })
         if (video) {
           video.pause()
           video.currentTime = 0

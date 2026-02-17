@@ -14,10 +14,8 @@ export default function Header() {
     e.preventDefault()
     
     if (location.pathname === '/') {
-      // If already on home page, scroll to top smoothly
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } else {
-      // If on another page, navigate to home page
       navigate('/')
     }
   }

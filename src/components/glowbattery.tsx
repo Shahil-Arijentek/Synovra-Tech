@@ -44,7 +44,7 @@ export default function GlowBattery() {
     if (card.type !== 'new') return acc
     const cardOpacity = clamp(1 - Math.abs(progress - i) * 2, 0, 1)
     return Math.max(acc, cardOpacity)
-  }, progress > CARDS.length - 1.5 ? 1 : 0) // Keep fixed for the very end
+  }, progress > CARDS.length - 1.5 ? 1 : 0)
 
   return (
     <section
@@ -122,7 +122,6 @@ export default function GlowBattery() {
               const isEven = (index + 1) % 2 === 0
               const distance = progress - index
 
-              // Animation styles
               const opacity = clamp(1 - Math.abs(distance) * 2, 0, 1)
               const scale = clamp(1 - Math.abs(distance) * 0.05, 0.92, 1)
               const translateY = distance * -30

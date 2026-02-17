@@ -9,10 +9,8 @@ export default function VoltageTrendCard({ value, status }: VoltageTrendCardProp
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
-    // Auto-play the video when component mounts
     if (videoRef.current) {
       videoRef.current.play().catch(() => {
-        // Video autoplay prevented
       })
     }
   }, [])

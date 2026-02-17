@@ -2,8 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { priorityPreloader, type PreloadTask } from '../utils/priorityPreloader';
-import { bandwidthDetector } from '../utils/bandwidthDetector';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -37,40 +35,14 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
   }, [onReady]);
 
   useEffect(() => {
-    // Enhanced preloading with priority system
-    const preloadStorytellingFrames = () => {
-      const networkInfo = bandwidthDetector.getNetworkInfo();
-      const preloadCount = networkInfo.isSlowConnection ? 10 : 20;
-      
-      // Preload first frames of all videos
-      const tasks: PreloadTask[] = [];
-      
-      // Video 1: First 10-20 frames
-      for (let frame = 1; frame <= preloadCount; frame++) {
-        if (frame <= FRAME_COUNT) {
-          tasks.push({
-            url: `/whyrevive/frames/video1/frame_${String(frame).padStart(4, '0')}.webp`,
-            type: 'frame',
-            priority: frame <= 5 ? 'high' : 'medium'
-          } as PreloadTask);
-        }
+    const preloadInBackground = () => {
+      for (let frame = 1; frame <= 3; frame++) {
+        const img = new Image();
+        img.src = `/whyrevive/frames/video1/frame_${String(frame).padStart(4, '0')}.webp`;
       }
-      
-      // Video 2-3: First 5 frames each
-      for (let video = 2; video <= 3; video++) {
-        for (let frame = 1; frame <= 5; frame++) {
-          tasks.push({
-            url: `/whyrevive/frames/video${video}/frame_${String(frame).padStart(4, '0')}.webp`,
-            type: 'frame',
-            priority: 'medium'
-          } as PreloadTask);
-        }
-      }
-      
-      priorityPreloader.addTasks(tasks);
     };
     
-    const timer = setTimeout(preloadStorytellingFrames, 100);
+    const timer = setTimeout(preloadInBackground, 100);
     return () => clearTimeout(timer);
   }, []);
 
@@ -138,52 +110,20 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
     if (!isReady) return;
 
     const preloadUpcoming = () => {
-      const networkInfo = bandwidthDetector.getNetworkInfo();
-      const basePreloadCount = networkInfo.isSlowConnection ? 30 : 50;
-      const framesToPreload = basePreloadCount;
-      
+      const framesToPreload = 10;
       let startFrame = 1;
+      
       if (currentVideo === 1) startFrame = video1Frame;
       else if (currentVideo === 2) startFrame = video2Frame;
       else startFrame = video3Frame;
 
-      const tasks: PreloadTask[] = [];
       for (let i = 1; i <= framesToPreload; i++) {
         const nextFrame = startFrame + i;
         if (nextFrame <= FRAME_COUNT) {
-          const url = `/whyrevive/frames/video${currentVideo}/frame_${String(nextFrame).padStart(4, '0')}.webp`;
-          tasks.push({
-            url,
-            type: 'frame',
-            priority: i <= 20 ? 'high' : 'medium' // Increased from 10 to 20
-          } as PreloadTask);
+          const img = new Image();
+          img.src = `/whyrevive/frames/video${currentVideo}/frame_${String(nextFrame).padStart(4, '0')}.webp`;
         }
       }
-      
-     
-      if (currentVideo < 3) {
-        for (let frame = 1; frame <= 20; frame++) { 
-          tasks.push({
-            url: `/whyrevive/frames/video${currentVideo + 1}/frame_${String(frame).padStart(4, '0')}.webp`,
-            type: 'frame',
-            priority: frame <= 10 ? 'high' : 'medium'
-          } as PreloadTask);
-        }
-      }
-      
-      for (let i = 1; i <= 10; i++) {
-        const prevFrame = startFrame - i;
-        if (prevFrame >= 1) {
-          const url = `/whyrevive/frames/video${currentVideo}/frame_${String(prevFrame).padStart(4, '0')}.webp`;
-          tasks.push({
-            url,
-            type: 'frame',
-            priority: 'medium'
-          } as PreloadTask);
-        }
-      }
-      
-      priorityPreloader.addTasks(tasks);
     };
 
     preloadUpcoming();

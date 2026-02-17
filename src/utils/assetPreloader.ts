@@ -27,6 +27,7 @@ export class AssetPreloader {
 
     for (let i = 0; i < this.assets.length; i++) {
       const asset = this.assets[i]
+      const isPriorityVideo = asset.includes('mainbattery.mp4')
       
       try {
         await this.loadAsset(asset)
@@ -35,7 +36,7 @@ export class AssetPreloader {
         this.updateProgress()
       }
       
-      if (i < this.assets.length - 1) {
+      if (i < this.assets.length - 1 && !isPriorityVideo) {
         await new Promise(resolve => setTimeout(resolve, 60))
       }
     }
@@ -63,13 +64,18 @@ export class AssetPreloader {
         }
 
         const cleanup = () => {
+          video.removeEventListener('canplaythrough', onLoaded)
           video.removeEventListener('loadeddata', onLoaded)
           video.removeEventListener('error', onError)
         }
 
-        video.addEventListener('loadeddata', onLoaded)
-        video.addEventListener('error', onError)
+        video.addEventListener('canplaythrough', onLoaded, { once: true })
+        video.addEventListener('loadeddata', onLoaded, { once: true })
+        video.addEventListener('error', onError, { once: true })
         video.src = url
+        if (url.includes('mainbattery.mp4')) {
+          video.load()
+        }
       } else {
         const img = new Image()
         
@@ -119,22 +125,14 @@ export function getCriticalAssets(): string[] {
     '/mainbattery.mp4',
     '/logo.png',
     '/synovra.png',
-    
-    // Hero assets
     '/car battery.png',
     '/newclassbattery.png',
-    
-    // First few lifecycle frames
     '/lifecycle/frames/frame_0001.webp',
     '/lifecycle/frames/frame_0002.webp',
     '/lifecycle/frames/frame_0003.webp',
-    
-    // Battery stages
     '/Battery-At-Anystage/new.png',
     '/Battery-At-Anystage/used.png',
     '/Battery-At-Anystage/scrap.png',
-    
-    // Benefits icons
     '/benefit/icon1.svg',
     '/benefit/icon2.svg',
     '/benefit/icon3.svg',

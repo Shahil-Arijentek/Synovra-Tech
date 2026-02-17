@@ -6,10 +6,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 interface ParallaxElementProps {
     children: ReactNode
-    speed?: number // 0.5 = half speed (far), 1 = normal, 2 = double speed (close)
+    speed?: number
     className?: string
-    start?: string // "top bottom" by default
-    end?: string // "bottom top" by default
+    start?: string
+    end?: string
 }
 
 export default function ParallaxElement({
@@ -31,10 +31,7 @@ export default function ParallaxElement({
         gsap.registerPlugin(ScrollTrigger)
 
         const context = gsap.context(() => {
-            // Strength of effect.
-            // yPercent can be convenient.
-
-            const yPercent = (speed - 1) * 20 // Arbitrary multiplier for effect strength
+            const yPercent = (speed - 1) * 20
 
             gsap.fromTo(target,
                 {

@@ -89,51 +89,37 @@ const MythsVsTruths: React.FC = () => {
         },
       });
 
-        // Stage 1: Hold first content (0 - 0.1)
         if (layer1Ref.current) {
           tl.to(layer1Ref.current, { opacity: 1, duration: 0.1 }, 0);
         }
 
-        // Transition 1→2 (0.1 - 0.25)
         if (layer1Ref.current && layer2Ref.current) {
-          // Layer 1 moves UP and fades out
           tl.to(layer1Ref.current, { opacity: 0, y: -100, duration: 0.15 }, 0.1);
-          // Layer 2 moves UP from below and fades in
           tl.fromTo(layer2Ref.current, { opacity: 0, y: 300 }, { opacity: 1, y: 0, duration: 0.15 }, 0.1);
         }
 
-        // Stage 2: Hold second content (0.25 - 0.35)
         if (layer2Ref.current) {
           tl.to(layer2Ref.current, { opacity: 1, y: 0, duration: 0.1 }, 0.25);
         }
 
-        // Transition 2→3 (0.35 - 0.50)
         if (layer2Ref.current && layer3Ref.current) {
-          // Layer 2 moves UP and fades out
           tl.to(layer2Ref.current, { opacity: 0, y: -100, duration: 0.15 }, 0.35);
-          // Layer 3 moves UP from below and fades in
           tl.fromTo(layer3Ref.current, { opacity: 0, y: 300 }, { opacity: 1, y: 0, duration: 0.15 }, 0.35);
         }
 
-        // Stage 3: Hold third content (0.50 - 0.60)
         if (layer3Ref.current) {
           tl.to(layer3Ref.current, { opacity: 1, y: 0, duration: 0.1 }, 0.50);
         }
 
-        // Transition 3→4 (0.60 - 0.75)
         if (layer3Ref.current && layer4Ref.current) {
-          // Layer 3 moves UP and fades out
           tl.to(layer3Ref.current, { opacity: 0, y: -100, duration: 0.15 }, 0.60);
-          // Layer 4 moves UP from below and fades in
           tl.fromTo(layer4Ref.current, { opacity: 0, y: 300 }, { opacity: 1, y: 0, duration: 0.15 }, 0.60);
         }
 
-        // Stage 4: Hold last content (0.75 - 0.85)
         if (layer4Ref.current) {
           tl.to(layer4Ref.current, { opacity: 1, y: 0, duration: 0.1 }, 0.75);
         }
 
-        // Fade out entire section (0.85 - 1.0)
         if (contentRef.current) {
           tl.to(contentRef.current, { opacity: 0, duration: 0.15 }, 0.85);
         }
@@ -153,7 +139,6 @@ const MythsVsTruths: React.FC = () => {
         try {
           trigger.kill(true);
         } catch {
-          // Ignore errors during cleanup
         }
       });
       

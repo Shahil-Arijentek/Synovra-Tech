@@ -34,7 +34,6 @@ import { drawFrame } from './batteryLifecycle/frameRenderer'
 import { preloadCriticalFrames, preloadRemainingFrames, preloadNextFrames } from './batteryLifecycle/framePreloader'
 import { shouldCardBeVisible, getActiveSceneIndexFromCards } from './batteryLifecycle/cardVisibility'
 import { getCardPosition, getMobileScale } from './batteryLifecycle/cardPositions'
-import { intersectionPreloader } from '../utils/intersectionPreloader'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -59,9 +58,6 @@ export default function BatteryLifecycleScroll() {
   const activeAnimations = useRef<{ [key: string]: gsap.core.Tween | null }>({})
   const scrollUpdateTimeoutRef = useRef<number | null>(null)
   const pendingFrameUpdate = useRef<{ frame: number; scene: number } | null>(null)
-  const lastFrameUpdateTime = useRef<number>(0)
-  const frameUpdateThrottle = 16 
-  const pendingDrawRef = useRef<{ frame: number; scene: number } | null>(null)
 
   useEffect(() => {
     const checkMobile = () => {
@@ -86,45 +82,8 @@ export default function BatteryLifecycleScroll() {
   }, [])
 
   const drawFrameLocal = (sceneIndex: number, frameNumber: number) => {
-    if (!canvasRef.current) return
-    
-    const now = performance.now()
-    const timeSinceLastUpdate = now - lastFrameUpdateTime.current
-    
-    if (timeSinceLastUpdate < frameUpdateThrottle && pendingDrawRef.current) {
-      pendingDrawRef.current = { frame: frameNumber, scene: sceneIndex }
-      return
-    }
-    
-    const drawn = drawFrame(canvasRef.current, sceneIndex, frameNumber, currentCanvasFrameRef)
-    
-    if (drawn) {
-      lastFrameUpdateTime.current = now
-      pendingDrawRef.current = null
-    } else {
-      pendingDrawRef.current = { frame: frameNumber, scene: sceneIndex }
-    }
+    drawFrame(canvasRef.current, sceneIndex, frameNumber, currentCanvasFrameRef)
   }
-  
-  useEffect(() => {
-    if (!pendingDrawRef.current || isPreloading) return
-    
-    const retryInterval = setInterval(() => {
-      if (pendingDrawRef.current && canvasRef.current) {
-        const { frame, scene } = pendingDrawRef.current
-        const drawn = drawFrame(canvasRef.current, scene, frame, currentCanvasFrameRef)
-        
-        if (drawn) {
-          pendingDrawRef.current = null
-          lastFrameUpdateTime.current = performance.now()
-        }
-      } else {
-        clearInterval(retryInterval)
-      }
-    }, 50)
-    
-    return () => clearInterval(retryInterval)
-  }, [isPreloading])
 
   const renderCard = (cardType: string, cardData: CardData, sceneIndex: number, cardIndex: number) => {
     const cardKey = `scene-${sceneIndex}-card-${cardIndex}`
@@ -477,24 +436,6 @@ export default function BatteryLifecycleScroll() {
 
     const timeoutId = setTimeout(() => {
       preloadRemainingFrames()
-      
-      if (containerRef.current) {
-        const allFrames: string[] = []
-        for (let scene = 0; scene < SCENE_FRAME_COUNTS.length; scene++) {
-          const frameCount = SCENE_FRAME_COUNTS[scene]
-          for (let i = 1; i <= frameCount; i += Math.max(1, Math.floor(frameCount / 20))) {
-            allFrames.push(`/lifecycle/frames/scene-${scene + 1}/frame_${String(i).padStart(4, '0')}.webp`)
-          }
-        }
-        
-        intersectionPreloader.register({
-          element: containerRef.current,
-          assets: allFrames,
-          assetType: 'frame',
-          priority: 'medium',
-          rootMargin: '500px'
-        })
-      }
     }, 100)
 
     return () => clearTimeout(timeoutId)
@@ -587,28 +528,18 @@ export default function BatteryLifecycleScroll() {
             
             const newFrame = clampedFrameIndex + 1
             const newScene = scene.sceneIndex
-            
-            preloadNextFrames(newScene, newFrame)
 
-            const now = performance.now()
-            const shouldUpdate = now - lastFrameUpdateTime.current >= frameUpdateThrottle ||
-                                pendingFrameUpdate.current === null ||
-                                pendingFrameUpdate.current.frame !== newFrame ||
-                                pendingFrameUpdate.current.scene !== newScene
+            pendingFrameUpdate.current = { frame: newFrame, scene: newScene }
 
-            if (shouldUpdate) {
-              pendingFrameUpdate.current = { frame: newFrame, scene: newScene }
-
-              if (scrollUpdateTimeoutRef.current === null) {
-                scrollUpdateTimeoutRef.current = requestAnimationFrame(() => {
-                  if (pendingFrameUpdate.current) {
-                    setCurrentFrame(pendingFrameUpdate.current.frame)
-                    setCurrentSceneForFrame(pendingFrameUpdate.current.scene)
-                    pendingFrameUpdate.current = null
-                  }
-                  scrollUpdateTimeoutRef.current = null
-                })
-              }
+            if (scrollUpdateTimeoutRef.current === null) {
+              scrollUpdateTimeoutRef.current = requestAnimationFrame(() => {
+                if (pendingFrameUpdate.current) {
+                  setCurrentFrame(pendingFrameUpdate.current.frame)
+                  setCurrentSceneForFrame(pendingFrameUpdate.current.scene)
+                  pendingFrameUpdate.current = null
+                }
+                scrollUpdateTimeoutRef.current = null
+              })
             }
 
             break
@@ -746,29 +677,20 @@ export default function BatteryLifecycleScroll() {
   }, [])
 
   useEffect(() => {
-    if (isPreloading) return
-    
     if (rafRef.current) {
       cancelAnimationFrame(rafRef.current)
     }
 
-    const now = performance.now()
-    const timeSinceLastUpdate = now - lastFrameUpdateTime.current
-    
-    if (timeSinceLastUpdate < frameUpdateThrottle) {
-      rafRef.current = requestAnimationFrame(() => {
-        drawFrameLocal(currentSceneForFrame, currentFrame)
-      })
-    } else {
+    rafRef.current = requestAnimationFrame(() => {
       drawFrameLocal(currentSceneForFrame, currentFrame)
-    }
+    })
 
     return () => {
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current)
       }
     }
-  }, [currentFrame, currentSceneForFrame, isPreloading])
+  }, [currentFrame, currentSceneForFrame])
 
   useEffect(() => {
     if (isPreloading) return

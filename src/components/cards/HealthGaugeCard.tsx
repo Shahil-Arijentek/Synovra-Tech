@@ -18,13 +18,12 @@ export default function HealthGaugeCard({ value, video = '99.mp4', width = '420p
         entries.forEach((entry) => {
           if (entry.isIntersecting && !hasPlayed && videoRef.current) {
             videoRef.current.play().catch(() => {
-              // Video autoplay prevented
             })
             setHasPlayed(true)
           }
         })
       },
-      { threshold: 0.5 } // Play when 50% of the card is visible
+      { threshold: 0.5 }
     )
 
     const container = containerRef.current;
