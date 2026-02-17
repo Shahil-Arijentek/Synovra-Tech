@@ -8,7 +8,6 @@ export default function Hero() {
     if (!video) return
 
     let isCancelled = false
-    video.preload = 'auto'
 
     const timer = setTimeout(() => {
       if (isCancelled || !video) return
