@@ -7,6 +7,7 @@ export default function Hero() {
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
+    video.load()
 
     let isCancelled = false
 
@@ -68,6 +69,7 @@ export default function Hero() {
                 className="w-full h-auto object-contain mix-blend-screen"
                 muted
                 playsInline
+                preload="auto"
               >
                 <source src="/mainbattery.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
