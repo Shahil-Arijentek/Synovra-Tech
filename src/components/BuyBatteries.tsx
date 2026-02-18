@@ -5,9 +5,9 @@ import gsap from 'gsap'
 type BatteryStage = 'new' | 'used' | 'scrap'
 
 const stageConfig: Record<BatteryStage, { label: string }> = {
-  new: { label: 'New' },
-  used: { label: 'Used' },
-  scrap: { label: 'Scrap' },
+  new: { label: 'OPTIMAL' },
+  used: { label: 'DRIFTING' },
+  scrap: { label: 'CRITICAL' },
 }
 
 const batteryLayers = {
