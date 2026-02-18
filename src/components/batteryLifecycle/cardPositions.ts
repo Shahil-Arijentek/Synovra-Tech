@@ -88,13 +88,13 @@ export const getCardPosition = (
     }
     else if (sceneIndex === 5) {
       if (cardData.cardType === 'performance-restored') {
-        return '-right-8 md:right-8 md:left-auto md:top-[6%] top-[5%]'
+        return '-right-6 md:right-8 md:left-auto md:top-[6%] top-[8%]'
       }
       if (cardData.cardType === 'health-gauge') {
         return 'left-6 md:left-12 md:top-[80%] top-[18%]'
       }
       if (cardData.cardType === 'warranty') {
-        return 'left-6 md:left-12 md:top-[6%] top-[8%]'
+        return 'left-6 md:left-12 md:top-[6%] top-[4%]'
       }
       if (cardData.cardType === 'record-lock') {
         return 'left-20 md:-right-6 md:left-auto md:top-[80%] top-[72%]'
