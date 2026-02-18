@@ -69,7 +69,7 @@ export default function BuyBatteries() {
     gsapContextRef.current.add(() => {
       setActiveStage(stage)
 
-      const internalOpacity = stage === 'new' ? 0 : stage === 'used' ? 0.4 : 0
+      const internalOpacity = stage === 'new' ? 0 : stage === 'used' ? 1 : 0
       const scrapOpacity = stage === 'scrap' ? 1 : 0
 
       const tl = gsap.timeline({
@@ -119,7 +119,7 @@ export default function BuyBatteries() {
       return
     }
 
-    const internalOpacity = activeStage === 'new' ? 0 : activeStage === 'used' ? 0.4 : 0
+    const internalOpacity = activeStage === 'new' ? 0 : activeStage === 'used' ? 1 : 0
     const scrapOpacity = activeStage === 'scrap' ? 1 : 0
     gsap.set(internal, { opacity: internalOpacity })
     gsap.set(scrap, { opacity: scrapOpacity })
@@ -230,20 +230,20 @@ export default function BuyBatteries() {
             <motion.img
               ref={chassisRef}
               alt="Battery chassis"
-              className="absolute inset-0 h-full w-full object-contain"
+              className="absolute inset-0 h-full w-full object-contain z-0"
               src={batteryLayers.chassis}
             />
             <img
               ref={internalRef}
               alt="Battery internal plates"
-              className="absolute inset-0 h-full w-full object-contain opacity-0"
-              style={{ willChange: 'opacity' }}
+              className="absolute inset-0 h-full w-full object-contain opacity-0 z-10"
+              style={{ willChange: 'opacity', imageRendering: 'auto' }}
               src={batteryLayers.internal}
             />
             <img
               ref={scrapRef}
               alt="Battery scrap condition"
-              className="absolute inset-0 h-full w-full object-contain opacity-0"
+              className="absolute inset-0 h-full w-full object-contain opacity-0 z-20"
               style={{ willChange: 'opacity' }}
               src={batteryLayers.scrap}
             />
