@@ -29,7 +29,7 @@ import CertifiedCard from './cards/CertifiedCard'
 import VerifiedCard from './cards/VerifiedCard'
 
 import { sceneConfig, sceneTimings, SCENE_FRAME_COUNTS, type CardData } from './batteryLifecycle/sceneConfig'
-import { frameCache } from './batteryLifecycle/frameCache'
+import { getFrameCache } from './batteryLifecycle/frameCache'
 import { drawFrame } from './batteryLifecycle/frameRenderer'
 import { preloadCriticalFrames, preloadRemainingFrames, preloadNextFrames } from './batteryLifecycle/framePreloader'
 import { shouldCardBeVisible, getActiveSceneIndexFromCards } from './batteryLifecycle/cardVisibility'
@@ -58,6 +58,8 @@ export default function BatteryLifecycleScroll() {
   const activeAnimations = useRef<{ [key: string]: gsap.core.Tween | null }>({})
   const scrollUpdateTimeoutRef = useRef<number | null>(null)
   const pendingFrameUpdate = useRef<{ frame: number; scene: number } | null>(null)
+  const isMountedRef = useRef(true)
+  const abortControllerRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
     const checkMobile = () => {
@@ -421,21 +423,37 @@ export default function BatteryLifecycleScroll() {
   useEffect(() => {
     if (hasPreloadedRef.current) return
     hasPreloadedRef.current = true
+    isMountedRef.current = true
+
+    const abortController = new AbortController()
+    abortControllerRef.current = abortController
 
     preloadCriticalFrames((progress) => {
-      setPreloadProgress(progress.percentage)
+      if (!abortController.signal.aborted && isMountedRef.current) {
+        setPreloadProgress(progress.percentage)
+      }
     }).then(() => {
-      setIsPreloading(false)
+      if (!abortController.signal.aborted && isMountedRef.current) {
+        setIsPreloading(false)
+      }
     }).catch(() => {
-      setIsPreloading(false)
+      if (!abortController.signal.aborted && isMountedRef.current) {
+        setIsPreloading(false)
+      }
     })
+
+    return () => {
+      abortController.abort()
+    }
   }, [])
 
   useEffect(() => {
-    if (isPreloading) return
+    if (isPreloading || !isMountedRef.current) return
 
     const timeoutId = setTimeout(() => {
-      preloadRemainingFrames()
+      if (isMountedRef.current) {
+        preloadRemainingFrames()
+      }
     }, 100)
 
     return () => clearTimeout(timeoutId)
@@ -564,16 +582,47 @@ export default function BatteryLifecycleScroll() {
     }, 100)
 
     return () => {
+      isMountedRef.current = false
       clearTimeout(initTimeout)
       if (scrollUpdateTimeoutRef.current !== null) {
         cancelAnimationFrame(scrollUpdateTimeoutRef.current)
         scrollUpdateTimeoutRef.current = null
       }
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current)
+        rafRef.current = null
+      }
       Object.values(activeAnimations.current).forEach(anim => {
-        if (anim) anim.kill()
+        if (anim) {
+          try {
+            anim.kill()
+          } catch (error) {
+            if (import.meta.env.DEV) {
+              console.warn('Error killing GSAP animation:', error)
+            }
+          }
+        }
       })
       activeAnimations.current = {}
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+      try {
+        ScrollTrigger.getAll().forEach(trigger => {
+          try {
+            trigger.kill(true)
+          } catch (error) {
+            if (import.meta.env.DEV) {
+              console.warn('Error killing ScrollTrigger:', error)
+            }
+          }
+        })
+      } catch (error) {
+        if (import.meta.env.DEV) {
+          console.warn('Error cleaning up ScrollTrigger:', error)
+        }
+      }
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+        abortControllerRef.current = null
+      }
       setNavbarVisible(true)
     }
   }, [setNavbarVisible, isPreloading])
@@ -603,6 +652,7 @@ export default function BatteryLifecycleScroll() {
     
     const drawInitialFrame = () => {
       const firstFrameSrc = '/lifecycle/frames/scene-1/frame_0001.webp'
+      const frameCache = getFrameCache()
       const cachedImage = frameCache.get(firstFrameSrc)
       
       if (cachedImage && cachedImage.complete && cachedImage.naturalWidth > 0) {
@@ -677,17 +727,26 @@ export default function BatteryLifecycleScroll() {
   }, [])
 
   useEffect(() => {
-    if (rafRef.current) {
+    if (!isMountedRef.current) return
+
+    if (rafRef.current !== null) {
       cancelAnimationFrame(rafRef.current)
+      rafRef.current = null
     }
 
-    rafRef.current = requestAnimationFrame(() => {
-      drawFrameLocal(currentSceneForFrame, currentFrame)
-    })
+    if (isMountedRef.current) {
+      rafRef.current = requestAnimationFrame(() => {
+        if (isMountedRef.current && canvasRef.current) {
+          drawFrameLocal(currentSceneForFrame, currentFrame)
+        }
+        rafRef.current = null
+      })
+    }
 
     return () => {
-      if (rafRef.current) {
+      if (rafRef.current !== null) {
         cancelAnimationFrame(rafRef.current)
+        rafRef.current = null
       }
     }
   }, [currentFrame, currentSceneForFrame])
@@ -1243,7 +1302,7 @@ export default function BatteryLifecycleScroll() {
   }, [isMobile, activeSceneIndex, currentFrame])
 
   useEffect(() => {
-    if (isPreloading) return
+    if (isPreloading || !isMountedRef.current) return
     preloadNextFrames(currentSceneForFrame, currentFrame)
   }, [currentFrame, currentSceneForFrame, isPreloading])
 
@@ -1291,6 +1350,8 @@ export default function BatteryLifecycleScroll() {
                 opacity: 1,
                 visibility: 'visible'
               }}
+              aria-label="Battery lifecycle animation showing battery stages from new to recycled"
+              role="img"
             />
           </div>
 

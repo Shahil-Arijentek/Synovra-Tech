@@ -67,6 +67,9 @@ export class AssetPreloader {
           video.removeEventListener('canplaythrough', onLoaded)
           video.removeEventListener('loadeddata', onLoaded)
           video.removeEventListener('error', onError)
+          // Clean up video element to prevent memory leaks
+          video.src = ''
+          video.load()
         }
 
         video.addEventListener('canplaythrough', onLoaded, { once: true })
@@ -96,6 +99,8 @@ export class AssetPreloader {
         const cleanup = () => {
           img.removeEventListener('load', onLoaded)
           img.removeEventListener('error', onError)
+          // Clean up image element to prevent memory leaks
+          img.src = ''
         }
 
         img.addEventListener('load', onLoaded)

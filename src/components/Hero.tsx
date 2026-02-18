@@ -10,6 +10,7 @@ export default function Hero() {
 
     let isCancelled = false
 
+    let pauseTimer: ReturnType<typeof setTimeout> | null = null
     const timer = setTimeout(() => {
       if (isCancelled || !video) return
 
@@ -19,7 +20,7 @@ export default function Hero() {
         playPromise.catch(() => {})
       }
 
-      setTimeout(() => {
+      pauseTimer = setTimeout(() => {
         if (!isCancelled && video) {
           video.pause()
         }
@@ -29,6 +30,9 @@ export default function Hero() {
     return () => {
       isCancelled = true
       clearTimeout(timer)
+      if (pauseTimer) {
+        clearTimeout(pauseTimer)
+      }
       if (video) {
         video.pause()
         video.currentTime = 0

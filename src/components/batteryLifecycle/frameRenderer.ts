@@ -1,5 +1,4 @@
-import { frameCache } from './frameCache'
-import { preloadImage } from './frameCache'
+import { getFrameCache, preloadImage } from './frameCache'
 
 export interface CanvasFrameRef {
   scene: number
@@ -37,6 +36,7 @@ export const drawFrame = (
   if (!canvas) return false
 
   const frameSrc = `/lifecycle/frames/scene-${sceneIndex + 1}/frame_${String(frameNumber).padStart(4, '0')}.webp`
+  const frameCache = getFrameCache()
   const cachedImage = frameCache.get(frameSrc)
 
   if (cachedImage && cachedImage.complete && cachedImage.naturalWidth > 0) {
@@ -61,6 +61,7 @@ export const drawFrame = (
       preloadImage(frameSrc).then(() => {
         loadingFrames.delete(frameSrc)
         
+        const frameCache = getFrameCache()
         const loadedImage = frameCache.get(frameSrc)
         if (loadedImage && loadedImage.complete && loadedImage.naturalWidth > 0) {
           const ctx = getCanvasContext(canvas)

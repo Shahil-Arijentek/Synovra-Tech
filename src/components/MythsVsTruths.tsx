@@ -134,18 +134,21 @@ const MythsVsTruths: React.FC = () => {
       isActive = false;
       clearTimeout(initTimer);
       
-      const triggers = ScrollTrigger.getAll();
-      triggers.forEach(trigger => {
-        try {
-          trigger.kill(true);
-        } catch {
-        }
-      });
-      
       if (ctx) {
         try {
           ctx.revert();
-        } catch {
+        } catch (error) {
+          if (import.meta.env.DEV) {
+            console.warn('Error reverting GSAP context:', error);
+          }
+          // Fallback: try to kill the context
+          try {
+            ctx.kill?.();
+          } catch (killError) {
+            if (import.meta.env.DEV) {
+              console.warn('Error killing GSAP context:', killError);
+            }
+          }
         }
       }
       
@@ -180,8 +183,11 @@ const MythsVsTruths: React.FC = () => {
         muted
         playsInline
         className="absolute inset-0 w-full h-full object-cover opacity-[0.05]"
+        aria-label="Decorative background animation"
+        aria-hidden="true"
       >
-        <source src="/whyrevive/plexus-black-white.mov" type="video/mp4" />
+        <source src="/whyrevive/plexus-black-white.webm" type="video/webm" />
+        <source src="/whyrevive/plexus-black-white.mp4" type="video/mp4" />
       </video>
 
       <div className="absolute inset-0 bg-[#0d0d0d]/30"></div>

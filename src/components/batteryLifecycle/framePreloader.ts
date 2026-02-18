@@ -1,4 +1,4 @@
-import { preloadImage, frameCache } from './frameCache'
+import { preloadImage, getFrameCache } from './frameCache'
 import { SCENE_FRAME_COUNTS } from './sceneConfig'
 
 export interface PreloadProgress {
@@ -99,16 +99,17 @@ export const preloadNextFrames = (
   preloadCount: number = 35
 ): void => {
   const frameCount = SCENE_FRAME_COUNTS[currentScene]
+  const frameCache = getFrameCache()
   
   for (let i = 1; i <= preloadCount; i++) {
     const nextFrame = currentFrame + i
     if (nextFrame <= frameCount) {
       const src = `/lifecycle/frames/scene-${currentScene + 1}/frame_${String(nextFrame).padStart(4, '0')}.webp`
       if (!frameCache.has(src)) {
-        const img = new Image()
-        img.decoding = 'async'
-        img.src = src
-        img.onload = () => frameCache.set(src, img)
+        // Use preloadImage to ensure LRU cache management
+        preloadImage(src).catch(() => {
+          // Silently fail - frame will be loaded on demand
+        })
       }
     } else if (currentScene < SCENE_FRAME_COUNTS.length - 1) {
       const nextSceneIndex = currentScene + 1
@@ -116,10 +117,10 @@ export const preloadNextFrames = (
       if (nextSceneFrame <= SCENE_FRAME_COUNTS[nextSceneIndex]) {
         const src = `/lifecycle/frames/scene-${nextSceneIndex + 1}/frame_${String(nextSceneFrame).padStart(4, '0')}.webp`
         if (!frameCache.has(src)) {
-          const img = new Image()
-          img.decoding = 'async'
-          img.src = src
-          img.onload = () => frameCache.set(src, img)
+          // Use preloadImage to ensure LRU cache management
+          preloadImage(src).catch(() => {
+            // Silently fail - frame will be loaded on demand
+          })
         }
       }
     }

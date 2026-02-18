@@ -40,12 +40,32 @@ export default function SmoothScrollLayout({ children }: SmoothScrollLayoutProps
         gsap.ticker.lagSmoothing(0)
 
         return () => {
-            if (tickerCallbackRef.current) {
-                gsap.ticker.remove(tickerCallbackRef.current)
-                tickerCallbackRef.current = null
+            try {
+                if (tickerCallbackRef.current) {
+                    gsap.ticker.remove(tickerCallbackRef.current)
+                    tickerCallbackRef.current = null
+                }
+            } catch (error) {
+                if (import.meta.env.DEV) {
+                    console.warn('Error removing GSAP ticker callback:', error)
+                }
             }
-            lenis.off('scroll', ScrollTrigger.update)
-            lenis.destroy()
+            
+            try {
+                lenis.off('scroll', ScrollTrigger.update)
+            } catch (error) {
+                if (import.meta.env.DEV) {
+                    console.warn('Error removing Lenis scroll listener:', error)
+                }
+            }
+            
+            try {
+                lenis.destroy()
+            } catch (error) {
+                if (import.meta.env.DEV) {
+                    console.warn('Error destroying Lenis instance:', error)
+                }
+            }
         }
     }, [])
 
