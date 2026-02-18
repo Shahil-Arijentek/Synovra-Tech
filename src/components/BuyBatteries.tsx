@@ -13,6 +13,7 @@ const stageConfig: Record<BatteryStage, { label: string }> = {
 const batteryLayers = {
   chassis: '/Battery-At-Anystage/new.png',
   internal: '/Battery-At-Anystage/used.png',
+  scrap: '/Battery-At-Anystage/scrap.png',
 }
 
 const stageOrder: BatteryStage[] = ['new', 'used', 'scrap']
@@ -26,6 +27,7 @@ export default function BuyBatteries() {
   const sectionRef = useRef<HTMLElement | null>(null)
   const chassisRef = useRef<HTMLImageElement | null>(null)
   const internalRef = useRef<HTMLImageElement | null>(null)
+  const scrapRef = useRef<HTMLImageElement | null>(null)
   const labelsRef = useRef<HTMLDivElement | null>(null)
   const gsapContextRef = useRef<gsap.Context | null>(null)
   const timelineRef = useRef<gsap.core.Timeline | null>(null)
@@ -55,7 +57,8 @@ export default function BuyBatteries() {
     }
 
     const internal = internalRef.current
-    if (!internal || !gsapContextRef.current) {
+    const scrap = scrapRef.current
+    if (!internal || !scrap || !gsapContextRef.current) {
       setActiveStage(stage)
       return
     }
@@ -66,7 +69,8 @@ export default function BuyBatteries() {
     gsapContextRef.current.add(() => {
       setActiveStage(stage)
 
-      const internalOpacity = stage === 'new' ? 0 : stage === 'used' ? 0.4 : 1
+      const internalOpacity = stage === 'new' ? 0 : stage === 'used' ? 0.4 : 0
+      const scrapOpacity = stage === 'scrap' ? 1 : 0
 
       const tl = gsap.timeline({
         defaults: { duration: transitionDuration, ease: 'power2.inOut' },
@@ -76,6 +80,7 @@ export default function BuyBatteries() {
       })
 
       tl.to(internal, { opacity: internalOpacity }, 0)
+      tl.to(scrap, { opacity: scrapOpacity }, 0)
 
       const activeLabel = labelsRef.current?.querySelector<HTMLButtonElement>(
         `[data-stage="${stage}"]`
@@ -109,12 +114,15 @@ export default function BuyBatteries() {
 
   useEffect(() => {
     const internal = internalRef.current
-    if (!internal) {
+    const scrap = scrapRef.current
+    if (!internal || !scrap) {
       return
     }
 
-    const internalOpacity = activeStage === 'new' ? 0 : activeStage === 'used' ? 0.4 : 1
+    const internalOpacity = activeStage === 'new' ? 0 : activeStage === 'used' ? 0.4 : 0
+    const scrapOpacity = activeStage === 'scrap' ? 1 : 0
     gsap.set(internal, { opacity: internalOpacity })
+    gsap.set(scrap, { opacity: scrapOpacity })
   }, [activeStage])
 
   useEffect(() => {
@@ -223,10 +231,6 @@ export default function BuyBatteries() {
               ref={chassisRef}
               alt="Battery chassis"
               className="absolute inset-0 h-full w-full object-contain"
-              animate={{
-                filter: activeStage === 'scrap' ? 'grayscale(1) brightness(0.85)' : 'grayscale(0) brightness(1)',
-              }}
-              transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
               src={batteryLayers.chassis}
             />
             <img
@@ -235,6 +239,13 @@ export default function BuyBatteries() {
               className="absolute inset-0 h-full w-full object-contain opacity-0"
               style={{ willChange: 'opacity' }}
               src={batteryLayers.internal}
+            />
+            <img
+              ref={scrapRef}
+              alt="Battery scrap condition"
+              className="absolute inset-0 h-full w-full object-contain opacity-0"
+              style={{ willChange: 'opacity' }}
+              src={batteryLayers.scrap}
             />
           </div>
         </motion.div>
