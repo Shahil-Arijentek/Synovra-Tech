@@ -8,31 +8,52 @@ export default function Hero() {
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
-    const handleLoadedMetadata = () => {
-      if (video.videoWidth > 0 && video.videoHeight > 0) {
+
+    let isCancelled = false
+    let metadataTimeout: ReturnType<typeof setTimeout> | null = null
+    let pauseTimer: ReturnType<typeof setTimeout> | null = null
+
+    const setReady = () => {
+      if (!isCancelled) {
         setVideoReady(true)
+        if (metadataTimeout) {
+          clearTimeout(metadataTimeout)
+        }
       }
     }
+
+    const handleLoadedMetadata = () => {
+      if (!isCancelled && video.videoWidth > 0 && video.videoHeight > 0) {
+        setReady()
+      }
+    }
+
+    const handleError = () => {
+      if (!isCancelled) {
+        setReady()
+      }
+    }
+
+    metadataTimeout = setTimeout(() => {
+      if (!isCancelled) {
+        setReady()
+      }
+    }, 2000)
+
     if (video.readyState >= 1) {
       handleLoadedMetadata()
     } else {
       video.addEventListener('loadedmetadata', handleLoadedMetadata, { once: true })
       video.addEventListener('loadeddata', handleLoadedMetadata, { once: true })
+      video.addEventListener('error', handleError, { once: true })
     }
 
     video.load()
 
-    let isCancelled = false
-
-    let pauseTimer: ReturnType<typeof setTimeout> | null = null
     const timer = setTimeout(() => {
-      if (isCancelled || !video) return
+      if (isCancelled) return
 
-      const playPromise = video.play()
-
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {})
-      }
+      video.play().catch(() => {})
 
       pauseTimer = setTimeout(() => {
         if (!isCancelled && video) {
@@ -44,12 +65,9 @@ export default function Hero() {
     return () => {
       isCancelled = true
       clearTimeout(timer)
-      if (pauseTimer) {
-        clearTimeout(pauseTimer)
-      }
+      if (pauseTimer) clearTimeout(pauseTimer)
+      if (metadataTimeout) clearTimeout(metadataTimeout)
       if (video) {
-        video.removeEventListener('loadedmetadata', handleLoadedMetadata)
-        video.removeEventListener('loadeddata', handleLoadedMetadata)
         video.pause()
         video.currentTime = 0
       }
@@ -87,6 +105,7 @@ export default function Hero() {
                 preload="auto"
                 width="1920"
                 height="1080"
+                aria-label="Battery visualization video"
               >
                 <source src="/mainbattery.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
