@@ -32,11 +32,10 @@ export default function BuyBatteries() {
   const headingRef = useRef(null)
   const batteryContainerRef = useRef(null)
   const bottomCardRef = useRef(null)
-  const ctaSectionRef = useRef(null)
   const isHeadingInView = useInView(headingRef, { once: true, amount: 0.8 })
   const isBatteryInView = useInView(batteryContainerRef, { once: true, amount: 0.3 })
   const isBottomCardInView = useInView(bottomCardRef, { once: true, amount: 0.8 })
-  const isCtaInView = useInView(ctaSectionRef, { once: true, amount: 0.5 })
+
 
   useEffect(() => {
     activeStageRef.current = activeStage
@@ -267,56 +266,7 @@ export default function BuyBatteries() {
           </motion.p>
         </motion.div>
       </section>
-      <section className="bg-black px-6 py-16 md:py-20 text-white">
-        <div className="mx-auto flex w-full max-w-[82.5rem] justify-center">
-          <motion.div 
-            ref={ctaSectionRef}
-            initial={{ opacity: 0, y: 60 }}
-            animate={isCtaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
-            transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-            className="flex w-full max-w-[73.75rem] flex-col items-center gap-6 md:gap-8 rounded-[1.5rem] border border-white/10 bg-black/80 backdrop-blur-sm px-6 py-10 md:px-12 md:py-[3.063rem] text-center"
-          >
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={isCtaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
-              className="text-[1.375rem] md:text-[1.5rem] font-bold leading-tight text-white"
-            >
-              No Sorting. No Guesswork. No Missed Value.
-            </motion.p>
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={isCtaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.6, delay: 0.3, ease: [0.19, 1, 0.22, 1] }}
-              className="max-w-[45rem] text-[1rem] md:text-[1.125rem] font-medium md:font-bold leading-relaxed text-white/70"
-            >
-              We collect mixed loads — any chemistry, age, or condition — so your team never spends
-              time testing, grading, or preparing units.
-            </motion.p>
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={isCtaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.6, delay: 0.4, ease: [0.19, 1, 0.22, 1] }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto"
-            >
-              <motion.button 
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className="h-[3.25rem] md:h-[3.625rem] w-full sm:w-auto rounded-[0.25rem] bg-[#ff6b1a] px-8 text-[1.0625rem] md:text-[1.125rem] font-bold text-[#0d0d0d] transition-all duration-300 will-change-[box-shadow] hover:bg-[#ff6b1a]/90 shadow-[0_0_15px_rgba(255,107,26,0.4),0_0_30px_rgba(255,107,26,0.2)] hover:shadow-[0_0_20px_rgba(255,107,26,0.5),0_0_40px_rgba(255,107,26,0.25)]"
-              >
-                Partner With Us
-              </motion.button>
-              <motion.button 
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className="h-[3.25rem] md:h-[3.625rem] w-full sm:w-auto rounded-[0.25rem] border border-white/20 bg-[#191919] px-8 text-[1.0625rem] md:text-[1.125rem] font-bold text-white transition-colors hover:bg-white hover:text-black"
-              >
-                Book a Pickup
-              </motion.button>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
+
     </>
   )
 }

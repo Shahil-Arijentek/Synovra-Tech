@@ -87,12 +87,13 @@ const StorytellingSection: React.FC<StorytellingProps> = ({ onReady }) => {
           }
         },
       });
-
-      tl.to(layer1Ref.current, { opacity: 0, duration: 0.1 }, 0.28)
-        .to(layer2Ref.current, { opacity: 1, duration: 0.1 }, 0.33);
-
-      tl.to(layer2Ref.current, { opacity: 0, duration: 0.1 }, 0.61)
-        .to(layer3Ref.current, { opacity: 1, duration: 0.1 }, 0.66);
+      const video1Frame50 = 0.33 * ((50 - 1) / (FRAME_COUNT - 1));
+      const video2Frame48 = 0.33 + (0.33 * ((48 - 1) / (FRAME_COUNT - 1)));
+      const video2Frame50 = 0.33 + (0.33 * ((50 - 1) / (FRAME_COUNT - 1))); 
+      tl.to(layer1Ref.current, { opacity: 0, duration: 0.1 }, video1Frame50)
+        .to(layer2Ref.current, { opacity: 1, duration: 0.1 }, video1Frame50);
+      tl.to(layer2Ref.current, { opacity: 0, duration: 0.1 }, video2Frame48)
+        .to(layer3Ref.current, { opacity: 1, duration: 0.1 }, video2Frame50);
 
     }, containerRef);
 

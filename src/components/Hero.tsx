@@ -40,7 +40,7 @@ export default function Hero() {
     }
   }, [])
   return (
-    <section className="relative bg-black overflow-hidden min-h-[31.25rem] sm:min-h-[36rem] md:min-h-[40.63rem] lg:min-h-[50rem] xl:min-h-[56.25rem] text-white">
+    <section className="relative overflow-hidden min-h-[31.25rem] sm:min-h-[36rem] md:min-h-[40.63rem] lg:min-h-[50rem] xl:min-h-[56.25rem] text-white" style={{ backgroundColor: '#000000' }}>
       <div className="absolute bottom-0 left-0 right-0 h-[30%] pointer-events-none z-20" style={{
         background: 'linear-gradient(to bottom, transparent 0%, #000000 100%)'
       }} />

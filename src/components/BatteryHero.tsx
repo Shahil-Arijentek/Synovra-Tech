@@ -314,10 +314,6 @@ export default function BatteryHero() {
 
               <div className="absolute inset-0 bg-black/40 hidden lg:block" />
 
-              <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black hidden lg:block" style={{
-                background: 'radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.2) 70%, rgba(0, 0, 0, 0.7) 100%)'
-              }} />
-
               <div className="absolute bottom-0 left-0 right-0 h-[30%] pointer-events-none z-5 hidden lg:block" style={{
                 background: 'linear-gradient(to bottom, transparent 0%, #000000 100%)'
               }} />
