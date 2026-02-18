@@ -1,12 +1,25 @@
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null)
+  const [videoReady, setVideoReady] = useState(false)
 
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
+    const handleLoadedMetadata = () => {
+      if (video.videoWidth > 0 && video.videoHeight > 0) {
+        setVideoReady(true)
+      }
+    }
+    if (video.readyState >= 1) {
+      handleLoadedMetadata()
+    } else {
+      video.addEventListener('loadedmetadata', handleLoadedMetadata, { once: true })
+      video.addEventListener('loadeddata', handleLoadedMetadata, { once: true })
+    }
+
     video.load()
 
     let isCancelled = false
@@ -35,6 +48,8 @@ export default function Hero() {
         clearTimeout(pauseTimer)
       }
       if (video) {
+        video.removeEventListener('loadedmetadata', handleLoadedMetadata)
+        video.removeEventListener('loadeddata', handleLoadedMetadata)
         video.pause()
         video.currentTime = 0
       }
@@ -63,13 +78,15 @@ export default function Hero() {
           </div>
 
           <div className="relative -mt-4 max-[479px]:mt-0 sm:mt-0 sm:-mt-10 md:-mt-8 lg:-mt-[18rem] xl:-mt-[11rem] flex justify-center items-center z-10 pointer-events-none">
-            <div className="w-full sm:w-[90%] md:w-[92%] lg:w-[90%] xl:w-[87.5rem] max-w-full scale-[1.1] sm:scale-[1.15] md:scale-[1.25] lg:scale-[1.05] xl:scale-100 origin-center flex justify-center items-center">
+            <div className="w-full sm:w-[90%] md:w-[92%] lg:w-[90%] xl:w-[87.5rem] max-w-full scale-[1.1] sm:scale-[1.15] md:scale-[1.25] lg:scale-[1.05] xl:scale-100 origin-center flex justify-center items-center" style={{ minHeight: '600px' }}>
               <video
                 ref={videoRef}
-                className="w-full h-auto object-contain mix-blend-screen"
+                className={`w-full h-auto object-contain mix-blend-screen transition-opacity duration-300 ${videoReady ? 'opacity-100' : 'opacity-0'}`}
                 muted
                 playsInline
                 preload="auto"
+                width="1920"
+                height="1080"
               >
                 <source src="/mainbattery.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
