@@ -73,7 +73,7 @@ export default function Header() {
             className="bg-[#ff6b1a] h-[3.625rem] overflow-visible relative rounded-[0.25rem] shrink-0 w-[9.75rem] border-none cursor-pointer transition-all duration-300 hover:bg-[#ff6b1a]/90 flex items-center justify-center focus:outline-none active:scale-[0.98] isolate before:absolute before:inset-0 before:rounded-[0.25rem] before:bg-[#ff6b1a] before:blur-[0.9375rem] before:opacity-40 before:-z-10 before:transition-opacity before:duration-300 hover:before:opacity-50 hover:before:blur-[1.25rem]"
             onMouseDown={(e) => e.preventDefault()}
           >
-            <span className="font-['Arial',sans-serif] leading-[1.75rem] text-[1.125rem] text-black whitespace-nowrap relative z-10">
+            <span className="font-['Arial',sans-serif] leading-[1.75rem] text-[1.125rem] text-black whitespace-nowrap relative z-10 font-semibold">
               Get Started
             </span>
           </Link>
@@ -133,7 +133,7 @@ export default function Header() {
                 className="bg-[#ff6b1a] h-[3.625rem] rounded-[0.25rem] text-black font-['Arial',sans-serif] text-[1.125rem] transition-all duration-300 flex items-center justify-center relative isolate overflow-visible before:absolute before:inset-0 before:rounded-[0.25rem] before:bg-[#ff6b1a] before:blur-[0.9375rem] before:opacity-40 before:-z-10 before:transition-opacity before:duration-300 hover:before:opacity-50"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <span className="relative z-10">Get Started</span>
+                <span className="relative z-10 font-semibold">Get Started</span>
               </Link>
             </motion.div>
           )}
