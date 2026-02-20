@@ -5,7 +5,7 @@ interface WarrantyCardProps {
 
 export default function WarrantyCard({ status, coverage }: WarrantyCardProps) {
   return (
-    <div className="backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-[15.815px] p-3 md:p-4 w-[9.375rem] sm:w-[10rem] md:w-[12.5rem] lg:w-[350px] lg:h-[200px] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)] flex items-center justify-center gap-4 md:gap-6">
+    <div className="backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-[15.815px] p-3 md:p-4 w-[18.75rem] sm:w-[20rem] md:w-[26.25rem] min-h-[11rem] sm:min-h-[12rem] md:min-h-[13rem] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)] flex items-center justify-center gap-4 md:gap-6">
       {/* Shield Icon with Clock - Left Side */}
       <div className="flex-shrink-0">
         <img

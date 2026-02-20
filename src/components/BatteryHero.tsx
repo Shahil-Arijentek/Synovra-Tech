@@ -375,11 +375,10 @@ export default function BatteryHero() {
             progress={smoothProgress}
             enterRange={[0.20, 0.35]}
             exitRange={[0.45, 0.60]}
-            className="text-center"
+            className="text-center text-[clamp(1.25rem,3.5vw,2rem)] lg:text-[clamp(2.25rem,4.25vw,3.25rem)]"
             style={{
               color: '#71717B',
               fontFamily: 'Arial, sans-serif',
-              fontSize: 'clamp(20px, 3vw, 36px)',
               fontWeight: 900,
               lineHeight: '25.579px',
               letterSpacing: '0.448px',

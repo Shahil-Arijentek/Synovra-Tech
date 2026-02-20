@@ -20,13 +20,25 @@ export default function RecordLockCard({ value, status }: RecordLockCardProps) {
         />
         
         {/* Text Overlay on Plate */}
-        <div className="absolute left-0 right-0 top-0 bottom-0 flex items-center justify-center lg:items-start lg:pt-6 xl:pt-7 2xl:pt-8">
-          <div className="text-left">
-            <div className="text-black text-xl sm:text-2xl md:text-[2rem] font-['Gemunu_Libre',sans-serif] font-bold uppercase leading-none mb-1">
-              {value}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="flex items-center justify-center">
+            {/* Frame149 Icon */}
+            <div className="flex-shrink-0 mr-3 md:mr-4">
+              <img
+                src="/cards/Frame149.svg"
+                alt="Record Lock Icon"
+                className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12"
+              />
             </div>
-            <div className="text-black text-sm sm:text-base md:text-[1rem] font-['Arial',sans-serif] font-normal uppercase leading-none">
-              {status}
+            
+            {/* Text Content */}
+            <div className="text-left">
+              <div className="text-black text-xl sm:text-2xl md:text-[2rem] font-['Gemunu_Libre',sans-serif] font-bold uppercase leading-none mb-1">
+                {value}
+              </div>
+              <div className="text-black text-sm sm:text-base md:text-[1rem] font-['Arial',sans-serif] font-normal uppercase leading-none">
+                {status}
+              </div>
             </div>
           </div>
         </div>

@@ -27,6 +27,7 @@ import LoggedCard from './cards/LoggedCard'
 import ControlledCard from './cards/ControlledCard'
 import CertifiedCard from './cards/CertifiedCard'
 import VerifiedCard from './cards/VerifiedCard'
+import ResultLabPoweredCard from './cards/ResultLabPoweredCard'
 
 import { sceneConfig, sceneTimings, SCENE_FRAME_COUNTS, type CardData } from './batteryLifecycle/sceneConfig'
 import { getFrameCache } from './batteryLifecycle/frameCache'
@@ -130,7 +131,7 @@ export default function BatteryLifecycleScroll() {
             <div className={scaleClasses}>
               <HealthGaugeCard 
                 value={cardData.value} 
-                video={sceneIndex === 5 ? '98.mp4' : '99.mp4'}
+                video="99.mp4"
                 width={sceneIndex === 5 ? '200px' : '420px'}
                 compactLaptop={sceneIndex === 0}
               />
@@ -285,7 +286,7 @@ export default function BatteryLifecycleScroll() {
           <div
             key={cardKey}
             ref={el => { cardRefs.current[cardKey] = el }}
-            className={`absolute ${positionClasses} z-10`}
+            className={`absolute ${positionClasses} z-10 -mt-1 sm:-mt-1.5 md:-mt-2`}
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <div className={scaleClasses}>
@@ -322,7 +323,7 @@ export default function BatteryLifecycleScroll() {
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <div className={scaleClasses}>
-              <LeadCard value={cardData.value} status={cardData.status} />
+              <LeadCard value={cardData.value} status={cardData.status} shouldAnimate={activeSceneIndex === 6} />
             </div>
           </div>
         )
@@ -335,7 +336,7 @@ export default function BatteryLifecycleScroll() {
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <div className={scaleClasses}>
-              <PolymerCard value={cardData.value} status={cardData.status} />
+              <PolymerCard value={cardData.value} status={cardData.status} shouldAnimate={activeSceneIndex === 6} />
             </div>
           </div>
         )
@@ -414,6 +415,19 @@ export default function BatteryLifecycleScroll() {
           >
             <div className={scaleClasses}>
               <VerifiedCard />
+            </div>
+          </div>
+        )
+      case 'result-lab-powered':
+        return (
+          <div
+            key={cardKey}
+            ref={el => { cardRefs.current[cardKey] = el }}
+            className={`absolute ${positionClasses} z-10`}
+            style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
+          >
+            <div className={scaleClasses}>
+              <ResultLabPoweredCard />
             </div>
           </div>
         )

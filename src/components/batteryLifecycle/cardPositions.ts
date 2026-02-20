@@ -9,6 +9,7 @@ export const getCardPosition = (
     if (sceneIndex === 0) {
       if (cardData.position === 'right') {
         if (cardData.cardType === 'internal-resistance') return 'left-6 md:left-12 md:top-[80%] top-[20%]'
+        if (cardData.cardType === 'result-lab-powered') return '-right-8 md:right-6 md:left-auto md:top-[25%] top-[32%]'
         return 'left-6 md:left-12 md:top-[18%] top-[20%]'
       }
       if (cardData.position === 'left') {
@@ -19,7 +20,7 @@ export const getCardPosition = (
         return '-right-12 md:right-8 md:left-auto md:top-[8%] top-[10%]'
       }
       if (cardData.position === 'bottom-right' && cardData.cardType === 'sulphation') {
-        return '-right-4 md:right-4 md:left-auto md:top-[80%] top-[72%]'
+        return '-right-4 md:right-4 md:left-auto md:top-[80%] top-[78%]'
       }
     }
     else if (sceneIndex === 1) {
@@ -123,7 +124,10 @@ export const getCardPosition = (
   }
   
   if (sceneIndex === 0) {
-    if (cardData.position === 'right') return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12 lg:left-[19em] xl:top-12 xl:left-[19.5em] 2xl:top-12 2xl:left-[20em]'
+    if (cardData.position === 'right') {
+      if (cardData.cardType === 'result-lab-powered') return 'right-16 sm:right-20 md:right-24 bottom-16 md:bottom-20 lg:bottom-20 xl:bottom-20 2xl:bottom-20'
+      return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12 lg:left-[19em] xl:top-12 xl:left-[19.5em] 2xl:top-12 2xl:left-[20em]'
+    }
     if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12 lg:left-12 xl:top-12 xl:left-14 2xl:top-12 2xl:left-16'
     if (cardData.position === 'bottom-left' && cardData.cardType === 'health-gauge') return 'left-12 sm:left-14 md:left-[4rem] top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem] lg:left-[4.5rem] xl:top-[23rem] xl:left-[5rem] 2xl:top-[24rem] 2xl:left-[5.5rem]'
     if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-[4rem] top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem] lg:left-[4.5rem] xl:top-[22rem] xl:left-[5rem] 2xl:top-[22rem] 2xl:left-[5.5rem]'

@@ -16,14 +16,14 @@ export default function PerformanceRestoredCard({
   healthTo = '95%'
 }: PerformanceRestoredCardProps) {
   return (
-    <div className="backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-[15.815px] p-3 md:p-4 w-[18.75rem] sm:w-[20rem] md:w-[26.25rem] lg:w-[350px] lg:h-[450px] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)] flex flex-col items-center">
+    <div className="backdrop-blur-[14.9px] bg-black/80 border border-white/10 rounded-[15.815px] p-3 md:p-4 pb-6 md:pb-8 w-[18.75rem] sm:w-[20rem] md:w-[26.25rem] min-h-[20rem] sm:min-h-[21rem] md:min-h-[22rem] shadow-[inset_0px_14.368px_57.47px_0px_rgba(0,0,0,0.3)] flex flex-col items-center justify-between">
       {/* Title */}
       <div className="text-[#9CA3AF] text-[0.5rem] md:text-[0.625rem] font-['Arial',sans-serif] tracking-wider mb-2.5 md:mb-3 w-full text-left">
         PERFORMANCE RESTORED
       </div>
 
       {/* Health Comparison */}
-      <div className="mb-2.5 md:mb-3 w-full">
+      <div className="mb-4 md:mb-5 w-full">
         <div className="flex flex-col items-center gap-1 md:gap-1.5 mb-1 md:mb-1.5">
           <img
             src="/cards/health.svg"
@@ -64,7 +64,7 @@ export default function PerformanceRestoredCard({
       </div>
 
       {/* Voltage Comparison */}
-      <div className="mb-2.5 md:mb-3 w-full">
+      <div className="mb-4 md:mb-5 w-full">
         <div className="flex flex-col items-center gap-1 md:gap-1.5 mb-1 md:mb-1.5">
           <img
             src="/cards/voltage.svg"

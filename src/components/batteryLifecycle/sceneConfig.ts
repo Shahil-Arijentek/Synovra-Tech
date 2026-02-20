@@ -51,6 +51,12 @@ export const sceneConfig: SceneConfig[] = [
         value: 'NEGLIGIBLE',
         status: '',
         position: 'bottom-right'
+      },
+      {
+        cardType: 'result-lab-powered',
+        value: '',
+        status: '',
+        position: 'right'
       }
     ]
   },

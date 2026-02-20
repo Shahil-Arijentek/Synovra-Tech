@@ -20,7 +20,7 @@ export default function PlateConditionCard({ value }: PlateConditionCardProps) {
         </div>
 
         {/* Plate Visualization */}
-        <div className="flex-shrink-0 overflow-visible">
+        <div className="flex-shrink-0 overflow-visible -mt-2 sm:-mt-2.5 md:-mt-3">
           <img
             src="/cards/platecondition.png"
             alt="Plate Condition"
