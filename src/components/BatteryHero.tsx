@@ -377,7 +377,7 @@ export default function BatteryHero() {
             exitRange={[0.45, 0.60]}
             className="text-center text-[clamp(1.25rem,3.5vw,2rem)] lg:text-[clamp(2.25rem,4.25vw,3.25rem)]"
             style={{
-              color: '#71717B',
+              color: '#FFFFFF',
               fontFamily: 'Arial, sans-serif',
               fontWeight: 900,
               lineHeight: '25.579px',
