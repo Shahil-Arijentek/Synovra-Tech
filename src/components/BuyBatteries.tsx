@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, AnimatePresence } from 'framer-motion'
 import gsap from 'gsap'
 
 type BatteryStage = 'new' | 'used' | 'scrap'
 
-const stageConfig: Record<BatteryStage, { label: string }> = {
-  new: { label: 'OPTIMAL' },
-  used: { label: 'DRIFTING' },
-  scrap: { label: 'CRITICAL' },
+const stageConfig: Record<BatteryStage, { label: string; description: string }> = {
+  new: { label: 'OPTIMAL', description: 'Clear chemistry. Peak output.' },
+  used: { label: 'DRIFTING', description: 'Sulphation rising. Output slipping.' },
+  scrap: { label: 'CRITICAL', description: 'High sulphation. Value remains.' },
 }
 
 const batteryLayers = {
@@ -257,24 +257,30 @@ export default function BuyBatteries() {
           initial={{ opacity: 0, y: 30 }}
           animate={isBottomCardInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
-          className="relative mx-auto mt-6 md:mt-10 flex w-full max-w-[40.56rem] flex-col items-center gap-1 px-6 py-4 md:py-6 text-center"
+          className="relative mx-auto -mt-16 md:-mt-20 flex w-full max-w-[40.56rem] flex-col items-center gap-1 px-6 py-4 md:py-6 text-center"
         >
-          <motion.p 
+          {/* <motion.p 
             initial={{ opacity: 0, y: 10 }}
             animate={isBottomCardInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
             transition={{ duration: 0.6, delay: 0.4, ease: [0.19, 1, 0.22, 1] }}
             className="text-[1.375rem] md:text-[1.5rem] font-bold leading-tight text-white"
           >
             Healthy / Near New
-          </motion.p>
-          <motion.p 
-            initial={{ opacity: 0, y: 10 }}
-            animate={isBottomCardInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-            transition={{ duration: 0.6, delay: 0.5, ease: [0.19, 1, 0.22, 1] }}
-            className="text-[1rem] md:text-[1.125rem] leading-relaxed text-white/60"
-          >
-            High-performance batteries — we buy them too. No need to hold for resale.
-          </motion.p>
+          </motion.p> */}
+          <div className="min-h-[3rem] flex items-center justify-center">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.p 
+                key={activeStage}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
+                className="text-[1rem] md:text-[1.125rem] leading-relaxed text-white/60"
+              >
+                {stageConfig[activeStage].description}
+              </motion.p>
+            </AnimatePresence>
+          </div>
         </motion.div>
       </section>
 

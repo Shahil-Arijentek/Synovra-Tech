@@ -153,9 +153,11 @@ export const getCardPosition = (
       return 'right-10 sm:right-14 md:right-auto md:left-[19em] top-20 sm:top-24 md:top-28 lg:top-12 lg:left-[19em] xl:top-12 xl:left-[19.5em] 2xl:top-12 2xl:left-[20em]'
     }
     if (cardData.position === 'left') return 'left-8 sm:left-10 md:left-12 top-20 sm:top-24 md:top-28 lg:top-12 lg:left-12 xl:top-12 xl:left-14 2xl:top-12 2xl:left-16'
+    if (cardData.position === 'bottom-left' && cardData.cardType === 'electrochemical-correction') return 'left-12 sm:left-14 md:left-16 top-[38%] sm:top-[40%] md:top-[44%] lg:top-[23rem] lg:left-[4.5rem] xl:top-[23rem] xl:left-[5rem] 2xl:top-[23rem] 2xl:left-[5.5rem]'
     if (cardData.position === 'bottom-left') return 'left-12 sm:left-14 md:left-16 top-[38%] sm:top-[40%] md:top-[44%] lg:top-[22rem] lg:left-[4.5rem] xl:top-[22rem] xl:left-[5rem] 2xl:top-[22rem] 2xl:left-[5.5rem]'
     if (cardData.position === 'bottom-right') return 'left-12 sm:left-14 md:left-16 top-[68%] sm:top-[70%] md:top-[74%] lg:top-[41.5rem] lg:left-[4.5rem] xl:top-[41.5rem] xl:left-[5rem] 2xl:top-[41.5rem] 2xl:left-[5.5rem]'
   } else if (sceneIndex === 5) {
+    if (cardData.position === 'top' && cardData.cardType === 'performance-restored') return 'left-12 sm:left-14 md:left-20 top-20 sm:top-22 md:top-26 lg:top-20 lg:left-[4.5rem] xl:top-20 xl:left-[5rem] 2xl:top-20 2xl:left-[5.5rem]'
     if (cardData.position === 'top') return 'left-12 sm:left-14 md:left-20 top-20 sm:top-22 md:top-26 lg:top-16 lg:left-[4.5rem] xl:top-16 xl:left-[5rem] 2xl:top-16 2xl:left-[5.5rem]'
     if (cardData.position === 'left') {
       if (cardData.cardType === 'health-gauge') return 'left-10 sm:left-12 md:left-16 top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem] lg:left-[3rem] xl:top-[22rem] xl:left-[3.5rem] 2xl:top-[22rem] 2xl:left-[4rem]'
@@ -163,7 +165,7 @@ export const getCardPosition = (
     }
     if (cardData.position === 'right') {
       if (cardData.cardType === 'certified') return 'right-10 sm:right-12 md:right-16 bottom-16 md:bottom-20 lg:bottom-20 xl:bottom-20 2xl:bottom-20'
-      if (cardData.cardType === 'warranty') return 'right-12 sm:right-14 md:right-auto md:left-[20rem] top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem] lg:left-[19.5em] xl:top-[22rem] xl:left-[20em] 2xl:top-[22rem] 2xl:left-[20.5em]'
+      if (cardData.cardType === 'warranty') return 'left-12 sm:left-14 md:left-20 top-[60%] sm:top-[62%] md:top-[66%] lg:top-[40rem] lg:left-[4.5rem] xl:top-[40rem] xl:left-[5rem] 2xl:top-[40rem] 2xl:left-[5.5rem]'
       return 'right-12 sm:right-14 md:right-auto md:left-[20rem] top-[35%] sm:top-[37%] md:top-[41%] lg:top-[22rem] lg:left-[19em] xl:top-[22rem] xl:left-[19.5em] 2xl:top-[22rem] 2xl:left-[20em]'
     }
     if (cardData.position === 'bottom') return 'left-12 sm:left-14 md:left-20 top-[60%] sm:top-[62%] md:top-[66%] lg:top-[41em] lg:left-[4.5rem] xl:top-[41em] xl:left-[5rem] 2xl:top-[41em] 2xl:left-[5.5rem]'

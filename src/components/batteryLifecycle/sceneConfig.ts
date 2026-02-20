@@ -202,22 +202,10 @@ export const sceneConfig: SceneConfig[] = [
         position: 'top'
       },
       {
-        cardType: 'health-gauge',
-        value: '98%',
-        status: '',
-        position: 'left'
-      },
-      {
         cardType: 'warranty',
-        value: 'WARRANTY ACTIVE',
-        status: 'EXTENDED COVERAGE ENABLED',
+        value: 'WARRANTY',
+        status: '12-24 M',
         position: 'right'
-      },
-      {
-        cardType: 'record-lock',
-        value: 'DIAGNOSTIC',
-        status: 'RECORD LOCKED',
-        position: 'bottom'
       },
       {
         cardType: 'certified',

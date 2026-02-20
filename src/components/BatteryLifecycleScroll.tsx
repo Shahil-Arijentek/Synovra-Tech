@@ -290,10 +290,12 @@ export default function BatteryLifecycleScroll() {
           >
             <div className={scaleClasses}>
               <PerformanceRestoredCard
-                voltageFrom="11.8V"
-                voltageTo="12.4V"
-                resistanceFrom="8.7mΩ"
-                resistanceTo="4.2mΩ"
+                voltageFrom={sceneIndex === 5 ? "11.2" : "11.8V"}
+                voltageTo={sceneIndex === 5 ? "12.6 V" : "12.4V"}
+                resistanceFrom={sceneIndex === 5 ? "14.5" : "8.7mΩ"}
+                resistanceTo={sceneIndex === 5 ? "4.8 mΩ" : "4.2mΩ"}
+                healthFrom={sceneIndex === 5 ? "65%" : undefined}
+                healthTo={sceneIndex === 5 ? "95%" : undefined}
               />
             </div>
           </div>
@@ -398,7 +400,7 @@ export default function BatteryLifecycleScroll() {
             style={{ opacity: 0, transform: 'translateX(-400px) scale(1.2)' }}
           >
             <div className={scaleClasses}>
-              <CertifiedCard />
+              <CertifiedCard text={sceneIndex === 5 ? '95%+ Performance Restored' : undefined} />
             </div>
           </div>
         )
